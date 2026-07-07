@@ -1,6 +1,8 @@
 node_modules
 dist
 .turbo
+.next
+next-env.d.ts
 *.log
 
 # Sekrety — NIGDY nie commitujemy
