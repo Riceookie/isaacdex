@@ -78,6 +78,9 @@ importers:
       '@isaacdex/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@prisma/nextjs-monorepo-workaround-plugin':
+        specifier: ^5.22.0
+        version: 5.22.0
       next:
         specifier: ^14.2.33
         version: 14.2.35(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -484,6 +487,9 @@ packages:
 
   '@prisma/get-platform@5.22.0':
     resolution: {integrity: sha512-pHhpQdr1UPFpt+zFfnPazhulaZYCUqeIcPpJViYoq9R+D/yw4fjE+CtnsnKzPYm0ddUbeXUzjGVGIRVgPDCk4Q==}
+
+  '@prisma/nextjs-monorepo-workaround-plugin@5.22.0':
+    resolution: {integrity: sha512-wuKp7FqhETHP2MJJu5y//ac83/EpDpoupcjlmp/Ijv3fnG576EIxY4SU4j24xXPIBOTuApkCk4RkgonkeAOXuQ==}
 
   '@secretlint/config-creator@9.3.4':
     resolution: {integrity: sha512-GRMYfHJ+rewwB26CC3USVObqSQ/mDLXzXcUMJw/wJisPr3HDZmdsYlcsNnaAcGN+EZmvqSDkgSibQm1hyZpzbg==}
@@ -2097,6 +2103,8 @@ snapshots:
   '@prisma/get-platform@5.22.0':
     dependencies:
       '@prisma/debug': 5.22.0
+
+  '@prisma/nextjs-monorepo-workaround-plugin@5.22.0': {}
 
   '@secretlint/config-creator@9.3.4':
     dependencies:
