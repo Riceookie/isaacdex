@@ -67,11 +67,8 @@ body {
     repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 3px 5px, transparent 5px 68px),
     radial-gradient(120% 90% at 50% 0%, var(--wall-hi), transparent 55%),
     radial-gradient(140% 120% at 50% 100%, rgba(0, 0, 0, 0.5), transparent 60%);
-  /* kursor = mucha */
-  cursor:
-    url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='26'%20height='26'%3E%3Cellipse%20cx='13'%20cy='15'%20rx='4'%20ry='6.5'%20fill='%23191919'/%3E%3Cellipse%20cx='7.5'%20cy='9.5'%20rx='5'%20ry='2.6'%20fill='%23e9eef7'%20opacity='0.8'/%3E%3Cellipse%20cx='18.5'%20cy='9.5'%20rx='5'%20ry='2.6'%20fill='%23e9eef7'%20opacity='0.8'/%3E%3Ccircle%20cx='13'%20cy='7.5'%20r='2.7'%20fill='%23191919'/%3E%3Ccircle%20cx='11.8'%20cy='7'%20r='0.8'%20fill='%23c0392b'/%3E%3Ccircle%20cx='14.2'%20cy='7'%20r='0.8'%20fill='%23c0392b'/%3E%3C/svg%3E")
-      6 6,
-    auto;
+  /* kursor = mucha (oryginalny sprite z TBOI) */
+  cursor: url('/tboi/Fly.png') 8 6, auto;
 }
 
 /* ── Korkowa tablica (treść wpięta w ramę ścian) ── */
@@ -199,33 +196,17 @@ a {
 .card,
 .note {
   position: relative;
-  background: var(--paper);
+  /* prawdziwy sprite kartki „page" z TBOI (gwóźdź + doodle w rogach) */
+  background: url('/tboi/page2.png') center / 100% 100% no-repeat;
   color: var(--ink);
-  padding: 1.1rem 1.3rem;
-  margin: 1.3rem 0;
-  border-radius: 2px;
-  box-shadow:
-    0 7px 16px rgba(0, 0, 0, 0.4),
-    inset 0 0 0 1px var(--paper-edge);
+  padding: 1.8rem 2rem 2rem;
+  margin: 1.5rem 0;
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.45));
   transform: rotate(-0.4deg);
 }
 .card:nth-of-type(even),
 .note:nth-of-type(even) {
   transform: rotate(0.5deg);
-}
-.card::before,
-.note::before {
-  content: '';
-  position: absolute;
-  top: -11px;
-  left: 50%;
-  width: 82px;
-  height: 24px;
-  transform: translateX(-50%) rotate(-2.5deg);
-  background: var(--tape);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-  border-left: 1px dashed rgba(0, 0, 0, 0.08);
-  border-right: 1px dashed rgba(0, 0, 0, 0.08);
 }
 .card h1,
 .card h2,
