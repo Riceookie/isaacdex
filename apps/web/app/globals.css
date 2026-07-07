@@ -834,6 +834,55 @@ a:hover {
   flex-wrap: wrap;
 }
 
+/* ── Save file (completion marks jak w grze) ── */
+.savefile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.4rem;
+  margin: 1rem 0;
+}
+.savefile-head {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-bottom: 1.1rem;
+}
+.savefile-head h1 {
+  margin: 0;
+}
+.marks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(62px, 1fr));
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+}
+.mark-cell {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px;
+}
+.mark-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: grayscale(1) brightness(0.4);
+  opacity: 0.5;
+}
+.mark-cell.on {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface-2));
+}
+.mark-cell.on img {
+  filter: none;
+  opacity: 1;
+}
+
 /* ── Profil ── */
 .profil-hero {
   display: flex;

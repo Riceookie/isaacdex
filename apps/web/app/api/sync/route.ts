@@ -80,14 +80,16 @@ export async function POST() {
 
   // AUTO-MARKI: mapowanie achievement → (postać, boss) (z wiki) + odblokowania usera.
   // Każda marka odblokowuje unikalny item, więc posiadanie itemu = zaliczona marka.
-  const unlockedNames = new Set(rows.filter((r) => r.odblokowany).map((r) => r.nazwa))
+  // Dopasowanie odporne na wielkość liter i spacje (Steam: „D Infinity", „ 'M").
+  const norm = (s: string) => s.trim().toLowerCase()
+  const unlockedNames = new Set(rows.filter((r) => r.odblokowany).map((r) => norm(r.nazwa)))
   const postacie = await prisma.postac.findMany()
   const idByName = new Map(postacie.map((p) => [p.nazwa, p.id]))
   const mapa = mapaMarek as Record<string, { postac: string; boss: string }>
 
   const markRows = []
   for (const [achName, mv] of Object.entries(mapa)) {
-    if (!unlockedNames.has(achName)) continue
+    if (!unlockedNames.has(norm(achName))) continue
     const pid = idByName.get(mv.postac)
     if (pid == null) continue
     markRows.push({
