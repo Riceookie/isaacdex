@@ -8,3 +8,6 @@ next-env.d.ts
 # Sekrety — NIGDY nie commitujemy
 .env
 .env*.local
+
+# artefakt inkrementalnego buildu TS
+*.tsbuildinfo
