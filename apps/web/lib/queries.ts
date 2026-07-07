@@ -34,10 +34,12 @@ export async function getDashboard() {
     : []
   const perPostac = new Map(grouped.map((g) => [g.postacId, g._count._all]))
 
-  const lista = postacie.map((p) => {
-    const zal = perPostac.get(p.id) ?? 0
-    return { nazwa: p.nazwa, zaliczone: zal, procent: procentUkonczenia(zal, MARK_NA_POSTAC) }
-  })
+  const lista = postacie
+    .map((p) => {
+      const zal = perPostac.get(p.id) ?? 0
+      return { nazwa: p.nazwa, zaliczone: zal, procent: procentUkonczenia(zal, MARK_NA_POSTAC) }
+    })
+    .sort((a, b) => b.procent - a.procent || a.nazwa.localeCompare(b.nazwa))
   const sumZal = lista.reduce((s, p) => s + p.zaliczone, 0)
   const total = postacie.length * MARK_NA_POSTAC
 
