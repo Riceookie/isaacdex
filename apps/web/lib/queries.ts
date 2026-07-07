@@ -77,3 +77,47 @@ export async function getKolekcja() {
   }))
   return { achievements }
 }
+
+export async function getStatystyki() {
+  const profil = await prisma.profil.findFirst()
+  if (!profil) return null
+  const all = await prisma.steamAchievement.findMany({ where: { profilId: profil.id } })
+  const unlocked = all.filter((a) => a.odblokowany)
+  const total = all.length
+
+  const buckets = { legendarne: 0, rzadkie: 0, czeste: 0 }
+  let rarest: { nazwa: string; p: number } | null = null
+  for (const a of unlocked) {
+    const p = a.globalnyProcent != null ? Number(a.globalnyProcent) : 100
+    if (p < 5) buckets.legendarne++
+    else if (p < 20) buckets.rzadkie++
+    else buckets.czeste++
+    if (!rarest || p < rarest.p) rarest = { nazwa: a.nazwa, p }
+  }
+
+  const withDate = unlocked
+    .filter((a) => a.dataOdblokowania)
+    .sort((x, y) => x.dataOdblokowania!.getTime() - y.dataOdblokowania!.getTime())
+  const byMonth = new Map<string, number>()
+  for (const a of withDate) {
+    const d = a.dataOdblokowania!
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
+    byMonth.set(key, (byMonth.get(key) ?? 0) + 1)
+  }
+  let cum = 0
+  const seria = [...byMonth.entries()].map(([m, c]) => {
+    cum += c
+    return { m, cum }
+  })
+  const latest = withDate.length ? withDate[withDate.length - 1] : null
+
+  return {
+    total,
+    unlocked: unlocked.length,
+    procent: total ? Math.round((unlocked.length / total) * 100) : 0,
+    buckets,
+    rarest,
+    seria,
+    latest: latest ? { nazwa: latest.nazwa, data: latest.dataOdblokowania!.toISOString() } : null,
+  }
+}

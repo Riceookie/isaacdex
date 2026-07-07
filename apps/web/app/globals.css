@@ -10,21 +10,21 @@
   --wall: #6b4a2f;
   --wall-hi: #8a5f3b;
   --wall-lo: #3f2a19;
-  --accent: #d08a3e;
-  --btn: #915217;
+  --accent: #ef9d33;
+  --btn: #9a5615;
 }
 [data-floor='cellar'] {
   --wall: #7d6f52;
   --wall-hi: #97895f;
   --wall-lo: #4c4230;
-  --accent: #c9b36a;
+  --accent: #e6cb5c;
   --btn: #8a7233;
 }
 [data-floor='caves'] {
   --wall: #5a544a;
   --wall-hi: #746c5e;
   --wall-lo: #332f28;
-  --accent: #a7b06a;
+  --accent: #c2d24f;
   --btn: #5f6636;
 }
 [data-floor='catacombs'] {
@@ -352,10 +352,14 @@ html[data-fly='off'] .input {
 /* ── Wielka liczba postępu (odręczna, jak wpis w zeszycie) ── */
 .big {
   font-family: var(--font-display-stack);
-  font-size: 4rem;
+  font-size: 4.4rem;
   font-weight: 700;
   color: var(--accent);
   line-height: 0.9;
+  /* obrys jak liczby HUD w grze */
+  -webkit-text-stroke: 3px var(--ink);
+  paint-order: stroke fill;
+  text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.28);
 }
 .big .muted {
   color: var(--ink-soft);
@@ -625,6 +629,79 @@ html[data-fly='off'] .input {
 }
 .ach-big.off {
   filter: grayscale(1) brightness(0.5);
+}
+
+/* ── Statystyki ── */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.8rem;
+  margin: 1.2rem 0;
+}
+.tile {
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 3px;
+  padding: 0.9rem 1rem;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  transform: rotate(-0.5deg);
+}
+.tile:nth-child(even) {
+  transform: rotate(0.6deg);
+}
+.tile-num {
+  font-family: var(--font-display-stack);
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--btn);
+  line-height: 1;
+}
+.chart {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-top: 0.4rem;
+}
+.chart-axis {
+  stroke: rgba(0, 0, 0, 0.22);
+  stroke-width: 1.5;
+}
+.chart-area {
+  fill: var(--accent);
+  opacity: 0.22;
+}
+.chart-line {
+  fill: none;
+  stroke: var(--btn);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.chart-dot {
+  fill: var(--btn);
+}
+.chart-bar {
+  fill: var(--btn);
+}
+.chart-bar.gold {
+  fill: var(--gold);
+}
+.chart-txt {
+  fill: var(--ink);
+  font-family: var(--font-hand-stack);
+  font-size: 12px;
+}
+.chart-txt.big-num {
+  font-family: var(--font-display-stack);
+  font-size: 18px;
+  font-weight: 700;
+}
+.chart-txt.muted-txt {
+  fill: var(--ink-soft);
+  font-size: 10px;
 }
 
 /* ── Tooltip w stylu gry (na [data-tip]) ── */

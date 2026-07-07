@@ -38,6 +38,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <nav className="nav-links">
                 <Link href="/">Postęp</Link>
                 <Link href="/kolekcja">Kolekcja</Link>
+                <Link href="/statystyki">Statystyki</Link>
               </nav>
               <FloorSwitcher />
             </div>
