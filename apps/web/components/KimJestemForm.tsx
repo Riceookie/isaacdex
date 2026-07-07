@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { ikonaPostaci } from '@/lib/chars'
 
 type Props = {
   nick: string
@@ -77,15 +78,10 @@ export default function KimJestemForm(p: Props) {
             ————→
           </span>
         </div>
-        <button className="avatar-box" title="Zmiana awatara — wkrótce" type="button">
-          <svg viewBox="0 0 48 48" aria-hidden="true">
-            <ellipse cx="24" cy="25" rx="15" ry="17" fill="#f7f2e6" stroke="#14100b" strokeWidth="2" />
-            <circle cx="18" cy="24" r="2.4" fill="#14100b" />
-            <circle cx="30" cy="24" r="2.4" fill="#14100b" />
-            <path d="M19 33 Q24 30 29 33" stroke="#14100b" strokeWidth="1.6" fill="none" />
-          </svg>
-        </button>
-        <span className="red-note">← domyślny profil</span>
+        <div className="avatar-box">
+          <img className="avatar-img" src={ikonaPostaci(ulubiona || 'Isaac')} alt="Avatar" />
+        </div>
+        <span className="red-note">← {ulubiona ? 'ulubiona' : 'domyślny'} profil</span>
       </div>
 
       <div className="whoami-name">
@@ -127,17 +123,20 @@ export default function KimJestemForm(p: Props) {
           </label>
         </div>
         <div className="side-note">
-          <label>
-            Ustaw ulubioną postać
-            <select className="input" value={ulubiona} onChange={(e) => setUlubiona(e.target.value)}>
-              <option value="">— ?</option>
-              {p.postacie.map((n) => (
-                <option key={n} value={n}>
-                  {n}
-                </option>
-              ))}
-            </select>
-          </label>
+          <span className="side-label">Ustaw ulubioną postać</span>
+          <div className="char-picker">
+            {p.postacie.map((n) => (
+              <button
+                key={n}
+                type="button"
+                className={'char-pick' + (ulubiona === n ? ' sel' : '')}
+                onClick={() => setUlubiona(ulubiona === n ? '' : n)}
+                data-tip={n}
+              >
+                <img src={ikonaPostaci(n)} alt={n} />
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 

@@ -742,19 +742,73 @@ html[data-fly='off'] .input {
   color: var(--ink);
 }
 .avatar {
-  width: 74px;
-  height: 74px;
+  width: 78px;
+  height: 78px;
   flex: none;
   border-radius: 50%;
-  background: var(--btn);
-  color: #fff;
+  background: #f7f2e6;
   display: grid;
   place-items: center;
-  font-family: var(--font-display-stack);
-  font-size: 2.4rem;
-  font-weight: 700;
   border: 3px solid var(--ink);
   box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  padding: 8px;
+}
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  object-fit: contain;
+}
+.char-icon {
+  width: 32px;
+  height: 32px;
+  flex: none;
+  image-rendering: pixelated;
+  object-fit: contain;
+}
+.char-icon.big {
+  width: 56px;
+  height: 56px;
+}
+.postac-head {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+.side-label {
+  display: block;
+  color: var(--ink);
+  font-size: 0.95rem;
+  margin-bottom: 0.4rem;
+}
+.char-picker {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+  gap: 5px;
+}
+.char-pick {
+  padding: 3px;
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  background: #fff;
+  cursor: inherit;
+}
+.char-pick img {
+  width: 100%;
+  aspect-ratio: 1;
+  image-rendering: pixelated;
+  object-fit: contain;
+  display: block;
+}
+.char-pick.sel {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px var(--gold);
+  background: #fff8e6;
+}
+.char-pick:hover {
+  border-color: var(--accent);
 }
 .profil-id h1 {
   margin: 0;

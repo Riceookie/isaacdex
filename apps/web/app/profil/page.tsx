@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { getProfil } from '@/lib/queries'
+import { ikonaPostaci } from '@/lib/chars'
 
 export const dynamic = 'force-dynamic'
 
@@ -20,7 +21,9 @@ export default async function ProfilPage() {
     <section>
       {/* Hero „WHO AM I?" na papierze z krwią */}
       <div className="profil-hero">
-        <div className="avatar">{p.nick.charAt(0).toUpperCase()}</div>
+        <div className="avatar">
+          <img className="avatar-img" src={ikonaPostaci(p.ulubiona || 'Isaac')} alt="" />
+        </div>
         <div className="profil-id">
           <h1>{p.nick}</h1>
           {p.opis && <p className="small opis-txt">„{p.opis}"</p>}

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { getDashboard } from '@/lib/queries'
+import { ikonaPostaci } from '@/lib/chars'
 import AdvisorForm from '@/components/AdvisorForm'
 
 export const dynamic = 'force-dynamic'
@@ -30,6 +31,7 @@ export default async function Home() {
       <ul className="list">
         {postacie.map((p) => (
           <li key={p.nazwa} className="item">
+            <img className="char-icon" src={ikonaPostaci(p.nazwa)} alt="" />
             <Link href={`/profil/${encodeURIComponent(p.nazwa)}`} className="grow">
               {p.nazwa}
             </Link>

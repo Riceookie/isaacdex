@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getPostacMarks } from '@/lib/queries'
+import { ikonaPostaci } from '@/lib/chars'
 import MarksGrid from '@/components/MarksGrid'
 
 export const dynamic = 'force-dynamic'
@@ -14,7 +15,10 @@ export default async function ProfilPostaci({ params }: { params: { postac: stri
       <p className="small">
         <Link href="/">← Dashboard</Link>
       </p>
-      <h1>{data.postac}</h1>
+      <div className="postac-head">
+        <img className="char-icon big" src={ikonaPostaci(data.postac)} alt="" />
+        <h1>{data.postac}</h1>
+      </div>
       <p className="muted small">
         Zaznacz zaliczone bossy (Normal / Hard). Reguła: HARD dopiero po NORMAL.
       </p>
