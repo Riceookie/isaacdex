@@ -1,10 +1,10 @@
 import './globals.css'
 import Link from 'next/link'
 import type { ReactNode } from 'react'
-import { Space_Grotesk, Inter } from 'next/font/google'
+import { Pixelify_Sans, Inter } from 'next/font/google'
 import FloorSwitcher from '@/components/FloorSwitcher'
 
-const display = Space_Grotesk({
+const display = Pixelify_Sans({
   subsets: ['latin', 'latin-ext'],
   weight: ['500', '600', '700'],
   variable: '--font-display',
@@ -36,9 +36,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </Link>
             <div className="nav-right">
               <nav className="nav-links">
-                <Link href="/">Postęp</Link>
+                <Link href="/">Pulpit</Link>
                 <Link href="/profil">Profil</Link>
                 <Link href="/kolekcja">Kolekcja</Link>
+                <Link href="/doradca">Doradca</Link>
                 <Link href="/statystyki">Statystyki</Link>
               </nav>
               <FloorSwitcher />

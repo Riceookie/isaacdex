@@ -17,7 +17,14 @@ export default async function ProfilPostaci({ params }: { params: { postac: stri
       </p>
       <div className="postac-head">
         <img className="char-icon big" src={ikonaPostaci(data.postac)} alt="" />
-        <h1>{data.postac}</h1>
+        <div>
+          <h1>{data.postac}</h1>
+          <p className="muted small">
+            {data.zaznaczone.length}/{data.bossy.length * data.tryby.length} marek ·{' '}
+            {Math.round((data.zaznaczone.length / (data.bossy.length * data.tryby.length)) * 100)}%
+            ukończenia
+          </p>
+        </div>
       </div>
       <p className="muted small">
         Zaznacz zaliczone bossy (Normal / Hard). Reguła: HARD dopiero po NORMAL.

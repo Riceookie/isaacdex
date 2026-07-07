@@ -22,8 +22,17 @@ export default function KolekcjaWidok({ achievements }: { achievements: Ach[] })
   const [sel, setSel] = useState<Ach | null>(null)
   const [busy, setBusy] = useState(false)
   const [msg, setMsg] = useState<string | null>(null)
+  const [q, setQ] = useState('')
+  const [filtr, setFiltr] = useState<'all' | 'unlocked' | 'locked' | 'rare'>('all')
 
   const unlocked = achievements.filter((a) => a.odblokowany).length
+  const filtrowane = achievements.filter((a) => {
+    if (q && !a.nazwa.toLowerCase().includes(q.toLowerCase())) return false
+    if (filtr === 'unlocked') return a.odblokowany
+    if (filtr === 'locked') return !a.odblokowany
+    if (filtr === 'rare') return a.globalnyProcent != null && a.globalnyProcent < 5
+    return true
+  })
 
   async function sync() {
     setBusy(true)
@@ -53,9 +62,38 @@ export default function KolekcjaWidok({ achievements }: { achievements: Ach[] })
       </div>
 
       {achievements.length > 0 ? (
-        <p className="muted">
-          Odblokowane <b>{unlocked}</b> / {achievements.length}
-        </p>
+        <>
+          <p className="muted">
+            Odblokowane <b>{unlocked}</b> / {achievements.length}
+            {(q || filtr !== 'all') && ` · pokazuję ${filtrowane.length}`}
+          </p>
+          <div className="kol-tools">
+            <input
+              className="input grow"
+              placeholder="Szukaj achievementu…"
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+            />
+            <div className="filter-btns">
+              {(
+                [
+                  ['all', 'Wszystkie'],
+                  ['unlocked', 'Odblokowane'],
+                  ['locked', 'Zablokowane'],
+                  ['rare', 'Rzadkie'],
+                ] as const
+              ).map(([k, label]) => (
+                <button
+                  key={k}
+                  className={'chip' + (filtr === k ? ' on' : '')}
+                  onClick={() => setFiltr(k)}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </>
       ) : (
         <div className="note">
           <p>Brak danych. Kliknij „Synchronizuj ze Steam", żeby zassać swoje achievementy.</p>
@@ -64,7 +102,7 @@ export default function KolekcjaWidok({ achievements }: { achievements: Ach[] })
       {msg && <p className="banner error">⚠️ {msg}</p>}
 
       <div className="ach-grid">
-        {achievements.map((a) => (
+        {filtrowane.map((a) => (
           <button
             key={a.apiName}
             className={

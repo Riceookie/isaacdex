@@ -1,7 +1,17 @@
 // Dostęp do danych dla frontendu (server-side). Reużywa Prisma (@isaacdex/db)
 // i logikę (@isaacdex/core) — ten sam kod co backend, bez duplikacji reguł.
 import { prisma, BossKoncowy, TrybGry } from '@isaacdex/db'
-import { procentUkonczenia } from '@isaacdex/core'
+import { procentUkonczenia, ocenItem, type Jakosc } from '@isaacdex/core'
+
+export async function getItemyZOcena() {
+  const items = await prisma.item.findMany({ orderBy: [{ jakosc: 'desc' }, { nazwa: 'asc' }] })
+  return items.map((i) => ({
+    nazwa: i.nazwa,
+    jakosc: i.jakosc,
+    typ: i.typ,
+    ...ocenItem({ nazwa: i.nazwa, jakosc: i.jakosc as Jakosc, tagi: i.tagi }),
+  }))
+}
 
 export const LICZBA_BOSSOW = Object.keys(BossKoncowy).length
 export const LICZBA_TRYBOW = Object.keys(TrybGry).length

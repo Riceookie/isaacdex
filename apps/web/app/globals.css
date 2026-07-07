@@ -83,9 +83,20 @@ h2,
 h3 {
   font-family: var(--dsp);
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   line-height: 1.15;
   margin: 0 0 0.5rem;
+}
+
+/* Subtelna ramka „game UI" (klimat) */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 6px;
+  border: 2px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 5;
 }
 h1 {
   font-size: 2rem;
@@ -454,6 +465,141 @@ a:hover {
   justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
+}
+.kol-tools {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0.7rem 0;
+}
+.filter-btns {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+.chip {
+  font-family: var(--bdy);
+  font-size: 0.82rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: inherit;
+}
+.chip.on {
+  background: var(--accent);
+  color: #17131a;
+  border-color: var(--accent);
+  font-weight: 600;
+}
+.chip:hover {
+  color: var(--text);
+}
+
+/* ── Dashboard (pulpit) ── */
+.dash-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 640px) {
+  .dash-cols {
+    grid-template-columns: 1fr;
+  }
+}
+.char-bar .char-name {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.char-bar .char-name:hover {
+  color: var(--accent);
+}
+
+/* ── Przeglądarka itemów (doradca) ── */
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.item-card {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.7rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--border);
+  border-radius: 10px;
+  cursor: inherit;
+  text-align: left;
+  color: var(--text);
+}
+.item-card:hover {
+  border-color: var(--accent);
+}
+.item-card.q4 {
+  border-left-color: #4ec98a;
+}
+.item-card.q3 {
+  border-left-color: #5fb4d8;
+}
+.item-card.q2 {
+  border-left-color: var(--accent);
+}
+.item-card.q1 {
+  border-left-color: #d99a3c;
+}
+.item-card.q0 {
+  border-left-color: #e5544b;
+}
+.q-badge {
+  font-family: var(--dsp);
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.05rem 0.35rem;
+  flex: none;
+}
+.item-name {
+  font-weight: 500;
+  font-size: 0.88rem;
+}
+.rek-tag {
+  font-family: var(--dsp);
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+}
+.rek-tag.BIERZ {
+  color: #4ec98a;
+}
+.rek-tag.ZWYKLE_WARTO {
+  color: #5fb4d8;
+}
+.rek-tag.SYTUACYJNIE {
+  color: var(--accent);
+}
+.rek-tag.RACZEJ_POMIN {
+  color: #d99a3c;
+}
+.rek-tag.UWAGA {
+  color: #e5544b;
+}
+.rek-powody {
+  text-align: left;
+  color: var(--muted);
+  margin: 0.4rem 0;
+  padding-left: 1.1rem;
+  font-size: 0.88rem;
 }
 .ach-grid {
   display: grid;
