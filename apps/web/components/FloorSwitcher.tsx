@@ -28,7 +28,7 @@ export default function FloorSwitcher() {
     setFloor(zapisaneFloor)
     document.documentElement.dataset.floor = zapisaneFloor
 
-    const flyOn = localStorage.getItem('idx_fly') !== 'off'
+    const flyOn = localStorage.getItem('idx_fly') === 'on'
     setFly(flyOn)
     document.documentElement.dataset.fly = flyOn ? 'on' : 'off'
   }, [])

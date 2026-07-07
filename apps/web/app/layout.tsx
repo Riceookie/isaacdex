@@ -2,7 +2,7 @@ import './globals.css'
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { Pixelify_Sans, Inter } from 'next/font/google'
-import FloorSwitcher from '@/components/FloorSwitcher'
+import ThemeApplier from '@/components/ThemeApplier'
 
 const display = Pixelify_Sans({
   subsets: ['latin', 'latin-ext'],
@@ -25,10 +25,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html
       lang="pl"
       data-floor="basement"
-      data-fly="on"
+      data-fly="off"
       className={`${display.variable} ${hand.variable}`}
     >
       <body>
+        <ThemeApplier />
         <div className="surface">
           <header className="nav">
             <Link href="/" className="brand">
@@ -41,8 +42,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <Link href="/kolekcja">Kolekcja</Link>
                 <Link href="/doradca">Doradca</Link>
                 <Link href="/statystyki">Statystyki</Link>
+                <Link href="/ustawienia" aria-label="Ustawienia">
+                  ⚙
+                </Link>
               </nav>
-              <FloorSwitcher />
             </div>
           </header>
           <main className="container">{children}</main>
