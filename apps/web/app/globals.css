@@ -355,6 +355,69 @@ a:hover {
   border: 1px solid var(--danger);
   color: #ffd9d5;
 }
+.banner.demo {
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--accent) 50%, var(--border));
+  color: var(--text);
+}
+
+/* ── Feed znajomych (demo) ── */
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+.feed-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.7rem 0.9rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.feed-avatar {
+  width: 46px;
+  height: 46px;
+  flex: none;
+  border-radius: 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 5px;
+}
+.feed-body {
+  flex: 1;
+  min-width: 0;
+}
+.feed-body p {
+  margin: 0 0 0.15rem;
+}
+.feed-user {
+  font-weight: 700;
+  color: var(--text);
+}
+.feed-cel {
+  color: var(--accent);
+  font-weight: 600;
+}
+.feed-like {
+  flex: none;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 99px;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.82rem;
+  cursor: inherit;
+}
+.feed-like:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+}
 
 /* ── Listy ── */
 .list {
