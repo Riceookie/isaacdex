@@ -22,7 +22,12 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="pl" data-floor="basement" className={`${display.variable} ${hand.variable}`}>
+    <html
+      lang="pl"
+      data-floor="basement"
+      data-fly="on"
+      className={`${display.variable} ${hand.variable}`}
+    >
       <body>
         <div className="surface">
           <header className="nav">

@@ -60,15 +60,26 @@ body {
   line-height: 1.5;
   background-color: var(--wall);
   background-image:
-    /* fugi między blokami (kamienna ściana) */
-    repeating-linear-gradient(90deg, var(--wall-lo) 0 3px, transparent 3px 68px),
-    repeating-linear-gradient(0deg, var(--wall-lo) 0 3px, transparent 3px 42px),
-    /* światłocień bloków */
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 3px 5px, transparent 5px 68px),
-    radial-gradient(120% 90% at 50% 0%, var(--wall-hi), transparent 55%),
-    radial-gradient(140% 120% at 50% 100%, rgba(0, 0, 0, 0.5), transparent 60%);
-  /* kursor = mucha (oryginalny sprite z TBOI) */
-  cursor: url('/tboi/Fly.png') 8 6, auto;
+    /* pionowe fugi między blokami */
+    repeating-linear-gradient(90deg, var(--wall-lo) 0 4px, transparent 4px 76px),
+    /* poziome fugi */
+    repeating-linear-gradient(0deg, var(--wall-lo) 0 4px, transparent 4px 48px),
+    /* górny highlight bloku (fazowanie kamienia) */
+    repeating-linear-gradient(
+      0deg,
+      transparent 4px 7px,
+      rgba(255, 255, 255, 0.07) 7px 10px,
+      transparent 10px 48px
+    ),
+    /* dolny cień bloku */
+    repeating-linear-gradient(0deg, transparent 42px 45px, rgba(0, 0, 0, 0.3) 45px 48px, transparent 48px),
+    /* lewy highlight */
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 4px 6px, transparent 6px 76px),
+    /* głębia lochu */
+    radial-gradient(130% 100% at 50% 0%, var(--wall-hi), transparent 62%),
+    radial-gradient(150% 130% at 50% 120%, rgba(0, 0, 0, 0.55), transparent 55%);
+  /* kursor = mucha (powiększony sprite z TBOI) */
+  cursor: url('/tboi/fly-big.png') 14 10, auto;
 }
 
 /* ── Korkowa tablica (treść wpięta w ramę ścian) ── */
@@ -190,6 +201,42 @@ a {
 }
 .floor-dot.blood {
   background: #6e2023;
+}
+
+/* Kontrolki (piętra + mucha) obok siebie */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.fly-toggle {
+  font-size: 1.1rem;
+  line-height: 1;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  background: #2a1d12;
+  cursor: inherit;
+  padding: 0;
+}
+.fly-toggle.off {
+  filter: grayscale(1) opacity(0.5);
+}
+
+/* Wyłączona mucha → normalny kursor (interaktywne = wskaźnik) */
+html[data-fly='off'] body {
+  cursor: auto;
+}
+html[data-fly='off'] .btn,
+html[data-fly='off'] .mark,
+html[data-fly='off'] .floor-dot,
+html[data-fly='off'] .fly-toggle,
+html[data-fly='off'] a {
+  cursor: pointer;
+}
+html[data-fly='off'] .input {
+  cursor: text;
 }
 
 /* ── Karteczka papierowa na taśmie (główny kontener treści) ── */
