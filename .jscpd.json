@@ -1,0 +1,13 @@
+{
+  "threshold": 5,
+  "gitignore": true,
+  "absolute": true,
+  "reporters": ["console"],
+  "ignore": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/.turbo/**",
+    "**/pnpm-lock.yaml",
+    "packages/db/prisma/migrations/**"
+  ]
+}
