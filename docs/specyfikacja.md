@@ -1,4 +1,4 @@
-# 👶 IsaacDex — specyfikacja aplikacji
+# 🪽 IsaacDex — specyfikacja aplikacji
 
 **Zadanie stażowe:** „Wymyśl własną aplikację biznesową"
 **Autor:** Karol (Riceookie / „Ananas") · **Data:** 2026-07-07

@@ -1,4 +1,4 @@
-# 👶 IsaacDex
+# 🪽 IsaacDex
 
 Aplikacja-towarzysz do **The Binding of Isaac**: postęp achievementów ze Steama,
 completion marks dla każdej postaci (jak ekran save file) i **doradca itemów**

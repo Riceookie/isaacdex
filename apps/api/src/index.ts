@@ -38,6 +38,6 @@ const server = createServer((req, res) => {
 })
 
 server.listen(PORT, () => {
-  console.log(`👶 IsaacDex API działa na http://localhost:${PORT}`)
+  console.log(`🪽 IsaacDex API działa na http://localhost:${PORT}`)
   console.log(`   Postęp: ${procentUkonczenia(420, 641)}%  ·  Item Q4: ${ocenItem(4).rekomendacja}`)
 })
