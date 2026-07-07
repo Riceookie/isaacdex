@@ -1,228 +1,481 @@
-:root {
-  --bg: #0b1020;
-  --card: #151d31;
-  --panel2: #1e2740;
-  --text: #e6edf7;
-  --muted: #93a3bd;
-  --border: #27324c;
-  --accent: #6366f1;
-  --accent-hover: #4f46e5;
-  --link: #a5b4fc;
-  --danger: #ef4444;
-  --ok: #34d399;
-  --warn: #f59e0b;
-  --radius: 14px;
+/* ============================================================================
+   IsaacDex — motyw „loch + korkowa tablica"
+   Ściany lochu oprawiają stronę (zmienne per piętro), w środku korkowa tablica
+   z papierowymi karteczkami na taśmie. Odręczne fonty, kursor-mucha.
+   ============================================================================ */
+
+/* Piętra = motywy (zmieniają ściany + akcent). Domyślnie Basement. */
+:root,
+[data-floor='basement'] {
+  --wall: #6b4a2f;
+  --wall-hi: #8a5f3b;
+  --wall-lo: #3f2a19;
+  --accent: #d08a3e;
 }
+[data-floor='caves'] {
+  --wall: #5a544a;
+  --wall-hi: #746c5e;
+  --wall-lo: #332f28;
+  --accent: #a7b06a;
+}
+[data-floor='depths'] {
+  --wall: #3b3f45;
+  --wall-hi: #515760;
+  --wall-lo: #1f2226;
+  --accent: #6f9bd1;
+}
+[data-floor='blood'] {
+  --wall: #6e2023;
+  --wall-hi: #8c2b2e;
+  --wall-lo: #3d1112;
+  --accent: #db4a44;
+}
+
+:root {
+  /* stałe niezależne od piętra */
+  --board: #b07f4e; /* korkowa tablica */
+  --board-dark: #8f6238;
+  --paper: #f2e9d2; /* karteczka */
+  --paper-edge: #d9caa3;
+  --ink: #2b2118;
+  --ink-soft: #6a5a45;
+  --blood: #a5201d;
+  --gold: #d9a441;
+  --tape: rgba(226, 214, 170, 0.55);
+  --font-display-stack: var(--font-display), 'Comic Sans MS', cursive;
+  --font-hand-stack: var(--font-hand), 'Comic Sans MS', system-ui, sans-serif;
+}
+
 * {
   box-sizing: border-box;
 }
+
+/* ── Ściany lochu (pełne tło = rama dookoła treści) ── */
 body {
   margin: 0;
-  background:
-    radial-gradient(1100px 550px at 85% -10%, rgba(99, 102, 241, 0.16), transparent 60%),
-    linear-gradient(135deg, #0a0f1e, #12112b);
-  background-attachment: fixed;
-  color: var(--text);
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   min-height: 100vh;
-}
-a {
-  color: var(--link);
-  text-decoration: none;
-}
-a:hover {
-  text-decoration: underline;
-}
-h1 {
-  letter-spacing: -0.02em;
-}
-.muted {
-  color: var(--muted);
-}
-.small {
-  font-size: 0.82rem;
+  color: var(--ink);
+  font-family: var(--font-hand-stack);
+  font-size: 18px;
+  line-height: 1.5;
+  background-color: var(--wall);
+  background-image:
+    /* fugi między blokami (kamienna ściana) */
+    repeating-linear-gradient(90deg, var(--wall-lo) 0 3px, transparent 3px 68px),
+    repeating-linear-gradient(0deg, var(--wall-lo) 0 3px, transparent 3px 42px),
+    /* światłocień bloków */
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 3px 5px, transparent 5px 68px),
+    radial-gradient(120% 90% at 50% 0%, var(--wall-hi), transparent 55%),
+    radial-gradient(140% 120% at 50% 100%, rgba(0, 0, 0, 0.5), transparent 60%);
+  /* kursor = mucha */
+  cursor:
+    url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='26'%20height='26'%3E%3Cellipse%20cx='13'%20cy='15'%20rx='4'%20ry='6.5'%20fill='%23191919'/%3E%3Cellipse%20cx='7.5'%20cy='9.5'%20rx='5'%20ry='2.6'%20fill='%23e9eef7'%20opacity='0.8'/%3E%3Cellipse%20cx='18.5'%20cy='9.5'%20rx='5'%20ry='2.6'%20fill='%23e9eef7'%20opacity='0.8'/%3E%3Ccircle%20cx='13'%20cy='7.5'%20r='2.7'%20fill='%23191919'/%3E%3Ccircle%20cx='11.8'%20cy='7'%20r='0.8'%20fill='%23c0392b'/%3E%3Ccircle%20cx='14.2'%20cy='7'%20r='0.8'%20fill='%23c0392b'/%3E%3C/svg%3E")
+      6 6,
+    auto;
 }
 
+/* ── Korkowa tablica (treść wpięta w ramę ścian) ── */
+.surface {
+  margin: clamp(12px, 2.6vw, 30px);
+  min-height: calc(100vh - 2 * clamp(12px, 2.6vw, 30px));
+  background-color: var(--board);
+  background-image:
+    radial-gradient(rgba(0, 0, 0, 0.16) 1px, transparent 1.6px),
+    radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1.6px);
+  background-size:
+    7px 7px,
+    11px 11px;
+  background-position:
+    0 0,
+    3px 5px;
+  border-radius: 4px;
+  box-shadow:
+    0 14px 40px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 4px var(--board-dark),
+    inset 0 0 60px rgba(0, 0, 0, 0.25);
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem 1.4rem 3rem;
+}
+
+/* ── Nagłówki: odręczne ── */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display-stack);
+  font-weight: 700;
+  color: #fdf6e3;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.5px;
+  margin: 0.2em 0 0.3em;
+}
+h1 {
+  font-size: 2.8rem;
+  line-height: 1;
+}
+h2 {
+  font-size: 1.9rem;
+  margin-top: 1.4rem;
+}
+.muted {
+  color: #f3ead2;
+  opacity: 0.75;
+}
+.small {
+  font-size: 0.85rem;
+}
+a {
+  color: #fff2cf;
+  text-decoration: underline dotted rgba(255, 255, 255, 0.4);
+}
+
+/* ── Nawigacja = drewniana listwa ── */
 .nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.9rem 1.25rem;
-  border-bottom: 1px solid var(--border);
-  background: rgba(11, 16, 32, 0.7);
-  backdrop-filter: blur(8px);
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: clamp(12px, 2.6vw, 30px) clamp(12px, 2.6vw, 30px) 0;
+  padding: 0.7rem 1.1rem;
+  background: linear-gradient(180deg, #5a3d24, #462f1b);
+  border: 3px solid var(--wall-lo);
+  border-radius: 6px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
 }
 .brand {
-  font-weight: 800;
-  font-size: 1.15rem;
-  color: var(--text);
+  font-family: var(--font-display-stack);
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #fdf6e3;
+  text-decoration: none;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.45);
+}
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
 }
 .nav-links a {
-  color: var(--muted);
-  font-weight: 600;
-  margin-left: 1rem;
-}
-.container {
-  max-width: 820px;
-  margin: 0 auto;
-  padding: 1.6rem 1.25rem 3rem;
+  color: #f3e6c8;
+  font-size: 1.1rem;
 }
 
-.big {
-  font-size: 3rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
+/* ── Przełącznik pięter (kropki kolorów ścian) ── */
+.floors {
+  display: flex;
+  gap: 0.4rem;
 }
+.floor-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  cursor: inherit;
+  padding: 0;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.12);
+}
+.floor-dot.active {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+.floor-dot.basement {
+  background: #6b4a2f;
+}
+.floor-dot.caves {
+  background: #5a544a;
+}
+.floor-dot.depths {
+  background: #3b3f45;
+}
+.floor-dot.blood {
+  background: #6e2023;
+}
+
+/* ── Karteczka papierowa na taśmie (główny kontener treści) ── */
+.card,
+.note {
+  position: relative;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 1.1rem 1.3rem;
+  margin: 1.3rem 0;
+  border-radius: 2px;
+  box-shadow:
+    0 7px 16px rgba(0, 0, 0, 0.4),
+    inset 0 0 0 1px var(--paper-edge);
+  transform: rotate(-0.4deg);
+}
+.card:nth-of-type(even),
+.note:nth-of-type(even) {
+  transform: rotate(0.5deg);
+}
+.card::before,
+.note::before {
+  content: '';
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  width: 82px;
+  height: 24px;
+  transform: translateX(-50%) rotate(-2.5deg);
+  background: var(--tape);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  border-left: 1px dashed rgba(0, 0, 0, 0.08);
+  border-right: 1px dashed rgba(0, 0, 0, 0.08);
+}
+.card h1,
+.card h2,
+.note h1,
+.note h2 {
+  color: var(--ink);
+  text-shadow: none;
+}
+
+/* ── Wielka liczba postępu (odręczna, jak wpis w zeszycie) ── */
+.big {
+  font-family: var(--font-display-stack);
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--blood);
+  line-height: 0.9;
+}
+.big .muted {
+  color: var(--ink-soft);
+  opacity: 1;
+}
+
+/* ── Pasek postępu = krwista kreska markerem ── */
 .bar {
-  height: 12px;
-  background: var(--panel2);
-  border: 1px solid var(--border);
-  border-radius: 999px;
+  height: 16px;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.06) 0 6px,
+    rgba(0, 0, 0, 0.02) 6px 12px
+  );
+  border: 2px solid var(--ink);
+  border-radius: 10px;
   overflow: hidden;
-  margin: 0.6rem 0 1.5rem;
+  margin: 0.5rem 0 1.2rem;
 }
 .bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent), #22d3ee);
-  transition: width 0.3s;
+  background: var(--blood);
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.25);
+  transition: width 0.4s ease;
 }
 
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1rem 1.2rem;
-  margin: 0.8rem 0;
-}
+/* ── Formularze / przyciski (naklejki) ── */
 .input {
-  padding: 0.6rem 0.7rem;
-  background: var(--panel2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  color: var(--text);
-  font-size: 0.95rem;
+  font-family: var(--font-hand-stack);
+  font-size: 1rem;
+  padding: 0.5rem 0.7rem;
+  background: #fffbf0;
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  color: var(--ink);
 }
 .input.grow {
   flex: 1;
 }
 .btn {
-  background: var(--accent);
+  font-family: var(--font-hand-stack);
+  font-size: 1.05rem;
+  background: var(--blood);
   color: #fff;
-  border: none;
-  padding: 0.6rem 1.1rem;
-  border-radius: 10px;
-  font-weight: 700;
-  cursor: pointer;
+  border: 2px solid rgba(0, 0, 0, 0.55);
+  border-radius: 6px;
+  padding: 0.4rem 1.1rem;
+  cursor: inherit;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.4);
+  transition:
+    transform 0.05s,
+    box-shadow 0.05s;
 }
 .btn:hover {
-  background: var(--accent-hover);
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+}
+.btn:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.4);
 }
 .row {
   display: flex;
   gap: 0.6rem;
   align-items: center;
   margin: 0.8rem 0;
-}
-.banner {
-  padding: 0.7rem 0.9rem;
-  border-radius: 10px;
-  margin: 0.6rem 0;
-  font-size: 0.9rem;
-}
-.banner.error {
-  background: rgba(239, 68, 68, 0.12);
-  border: 1px solid var(--danger);
-  color: #fecaca;
+  flex-wrap: wrap;
 }
 
+.banner {
+  padding: 0.6rem 0.9rem;
+  border-radius: 4px;
+  margin: 0.6rem 0;
+  font-size: 0.95rem;
+  border: 2px solid var(--ink);
+}
+.banner.error {
+  background: #f6d3cf;
+  color: #6b1512;
+}
+
+/* ── Lista postaci = karteczki-chipy ── */
 .list {
   list-style: none;
-  margin: 0.5rem 0 0;
+  margin: 0.6rem 0 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 0.7rem;
 }
 .item {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  padding: 0.7rem 0.9rem;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 10px;
+  padding: 0.6rem 0.85rem;
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 3px;
+  box-shadow: 0 4px 9px rgba(0, 0, 0, 0.32);
+  transform: rotate(-0.5deg);
+}
+.item:nth-child(3n) {
+  transform: rotate(0.6deg);
+}
+.item:nth-child(2n) {
+  transform: rotate(0.3deg);
 }
 .item .grow {
   flex: 1;
-  font-weight: 600;
-  color: var(--text);
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 1.1rem;
 }
 
-/* Rekomendacje doradcy */
+/* ── Doradca: rekomendacje z kolorową „pieczątką" ── */
 .rek {
-  border-left: 4px solid var(--border);
+  border-left: 8px solid var(--ink);
 }
 .rek.BIERZ {
-  border-left-color: var(--ok);
+  border-left-color: #2f8f4e;
 }
 .rek.ZWYKLE_WARTO {
-  border-left-color: #22d3ee;
+  border-left-color: #2f7fa0;
 }
 .rek.SYTUACYJNIE {
   border-left-color: var(--accent);
 }
 .rek.RACZEJ_POMIN {
-  border-left-color: var(--warn);
+  border-left-color: #c98a1e;
 }
 .rek.UWAGA {
-  border-left-color: var(--danger);
+  border-left-color: var(--blood);
 }
 .rek ul {
   margin: 0.4rem 0 0;
   padding-left: 1.1rem;
-  color: var(--muted);
+  color: var(--ink-soft);
 }
 
-/* Siatka completion marks */
+/* ── Siatka completion marks (ekran save file) ── */
 .marks {
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 6px;
   width: 100%;
-  margin-top: 1rem;
-}
-.marks th,
-.marks td {
-  border: 1px solid var(--border);
-  padding: 0.4rem 0.6rem;
-  text-align: center;
+  margin-top: 0.5rem;
 }
 .marks th {
-  color: var(--muted);
-  font-size: 0.8rem;
+  font-family: var(--font-hand-stack);
+  color: var(--ink-soft);
+  font-size: 0.85rem;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.05em;
+}
+.marks td {
+  text-align: center;
 }
 .marks td:first-child,
 .marks th:first-child {
   text-align: left;
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--ink);
 }
 .mark {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--panel2);
-  color: var(--ok);
-  font-weight: 800;
-  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  border: 2px dashed var(--ink-soft);
+  background: #fffbf0;
+  color: var(--blood);
+  font-family: var(--font-display-stack);
+  font-size: 1.4rem;
+  font-weight: 700;
+  cursor: inherit;
 }
 .mark.on {
-  background: rgba(52, 211, 153, 0.15);
-  border-color: var(--ok);
+  border-style: solid;
+  border-color: var(--blood);
+  background: #fbe4df;
+  transform: rotate(-4deg);
 }
 .mark:hover {
-  border-color: var(--accent);
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+.mark:disabled {
+  opacity: 0.5;
+}
+
+/* ── Złota ramka dla rzadkich (przygotowane pod kolekcję) ── */
+.rare {
+  box-shadow:
+    0 0 0 3px var(--gold),
+    0 0 14px rgba(217, 164, 65, 0.6);
+}
+
+/* ── Tooltip w stylu gry (na [data-tip]) ── */
+[data-tip] {
+  position: relative;
+}
+[data-tip]:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--font-hand-stack);
+  font-size: 0.85rem;
+  color: #f3ead2;
+  background: #1c140d;
+  border: 2px solid var(--gold);
+  border-radius: 5px;
+  padding: 0.2rem 0.55rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  z-index: 60;
+  pointer-events: none;
+}
+
+/* ── Dostępność ── */
+:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+
+@media (max-width: 520px) {
+  h1 {
+    font-size: 2.1rem;
+  }
+  .big {
+    font-size: 3rem;
+  }
 }
