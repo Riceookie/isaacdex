@@ -15,7 +15,8 @@ export async function getItemyZOcena() {
 
 export const LICZBA_BOSSOW = Object.keys(BossKoncowy).length
 export const LICZBA_TRYBOW = Object.keys(TrybGry).length
-export const MARK_NA_POSTAC = LICZBA_BOSSOW * LICZBA_TRYBOW
+// Marki są wyliczane z achievementów (Hard) — jedna na bossa.
+export const MARK_NA_POSTAC = LICZBA_BOSSOW
 
 export async function getDashboard() {
   // Niezależne zapytania równolegle (mniej round-tripów do bazy).
@@ -64,7 +65,7 @@ export async function getPostacMarks(nazwa: string) {
   return {
     postac: postac.nazwa,
     bossy: Object.values(BossKoncowy) as string[],
-    tryby: Object.values(TrybGry) as string[],
+    tryby: ['HARD'],
     zaznaczone,
   }
 }
