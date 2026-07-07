@@ -23,6 +23,9 @@ importers:
       '@isaacdex/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@isaacdex/db':
+        specifier: workspace:*
+        version: link:../../packages/db
     devDependencies:
       '@types/node':
         specifier: ^22.0.0

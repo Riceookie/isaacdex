@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@isaacdex/core": "workspace:*"
+    "@isaacdex/core": "workspace:*",
+    "@isaacdex/db": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
