@@ -1,4 +1,5 @@
 import { getStatystyki, getDashboard } from '@/lib/queries'
+import { ikonaPostaci } from '@/lib/chars'
 
 export const dynamic = 'force-dynamic'
 
@@ -155,6 +156,7 @@ export default async function StatystykiPage() {
         <div className="char-bars">
           {dash.postacie.map((c) => (
             <div key={c.nazwa} className="char-bar">
+              <img className="char-icon" src={ikonaPostaci(c.nazwa)} alt="" />
               <span className="char-name">{c.nazwa}</span>
               <div className="bar mini">
                 <div className="bar-fill" style={{ width: `${c.procent}%` }} />

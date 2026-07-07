@@ -69,15 +69,10 @@ export default function KimJestemForm(p: Props) {
       <h1>WHO AM I?</h1>
 
       <div className="whoami-top">
-        <div className="whoami-avatar-col">
-          <span className="hand-note">
-            kliknij aby
-            <br />
-            zmienić profil
-            <br />
-            ————→
-          </span>
-        </div>
+        <span className="hand-note">
+          Twój portret =<br />
+          ulubiona postać
+        </span>
         <div className="avatar-box">
           <img className="avatar-img" src={ikonaPostaci(ulubiona || 'Isaac')} alt="Avatar" />
         </div>

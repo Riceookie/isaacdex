@@ -1,18 +1,18 @@
 import './globals.css'
 import Link from 'next/link'
 import type { ReactNode } from 'react'
-import { Caveat, Patrick_Hand } from 'next/font/google'
+import { Space_Grotesk, Inter } from 'next/font/google'
 import FloorSwitcher from '@/components/FloorSwitcher'
 
-const display = Caveat({
+const display = Space_Grotesk({
   subsets: ['latin', 'latin-ext'],
-  weight: ['600', '700'],
+  weight: ['500', '600', '700'],
   variable: '--font-display',
 })
-const hand = Patrick_Hand({
+const hand = Inter({
   subsets: ['latin', 'latin-ext'],
-  weight: ['400'],
-  variable: '--font-hand',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-body',
 })
 
 export const metadata = {
