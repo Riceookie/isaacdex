@@ -1,0 +1,10 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+# esbuild (używany przez tsx do uruchamiania TypeScriptu) potrzebuje swojego skryptu
+# instalacyjnego — dopuszczamy go jawnie.
+allowBuilds:
+  esbuild: true
+onlyBuiltDependencies:
+  - esbuild

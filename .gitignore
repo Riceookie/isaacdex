@@ -1,0 +1,8 @@
+node_modules
+dist
+.turbo
+*.log
+
+# Sekrety — NIGDY nie commitujemy
+.env
+.env*.local
