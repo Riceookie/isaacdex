@@ -1,52 +1,52 @@
-# 🍕 PizzaFlow
+# 👶 IsaacDex
 
-System zamówień i zarządzania kuchnią dla pizzerii / food trucka.
-Aplikacja biznesowa budowana w **monorepo** (Turborepo) — krok po kroku przez tor stażowy.
+Aplikacja-towarzysz do **The Binding of Isaac**: postęp achievementów ze Steama,
+completion marks dla każdej postaci (jak ekran save file) i **doradca itemów**
+(„brać czy zostawić"). Budowana w **monorepo** (Turborepo) przez tor stażowy.
 
 📄 Pełna specyfikacja: [`docs/specyfikacja.md`](docs/specyfikacja.md)
 
 ## Struktura (monorepo)
 
 ```
-pizzaflow/
+isaacdex/
 ├─ apps/
-│  └─ api/          # aplikacja Node (backend) — używa @pizzaflow/core
+│  └─ api/          # backend Node — sync ze Steam Web API + endpointy
 ├─ packages/
-│  ├─ core/         # logika biznesowa (wycena, później: statusy, magazyn)
-│  └─ db/           # warstwa danych — Prisma dojdzie w zadaniu 3
-├─ turbo.json       # orkiestracja zadań (build / dev / typecheck)
+│  ├─ core/         # logika: doradca itemów, % ukończenia, streak
+│  └─ db/           # PostgreSQL + Prisma (schema + klient + seed)
+├─ turbo.json
 ├─ tsconfig.base.json
 └─ pnpm-workspace.yaml
 ```
 
-## Stack (fundament — zadanie 2)
+## Stack
 
-- **TypeScript** + **Node.js** (runtime), **tsx** (uruchamianie TS bez kompilacji)
-- **Turborepo** — orkiestracja i cache buildów
-- **pnpm workspaces** — wiele paczek w jednym repo
-
-Kolejne warstwy dochodzą w następnych zadaniach: PostgreSQL + Prisma (3), logika
-biznesowa (4), ESLint + Prettier (5), Husky (6), jscpd + secretlint (7).
+- **TypeScript + Node.js** (runtime), **tsx** (uruchamianie TS)
+- **Turborepo** + **pnpm workspaces** (monorepo, cache buildów)
+- **PostgreSQL + Prisma** — dane (achievementy, marki, itemy)
+- Źródło danych: **Steam Web API** (TBOI = appid `250900`, 641 achievementów)
 
 ## Uruchomienie
 
 ```bash
-pnpm install       # instalacja zależności całego workspace
-pnpm build         # Turbo buduje core → db → api (z cache)
-pnpm start:api     # uruchamia serwer API (domyślnie http://localhost:3000)
+pnpm install
+pnpm build
+pnpm start:api            # http://localhost:3000
 ```
 
-Szybki test:
+Baza (Prisma):
 
 ```bash
-curl http://localhost:3000/health   # {"status":"ok"}
-curl http://localhost:3000/demo     # wycena przykładowego koszyka z pakietu core
+cp packages/db/.env.example packages/db/.env   # wpisz connection string do Postgresa
+pnpm --filter @isaacdex/db db:migrate          # utwórz tabele
+pnpm --filter @isaacdex/db db:seed             # postacie + starter itemów + profil
 ```
 
-## Przydatne komendy
+Szybki test API:
 
-| Komenda | Opis |
-|---|---|
-| `pnpm build` | zbuduj wszystkie paczki (Turbo, z cache) |
-| `pnpm dev` | tryb watch we wszystkich paczkach |
-| `pnpm typecheck` | sprawdzenie typów TypeScript w całym repo |
+```bash
+curl http://localhost:3000/health              # {"status":"ok"}
+curl http://localhost:3000/demo/postep         # postęp achievementów (X/641)
+curl "http://localhost:3000/demo/item?jakosc=0"  # doradca: brać czy zostawić
+```

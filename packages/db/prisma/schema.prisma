@@ -1,0 +1,142 @@
+// Schemat bazy IsaacDex — companion do The Binding of Isaac.
+// Encje ze specyfikacji (docs/specyfikacja.md). Baza: PostgreSQL.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ── Użytkownik / profil (jego dane spięte z kontem Steam) ──────────────────────
+
+model Profil {
+  id          Int       @id @default(autoincrement())
+  steamId64   String    @unique
+  nick        String?
+  ostatniSync DateTime?
+  createdAt   DateTime  @default(now())
+
+  achievementy    SteamAchievement[]
+  completionMarks CompletionMark[]
+}
+
+// ── Achievementy Steam (zsynchronizowane z Web API) ────────────────────────────
+
+model SteamAchievement {
+  id               Int       @id @default(autoincrement())
+  apiName          String // "apiname" ze Steama
+  nazwa            String
+  opis             String?
+  ikonaUrl         String?
+  globalnyProcent  Decimal?  @db.Decimal(5, 2) // jak rzadki (globalny %)
+  odblokowany      Boolean   @default(false)
+  dataOdblokowania DateTime?
+
+  profil   Profil @relation(fields: [profilId], references: [id], onDelete: Cascade)
+  profilId Int
+
+  @@unique([profilId, apiName])
+  @@index([odblokowany])
+}
+
+// ── Postacie i completion marks (ekran save file, uzupełniane ręcznie) ──────────
+
+model Postac {
+  id        Int              @id @default(autoincrement())
+  nazwa     String           @unique
+  kolejnosc Int              @default(0)
+  marks     CompletionMark[]
+}
+
+model CompletionMark {
+  id        Int         @id @default(autoincrement())
+  boss      BossKoncowy
+  tryb      TrybGry
+  zaliczone Boolean     @default(false)
+  data      DateTime?
+
+  postac   Postac @relation(fields: [postacId], references: [id], onDelete: Cascade)
+  postacId Int
+  profil   Profil @relation(fields: [profilId], references: [id], onDelete: Cascade)
+  profilId Int
+
+  @@unique([profilId, postacId, boss, tryb])
+  @@index([postacId])
+}
+
+// ── Katalog itemów + doradca "brać/zostawić" ───────────────────────────────────
+
+model Item {
+  id       Int       @id @default(autoincrement())
+  idW      Int? // id kolekcjonerskie z gry (collectible id)
+  nazwa    String    @unique
+  jakosc   Int // 0–4
+  typ      TypItemu  @default(PASYWNY)
+  opis     String?
+  ikonaUrl String?
+  tagi     String[] // np. ["dmg up", "tears up"]
+  runItemy RunItem[]
+
+  @@index([jakosc])
+}
+
+// ── Log runów (opcjonalnie / rozwinięcie w zadaniu 8) ──────────────────────────
+
+model Run {
+  id      Int          @id @default(autoincrement())
+  postac  String
+  boss    BossKoncowy?
+  wynik   WynikRunu    @default(LOSS)
+  czasMin Int?
+  seed    String?
+  notatka String?
+  data    DateTime     @default(now())
+
+  itemy RunItem[]
+}
+
+model RunItem {
+  run    Run  @relation(fields: [runId], references: [id], onDelete: Cascade)
+  runId  Int
+  item   Item @relation(fields: [itemId], references: [id])
+  itemId Int
+
+  @@id([runId, itemId])
+  @@index([itemId])
+}
+
+// ── Enumy ──────────────────────────────────────────────────────────────────────
+
+enum TrybGry {
+  NORMAL
+  HARD
+}
+
+enum WynikRunu {
+  WIN
+  LOSS
+}
+
+enum TypItemu {
+  PASYWNY
+  AKTYWNY
+  TRINKET
+}
+
+enum BossKoncowy {
+  MOMS_HEART
+  ISAAC
+  SATAN
+  BLUE_BABY
+  LAMB
+  MEGA_SATAN
+  BOSS_RUSH
+  HUSH
+  DELIRIUM
+  MOTHER
+  BEAST
+}

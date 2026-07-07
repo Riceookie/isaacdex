@@ -1,14 +1,14 @@
 {
-  "name": "pizzaflow",
+  "name": "isaacdex",
   "version": "0.0.0",
   "private": true,
   "packageManager": "pnpm@11.9.0",
-  "description": "PizzaFlow — system zamówień i kuchni dla pizzerii (monorepo)",
+  "description": "IsaacDex — companion do The Binding of Isaac: achievementy (Steam), completion marks, doradca itemów (monorepo)",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
     "typecheck": "turbo run typecheck",
-    "start:api": "pnpm --filter @pizzaflow/api start"
+    "start:api": "pnpm --filter @isaacdex/api start"
   },
   "devDependencies": {
     "turbo": "^2.3.0",

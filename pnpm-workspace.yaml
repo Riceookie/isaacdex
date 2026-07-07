@@ -2,9 +2,15 @@ packages:
   - "apps/*"
   - "packages/*"
 
-# esbuild (używany przez tsx do uruchamiania TypeScriptu) potrzebuje swojego skryptu
-# instalacyjnego — dopuszczamy go jawnie.
+# Pakiety, którym środowisko musi pozwolić odpalić skrypty instalacyjne:
+# esbuild (dla tsx) oraz Prisma (pobiera silniki zapytań).
 allowBuilds:
   esbuild: true
+  prisma: true
+  "@prisma/client": true
+  "@prisma/engines": true
 onlyBuiltDependencies:
   - esbuild
+  - prisma
+  - "@prisma/client"
+  - "@prisma/engines"

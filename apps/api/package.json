@@ -1,5 +1,5 @@
 {
-  "name": "@pizzaflow/api",
+  "name": "@isaacdex/api",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@pizzaflow/core": "workspace:*"
+    "@isaacdex/core": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

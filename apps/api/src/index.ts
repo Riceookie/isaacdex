@@ -1,32 +1,35 @@
-// apps/api — aplikacja Node (backend PizzaFlow).
+// apps/api — aplikacja Node (backend IsaacDex).
 //
-// Zadanie 2 (fundament): minimalny serwer HTTP, który UŻYWA pakietu @pizzaflow/core
-// z tego samego monorepo. To dowód, że warstwy są poprawnie połączone (workspace +
-// TypeScript + Turbo). W kolejnych zadaniach dojdzie Prisma (@pizzaflow/db) i realne
-// endpointy zamówień.
+// Zadanie 2/3 (fundament): minimalny serwer HTTP, który UŻYWA pakietu @isaacdex/core
+// z tego samego monorepo. W kolejnych zadaniach dojdą: Prisma (@isaacdex/db), sync ze
+// Steam Web API i realne endpointy (achievementy, completion marks, doradca itemów).
 
 import { createServer } from 'node:http'
-import { wyliczSume, formatPLN, type PozycjaKoszyka } from '@pizzaflow/core'
+import { ocenItem, procentUkonczenia, type Jakosc } from '@isaacdex/core'
 
 const PORT = Number(process.env.PORT ?? 3000)
 
-// Przykładowy koszyk — pokazuje wycenę liczoną przez pakiet core.
-const koszyk: PozycjaKoszyka[] = [
-  { nazwa: 'Margherita', cena: 28, ilosc: 2 },
-  { nazwa: 'Cola 0.5l', cena: 8, ilosc: 3 },
-]
-
 const server = createServer((req, res) => {
-  if (req.url === '/health') {
+  const url = new URL(req.url ?? '/', `http://localhost:${PORT}`)
+
+  if (url.pathname === '/health') {
     res.writeHead(200, { 'content-type': 'application/json' })
     res.end(JSON.stringify({ status: 'ok' }))
     return
   }
 
-  if (req.url === '/demo') {
-    const suma = wyliczSume(koszyk)
+  // Demo: postęp odblokowań achievementów TBOI (przykładowe liczby).
+  if (url.pathname === '/demo/postep') {
     res.writeHead(200, { 'content-type': 'application/json; charset=utf-8' })
-    res.end(JSON.stringify({ koszyk, suma, sumaFormatowana: formatPLN(suma) }))
+    res.end(JSON.stringify({ odblokowane: 420, wszystkie: 641, procent: procentUkonczenia(420, 641) }))
+    return
+  }
+
+  // Demo: doradca itemów — GET /demo/item?jakosc=4
+  if (url.pathname === '/demo/item') {
+    const jakosc = Number(url.searchParams.get('jakosc') ?? 4) as Jakosc
+    res.writeHead(200, { 'content-type': 'application/json; charset=utf-8' })
+    res.end(JSON.stringify({ jakosc, ...ocenItem(jakosc) }))
     return
   }
 
@@ -35,6 +38,6 @@ const server = createServer((req, res) => {
 })
 
 server.listen(PORT, () => {
-  console.log(`🍕 PizzaFlow API działa na http://localhost:${PORT}`)
-  console.log(`   Demo wyceny koszyka: ${formatPLN(wyliczSume(koszyk))}  (GET /demo)`)
+  console.log(`👶 IsaacDex API działa na http://localhost:${PORT}`)
+  console.log(`   Postęp: ${procentUkonczenia(420, 641)}%  ·  Item Q4: ${ocenItem(4).rekomendacja}`)
 })
