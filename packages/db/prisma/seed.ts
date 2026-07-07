@@ -9,23 +9,42 @@ const prisma = new PrismaClient()
 
 // Postacie (kolejność jak na ekranie wyboru).
 const POSTACIE = [
-  'Isaac', 'Magdalene', 'Cain', 'Judas', '???', 'Eve', 'Samson',
-  'Azazel', 'Lazarus', 'Eden', 'The Lost', 'Lilith', 'Keeper',
-  'Apollyon', 'The Forgotten', 'Bethany', 'Jacob & Esau',
+  'Isaac',
+  'Magdalene',
+  'Cain',
+  'Judas',
+  '???',
+  'Eve',
+  'Samson',
+  'Azazel',
+  'Lazarus',
+  'Eden',
+  'The Lost',
+  'Lilith',
+  'Keeper',
+  'Apollyon',
+  'The Forgotten',
+  'Bethany',
+  'Jacob & Esau',
 ]
 
 // Starter itemów z jakością 0–4 (rozszerzymy pełną listą w zadaniu 8).
-const ITEMY: Array<{ nazwa: string; jakosc: number; typ?: 'PASYWNY' | 'AKTYWNY' | 'TRINKET'; tagi?: string[] }> = [
+const ITEMY: Array<{
+  nazwa: string
+  jakosc: number
+  typ?: 'PASYWNY' | 'AKTYWNY' | 'TRINKET'
+  tagi?: string[]
+}> = [
   { nazwa: 'Sacred Heart', jakosc: 4, tagi: ['dmg up', 'homing', 'tears down'] },
   { nazwa: 'Brimstone', jakosc: 4, tagi: ['dmg up', 'laser'] },
   { nazwa: 'Magic Mushroom', jakosc: 4, tagi: ['dmg up', 'stats up', 'size up'] },
-  { nazwa: 'Mom\'s Knife', jakosc: 4, tagi: ['dmg up', 'melee'] },
+  { nazwa: "Mom's Knife", jakosc: 4, tagi: ['dmg up', 'melee'] },
   { nazwa: 'Polyphemus', jakosc: 3, tagi: ['dmg up', 'tears down'] },
-  { nazwa: 'Death\'s Touch', jakosc: 3, tagi: ['dmg up', 'piercing'] },
+  { nazwa: "Death's Touch", jakosc: 3, tagi: ['dmg up', 'piercing'] },
   { nazwa: 'Dr. Fetus', jakosc: 3, tagi: ['bombs', 'dmg up'] },
   { nazwa: 'The Inner Eye', jakosc: 2, tagi: ['triple shot', 'tears down'] },
   { nazwa: 'Ipecac', jakosc: 2, tagi: ['explosive', 'poison', 'dmg up'] },
-  { nazwa: 'Guppy\'s Head', jakosc: 1, typ: 'AKTYWNY', tagi: ['flies', 'guppy'] },
+  { nazwa: "Guppy's Head", jakosc: 1, typ: 'AKTYWNY', tagi: ['flies', 'guppy'] },
   { nazwa: 'Sad Onion', jakosc: 1, tagi: ['tears up'] },
   { nazwa: 'The Bible', jakosc: 1, typ: 'AKTYWNY', tagi: ['flight', 'pułapka: zabija na Satanie'] },
   { nazwa: 'The Poop', jakosc: 0, typ: 'AKTYWNY', tagi: ['gimmick'] },

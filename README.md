@@ -52,12 +52,15 @@ Dwa przepływy „serca aplikacji" — logika w `packages/core` (czysta, testowa
 dane z Postgresa przez Prisma, walidacja **zanim** cokolwiek trafi/zmieni się w bazie.
 
 ### Przepływ 1 — Doradca itemów: „brać czy zostawić?"
+
 `GET /advice?item=<nazwa>&boss=<BOSS>`
+
 - Waliduje istnienie itemu w katalogu (nieznany → 404).
 - Reguły (nakładają się, wynik = najostrożniejsza rekomendacja):
   1. bazowa wg **jakości 0–4**,
   2. **pułapki** oznaczone w tagach itemu,
-  3. **kontekst** — np. *The Bible* przed walką z **Satanem** = ostrzeżenie (zabija Isaaca).
+  3. **kontekst** — np. _The Bible_ przed walką z **Satanem** = ostrzeżenie (zabija Isaaca).
+
 ```bash
 curl -G http://localhost:3000/advice --data-urlencode "item=Sacred Heart"
 #  → { rekomendacja: "BIERZ", ... }
@@ -66,10 +69,13 @@ curl -G http://localhost:3000/advice --data-urlencode "item=The Bible" --data-ur
 ```
 
 ### Przepływ 2 — Completion mark (z regułą kolejności)
+
 `POST /completion` `{ "postac", "boss", "tryb", "zaliczone" }` · `GET /completion/<postac>`
+
 - **Walidacja**: postać istnieje, `boss`/`tryb` z dozwolonych wartości.
 - **Reguła biznesowa**: `HARD` można zaznaczyć dopiero po zaliczonym `NORMAL` (inaczej 409).
 - Po zapisie zwraca **% ukończenia** postaci (zaliczone / bossy×tryby).
+
 ```bash
 curl -X POST http://localhost:3000/completion -H 'content-type: application/json' \
   -d '{"postac":"Isaac","boss":"MOMS_HEART","tryb":"NORMAL"}'

@@ -1,16 +1,16 @@
 packages:
-  - "apps/*"
-  - "packages/*"
+  - 'apps/*'
+  - 'packages/*'
 
 # Pakiety, którym środowisko musi pozwolić odpalić skrypty instalacyjne:
 # esbuild (dla tsx) oraz Prisma (pobiera silniki zapytań).
 allowBuilds:
   esbuild: true
   prisma: true
-  "@prisma/client": true
-  "@prisma/engines": true
+  '@prisma/client': true
+  '@prisma/engines': true
 onlyBuiltDependencies:
   - esbuild
   - prisma
-  - "@prisma/client"
-  - "@prisma/engines"
+  - '@prisma/client'
+  - '@prisma/engines'

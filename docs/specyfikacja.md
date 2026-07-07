@@ -12,12 +12,13 @@ gracza-completionisty. Spina Twoje konto Steam, pokazuje postęp w achievementac
 prowadzić **completion marks** dla każdej postaci (jak ekran save file w grze) i podpowiada,
 **czy podniesiony item warto wziąć** (doradca „brać/zostawić").
 
-> Jedno zdanie: *„Zobacz ile brakuje Ci do 100%, prowadź marki dla każdej postaci
-> i podejmuj lepsze decyzje w runie — w jednym miejscu."*
+> Jedno zdanie: _„Zobacz ile brakuje Ci do 100%, prowadź marki dla każdej postaci
+> i podejmuj lepsze decyzje w runie — w jednym miejscu."_
 
 ## 2. Problem
 
 Gracz lecący na 100% w Isaacu:
+
 - **nie wie na bieżąco, ile brakuje** — Steam pokazuje surową listę 641 achievementów bez kontekstu,
 - **ręcznie pilnuje completion marks** dla ~17 postaci (Steam tego nie zna),
 - w runie **waha się, czy podnieść item** — słaby item potrafi rozwodnić pulę i zepsuć build.
@@ -26,30 +27,34 @@ IsaacDex zbiera to w produkt: synchronizacja ze Steam + własny postęp + doradc
 
 ## 3. Użytkownicy (role)
 
-| Rola | Kto | Potrzeba |
-|---|---|---|
-| **Gracz** | właściciel konta Steam | podpiąć profil, widzieć postęp, prowadzić marki, sprawdzać itemy |
-| **Gość** | ktoś z linkiem do profilu | podejrzeć publiczny postęp gracza |
-| *(później)* **Admin/kurator** | opiekun katalogu | uzupełniać bazę itemów (jakość, tagi) |
+| Rola                          | Kto                       | Potrzeba                                                         |
+| ----------------------------- | ------------------------- | ---------------------------------------------------------------- |
+| **Gracz**                     | właściciel konta Steam    | podpiąć profil, widzieć postęp, prowadzić marki, sprawdzać itemy |
+| **Gość**                      | ktoś z linkiem do profilu | podejrzeć publiczny postęp gracza                                |
+| _(później)_ **Admin/kurator** | opiekun katalogu          | uzupełniać bazę itemów (jakość, tagi)                            |
 
 ## 4. Funkcje
 
 ### 4.1 Achievementy (Steam)
+
 - Podpięcie konta przez **SteamID64**; **synchronizacja** ze Steam Web API.
 - **Wykrywanie prywatnego profilu** → baner z instrukcją, jak ustawić publiczny (bez tego sync nie działa).
 - Lista achievementów: odblokowane / do zdobycia, **rzadkość** (globalny %), postęp **X / 641** i procent.
 
 ### 4.2 Profil = „save file" z completion marks
+
 - Siatka **postać × completion mark** (Mom's Heart, Isaac, Satan, ​Blue Baby, Lamb, Mega Satan,
   Boss Rush, Hush, Delirium, Mother, Beast) w trybie **Normal / Hard**.
 - Ręczne zaznaczanie zaliczonych marek; liczenie **% ukończenia** postaci i całości.
 
 ### 4.3 Doradca itemów („serce")
+
 - Baza itemów z **jakością 0–4** i tagami.
 - Wpisujesz / wybierasz item → rekomendacja **BIERZ / SYTUACYJNIE / UWAGA** + powód.
 - (rozwinięcie) proste reguły znanych **pułapek** i anty-synergii.
 
 ### 4.4 Rozszerzenia (zadanie 8 „Rozwijaj produkt")
+
 - **Log runów** (postać, boss końcowy, wynik, itemy) + statystyki (win-rate, ulubione itemy).
 - **Companion runu na żywo**: serca (+/‑, typy: red/soul/black/rotten) i statystyki (+1/+10, ‑1/‑10).
 
@@ -61,14 +66,14 @@ Profil 1──∞ CompletionMark ∞──1 Postac
 Item   1──∞ RunItem ∞──1 Run       (log runów — rozszerzenie)
 ```
 
-| Encja | Pola (kluczowe) |
-|---|---|
-| **Profil** | steamId64, nick, ostatniSync |
+| Encja                | Pola (kluczowe)                                                             |
+| -------------------- | --------------------------------------------------------------------------- |
+| **Profil**           | steamId64, nick, ostatniSync                                                |
 | **SteamAchievement** | apiName, nazwa, opis, ikona, globalnyProcent, odblokowany, dataOdblokowania |
-| **Postac** | nazwa, kolejność |
-| **CompletionMark** | boss (enum), tryb (Normal/Hard), zaliczone, data |
-| **Item** | nazwa, jakość 0–4, typ (pasywny/aktywny/trinket), tagi[], ikona |
-| **Run / RunItem** | postać, boss, wynik, czas, seed ↔ itemy (m:n) |
+| **Postac**           | nazwa, kolejność                                                            |
+| **CompletionMark**   | boss (enum), tryb (Normal/Hard), zaliczone, data                            |
+| **Item**             | nazwa, jakość 0–4, typ (pasywny/aktywny/trinket), tagi[], ikona             |
+| **Run / RunItem**    | postać, boss, wynik, czas, seed ↔ itemy (m:n)                               |
 
 ## 6. Logika biznesowa („serce" — zadanie 4)
 

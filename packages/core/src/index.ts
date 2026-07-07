@@ -6,12 +6,7 @@
 /** Jakość itemu w The Binding of Isaac: 0 (najsłabszy) – 4 (najlepszy). */
 export type Jakosc = 0 | 1 | 2 | 3 | 4
 
-export type Rekomendacja =
-  | 'BIERZ'
-  | 'ZWYKLE_WARTO'
-  | 'SYTUACYJNIE'
-  | 'RACZEJ_POMIN'
-  | 'UWAGA'
+export type Rekomendacja = 'BIERZ' | 'ZWYKLE_WARTO' | 'SYTUACYJNIE' | 'RACZEJ_POMIN' | 'UWAGA'
 
 export type ItemDoOceny = {
   nazwa: string

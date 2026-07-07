@@ -82,7 +82,9 @@ const server = createServer(async (req, res) => {
 
     // Postęp completion marks danej postaci.
     if (req.method === 'GET' && seg[0] === 'completion' && seg[1]) {
-      const postac = await prisma.postac.findUnique({ where: { nazwa: decodeURIComponent(seg[1]) } })
+      const postac = await prisma.postac.findUnique({
+        where: { nazwa: decodeURIComponent(seg[1]) },
+      })
       if (!postac) return json(res, 404, { error: 'Nie ma takiej postaci.' })
       const profil = await prisma.profil.findFirst()
       if (!profil) return json(res, 400, { error: 'Brak profilu — najpierw seed.' })
@@ -154,7 +156,12 @@ const server = createServer(async (req, res) => {
 
       const postep = await policzPostep(profil.id, postac.id)
       return json(res, 200, {
-        zapisano: { postac: postac.nazwa, boss: mark.boss, tryb: mark.tryb, zaliczone: mark.zaliczone },
+        zapisano: {
+          postac: postac.nazwa,
+          boss: mark.boss,
+          tryb: mark.tryb,
+          zaliczone: mark.zaliczone,
+        },
         postepPostaci: postep,
       })
     }
