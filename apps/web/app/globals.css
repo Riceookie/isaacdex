@@ -11,24 +11,28 @@
   --wall-hi: #8a5f3b;
   --wall-lo: #3f2a19;
   --accent: #d08a3e;
+  --btn: #915217;
 }
 [data-floor='caves'] {
   --wall: #5a544a;
   --wall-hi: #746c5e;
   --wall-lo: #332f28;
   --accent: #a7b06a;
+  --btn: #5f6636;
 }
 [data-floor='depths'] {
   --wall: #3b3f45;
   --wall-hi: #515760;
   --wall-lo: #1f2226;
   --accent: #6f9bd1;
+  --btn: #365f92;
 }
 [data-floor='blood'] {
   --wall: #6e2023;
   --wall-hi: #8c2b2e;
   --wall-lo: #3d1112;
   --accent: #db4a44;
+  --btn: #8f1a17;
 }
 
 :root {
@@ -37,8 +41,8 @@
   --board-dark: #8f6238;
   --paper: #f2e9d2; /* karteczka */
   --paper-edge: #d9caa3;
-  --ink: #2b2118;
-  --ink-soft: #6a5a45;
+  --ink: #14100b;
+  --ink-soft: #443626;
   --blood: #a5201d;
   --gold: #d9a441;
   --tape: rgba(226, 214, 170, 0.55);
@@ -115,8 +119,8 @@ h2,
 h3 {
   font-family: var(--font-display-stack);
   font-weight: 700;
-  color: #fdf6e3;
-  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+  color: var(--ink);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
   letter-spacing: 0.5px;
   margin: 0.2em 0 0.3em;
 }
@@ -129,15 +133,14 @@ h2 {
   margin-top: 1.4rem;
 }
 .muted {
-  color: #f3ead2;
-  opacity: 0.75;
+  color: var(--ink-soft);
 }
 .small {
   font-size: 0.85rem;
 }
 a {
-  color: #fff2cf;
-  text-decoration: underline dotted rgba(255, 255, 255, 0.4);
+  color: #5a3a14;
+  text-decoration: underline dotted rgba(0, 0, 0, 0.35);
 }
 
 /* ── Nawigacja = drewniana listwa ── */
@@ -291,7 +294,7 @@ html[data-fly='off'] .input {
 }
 .bar-fill {
   height: 100%;
-  background: var(--blood);
+  background: var(--accent);
   box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.25);
   transition: width 0.4s ease;
 }
@@ -301,10 +304,13 @@ html[data-fly='off'] .input {
   font-family: var(--font-hand-stack);
   font-size: 1rem;
   padding: 0.5rem 0.7rem;
-  background: #fffbf0;
+  background: #c9b482;
   border: 2px solid var(--ink);
   border-radius: 4px;
   color: var(--ink);
+}
+.input::placeholder {
+  color: #6b5a3c;
 }
 .input.grow {
   flex: 1;
@@ -312,7 +318,7 @@ html[data-fly='off'] .input {
 .btn {
   font-family: var(--font-hand-stack);
   font-size: 1.05rem;
-  background: var(--blood);
+  background: var(--btn);
   color: #fff;
   border: 2px solid rgba(0, 0, 0, 0.55);
   border-radius: 6px;
@@ -463,6 +469,79 @@ html[data-fly='off'] .input {
   box-shadow:
     0 0 0 3px var(--gold),
     0 0 14px rgba(217, 164, 65, 0.6);
+}
+
+/* ── Kolekcja achievementów ── */
+.kol-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.ach-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(54px, 1fr));
+  gap: 7px;
+  margin-top: 1rem;
+}
+.ach {
+  aspect-ratio: 1;
+  padding: 3px;
+  border: 2px solid var(--wall-lo);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.18);
+  cursor: inherit;
+  overflow: hidden;
+}
+.ach img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.ach.off img {
+  filter: grayscale(1) brightness(0.4) contrast(0.9);
+  opacity: 0.65;
+}
+.ach.on {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #6a5a3a;
+}
+.ach.rare.on {
+  border-color: var(--gold);
+  box-shadow:
+    0 0 0 2px var(--gold),
+    0 0 10px rgba(217, 164, 65, 0.55);
+}
+.ach:hover {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+
+.modal-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.62);
+}
+.modal {
+  max-width: 380px;
+  width: 100%;
+  text-align: center;
+  transform: none;
+}
+.ach-big {
+  width: 72px;
+  height: 72px;
+  image-rendering: auto;
+}
+.ach-big.off {
+  filter: grayscale(1) brightness(0.5);
 }
 
 /* ── Tooltip w stylu gry (na [data-tip]) ── */

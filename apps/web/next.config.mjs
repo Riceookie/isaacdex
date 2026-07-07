@@ -5,6 +5,8 @@ const nextConfig = {
   reactStrictMode: true,
   // Pakiety z monorepo (workspace) transpilowane przez Next.
   transpilePackages: ['@isaacdex/core', '@isaacdex/db'],
+  // Lint robimy osobno (pnpm lint / pre-commit) — nie w buildzie Next.
+  eslint: { ignoreDuringBuilds: true },
   // Prisma nie może być bundlowana — musi zostać zewnętrzna (znajduje własny silnik).
   experimental: {
     serverComponentsExternalPackages: ['@prisma/client', '.prisma/client'],
