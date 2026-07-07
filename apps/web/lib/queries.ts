@@ -8,8 +8,11 @@ export const LICZBA_TRYBOW = Object.keys(TrybGry).length
 export const MARK_NA_POSTAC = LICZBA_BOSSOW * LICZBA_TRYBOW
 
 export async function getDashboard() {
-  const profil = await prisma.profil.findFirst()
-  const postacie = await prisma.postac.findMany({ orderBy: { kolejnosc: 'asc' } })
+  // Niezależne zapytania równolegle (mniej round-tripów do bazy).
+  const [profil, postacie] = await Promise.all([
+    prisma.profil.findFirst(),
+    prisma.postac.findMany({ orderBy: { kolejnosc: 'asc' } }),
+  ])
 
   const grouped = profil
     ? await prisma.completionMark.groupBy({
