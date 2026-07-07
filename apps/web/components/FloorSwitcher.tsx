@@ -4,9 +4,17 @@ import { useEffect, useState } from 'react'
 
 const PIETRA = [
   { id: 'basement', nazwa: 'Basement' },
+  { id: 'cellar', nazwa: 'Cellar' },
   { id: 'caves', nazwa: 'Caves' },
+  { id: 'catacombs', nazwa: 'Catacombs' },
+  { id: 'flooded', nazwa: 'Flooded Caves' },
   { id: 'depths', nazwa: 'Depths' },
-  { id: 'blood', nazwa: 'Blood' },
+  { id: 'necropolis', nazwa: 'Necropolis' },
+  { id: 'womb', nazwa: 'Womb' },
+  { id: 'sheol', nazwa: 'Sheol' },
+  { id: 'cathedral', nazwa: 'Cathedral' },
+  { id: 'chest', nazwa: 'Chest' },
+  { id: 'void', nazwa: 'The Void' },
 ] as const
 
 type Floor = (typeof PIETRA)[number]['id']

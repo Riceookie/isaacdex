@@ -13,12 +13,33 @@
   --accent: #d08a3e;
   --btn: #915217;
 }
+[data-floor='cellar'] {
+  --wall: #7d6f52;
+  --wall-hi: #97895f;
+  --wall-lo: #4c4230;
+  --accent: #c9b36a;
+  --btn: #8a7233;
+}
 [data-floor='caves'] {
   --wall: #5a544a;
   --wall-hi: #746c5e;
   --wall-lo: #332f28;
   --accent: #a7b06a;
   --btn: #5f6636;
+}
+[data-floor='catacombs'] {
+  --wall: #4a4353;
+  --wall-hi: #605870;
+  --wall-lo: #29242f;
+  --accent: #9a86c0;
+  --btn: #5f4e86;
+}
+[data-floor='flooded'] {
+  --wall: #35555c;
+  --wall-hi: #47707a;
+  --wall-lo: #1d3236;
+  --accent: #4fc3d0;
+  --btn: #2b7d88;
 }
 [data-floor='depths'] {
   --wall: #3b3f45;
@@ -27,12 +48,47 @@
   --accent: #6f9bd1;
   --btn: #365f92;
 }
-[data-floor='blood'] {
-  --wall: #6e2023;
-  --wall-hi: #8c2b2e;
-  --wall-lo: #3d1112;
-  --accent: #db4a44;
-  --btn: #8f1a17;
+[data-floor='necropolis'] {
+  --wall: #5a2e2e;
+  --wall-hi: #743b3b;
+  --wall-lo: #331919;
+  --accent: #c06a6a;
+  --btn: #8a3535;
+}
+[data-floor='womb'] {
+  --wall: #7a2326;
+  --wall-hi: #9c2f33;
+  --wall-lo: #431113;
+  --accent: #e85c56;
+  --btn: #a5201d;
+}
+[data-floor='sheol'] {
+  --wall: #2e1a1c;
+  --wall-hi: #4a2a2c;
+  --wall-lo: #160c0d;
+  --accent: #d34a3f;
+  --btn: #7a1f1a;
+}
+[data-floor='cathedral'] {
+  --wall: #c3bda8;
+  --wall-hi: #ded8c2;
+  --wall-lo: #8f8a78;
+  --accent: #e0b64a;
+  --btn: #b08828;
+}
+[data-floor='chest'] {
+  --wall: #7a5a34;
+  --wall-hi: #967244;
+  --wall-lo: #48331d;
+  --accent: #d0a24e;
+  --btn: #8f6a2a;
+}
+[data-floor='void'] {
+  --wall: #2b2444;
+  --wall-hi: #3f3660;
+  --wall-lo: #171226;
+  --accent: #8a6fd1;
+  --btn: #4e3d92;
 }
 
 :root {
@@ -179,6 +235,9 @@ a {
 .floors {
   display: flex;
   gap: 0.4rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  max-width: 320px;
 }
 .floor-dot {
   width: 24px;
@@ -196,14 +255,38 @@ a {
 .floor-dot.basement {
   background: #6b4a2f;
 }
+.floor-dot.cellar {
+  background: #7d6f52;
+}
 .floor-dot.caves {
   background: #5a544a;
+}
+.floor-dot.catacombs {
+  background: #4a4353;
+}
+.floor-dot.flooded {
+  background: #35555c;
 }
 .floor-dot.depths {
   background: #3b3f45;
 }
-.floor-dot.blood {
-  background: #6e2023;
+.floor-dot.necropolis {
+  background: #5a2e2e;
+}
+.floor-dot.womb {
+  background: #7a2326;
+}
+.floor-dot.sheol {
+  background: #2e1a1c;
+}
+.floor-dot.cathedral {
+  background: #c3bda8;
+}
+.floor-dot.chest {
+  background: #7a5a34;
+}
+.floor-dot.void {
+  background: #2b2444;
 }
 
 /* Kontrolki (piętra + mucha) obok siebie */
@@ -271,7 +354,7 @@ html[data-fly='off'] .input {
   font-family: var(--font-display-stack);
   font-size: 4rem;
   font-weight: 700;
-  color: var(--blood);
+  color: var(--accent);
   line-height: 0.9;
 }
 .big .muted {
