@@ -703,6 +703,113 @@ html[data-fly='off'] .input {
   fill: var(--ink-soft);
   font-size: 10px;
 }
+.char-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+}
+.char-bar {
+  display: grid;
+  grid-template-columns: 130px 1fr 46px;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--ink);
+}
+.char-name {
+  font-size: 0.95rem;
+}
+.char-pct {
+  text-align: right;
+  font-size: 0.9rem;
+}
+.bar.mini {
+  height: 12px;
+  margin: 0;
+}
+
+/* ── Profil ── */
+.profil-hero {
+  position: relative;
+  background: url('/tboi/page_blood.png') center / 100% 100% no-repeat;
+  min-height: 220px;
+  padding: 2.4rem 2rem;
+  margin: 1.4rem 0;
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.45));
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  color: var(--ink);
+}
+.avatar {
+  width: 74px;
+  height: 74px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--btn);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display-stack);
+  font-size: 2.4rem;
+  font-weight: 700;
+  border: 3px solid var(--ink);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3);
+}
+.profil-id h1 {
+  margin: 0;
+}
+.showcase {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.6rem;
+}
+.show-item {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  padding: 3px;
+  background: rgba(0, 0, 0, 0.14);
+}
+.show-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.show-p {
+  position: absolute;
+  bottom: -3px;
+  right: 1px;
+  font-size: 0.7rem;
+  background: var(--ink);
+  color: var(--gold);
+  padding: 0 3px;
+  border-radius: 3px;
+}
+.activity {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.activity li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--ink);
+}
+.activity img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+.activity .grow {
+  flex: 1;
+}
 
 /* ── Tooltip w stylu gry (na [data-tip]) ── */
 [data-tip] {

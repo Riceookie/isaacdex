@@ -37,6 +37,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <div className="nav-right">
               <nav className="nav-links">
                 <Link href="/">Postęp</Link>
+                <Link href="/profil">Profil</Link>
                 <Link href="/kolekcja">Kolekcja</Link>
                 <Link href="/statystyki">Statystyki</Link>
               </nav>

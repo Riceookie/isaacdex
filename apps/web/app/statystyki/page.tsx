@@ -1,4 +1,4 @@
-import { getStatystyki } from '@/lib/queries'
+import { getStatystyki, getDashboard } from '@/lib/queries'
 
 export const dynamic = 'force-dynamic'
 
@@ -99,7 +99,7 @@ function WykresRzadkosc({ b }: { b: { legendarne: number; rzadkie: number; czest
 }
 
 export default async function StatystykiPage() {
-  const s = await getStatystyki()
+  const [s, dash] = await Promise.all([getStatystyki(), getDashboard()])
   if (!s) {
     return (
       <section>
@@ -148,6 +148,21 @@ export default async function StatystykiPage() {
       <div className="note">
         <h2>Rzadkość Twoich odblokowanych</h2>
         <WykresRzadkosc b={s.buckets} />
+      </div>
+
+      <div className="note">
+        <h2>Ukończenie postaci</h2>
+        <div className="char-bars">
+          {dash.postacie.map((c) => (
+            <div key={c.nazwa} className="char-bar">
+              <span className="char-name">{c.nazwa}</span>
+              <div className="bar mini">
+                <div className="bar-fill" style={{ width: `${c.procent}%` }} />
+              </div>
+              <span className="char-pct">{c.procent}%</span>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   )

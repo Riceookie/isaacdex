@@ -78,6 +78,54 @@ export async function getKolekcja() {
   return { achievements }
 }
 
+export async function getProfil() {
+  const profil = await prisma.profil.findFirst()
+  if (!profil) return null
+  const [ach, markGroups, postacie] = await Promise.all([
+    prisma.steamAchievement.findMany({ where: { profilId: profil.id } }),
+    prisma.completionMark.groupBy({
+      by: ['postacId'],
+      where: { profilId: profil.id, zaliczone: true },
+      _count: { _all: true },
+    }),
+    prisma.postac.findMany(),
+  ])
+  const unlocked = ach.filter((a) => a.odblokowany)
+  const total = ach.length
+
+  const postacMap = new Map(postacie.map((p) => [p.id, p.nazwa]))
+  let fav: { nazwa: string; count: number } | null = null
+  for (const g of markGroups) {
+    const c = g._count._all
+    if (!fav || c > fav.count) fav = { nazwa: postacMap.get(g.postacId) ?? '?', count: c }
+  }
+  const marksTotal = markGroups.reduce((s, g) => s + g._count._all, 0)
+
+  const showcase = unlocked
+    .filter((a) => a.globalnyProcent != null && a.ikonaUrl)
+    .sort((x, y) => Number(x.globalnyProcent) - Number(y.globalnyProcent))
+    .slice(0, 6)
+    .map((a) => ({ nazwa: a.nazwa, ikonaUrl: a.ikonaUrl, p: Number(a.globalnyProcent) }))
+
+  const recent = unlocked
+    .filter((a) => a.dataOdblokowania)
+    .sort((x, y) => y.dataOdblokowania!.getTime() - x.dataOdblokowania!.getTime())
+    .slice(0, 6)
+    .map((a) => ({ nazwa: a.nazwa, ikonaUrl: a.ikonaUrl, data: a.dataOdblokowania!.toISOString() }))
+
+  return {
+    nick: profil.nick ?? 'Isaac',
+    steamId: profil.steamId64,
+    achUnlocked: unlocked.length,
+    achTotal: total,
+    achProcent: total ? Math.round((unlocked.length / total) * 100) : 0,
+    fav,
+    marksTotal,
+    showcase,
+    recent,
+  }
+}
+
 export async function getStatystyki() {
   const profil = await prisma.profil.findFirst()
   if (!profil) return null
