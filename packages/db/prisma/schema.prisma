@@ -16,11 +16,13 @@ datasource db {
 // ── Użytkownik / profil (jego dane spięte z kontem Steam) ──────────────────────
 
 model Profil {
-  id          Int       @id @default(autoincrement())
-  steamId64   String    @unique
-  nick        String?
-  ostatniSync DateTime?
-  createdAt   DateTime  @default(now())
+  id             Int       @id @default(autoincrement())
+  steamId64      String    @unique
+  nick           String?
+  opis           String?
+  ulubionaPostac String?
+  ostatniSync    DateTime?
+  createdAt      DateTime  @default(now())
 
   achievementy    SteamAchievement[]
   completionMarks CompletionMark[]

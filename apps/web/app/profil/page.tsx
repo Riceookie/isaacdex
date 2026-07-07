@@ -23,12 +23,14 @@ export default async function ProfilPage() {
         <div className="avatar">{p.nick.charAt(0).toUpperCase()}</div>
         <div className="profil-id">
           <h1>{p.nick}</h1>
-          <p className="muted small">Steam: {p.steamId}</p>
-          {p.fav && (
-            <p className="small">
-              Ulubiona postać: <b>{p.fav.nazwa}</b> ({p.fav.count} marek)
-            </p>
-          )}
+          {p.opis && <p className="small opis-txt">„{p.opis}"</p>}
+          <p className="small">
+            Ulubiona: <b>{p.ulubiona || p.fav?.nazwa || '—'}</b>
+            {!p.ulubiona && p.fav ? ` (${p.fav.count} marek)` : ''}
+          </p>
+          <p className="small">
+            <Link href="/kim-jestem">✏️ Edytuj profil</Link> · Steam: {p.steamId}
+          </p>
         </div>
       </div>
 

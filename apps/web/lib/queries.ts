@@ -115,6 +115,8 @@ export async function getProfil() {
 
   return {
     nick: profil.nick ?? 'Isaac',
+    opis: profil.opis ?? '',
+    ulubiona: profil.ulubionaPostac ?? '',
     steamId: profil.steamId64,
     achUnlocked: unlocked.length,
     achTotal: total,
@@ -123,6 +125,21 @@ export async function getProfil() {
     marksTotal,
     showcase,
     recent,
+  }
+}
+
+export async function getProfilSetup() {
+  const [profil, postacie] = await Promise.all([
+    prisma.profil.findFirst(),
+    prisma.postac.findMany({ orderBy: { kolejnosc: 'asc' } }),
+  ])
+  return {
+    nick: profil?.nick ?? '',
+    opis: profil?.opis ?? '',
+    ulubionaPostac: profil?.ulubionaPostac ?? '',
+    steamId: profil?.steamId64 ?? '',
+    zsynchronizowano: profil?.ostatniSync != null,
+    postacie: postacie.map((p) => p.nazwa),
   }
 }
 
