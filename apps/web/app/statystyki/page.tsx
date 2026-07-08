@@ -1,5 +1,6 @@
 import { getStatystyki, getDashboard } from '@/lib/queries'
 import { ikonaPostaci } from '@/lib/chars'
+import Sprite from '@/components/Sprite'
 
 export const dynamic = 'force-dynamic'
 
@@ -23,10 +24,22 @@ function WykresCzas({ seria }: { seria: { m: string; cum: number }[] }) {
     <svg viewBox={`0 0 ${W} ${H}`} className="chart" role="img" aria-label="Odblokowania w czasie">
       <line className="chart-axis" x1={pad.l} y1={H - pad.b} x2={W - pad.r} y2={H - pad.b} />
       <line className="chart-axis" x1={pad.l} y1={pad.t} x2={pad.l} y2={H - pad.b} />
-      <text className="chart-txt" x={pad.l - 6} y={y(max)} textAnchor="end" dominantBaseline="middle">
+      <text
+        className="chart-txt"
+        x={pad.l - 6}
+        y={y(max)}
+        textAnchor="end"
+        dominantBaseline="middle"
+      >
         {max}
       </text>
-      <text className="chart-txt" x={pad.l - 6} y={H - pad.b} textAnchor="end" dominantBaseline="middle">
+      <text
+        className="chart-txt"
+        x={pad.l - 6}
+        y={H - pad.b}
+        textAnchor="end"
+        dominantBaseline="middle"
+      >
         0
       </text>
       <path className="chart-area" d={obszar} />
@@ -89,7 +102,12 @@ function WykresRzadkosc({ b }: { b: { legendarne: number; rzadkie: number; czest
             <text className="chart-txt" x={bx + bw / 2} y={H - pad.b + 18} textAnchor="middle">
               {d.label}
             </text>
-            <text className="chart-txt muted-txt" x={bx + bw / 2} y={H - pad.b + 32} textAnchor="middle">
+            <text
+              className="chart-txt muted-txt"
+              x={bx + bw / 2}
+              y={H - pad.b + 32}
+              textAnchor="middle"
+            >
               {d.pod}
             </text>
           </g>
@@ -104,7 +122,9 @@ export default async function StatystykiPage() {
   if (!s) {
     return (
       <section>
-        <h1>📊 Statystyki</h1>
+        <h1>
+          <Sprite name="stats" size={24} /> Statystyki
+        </h1>
         <div className="note">
           <p>Brak danych. Wejdź w Kolekcję i kliknij „Synchronizuj ze Steam".</p>
         </div>
@@ -114,7 +134,9 @@ export default async function StatystykiPage() {
 
   return (
     <section>
-      <h1>📊 Statystyki</h1>
+      <h1>
+        <Sprite name="stats" size={24} /> Statystyki
+      </h1>
 
       <div className="tiles">
         <div className="tile">
@@ -128,16 +150,16 @@ export default async function StatystykiPage() {
           <span className="muted small">ukończenia</span>
         </div>
         <div className="tile">
-          <span className="tile-num">🏆 {s.rarest ? `${s.rarest.p}%` : '—'}</span>
-          <span className="muted small">
-            najrzadszy{s.rarest ? `: ${s.rarest.nazwa}` : ''}
+          <span className="tile-num">
+            <Sprite name="coin" size={18} /> {s.rarest ? `${s.rarest.p}%` : '—'}
           </span>
+          <span className="muted small">najrzadszy{s.rarest ? `: ${s.rarest.nazwa}` : ''}</span>
         </div>
         <div className="tile">
-          <span className="tile-num">{s.latest ? new Date(s.latest.data).toLocaleDateString('pl-PL') : '—'}</span>
-          <span className="muted small">
-            ostatnio{s.latest ? `: ${s.latest.nazwa}` : ''}
+          <span className="tile-num">
+            {s.latest ? new Date(s.latest.data).toLocaleDateString('pl-PL') : '—'}
           </span>
+          <span className="muted small">ostatnio{s.latest ? `: ${s.latest.nazwa}` : ''}</span>
         </div>
       </div>
 

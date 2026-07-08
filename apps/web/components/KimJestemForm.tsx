@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ikonaPostaci } from '@/lib/chars'
+import Sprite from '@/components/Sprite'
 
 type Props = {
   nick: string
@@ -83,9 +84,14 @@ export default function KimJestemForm(p: Props) {
         <label>
           Wpisz nazwę…
           <span className="name-row">
-            <input className="input grow" value={nick} onChange={(e) => setNick(e.target.value)} maxLength={40} />
+            <input
+              className="input grow"
+              value={nick}
+              onChange={(e) => setNick(e.target.value)}
+              maxLength={40}
+            />
             <button className="dice" type="button" onClick={losujImie} data-tip="Losowe imię">
-              🎲
+              <Sprite name="d6" size={20} />
             </button>
             <span className="red-note">← losowe</span>
           </span>
@@ -135,7 +141,11 @@ export default function KimJestemForm(p: Props) {
         </div>
       </div>
 
-      {msg && <p className="banner error">⚠️ {msg}</p>}
+      {msg && (
+        <p className="banner error">
+          <Sprite name="bomb" size={15} /> {msg}
+        </p>
+      )}
       <button className="btn full" onClick={zapisz} disabled={busy}>
         {busy ? 'Zapisuję…' : 'Zapisz profil'}
       </button>

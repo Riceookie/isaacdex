@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getProfil, getDashboard } from '@/lib/queries'
 import { ikonaPostaci } from '@/lib/chars'
+import Sprite from '@/components/Sprite'
 
 export const dynamic = 'force-dynamic'
 
@@ -27,7 +28,9 @@ export default async function Home() {
         </div>
         <div className="profil-id">
           <h1>{p.nick}</h1>
-          <p className="muted small">💀 Dead God — {p.achProcent}% achievementów</p>
+          <p className="muted small">
+            <Sprite name="skull" size={15} /> Dead God — {p.achProcent}% achievementów
+          </p>
           <div className="bar">
             <div className="bar-fill" style={{ width: `${p.achProcent}%` }} />
           </div>
@@ -51,7 +54,9 @@ export default async function Home() {
           <span className="muted small">zdobyte marki</span>
         </div>
         <div className="tile">
-          <span className="tile-num">🏆 {p.showcase[0] ? `${p.showcase[0].p}%` : '—'}</span>
+          <span className="tile-num">
+            <Sprite name="coin" size={18} /> {p.showcase[0] ? `${p.showcase[0].p}%` : '—'}
+          </span>
           <span className="muted small">najrzadszy</span>
         </div>
       </div>
@@ -59,7 +64,9 @@ export default async function Home() {
       {/* Dwie kolumny: ostatnie + postacie */}
       <div className="dash-cols">
         <div className="note">
-          <h2>🕒 Ostatnio odblokowane</h2>
+          <h2>
+            <Sprite name="clock" size={18} /> Ostatnio odblokowane
+          </h2>
           <ul className="activity">
             {p.recent.slice(0, 5).map((a) => (
               <li key={a.nazwa}>
@@ -75,7 +82,9 @@ export default async function Home() {
         </div>
 
         <div className="note">
-          <h2>👥 Postępy postaci</h2>
+          <h2>
+            <Sprite name="friends" size={18} /> Postępy postaci
+          </h2>
           <div className="char-bars">
             {dash.postacie.slice(0, 6).map((c) => (
               <div key={c.nazwa} className="char-bar">
@@ -98,7 +107,7 @@ export default async function Home() {
 
       <p>
         <Link className="btn" href="/doradca">
-          🎯 Doradca itemów
+          <Sprite name="advisor" size={16} /> Doradca itemów
         </Link>
       </p>
     </section>

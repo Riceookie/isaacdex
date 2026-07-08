@@ -68,14 +68,39 @@ body {
   margin: 0;
   min-height: 100vh;
   background:
-    radial-gradient(1200px 620px at 82% -12%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 60%),
+    radial-gradient(
+      1200px 620px at 82% -12%,
+      color-mix(in srgb, var(--accent) 12%, transparent),
+      transparent 60%
+    ),
+    linear-gradient(
+      color-mix(in srgb, var(--bg) 55%, transparent),
+      color-mix(in srgb, var(--bg) 78%, transparent)
+    ),
+    url('/tboi/background.png') center / cover fixed no-repeat,
     var(--bg);
   color: var(--text);
   font-family: var(--bdy);
   font-size: 15px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
-  cursor: url('/tboi/fly-big.png') 14 10, auto;
+  cursor:
+    url('/tboi/fly-big.png') 14 10,
+    auto;
+}
+
+/* ── Sprite'y Isaaca zamiast emoji ── */
+.sprite {
+  display: inline-block;
+  image-rendering: pixelated;
+  object-fit: contain;
+  vertical-align: -0.16em;
+  flex: none;
+}
+h1 .sprite,
+h2 .sprite {
+  vertical-align: -0.1em;
+  margin-right: 0.15em;
 }
 
 h1,

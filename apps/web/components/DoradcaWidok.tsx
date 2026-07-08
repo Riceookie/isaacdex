@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Sprite from '@/components/Sprite'
 
 type Item = {
   nazwa: string
@@ -17,16 +18,15 @@ export default function DoradcaWidok({ items }: { items: Item[] }) {
 
   const filt = items.filter(
     (i) =>
-      (!q || i.nazwa.toLowerCase().includes(q.toLowerCase())) &&
-      (jak === null || i.jakosc === jak),
+      (!q || i.nazwa.toLowerCase().includes(q.toLowerCase())) && (jak === null || i.jakosc === jak),
   )
 
   return (
     <section>
-      <h1>🎯 Doradca itemów</h1>
-      <p className="muted small">
-        Kliknij item, żeby zobaczyć rekomendację „brać czy zostawić".
-      </p>
+      <h1>
+        <Sprite name="advisor" size={24} /> Doradca itemów
+      </h1>
+      <p className="muted small">Kliknij item, żeby zobaczyć rekomendację „brać czy zostawić".</p>
 
       <div className="kol-tools">
         <input
@@ -60,7 +60,9 @@ export default function DoradcaWidok({ items }: { items: Item[] }) {
         <div className="modal-bg" onClick={() => setSel(null)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <h2>{sel.nazwa}</h2>
-            <p className="muted small">Jakość {sel.jakosc} · {sel.typ.toLowerCase()}</p>
+            <p className="muted small">
+              Jakość {sel.jakosc} · {sel.typ.toLowerCase()}
+            </p>
             <p className={'rek-tag ' + sel.rekomendacja}>{sel.rekomendacja.replace(/_/g, ' ')}</p>
             <ul className="rek-powody">
               {sel.powody.map((pw, idx) => (

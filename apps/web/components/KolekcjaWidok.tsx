@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Sprite from '@/components/Sprite'
 
 type Ach = {
   apiName: string
@@ -55,7 +56,9 @@ export default function KolekcjaWidok({ achievements }: { achievements: Ach[] })
   return (
     <section>
       <div className="kol-head">
-        <h1>📖 Kolekcja</h1>
+        <h1>
+          <Sprite name="book" size={24} /> Kolekcja
+        </h1>
         <button className="btn" onClick={sync} disabled={busy}>
           {busy ? 'Synchronizuję…' : 'Synchronizuj ze Steam'}
         </button>
@@ -99,7 +102,11 @@ export default function KolekcjaWidok({ achievements }: { achievements: Ach[] })
           <p>Brak danych. Kliknij „Synchronizuj ze Steam", żeby zassać swoje achievementy.</p>
         </div>
       )}
-      {msg && <p className="banner error">⚠️ {msg}</p>}
+      {msg && (
+        <p className="banner error">
+          <Sprite name="bomb" size={15} /> {msg}
+        </p>
+      )}
 
       <div className="ach-grid">
         {filtrowane.map((a) => (
@@ -111,11 +118,7 @@ export default function KolekcjaWidok({ achievements }: { achievements: Ach[] })
             onClick={() => setSel(a)}
             data-tip={a.nazwa}
           >
-            {a.ikonaUrl ? (
-              <img src={a.ikonaUrl} alt={a.nazwa} loading="lazy" />
-            ) : (
-              <span>?</span>
-            )}
+            {a.ikonaUrl ? <img src={a.ikonaUrl} alt={a.nazwa} loading="lazy" /> : <span>?</span>}
           </button>
         ))}
       </div>
@@ -124,7 +127,11 @@ export default function KolekcjaWidok({ achievements }: { achievements: Ach[] })
         <div className="modal-bg" onClick={() => setSel(null)}>
           <div className="modal note" onClick={(e) => e.stopPropagation()}>
             {sel.ikonaUrl && (
-              <img className={'ach-big ' + (sel.odblokowany ? '' : 'off')} src={sel.ikonaUrl} alt="" />
+              <img
+                className={'ach-big ' + (sel.odblokowany ? '' : 'off')}
+                src={sel.ikonaUrl}
+                alt=""
+              />
             )}
             <h2>{sel.nazwa}</h2>
             <p>{sel.opis}</p>
@@ -136,7 +143,12 @@ export default function KolekcjaWidok({ achievements }: { achievements: Ach[] })
                     : '')
                 : 'Nie odblokowane'}
               {sel.globalnyProcent != null && ` · globalnie ${sel.globalnyProcent}%`}
-              {rzadka(sel.globalnyProcent) && ' 🏆'}
+              {rzadka(sel.globalnyProcent) && (
+                <>
+                  {' '}
+                  <Sprite name="coin" size={14} />
+                </>
+              )}
             </p>
             <button className="btn" onClick={() => setSel(null)}>
               Zamknij

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { Pixelify_Sans, Inter } from 'next/font/google'
 import ThemeApplier from '@/components/ThemeApplier'
+import Sprite from '@/components/Sprite'
 
 const display = Pixelify_Sans({
   subsets: ['latin', 'latin-ext'],
@@ -33,7 +34,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <div className="surface">
           <header className="nav">
             <Link href="/" className="brand">
-              🪽 IsaacDex
+              <Sprite name="godhead" size={22} /> IsaacDex
             </Link>
             <div className="nav-right">
               <nav className="nav-links">
@@ -44,7 +45,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <Link href="/doradca">Doradca</Link>
                 <Link href="/statystyki">Statystyki</Link>
                 <Link href="/ustawienia" aria-label="Ustawienia">
-                  ⚙
+                  <Sprite name="gear" size={18} />
                 </Link>
               </nav>
             </div>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Sprite from '@/components/Sprite'
 
 const PIETRA = [
   { id: 'basement', nazwa: 'Basement' },
@@ -65,7 +66,7 @@ export default function FloorSwitcher() {
         aria-pressed={fly}
         data-tip={fly ? 'Wyłącz muchę' : 'Włącz muchę'}
       >
-        🪰
+        <Sprite name="fly" size={18} />
       </button>
     </div>
   )

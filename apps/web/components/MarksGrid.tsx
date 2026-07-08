@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Sprite from '@/components/Sprite'
 
 type Props = {
   postac: string
@@ -43,7 +44,11 @@ export default function MarksGrid({ postac, bossy, tryby, zaznaczone }: Props) {
 
   return (
     <div>
-      {err && <p className="banner error">⚠️ {err}</p>}
+      {err && (
+        <p className="banner error">
+          <Sprite name="bomb" size={15} /> {err}
+        </p>
+      )}
       <table className="marks">
         <thead>
           <tr>

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getProfil } from '@/lib/queries'
 import { ikonaPostaci } from '@/lib/chars'
+import Sprite from '@/components/Sprite'
 
 export const dynamic = 'force-dynamic'
 
@@ -32,14 +33,16 @@ export default async function ProfilPage() {
             {!p.ulubiona && p.fav ? ` (${p.fav.count} marek)` : ''}
           </p>
           <p className="small">
-            <Link href="/kim-jestem">✏️ Edytuj profil</Link> · Steam: {p.steamId}
+            <Link href="/kim-jestem">Edytuj profil</Link> · Steam: {p.steamId}
           </p>
         </div>
       </div>
 
       {/* Dead God = 100% achievementów */}
       <div className="note">
-        <h2>💀 Dead God</h2>
+        <h2>
+          <Sprite name="skull" size={20} /> Dead God
+        </h2>
         <p className="muted small">Postęp do 100% wszystkich achievementów.</p>
         <div className="big">{p.achProcent}%</div>
         <div className="bar">
@@ -67,7 +70,9 @@ export default async function ProfilPage() {
       {/* Gablota — najrzadsze zdobyte (złote ramki) */}
       {p.showcase.length > 0 && (
         <div className="note">
-          <h2>🏆 Gablota (najrzadsze)</h2>
+          <h2>
+            <Sprite name="coin" size={20} /> Gablota (najrzadsze)
+          </h2>
           <div className="showcase">
             {p.showcase.map((a) => (
               <div key={a.nazwa} className="show-item rare" title={`${a.nazwa} · ${a.p}%`}>
@@ -82,7 +87,9 @@ export default async function ProfilPage() {
       {/* Ostatnia aktywność */}
       {p.recent.length > 0 && (
         <div className="note">
-          <h2>🕒 Ostatnio odblokowane</h2>
+          <h2>
+            <Sprite name="clock" size={18} /> Ostatnio odblokowane
+          </h2>
           <ul className="activity">
             {p.recent.map((a) => (
               <li key={a.nazwa}>

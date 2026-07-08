@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Sprite from '@/components/Sprite'
 
 type Wynik = {
   item: string
@@ -35,11 +36,14 @@ export default function AdvisorForm() {
         />
         <button className="btn">Sprawdź</button>
       </form>
-      {err && <p className="banner error">⚠️ {err}</p>}
+      {err && (
+        <p className="banner error">
+          <Sprite name="bomb" size={15} /> {err}
+        </p>
+      )}
       {wynik && (
         <div className={'card rek ' + wynik.rekomendacja}>
-          <b>{wynik.item}</b> (Q{wynik.jakosc}) →{' '}
-          <b>{wynik.rekomendacja.replace(/_/g, ' ')}</b>
+          <b>{wynik.item}</b> (Q{wynik.jakosc}) → <b>{wynik.rekomendacja.replace(/_/g, ' ')}</b>
           <ul>
             {wynik.powody.map((p, i) => (
               <li key={i}>{p}</li>
