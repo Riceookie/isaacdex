@@ -56,10 +56,15 @@ dane z Postgresa przez Prisma, walidacja **zanim** cokolwiek trafi/zmieni się w
 `GET /advice?item=<nazwa>&boss=<BOSS>`
 
 - Waliduje istnienie itemu w katalogu (nieznany → 404).
-- Reguły (nakładają się, wynik = najostrożniejsza rekomendacja):
-  1. bazowa wg **jakości 0–4**,
-  2. **pułapki** oznaczone w tagach itemu,
-  3. **kontekst** — np. _The Bible_ przed walką z **Satanem** = ostrzeżenie (zabija Isaaca).
+- Reguły **sterowane danymi** (tagi itemu), nakładane w kolejności — najpierw plusy sytuacyjne
+  (podnoszą), potem pułapki (obniżają), więc **pułapka zawsze wygrywa z synergią**:
+  1. bazowa wg **jakości 0–4** (zwracana też jako pole `bazowa` — dla przejrzystości UI),
+  2. `mocny-boss:<BOSS>` — świetny matchup na danego bossa → **podnosi** rekomendację o krok,
+  3. `synergia:<ITEM>` — łączy się z itemem, który już masz (`posiadaneItemy`) → **podnosi** o krok,
+  4. `pułapka` / `pułapka-boss:<BOSS>` — item niebezpieczny (ogólnie lub przy danym bossie) → **UWAGA**,
+  5. **kontekst wbudowany** — np. _The Bible_ przed walką z **Satanem** = ostrzeżenie (zabija Isaaca).
+
+  Obsługa kolejnych bossów/synergii = **dopisanie tagu do itemu**, bez zmiany kodu logiki.
 
 ```bash
 curl -G http://localhost:3000/advice --data-urlencode "item=Sacred Heart"
@@ -76,6 +81,13 @@ curl -G http://localhost:3000/advice --data-urlencode "item=The Bible" --data-ur
 - **Reguła biznesowa**: `HARD` można zaznaczyć dopiero po zaliczonym `NORMAL` (inaczej 409).
 - Po zapisie zwraca **% ukończenia** postaci (zaliczone / bossy×tryby).
 
+### Dodatkowe funkcje „serca"
+
+- `podsumujMarki(marki, liczbaBossow)` — agreguje completion marki postaci: liczy zaliczone
+  NORMAL/HARD, `% ukończenia` (reużywa `procentUkonczenia`) i flagę **`deadGod`** (komplet marek).
+- `klasaRzadkosci(globalnyProcent)` — klasyfikuje achievement wg globalnego % odblokowań:
+  `<5% → LEGENDARNY`, `<20% → RZADKI`, wpp `POSPOLITY` (centralizuje próg „złotej ramki" z UI).
+
 ```bash
 curl -X POST http://localhost:3000/completion -H 'content-type: application/json' \
   -d '{"postac":"Isaac","boss":"MOMS_HEART","tryb":"NORMAL"}'
@@ -85,15 +97,23 @@ curl -X POST http://localhost:3000/completion -H 'content-type: application/json
 ### Testy jednostkowe reguł (Vitest)
 
 Reguły „serca" mają testy w [`packages/core/src/index.test.ts`](packages/core/src/index.test.ts):
-doradca (jakość 4→BIERZ, 0→UWAGA, pułapka, **Bible+Satan→UWAGA**), reguła **HARD≥NORMAL**,
-`procentUkonczenia`. Uruchomienie: `pnpm test`.
+doradca (jakość 4→BIERZ, 0→UWAGA, pułapka, **Bible+Satan→UWAGA**, `mocny-boss`/`synergia` podnoszą,
+pułapka wygrywa z synergią, pole `bazowa`), reguła **HARD≥NORMAL**, `procentUkonczenia`,
+`podsumujMarki` (w tym `deadGod`) i `klasaRzadkosci`. Uruchomienie: `pnpm test`.
 
 ```text
 $ pnpm test
-@isaacdex/core:test:  ✓ src/index.test.ts (10 tests) 5ms
+@isaacdex/core:test:  ✓ src/index.test.ts (23 tests) 12ms
    Test Files  1 passed (1)
-        Tests  10 passed (10)
+        Tests  23 passed (23)
 ```
+
+**Refleksja.** Reguły doradcy przeniosłem na model **sterowany danymi** (tagi itemu) zamiast twardo
+kodowanych warunków — dzięki temu obsługa kolejnego bossa czy synergii to dopisanie tagu, a nie zmiana
+logiki (Open/Closed). Nowe funkcje **reużywają** `procentUkonczenia` zamiast duplikować liczenie
+procentów, a `klasaRzadkosci` centralizuje próg rzadkości powtórzony wcześniej w UI. Całość dołożyłem
+**addytywnie** (opcjonalne pola kontekstu/wyniku, nowe eksporty), więc istniejący konsumenci
+(`apps/api`, `apps/web`) działają bez zmian — potwierdza to zielony `pnpm typecheck` całego monorepo.
 
 ## Jakość kodu — ESLint + Prettier (zadanie 5)
 
