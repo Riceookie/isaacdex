@@ -12,73 +12,40 @@
   --line: #2b2733;
   --text: #ece9f2;
   --muted: #988fa2;
-  --gold: #e2b24c;
+  --gold: #e2b24c; /* podświetlenie rzadkich/legendarnych achievementów */
   --danger: #e5544b;
   --ok: #4ec98a;
-  --accent: #dc3b34; /* nadpisywane przez piętro */
+  --accent: #d9483d; /* czerwony (jak Sheol) — jeden akcent całej apki */
   --radius: 14px;
   --radius-sm: 9px;
-  --dsp: var(--font-display), 'Segoe UI', system-ui, sans-serif;
+  --dsp: var(--font-display), var(--font-display-fb), 'Segoe UI', system-ui, sans-serif;
   --bdy: var(--font-body), 'Segoe UI', system-ui, sans-serif;
+  /* Tekstura pergaminu i ramki-ściany — light: normalny/basement, dark: tainted. */
+  --paper-img: url('/tboi/ui/paper.png');
+  --wall-img: url('/tboi/ui/wall-frame-basement.png');
+  /* Tło = kamień basementu, ciemniejący do czerni przy ścianach. */
+  --page-bg: radial-gradient(ellipse 90% 75% at 50% 38%, #3a2f24 0%, #1b140f 52%, #090604 100%);
 }
-
-/* Piętra = tylko kolor akcentu (czyste). */
-[data-floor='basement'] {
-  --accent: #e0912f;
-}
-[data-floor='cellar'] {
-  --accent: #d9be5a;
-}
-[data-floor='caves'] {
-  --accent: #b6c94f;
-}
-[data-floor='catacombs'] {
-  --accent: #a78bd0;
-}
-[data-floor='flooded'] {
-  --accent: #46c6d4;
-}
-[data-floor='depths'] {
-  --accent: #6aa0e0;
-}
-[data-floor='necropolis'] {
-  --accent: #d47470;
-}
-[data-floor='womb'] {
-  --accent: #e85c56;
-}
-[data-floor='sheol'] {
-  --accent: #d9483d;
-}
-[data-floor='cathedral'] {
-  --accent: #ecc45a;
-}
-[data-floor='chest'] {
-  --accent: #d8a24e;
-}
-[data-floor='void'] {
-  --accent: #9a7ff0;
+[data-theme='dark'] {
+  --paper-img: url('/tboi/ui/paper-dark.png');
+  --wall-img: url('/tboi/ui/wall-frame.png');
+  --page-bg: radial-gradient(ellipse 90% 75% at 50% 38%, #272521 0%, #131110 52%, #060505 100%);
 }
 
 * {
   box-sizing: border-box;
 }
 
+/* Ciemne tło pod całą stroną (body ma tło `fixed`). */
+html {
+  background: #060505;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
-  background:
-    radial-gradient(
-      1200px 620px at 82% -12%,
-      color-mix(in srgb, var(--accent) 12%, transparent),
-      transparent 60%
-    ),
-    linear-gradient(
-      color-mix(in srgb, var(--bg) 55%, transparent),
-      color-mix(in srgb, var(--bg) 78%, transparent)
-    ),
-    url('/tboi/background.png') center / cover fixed no-repeat,
-    var(--bg);
+  /* Kolor kamienia pasujący do ściany + czarny gradient przy krawędziach (przy murze). */
+  background: var(--page-bg) fixed;
   color: var(--text);
   font-family: var(--bdy);
   font-size: 15px;
@@ -112,16 +79,28 @@ h3 {
   line-height: 1.15;
   margin: 0 0 0.5rem;
 }
+/* Nagłówki jak w menu Isaaca — pixelowe CAPS z atramentowym cieniem. */
+h1,
+h2 {
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+}
 
-/* Subtelna ramka „game UI" (klimat) */
+/* Ramka strony = ściany pokoju Isaaca (border-image z kafelków ścian). */
 body::after {
   content: '';
   position: fixed;
-  inset: 6px;
-  border: 2px solid color-mix(in srgb, var(--accent) 20%, transparent);
-  border-radius: 8px;
+  inset: 0;
+  border: 28px solid transparent;
+  border-image: var(--wall-img) 168 round;
   pointer-events: none;
-  z-index: 5;
+  z-index: 60;
+}
+@media (max-width: 560px) {
+  body::after {
+    border-width: 16px;
+  }
 }
 h1 {
   font-size: 2rem;
@@ -151,7 +130,7 @@ a:hover {
   justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
-  padding: 0.8rem 1.5rem;
+  padding: 2rem 2rem 0.8rem;
   border-bottom: 1px solid var(--border);
   background: color-mix(in srgb, var(--bg) 82%, transparent);
   backdrop-filter: blur(10px);
@@ -254,15 +233,19 @@ a:hover {
   background: #9a7ff0;
 }
 .fly-toggle {
-  width: 30px;
-  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 38px;
   border-radius: 8px;
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   background: var(--surface);
   color: var(--text);
   cursor: inherit;
-  font-size: 1rem;
-  padding: 0;
+  font-family: var(--dsp);
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  padding: 0 0.8rem;
 }
 .fly-toggle.off {
   opacity: 0.45;
@@ -274,18 +257,14 @@ a:hover {
 .container {
   max-width: 900px;
   margin: 0 auto;
-  padding: 1.8rem 1.4rem 4rem;
+  padding: 2.2rem 2rem 4rem;
 }
 
-/* ── Karty ── */
+/* ── Karty = pergaminowe panele Isaaca (patrz .paper na końcu pliku) ── */
 .card,
 .note {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
   padding: 1.2rem 1.3rem;
   margin: 1rem 0;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
 }
 
 .big {
@@ -297,22 +276,29 @@ a:hover {
   line-height: 1;
 }
 
+/* Pasek = boss health bar z Isaaca: czarny track + czerwony połyskliwy fill. */
 .bar {
-  height: 10px;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
+  height: 15px;
+  background: linear-gradient(#232323, #060606);
+  border: 1px solid #000;
   border-radius: 99px;
   overflow: hidden;
   margin: 0.5rem 0 1rem;
+  box-shadow:
+    inset 0 2px 3px rgba(0, 0, 0, 0.85),
+    0 1px 0 rgba(255, 255, 255, 0.08);
 }
 .bar-fill {
   height: 100%;
-  background: var(--accent);
+  background: linear-gradient(#ff6155, #d0261c 55%, #8f130c);
   border-radius: 99px;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -2px 2px rgba(0, 0, 0, 0.4);
   transition: width 0.4s ease;
 }
 .bar.mini {
-  height: 8px;
+  height: 10px;
   margin: 0;
 }
 
@@ -655,6 +641,9 @@ a:hover {
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 0.05rem 0.35rem;
+  flex: none;
+}
+.item-sprite {
   flex: none;
 }
 .item-name {
@@ -1189,4 +1178,1296 @@ html[data-fly='off'] textarea.input {
   .big {
     font-size: 2.4rem;
   }
+}
+
+/* ============================================================================
+   Rekwizyty UI Isaaca (hybryda): pergaminowe panele + HUD-owe chipy statystyk.
+   Panel-pergamin renderowany jako 9-slice border-image z wyciętego sprite'a menu.
+   ============================================================================ */
+.paper,
+.card,
+.note,
+.profil-hero,
+.savefile,
+.feed-item {
+  /* Atrament na papierze: nadpisujemy zmienne motywu, więc WSZYSTKIE dzieci
+     (inputy, paski, chipy, feed) automatycznie dostają kontrast na pergaminie. */
+  --text: #2c2521;
+  --muted: #6f6155;
+  --border: #b9a99b;
+  --line: rgba(0, 0, 0, 0.12);
+  --surface: rgba(0, 0, 0, 0.06);
+  --surface-2: rgba(0, 0, 0, 0.1);
+  --bg-2: #efe7de;
+  color: var(--text);
+  border-style: solid;
+  border-width: 20px;
+  border-image: var(--paper-img) 20 fill repeat;
+  /* border-image nie daje promienia — postrzępiony brzeg zastępuje zaokrąglenie */
+  border-radius: 0;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.4));
+}
+/* DARK = „tainted" kartki: ciemny pergamin + jasny atrament (odwrócony kontrast). */
+[data-theme='dark'] :is(.paper, .card, .note, .profil-hero, .savefile, .feed-item) {
+  --text: #e9e2d6;
+  --muted: #a99f8f;
+  --border: #5a5348;
+  --line: rgba(255, 255, 255, 0.1);
+  --surface: rgba(255, 255, 255, 0.05);
+  --surface-2: rgba(255, 255, 255, 0.09);
+  --bg-2: #38342d;
+}
+[data-theme='dark'] :is(.paper, .card, .note, .profil-hero, .savefile) :is(h1, h2, h3) {
+  color: #f2ece1;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
+}
+[data-theme='dark'] :is(.paper, .card, .note, .profil-hero, .savefile, .feed-item) a {
+  color: #e57a6f;
+}
+.paper a,
+.card a,
+.note a,
+.profil-hero a,
+.savefile a,
+.feed-item a {
+  color: #a5342c;
+}
+/* Nagłówek na papierze — ciemny atrament zamiast jasnego cienia */
+.paper :is(h1, h2, h3),
+.card :is(h1, h2, h3),
+.note :is(h1, h2, h3),
+.profil-hero :is(h1, h2, h3),
+.savefile :is(h1, h2, h3) {
+  color: #221c19;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+/* Feed znajomych — cieńszy skrawek papieru, żeby wiersze były zwarte. */
+.feed-item {
+  border-width: 14px;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.35));
+}
+
+/* HUD-owy chip statystyki: ikona pickupa + liczba, jak licznik w rogu ekranu gry. */
+.hud-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.hud-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.6rem 0.28rem 0.45rem;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border));
+  border-radius: 8px;
+}
+.paper .hud-stat {
+  background: rgba(0, 0, 0, 0.1);
+  border-color: color-mix(in srgb, #000 22%, transparent);
+}
+.hud-stat .sprite {
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.4));
+}
+.hud-stat-num {
+  font-family: var(--dsp);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+.hud-stat-label {
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Przełącznik motywu (Ustawienia) */
+.theme-toggle {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.theme-opt {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--dsp);
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  padding: 0.5rem 0.9rem;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: inherit;
+}
+.theme-opt.on {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+.settings-row {
+  margin-top: 0.8rem;
+}
+
+/* Save-file: klikalne marki + portret zmiany postaci (MarksBoard) */
+.mark-cell {
+  cursor: inherit;
+  color: inherit;
+  font: inherit;
+  width: 100%;
+  transition:
+    border-color 0.12s,
+    transform 0.05s;
+}
+button.mark-cell:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+button.mark-cell:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.mark-cell.busy {
+  opacity: 0.5;
+}
+.char-portrait {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: inherit;
+  border-radius: 10px;
+  line-height: 0;
+  transition: box-shadow 0.12s;
+}
+.char-portrait:hover {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.char-picker.mb {
+  grid-template-columns: repeat(auto-fill, minmax(46px, 1fr));
+  margin: 0 0 1rem;
+}
+
+/* Feed znajomych: prawdziwa ikona achievementu ze Steama (kwadrat z CDN). */
+.feed-ach {
+  height: 38px;
+  width: 38px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  vertical-align: middle;
+  border-radius: 5px;
+  border: 1px solid color-mix(in srgb, #000 20%, transparent);
+}
+
+/* Wiersz postaci jako link (statystyki) */
+a.char-bar {
+  text-decoration: none;
+  border-radius: 8px;
+  padding: 2px 4px;
+  transition: background 0.12s;
+}
+a.char-bar:hover {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  text-decoration: none;
+}
+
+/* ============================================================================
+   IsaacHub-owy layout: lewy sidebar (menu gry) + korkowa tablica z kartkami
+   przypiętymi pinezkami. Nadpisuje wcześniejszy top-nav.
+   ============================================================================ */
+
+/* Tło = prawie czarna pustka menu Isaaca (mniej brązu niż kamień pokoju). */
+:root {
+  --page-bg: radial-gradient(ellipse 100% 80% at 50% 32%, #1d1a17 0%, #100e0d 55%, #060505 100%);
+  --sidebar-bg: #17140f;
+  --ink: #2a2018;
+}
+[data-theme='dark'] {
+  --page-bg: radial-gradient(ellipse 100% 80% at 50% 32%, #161513 0%, #0c0b0a 55%, #050505 100%);
+  --sidebar-bg: #100f0d;
+}
+
+/* Bez drewnianej ramy pokoju — tablica ma sięgać do krawędzi jak w mockupie. */
+body::after {
+  content: none;
+}
+
+/* Szkielet aplikacji: sidebar + treść. */
+.app {
+  display: flex;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+/* ── SIDEBAR (menu jak w The Binding of Isaac) ── */
+.sidebar {
+  position: sticky;
+  top: 0;
+  align-self: stretch;
+  flex: none;
+  width: 236px;
+  min-height: 100vh;
+  padding: 1.5rem 0.9rem 2rem;
+  background: linear-gradient(180deg, var(--sidebar-bg), #0a0908);
+  border-right: 1px solid rgba(0, 0, 0, 0.6);
+  box-shadow: 6px 0 22px rgba(0, 0, 0, 0.55);
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  z-index: 30;
+}
+.side-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.2rem 0.5rem 0.4rem;
+  font-family: var(--dsp);
+  font-size: 1.6rem;
+  letter-spacing: 0.01em;
+  color: var(--accent);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.6);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.side-brand:hover {
+  text-decoration: none;
+  filter: brightness(1.12);
+}
+.side-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.side-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.62rem 0.7rem;
+  border-radius: 8px;
+  color: #b7ac9c;
+  font-family: var(--dsp);
+  font-size: 1.12rem;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition:
+    color 0.12s,
+    background 0.12s;
+}
+.side-link .sprite {
+  filter: grayscale(0.4) brightness(0.92) drop-shadow(0 1px 0 rgba(0, 0, 0, 0.5));
+}
+.side-link:hover {
+  color: #f1e7d6;
+  background: rgba(255, 255, 255, 0.05);
+  text-decoration: none;
+}
+.side-link:hover .sprite {
+  filter: none;
+}
+/* Aktywna pozycja = wydarty skrawek papieru wsunięty pod menu (jak zakładka). */
+.side-link.active {
+  color: #2a2018;
+  border: 14px solid transparent;
+  border-image: var(--paper-img) 14 fill repeat;
+  border-radius: 0;
+  padding: 0.28rem 0.5rem;
+  margin: 0.15rem -0.6rem 0.15rem -0.2rem;
+  font-weight: 700;
+  filter: sepia(0.42) saturate(1.28) hue-rotate(-8deg) brightness(1)
+    drop-shadow(0 3px 5px rgba(0, 0, 0, 0.55));
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+.side-link.active .sprite {
+  filter: none;
+}
+
+/* ── Główna kolumna ── */
+.main-wrap {
+  flex: 1;
+  min-width: 0;
+  min-height: 100vh;
+}
+
+/* Górny pasek: zakładka tytułu + ikony narzędziowe. */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 1.5rem 2rem 0.5rem;
+}
+/* Ikony narzędziowe zawsze przy prawej krawędzi. */
+.topbar .util {
+  margin-left: auto;
+}
+.page-tab {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  padding: 0.5rem 1.5rem;
+  border: 16px solid transparent;
+  border-image: var(--paper-img) 16 fill repeat;
+  border-radius: 0;
+  font-family: var(--dsp);
+  font-size: 1.5rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #2a2018;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  filter: sepia(0.42) saturate(1.28) hue-rotate(-8deg) brightness(1)
+    drop-shadow(0 5px 8px rgba(0, 0, 0, 0.5));
+  transform: rotate(-1deg);
+}
+.page-tab-plus {
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+.util {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.util-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: #b7ac9c;
+  cursor: inherit;
+  transition:
+    color 0.12s,
+    background 0.12s;
+}
+button.util-icon:hover,
+.util-icon:not(.deco):hover {
+  color: #f1e7d6;
+  background: rgba(255, 255, 255, 0.08);
+}
+.util-icon.deco {
+  cursor: default;
+}
+.avatar-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.8rem 0.35rem 0.5rem;
+  border: 12px solid transparent;
+  border-image: var(--paper-img) 12 fill repeat;
+  border-radius: 0;
+  font-family: var(--dsp);
+  font-size: 1.05rem;
+  color: #2a2018;
+  text-decoration: none;
+  filter: sepia(0.42) saturate(1.28) hue-rotate(-8deg) brightness(1)
+    drop-shadow(0 3px 5px rgba(0, 0, 0, 0.5));
+}
+.avatar-chip:hover {
+  text-decoration: none;
+  filter: sepia(0.42) saturate(1.28) hue-rotate(-8deg) brightness(1.06)
+    drop-shadow(0 3px 6px rgba(0, 0, 0, 0.55));
+}
+
+/* Szersza treść (sidebar zjada lewą stronę). */
+.surface {
+  min-height: 100vh;
+}
+.container {
+  max-width: 1160px;
+  margin: 0;
+  padding: 0.6rem 2rem 4rem;
+}
+
+/* ── Kartki cieplejsze (beż jak w mockupie) + pinezki ── */
+.card,
+.note,
+.profil-hero,
+.savefile,
+.feed-item {
+  position: relative;
+  filter: sepia(0.42) saturate(1.28) hue-rotate(-8deg) brightness(0.97)
+    drop-shadow(0 9px 14px rgba(0, 0, 0, 0.55));
+}
+[data-theme='dark'] :is(.card, .note, .profil-hero, .savefile, .feed-item) {
+  filter: brightness(0.98) drop-shadow(0 8px 13px rgba(0, 0, 0, 0.55));
+}
+/* Pinezka wbita w górę kartki. */
+.card::before,
+.note::before,
+.profil-hero::before {
+  content: '';
+  position: absolute;
+  top: -9px;
+  left: 26px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 32%,
+    #ff9c93 0%,
+    #e5544b 38%,
+    #a02a22 78%,
+    #6c1a15 100%
+  );
+  box-shadow:
+    0 3px 4px rgba(0, 0, 0, 0.55),
+    inset -1px -1px 2px rgba(0, 0, 0, 0.4),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.5);
+  z-index: 5;
+}
+.note:nth-of-type(even)::before {
+  left: auto;
+  right: 30px;
+  background: radial-gradient(
+    circle at 35% 32%,
+    #cfd6dd 0%,
+    #9aa4ad 40%,
+    #5f6871 80%,
+    #3b4147 100%
+  );
+}
+
+/* Delikatne przekrzywienie kartek jak przypiętych do tablicy. */
+.dash-cols > .note:first-child {
+  transform: rotate(-0.5deg);
+}
+.dash-cols > .note:last-child {
+  transform: rotate(0.5deg);
+}
+
+@media (max-width: 820px) {
+  .sidebar {
+    position: static;
+    width: 100%;
+    min-height: 0;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.8rem;
+    padding: 0.8rem 1rem;
+  }
+  .side-brand {
+    border-bottom: 0;
+    font-size: 1.3rem;
+  }
+  .side-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .side-link {
+    font-size: 1rem;
+    padding: 0.4rem 0.55rem;
+  }
+  .side-link.active {
+    margin: 0;
+  }
+  .container {
+    padding: 0.6rem 1rem 3rem;
+  }
+}
+
+/* Delikatna winieta zamiast drewnianej ramy — skupia wzrok na tablicy. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 80% 70% at 50% 40%,
+    transparent 55%,
+    rgba(0, 0, 0, 0.45) 100%
+  );
+}
+
+/* ============================================================================
+   Profil — dwukolumnowy układ „save file" (jak ekran profilu w grze).
+   ============================================================================ */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1.55fr 1fr;
+  gap: 1.2rem;
+  align-items: start;
+}
+.col-main,
+.col-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  min-width: 0;
+}
+/* W siatce karty nie potrzebują własnych marginesów — odstęp daje gap. */
+.profile-grid .note,
+.profile-grid .profil-hero {
+  margin: 0;
+}
+@media (max-width: 1000px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Badge tożsamości (Dead God / ulubiona postać). */
+.badges {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin: 0.45rem 0 0.35rem;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.22rem 0.55rem;
+  background: rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+/* Pasek Dead God z dużym procentem obok (jak „DEAD GOD PROGRESS 100%"). */
+.hero-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+.hero-progress .bar {
+  flex: 1;
+  margin: 0.3rem 0;
+}
+.hero-pct {
+  font-family: var(--dsp);
+  font-size: 1.7rem;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+/* Kafelki statystyk = małe skrawki papieru z licznikiem. */
+.stat-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(108px, 1fr));
+  gap: 0.6rem;
+}
+.stat-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  text-align: center;
+  padding: 0.55rem 0.4rem;
+  border: 14px solid transparent;
+  border-image: var(--paper-img) 14 fill repeat;
+  border-radius: 0;
+  color: #2a2018;
+  filter: sepia(0.42) saturate(1.28) hue-rotate(-8deg) brightness(1)
+    drop-shadow(0 5px 8px rgba(0, 0, 0, 0.45));
+}
+.stat-tile .sprite {
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.35));
+}
+.stat-num {
+  font-family: var(--dsp);
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: 0.02em;
+  color: #221c19;
+  line-height: 1;
+}
+.stat-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6f6155;
+}
+
+/* Siatka postaci — jak „CHARACTER COMPLETION". */
+.char-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  gap: 0.5rem;
+  margin: 0.5rem 0 0.7rem;
+}
+.char-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 0.45rem 0.2rem 0.35rem;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--line);
+  color: inherit;
+  text-decoration: none;
+  transition:
+    background 0.12s,
+    border-color 0.12s;
+}
+.char-cell:hover {
+  text-decoration: none;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+}
+.char-cell img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+.char-cell .nm {
+  font-size: 0.72rem;
+  font-weight: 600;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.char-cell .pct {
+  font-family: var(--dsp);
+  font-size: 0.95rem;
+  color: var(--accent);
+}
+
+/* ============================================================================
+   Poprawki tainted (jasny tekst na ciemnym papierze).
+   ============================================================================ */
+
+/* Tainted (ciemny papier) — cały tekst na skrawkach jasny. */
+[data-theme='dark'] :is(.page-tab, .avatar-chip, .side-link.active, .stat-tile) {
+  color: #ece4d4;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.55);
+  /* bez ocieplającego sepia — ciemny pergamin ma zostać ciemny */
+  filter: brightness(1.02) drop-shadow(0 5px 8px rgba(0, 0, 0, 0.5));
+}
+[data-theme='dark'] .stat-num {
+  color: #f4ecdd;
+}
+[data-theme='dark'] .stat-label {
+  color: #b7ab97;
+}
+[data-theme='dark'] .page-tab {
+  filter: brightness(1.02) drop-shadow(0 5px 8px rgba(0, 0, 0, 0.5));
+}
+/* Rysunek Dead God to ciemny line-art — na ciemnym papierze rozjaśniamy. */
+[data-theme='dark'] .sprite[src*='deadgod'] {
+  filter: invert(0.85) brightness(1.1);
+}
+
+/* ── Edycja profilu („WHO AM I?") na pergaminie zamiast ciemnej karty. ── */
+.whoami-page {
+  max-width: 640px;
+}
+.whoami {
+  max-width: none;
+  margin: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  padding: 0.4rem 0.5rem 0.2rem;
+  filter: none;
+}
+.whoami-hint {
+  text-align: center;
+  margin: 0.2rem 0 0.6rem;
+}
+.steam-line {
+  margin: 0.4rem 0 0.6rem;
+}
+.steam-ok {
+  color: var(--ok);
+  font-weight: 600;
+}
+
+/* ============================================================================
+   Czat (demo) — układ jak IsaacHub: kanały | wiadomości | info/online.
+   ============================================================================ */
+.chat-grid {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr) 300px;
+  gap: 1rem;
+  align-items: stretch;
+  min-height: calc(100vh - 150px);
+}
+.chat-grid .note {
+  margin: 0;
+}
+@media (max-width: 1120px) {
+  .chat-grid {
+    grid-template-columns: 210px minmax(0, 1fr);
+  }
+  .chat-side {
+    display: none;
+  }
+}
+@media (max-width: 720px) {
+  .chat-grid {
+    grid-template-columns: 1fr;
+  }
+  .chat-channels {
+    display: none;
+  }
+}
+
+.hash {
+  color: var(--accent);
+  font-weight: 700;
+  margin-right: 0.15rem;
+}
+
+/* ── Kolumna kanałów ── */
+.chat-channels {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  font-size: 0.9rem;
+}
+.chan-server {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--dsp);
+  font-size: 1.15rem;
+  padding: 0.2rem 0.3rem 0.6rem;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 0.4rem;
+}
+.chan-server img {
+  width: 26px;
+  height: 26px;
+  image-rendering: pixelated;
+}
+.chan-caret {
+  margin-left: auto;
+  color: var(--muted);
+}
+.chan-group {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin: 0.7rem 0 0.2rem 0.3rem;
+}
+.chan {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.34rem 0.5rem;
+  border-radius: 7px;
+  color: var(--muted);
+  cursor: inherit;
+}
+.chan:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: var(--text);
+}
+.chan.active {
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  color: #7a201a;
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+.chan.dm {
+  gap: 0.45rem;
+}
+.chan.dm img {
+  width: 22px;
+  height: 22px;
+  image-rendering: pixelated;
+}
+
+/* ── Główna kolumna ── */
+.chat-main {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.chat-head {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+.chat-head-title {
+  font-family: var(--dsp);
+  font-size: 1.35rem;
+  color: var(--text);
+}
+.chat-head-sub {
+  margin: 0.15rem 0 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.chat-msgs {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 0.4rem 0.2rem;
+}
+.msg {
+  display: flex;
+  gap: 0.7rem;
+}
+.msg-av {
+  width: 42px;
+  height: 42px;
+  flex: none;
+  image-rendering: pixelated;
+  object-fit: contain;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  padding: 2px;
+}
+.msg-body {
+  min-width: 0;
+}
+.msg-top {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.msg-author {
+  font-weight: 700;
+}
+.msg-bot {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.05rem 0.3rem;
+  border-radius: 4px;
+  transform: translateY(-1px);
+}
+.msg-time {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+.msg-line {
+  margin: 0.1rem 0 0;
+  line-height: 1.45;
+}
+
+.chat-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0.35rem 0.6rem;
+  background: rgba(0, 0, 0, 0.07);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.ci-plus {
+  font-size: 1.3rem;
+  color: var(--muted);
+  line-height: 1;
+}
+.ci-field {
+  flex: 1;
+  background: none;
+  border: 0;
+  color: var(--text);
+  font-family: var(--bdy);
+  font-size: 0.9rem;
+  outline: none;
+}
+.ci-field::placeholder {
+  color: var(--muted);
+}
+
+/* ── Panel boczny (info + online) ── */
+.chat-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.chat-info h3,
+.chat-online h3 {
+  font-family: var(--dsp);
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin: 0 0 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.info-stats {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.6rem;
+  font-family: var(--dsp);
+  font-size: 1.05rem;
+}
+.info-stats em {
+  font-style: normal;
+  font-family: var(--bdy);
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-left: 0.2rem;
+}
+.online-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.online-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.online-list img {
+  width: 30px;
+  height: 30px;
+  image-rendering: pixelated;
+  object-fit: contain;
+}
+.on-body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.2;
+}
+.on-nick {
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+.on-status {
+  font-size: 0.72rem;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.on-dot {
+  margin-left: auto;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--ok);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.15);
+}
+
+/* ── Doradca: Found Soul „mówi" werdykt w dymku ── */
+.advisor-modal {
+  max-width: 470px;
+  text-align: left;
+}
+.adv-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1rem;
+}
+.adv-item h2 {
+  margin: 0;
+}
+.adv-talk {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  margin-bottom: 1.1rem;
+}
+.adv-soul {
+  flex: none;
+  padding-top: 0.4rem;
+  animation: soul-bob 2.4s ease-in-out infinite;
+}
+@keyframes soul-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+.speech-bubble {
+  --bubble: #f6eeda;
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  background: var(--bubble);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 0.7rem 0.9rem 0.5rem;
+  color: var(--text);
+}
+[data-theme='dark'] .speech-bubble {
+  --bubble: #423c33;
+}
+/* Ogonek dymka wskazujący na Found Soul (dwa trójkąty: obwódka + wypełnienie). */
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  left: -14px;
+  top: 20px;
+  border: 9px solid transparent;
+  border-right-color: var(--border);
+}
+.speech-bubble::before {
+  content: '';
+  position: absolute;
+  left: -11px;
+  top: 21px;
+  border: 8px solid transparent;
+  border-right-color: var(--bubble);
+  z-index: 1;
+}
+.speech-bubble .rek-tag {
+  margin: 0 0 0.4rem;
+}
+.speech-bubble .rek-powody {
+  margin: 0;
+}
+
+/* ============================================================================
+   Companion — pływająca maskotka-familiar z dymkiem.
+   ============================================================================ */
+/* Familiar zakotwiczony (stała szerokość) — dymek jest ABSOLUTNY, więc jego
+   rozrost przy pisaniu NIE rusza maskotki. */
+.companion-top {
+  position: relative;
+  flex: none;
+  width: 56px;
+  height: 56px;
+  margin: 0 0 0 0.4rem;
+  z-index: 6;
+}
+.companion-mini {
+  position: absolute;
+  inset: 0;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: inherit;
+  line-height: 0;
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.5));
+  animation: comp-bob 2.8s ease-in-out infinite;
+}
+.companion-mini img {
+  width: 56px;
+  height: 56px;
+  image-rendering: pixelated;
+  object-fit: contain;
+  transform-origin: bottom center;
+}
+/* Squash-stretch przy gadaniu. */
+.companion-mini.talking img {
+  animation: comp-talk 0.26s ease-in-out infinite;
+}
+.companion-mini:hover {
+  filter: drop-shadow(0 3px 7px rgba(0, 0, 0, 0.6)) brightness(1.1);
+}
+.companion-mini.muted img {
+  filter: grayscale(0.55) brightness(0.82);
+}
+.companion-x {
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  color: #e5544b;
+  font-weight: 900;
+  font-size: 19px;
+  line-height: 1;
+  text-shadow:
+    0 0 3px #000,
+    0 1px 0 #000;
+  pointer-events: none;
+}
+
+/* ── Dymek: komiksowy, z grubą atramentową obwódką ── */
+.companion-bubble {
+  position: absolute;
+  left: 66px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: max-content;
+  max-width: min(360px, 34vw);
+  background: #f3e9cf;
+  color: #241d16;
+  border: 2.5px solid #3a2c1e;
+  border-radius: 16px;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  box-shadow:
+    0 4px 0 rgba(0, 0, 0, 0.28),
+    0 8px 16px rgba(0, 0, 0, 0.45),
+    inset 0 2px 0 rgba(255, 255, 255, 0.4);
+  animation: comp-pop 0.18s ease;
+}
+/* Ogonek wskazujący w LEWO na buzię familiara (obwódka atramentu + wypełnienie). */
+.companion-bubble::before {
+  content: '';
+  position: absolute;
+  left: -13px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 9px solid transparent;
+  border-right-color: #3a2c1e;
+}
+.companion-bubble::after {
+  content: '';
+  position: absolute;
+  left: -9px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 7px solid transparent;
+  border-right-color: #f3e9cf;
+}
+[data-theme='dark'] .companion-bubble {
+  background: #2f2a22;
+  color: #f0e8d8;
+  border-color: #0f0c08;
+  box-shadow:
+    0 4px 0 rgba(0, 0, 0, 0.5),
+    0 8px 16px rgba(0, 0, 0, 0.55),
+    inset 0 2px 0 rgba(255, 255, 255, 0.06);
+}
+[data-theme='dark'] .companion-bubble::before {
+  border-right-color: #0f0c08;
+}
+[data-theme='dark'] .companion-bubble::after {
+  border-right-color: #2f2a22;
+}
+/* Migający kursor podczas pisania. */
+.companion-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 1px;
+  background: currentColor;
+  vertical-align: -2px;
+  animation: caret-blink 0.9s steps(1) infinite;
+}
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+@keyframes comp-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+@keyframes comp-talk {
+  0%,
+  100% {
+    transform: scaleY(1) scaleX(1);
+  }
+  50% {
+    transform: scaleY(0.86) scaleX(1.09);
+  }
+}
+@keyframes comp-pop {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (max-width: 1000px) {
+  .companion-top {
+    display: none;
+  }
+}
+
+/* Picker companiona (Ustawienia) — 7 na rząd = 14 w dwóch rzędach. */
+.companion-picker {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+@media (max-width: 900px) {
+  .companion-picker {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.comp-opt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.6rem 0.3rem;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: inherit;
+  font-family: var(--dsp);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+}
+.comp-opt img {
+  width: 46px;
+  height: 46px;
+  image-rendering: pixelated;
+  object-fit: contain;
+}
+.comp-opt.on {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+/* ── Ulubiona postać (portret na profilu) ── */
+.fav-char {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.fav-char-portrait {
+  width: 100px;
+  height: 100px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.fav-char-portrait img {
+  width: 78px;
+  height: 78px;
+  image-rendering: pixelated;
+  object-fit: contain;
+}
+.fav-char-name {
+  font-family: var(--dsp);
+  font-size: 1.5rem;
+  letter-spacing: 0.02em;
+}
+
+/* ── Upload avatara (edycja profilu) ── */
+.avatar-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+.avatar-upload-btns {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.avatar-upload .avatar-img {
+  object-fit: cover;
 }

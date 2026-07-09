@@ -1,0 +1,31 @@
+import type { SpriteName } from '@/components/Sprite'
+
+/** Pozycje nawigacji — współdzielone przez sidebar i pasek tytułu (zakładka). */
+export type NavItem = {
+  href: string
+  label: string
+  icon: SpriteName
+}
+
+export const NAV: NavItem[] = [
+  { href: '/', label: 'Pulpit', icon: 'dadsnote' },
+  { href: '/profil', label: 'Profil', icon: 'isaacHead' },
+  { href: '/kolekcja', label: 'Kolekcja', icon: 'book' },
+  { href: '/doradca', label: 'Doradca', icon: 'foundsoul' },
+  { href: '/statystyki', label: 'Statystyki', icon: 'kidsdrawing' },
+  { href: '/znajomi', label: 'Znajomi', icon: 'friendfinder' },
+  { href: '/czat', label: 'Czat', icon: 'friends' },
+  { href: '/ustawienia', label: 'Ustawienia', icon: 'superfan' },
+]
+
+/** Tytuł sekcji dla podanej ścieżki (dla papierowej zakładki na górze). */
+export function tytulSekcji(pathname: string): string {
+  // Edycja profilu należy do sekcji „Profil".
+  if (pathname.startsWith('/kim-jestem')) return 'Profil'
+  // najdłuższy pasujący prefiks (żeby /profil/[postac] też trafiało w „Profil")
+  const match = NAV.filter((n) => n.href !== '/' && pathname.startsWith(n.href)).sort(
+    (a, b) => b.href.length - a.href.length,
+  )[0]
+  if (match) return match.label
+  return 'Pulpit'
+}

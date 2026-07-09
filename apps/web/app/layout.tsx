@@ -1,14 +1,25 @@
 import './globals.css'
 import Link from 'next/link'
 import type { ReactNode } from 'react'
-import { Pixelify_Sans, Inter } from 'next/font/google'
+import localFont from 'next/font/local'
+import { Inter, Pixelify_Sans } from 'next/font/google'
 import ThemeApplier from '@/components/ThemeApplier'
 import Sprite from '@/components/Sprite'
+import SideNav from '@/components/SideNav'
+import TopBar from '@/components/TopBar'
+import { getNick } from '@/lib/queries'
 
-const display = Pixelify_Sans({
+// Upheaval TT (BRK) — font menu The Binding of Isaac (Brian Kent / aenigma, freeware).
+const display = localFont({
+  src: './fonts/upheaval.ttf',
+  variable: '--font-display',
+})
+// Upheaval nie ma polskich znaków (ł, ą, ę…) — Pixelify Sans (też pixelowy, z latin-ext)
+// służy jako fallback per-glif dla diakrytyków w stacku --dsp.
+const displayFb = Pixelify_Sans({
   subsets: ['latin', 'latin-ext'],
   weight: ['500', '600', '700'],
-  variable: '--font-display',
+  variable: '--font-display-fb',
 })
 const hand = Inter({
   subsets: ['latin', 'latin-ext'],
@@ -21,36 +32,30 @@ export const metadata = {
   description: 'Companion do The Binding of Isaac — postęp, completion marks, doradca itemów.',
 }
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
+  const nick = await getNick().catch(() => 'Isaac')
   return (
     <html
       lang="pl"
       data-floor="basement"
+      data-theme="dark"
       data-fly="off"
-      className={`${display.variable} ${hand.variable}`}
+      className={`${display.variable} ${displayFb.variable} ${hand.variable}`}
     >
       <body>
         <ThemeApplier />
-        <div className="surface">
-          <header className="nav">
-            <Link href="/" className="brand">
-              <Sprite name="godhead" size={22} /> IsaacDex
+        <div className="app">
+          <aside className="sidebar">
+            <Link href="/" className="side-brand">
+              <Sprite name="godhead" size={30} />
+              <span>IsaacDex</span>
             </Link>
-            <div className="nav-right">
-              <nav className="nav-links">
-                <Link href="/">Pulpit</Link>
-                <Link href="/znajomi">Znajomi</Link>
-                <Link href="/profil">Profil</Link>
-                <Link href="/kolekcja">Kolekcja</Link>
-                <Link href="/doradca">Doradca</Link>
-                <Link href="/statystyki">Statystyki</Link>
-                <Link href="/ustawienia" aria-label="Ustawienia">
-                  <Sprite name="gear" size={18} />
-                </Link>
-              </nav>
-            </div>
-          </header>
-          <main className="container">{children}</main>
+            <SideNav />
+          </aside>
+          <div className="main-wrap">
+            <TopBar nick={nick} />
+            <main className="container">{children}</main>
+          </div>
         </div>
       </body>
     </html>
