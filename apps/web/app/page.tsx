@@ -4,6 +4,7 @@ import { ikonaPostaci } from '@/lib/chars'
 import Sprite from '@/components/Sprite'
 import ProfileAvatar from '@/components/ProfileAvatar'
 import FeedCard from '@/components/FeedCard'
+import BasementRadio from '@/components/BasementRadio'
 import { FEED } from '@/lib/feed'
 
 export const dynamic = 'force-dynamic'
@@ -116,6 +117,8 @@ export default async function Home() {
             → Wszystkie statystyki
           </Link>
         </div>
+
+        <BasementRadio />
 
         <Link className="btn full" href="/doradca">
           <Sprite name="foundsoul" size={20} /> Doradca itemów

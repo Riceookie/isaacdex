@@ -3,6 +3,7 @@ import { getProfil, getDashboard } from '@/lib/queries'
 import { ikonaPostaci } from '@/lib/chars'
 import Sprite from '@/components/Sprite'
 import ProfileAvatar from '@/components/ProfileAvatar'
+import FavItemBadge from '@/components/FavItemBadge'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,6 +20,7 @@ export default async function ProfilPage() {
   }
 
   const rarest = p.showcase[0] ? `${p.showcase[0].p}%` : '—'
+  const ulubionaPostac = p.ulubiona || p.fav?.nazwa || 'Isaac'
 
   return (
     <section className="profil-page">
@@ -38,8 +40,18 @@ export default async function ProfilPage() {
                   <Sprite name="deadgod" size={18} /> Dead God {p.achProcent}%
                 </span>
                 <span className="badge">
-                  <Sprite name="isaacHead" size={18} /> Ulubiona:{' '}
-                  {p.ulubiona || p.fav?.nazwa || '—'}
+                  <Sprite name="trophy" size={18} /> {p.achUnlocked}/{p.achTotal} achiev.
+                </span>
+                <span className="badge">
+                  <img className="badge-ava" src={ikonaPostaci(ulubionaPostac)} alt="" /> Ulubiona:{' '}
+                  {ulubionaPostac}
+                </span>
+                <FavItemBadge />
+                <span className="badge">
+                  <Sprite name="friendfinder" size={18} /> 28 obserwujących
+                </span>
+                <span className="badge">
+                  <Sprite name="friends" size={18} /> 14 obserwowanych
                 </span>
               </p>
               <p className="small">

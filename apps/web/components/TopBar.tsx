@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Sprite from '@/components/Sprite'
 import CompanionMascot from '@/components/Companion'
+import NotificationsBell from '@/components/NotificationsBell'
 import { tytulSekcji } from '@/lib/nav'
 
 /** Górny pasek: papierowa „zakładka" z tytułem sekcji + companion + ikony narzędziowe. */
@@ -48,20 +49,7 @@ export default function TopBar({ steamConnected }: { steamConnected: boolean }) 
             <path d="M4 5h16v11H9l-4 3v-3H4z" strokeLinecap="round" />
           </svg>
         </Link>
-        <span className="util-icon deco" aria-hidden="true" title="Powiadomienia">
-          <svg
-            width="22"
-            height="22"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.9"
-            strokeLinejoin="round"
-          >
-            <path d="M6 9a6 6 0 0112 0c0 5 2 6 2 6H4s2-1 2-6z" strokeLinecap="round" />
-            <path d="M10 20a2 2 0 004 0" strokeLinecap="round" />
-          </svg>
-        </span>
+        <NotificationsBell />
 
         <Link href="/profil" className="avatar-chip">
           <Sprite name="isaacHead" size={24} />
