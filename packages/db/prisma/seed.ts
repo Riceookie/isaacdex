@@ -3,6 +3,7 @@
 //
 // Seed jest idempotentny: czyści dane w kolejności zależności, potem tworzy od nowa.
 
+import { readFileSync } from 'node:fs'
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
@@ -26,30 +27,39 @@ const POSTACIE = [
   'The Forgotten',
   'Bethany',
   'Jacob & Esau',
+  // Splugawione (Repentance) — po bazowych.
+  'Tainted Isaac',
+  'Tainted Magdalene',
+  'Tainted Cain',
+  'Tainted Judas',
+  'Tainted ???',
+  'Tainted Eve',
+  'Tainted Samson',
+  'Tainted Azazel',
+  'Tainted Lazarus',
+  'Tainted Eden',
+  'Tainted The Lost',
+  'Tainted Lilith',
+  'Tainted Keeper',
+  'Tainted Apollyon',
+  'Tainted The Forgotten',
+  'Tainted Bethany',
+  'Tainted Jacob & Esau',
 ]
 
-// Starter itemów z jakością 0–4 (rozszerzymy pełną listą w zadaniu 8).
-const ITEMY: Array<{
+// Pełny katalog collectibles (id, nazwa, jakość 0–4, typ, tagi) wygenerowany
+// z assetów gry Repentance+ przez prisma/generate-items.mjs. Trinkety pominięte:
+// gra nie nadaje im oceny jakości, więc doradca „brać/zostawić" nie miałby ich jak ocenić.
+type ItemSeed = {
+  idW: number
   nazwa: string
   jakosc: number
-  typ?: 'PASYWNY' | 'AKTYWNY' | 'TRINKET'
-  tagi?: string[]
-}> = [
-  { nazwa: 'Sacred Heart', jakosc: 4, tagi: ['dmg up', 'homing', 'tears down'] },
-  { nazwa: 'Brimstone', jakosc: 4, tagi: ['dmg up', 'laser'] },
-  { nazwa: 'Magic Mushroom', jakosc: 4, tagi: ['dmg up', 'stats up', 'size up'] },
-  { nazwa: "Mom's Knife", jakosc: 4, tagi: ['dmg up', 'melee'] },
-  { nazwa: 'Polyphemus', jakosc: 3, tagi: ['dmg up', 'tears down'] },
-  { nazwa: "Death's Touch", jakosc: 3, tagi: ['dmg up', 'piercing'] },
-  { nazwa: 'Dr. Fetus', jakosc: 3, tagi: ['bombs', 'dmg up'] },
-  { nazwa: 'The Inner Eye', jakosc: 2, tagi: ['triple shot', 'tears down'] },
-  { nazwa: 'Ipecac', jakosc: 2, tagi: ['explosive', 'poison', 'dmg up'] },
-  { nazwa: "Guppy's Head", jakosc: 1, typ: 'AKTYWNY', tagi: ['flies', 'guppy'] },
-  { nazwa: 'Sad Onion', jakosc: 1, tagi: ['tears up'] },
-  { nazwa: 'The Bible', jakosc: 1, typ: 'AKTYWNY', tagi: ['flight', 'pułapka: zabija na Satanie'] },
-  { nazwa: 'The Poop', jakosc: 0, typ: 'AKTYWNY', tagi: ['gimmick'] },
-  { nazwa: 'Breakfast', jakosc: 0, tagi: ['hp up'] },
-]
+  typ: 'PASYWNY' | 'AKTYWNY' | 'TRINKET'
+  tagi: string[]
+}
+const ITEMY: ItemSeed[] = JSON.parse(
+  readFileSync(new URL('./items.generated.json', import.meta.url), 'utf8'),
+)
 
 async function main() {
   // 1. Czyszczenie (od "liści" do "korzeni").
@@ -69,10 +79,11 @@ async function main() {
   // 3. Itemy
   await prisma.item.createMany({
     data: ITEMY.map((it) => ({
+      idW: it.idW,
       nazwa: it.nazwa,
       jakosc: it.jakosc,
-      typ: it.typ ?? 'PASYWNY',
-      tagi: it.tagi ?? [],
+      typ: it.typ,
+      tagi: it.tagi,
     })),
   })
 

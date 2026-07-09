@@ -38,7 +38,7 @@ export default function AdvisorForm() {
       </form>
       {err && (
         <p className="banner error">
-          <Sprite name="bomb" size={15} /> {err}
+          <Sprite name="bomb" size={18} /> {err}
         </p>
       )}
       {wynik && (

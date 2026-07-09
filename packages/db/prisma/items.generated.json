@@ -1,0 +1,3995 @@
+[
+  {
+    "idW": 1,
+    "nazwa": "The Sad Onion",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive"]
+  },
+  {
+    "idW": 2,
+    "nazwa": "The Inner Eye",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 3,
+    "nazwa": "Spoon Bender",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 4,
+    "nazwa": "Cricket's Head",
+    "jakosc": 4,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "dead", "offensive"]
+  },
+  {
+    "idW": 5,
+    "nazwa": "My Reflection",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 6,
+    "nazwa": "Number One",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive"]
+  },
+  {
+    "idW": 7,
+    "nazwa": "Blood of the Martyr",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 8,
+    "nazwa": "Brother Bobby",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 9,
+    "nazwa": "Skatole",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["poop", "summonable", "nocantrip", "fly"]
+  },
+  {
+    "idW": 10,
+    "nazwa": "Halo of Flies",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "fly"]
+  },
+  { "idW": 11, "nazwa": "1up!", "jakosc": 2, "typ": "PASYWNY", "tagi": ["mushroom"] },
+  {
+    "idW": 12,
+    "nazwa": "Magic Mushroom",
+    "jakosc": 4,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "mushroom", "offensive"]
+  },
+  {
+    "idW": 13,
+    "nazwa": "The Virus",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable", "syringe"]
+  },
+  {
+    "idW": 14,
+    "nazwa": "Roid Rage",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "syringe", "offensive"]
+  },
+  { "idW": 15, "nazwa": "&lt;3", "jakosc": 2, "typ": "PASYWNY", "tagi": ["nolostbr"] },
+  { "idW": 16, "nazwa": "Raw Liver", "jakosc": 2, "typ": "PASYWNY", "tagi": ["nolostbr"] },
+  {
+    "idW": 17,
+    "nazwa": "Skeleton Key",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  {
+    "idW": 18,
+    "nazwa": "A Dollar",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  { "idW": 19, "nazwa": "Boom!", "jakosc": 0, "typ": "PASYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 20,
+    "nazwa": "Transcendence",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 21,
+    "nazwa": "The Compass",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "lazarussharedglobal", "nogreed"]
+  },
+  {
+    "idW": 22,
+    "nazwa": "Lunch",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "nocantrip", "food"]
+  },
+  {
+    "idW": 23,
+    "nazwa": "Dinner",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "nocantrip", "food"]
+  },
+  {
+    "idW": 24,
+    "nazwa": "Dessert",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "nocantrip", "food"]
+  },
+  {
+    "idW": 25,
+    "nazwa": "Breakfast",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "nocantrip", "food"]
+  },
+  {
+    "idW": 26,
+    "nazwa": "Rotten Meat",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "nocantrip", "food"]
+  },
+  {
+    "idW": 27,
+    "nazwa": "Wooden Spoon",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 28,
+    "nazwa": "The Belt",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 29,
+    "nazwa": "Mom's Underwear",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "mom", "offensive"]
+  },
+  {
+    "idW": 30,
+    "nazwa": "Mom's Heels",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "mom", "offensive"]
+  },
+  {
+    "idW": 31,
+    "nazwa": "Mom's Lipstick",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "mom", "offensive"]
+  },
+  {
+    "idW": 32,
+    "nazwa": "Wire Coat Hanger",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive"]
+  },
+  {
+    "idW": 33,
+    "nazwa": "The Bible",
+    "jakosc": 1,
+    "typ": "AKTYWNY",
+    "tagi": ["book", "offensive", "angel", "pułapka: zabija na Satanie"]
+  },
+  {
+    "idW": 34,
+    "nazwa": "The Book of Belial",
+    "jakosc": 2,
+    "typ": "AKTYWNY",
+    "tagi": ["book", "offensive", "lazarussharedglobal"]
+  },
+  {
+    "idW": 35,
+    "nazwa": "The Necronomicon",
+    "jakosc": 1,
+    "typ": "AKTYWNY",
+    "tagi": ["book", "offensive"]
+  },
+  { "idW": 36, "nazwa": "The Poop", "jakosc": 0, "typ": "AKTYWNY", "tagi": ["poop"] },
+  { "idW": 37, "nazwa": "Mr. Boom", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 38,
+    "nazwa": "Tammy's Head",
+    "jakosc": 2,
+    "typ": "AKTYWNY",
+    "tagi": ["dead", "offensive"]
+  },
+  { "idW": 39, "nazwa": "Mom's Bra", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["mom", "offensive"] },
+  { "idW": 40, "nazwa": "Kamikaze!", "jakosc": 0, "typ": "AKTYWNY", "tagi": ["nolostbr"] },
+  { "idW": 41, "nazwa": "Mom's Pad", "jakosc": 0, "typ": "AKTYWNY", "tagi": ["mom", "offensive"] },
+  {
+    "idW": 42,
+    "nazwa": "Bob's Rotten Head",
+    "jakosc": 1,
+    "typ": "AKTYWNY",
+    "tagi": ["bob", "dead", "offensive"]
+  },
+  { "idW": 44, "nazwa": "Teleport!", "jakosc": 0, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 45, "nazwa": "Yum Heart", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["nolostbr"] },
+  {
+    "idW": 46,
+    "nazwa": "Lucky Foot",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 47, "nazwa": "Doctor's Remote", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 48,
+    "nazwa": "Cupid's Arrow",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 49, "nazwa": "Shoop da Whoop!", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 50,
+    "nazwa": "Steven",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 51,
+    "nazwa": "Pentagram",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["devil", "summonable", "offensive", "lazarussharedglobal"]
+  },
+  {
+    "idW": 52,
+    "nazwa": "Dr. Fetus",
+    "jakosc": 4,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 53, "nazwa": "Magneto", "jakosc": 1, "typ": "PASYWNY", "tagi": ["summonable"] },
+  {
+    "idW": 54,
+    "nazwa": "Treasure Map",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "lazarussharedglobal", "nogreed"]
+  },
+  {
+    "idW": 55,
+    "nazwa": "Mom's Eye",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "mom", "offensive"]
+  },
+  { "idW": 56, "nazwa": "Lemon Mishap", "jakosc": 0, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 57,
+    "nazwa": "Distant Admiration",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive", "fly"]
+  },
+  {
+    "idW": 58,
+    "nazwa": "Book of Shadows",
+    "jakosc": 3,
+    "typ": "AKTYWNY",
+    "tagi": ["book", "offensive"]
+  },
+  {
+    "idW": 60,
+    "nazwa": "The Ladder",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 62,
+    "nazwa": "Charm of the Vampire",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable", "nocantrip"]
+  },
+  {
+    "idW": 63,
+    "nazwa": "The Battery",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["battery", "summonable", "offensive", "nocantrip"]
+  },
+  {
+    "idW": 64,
+    "nazwa": "Steam Sale",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 65,
+    "nazwa": "Anarchist Cookbook",
+    "jakosc": 1,
+    "typ": "AKTYWNY",
+    "tagi": ["book", "offensive"]
+  },
+  { "idW": 66, "nazwa": "The Hourglass", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 67,
+    "nazwa": "Sister Maggy",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 68,
+    "nazwa": "Technology",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tech", "offensive"]
+  },
+  {
+    "idW": 69,
+    "nazwa": "Chocolate Milk",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 70,
+    "nazwa": "Growth Hormones",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "syringe", "offensive"]
+  },
+  {
+    "idW": 71,
+    "nazwa": "Mini Mush",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "mushroom", "offensive"]
+  },
+  {
+    "idW": 72,
+    "nazwa": "Rosary",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "nocantrip", "angel"]
+  },
+  {
+    "idW": 73,
+    "nazwa": "Cube of Meat",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual"]
+  },
+  {
+    "idW": 74,
+    "nazwa": "A Quarter",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  {
+    "idW": 75,
+    "nazwa": "PHD",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip"]
+  },
+  {
+    "idW": 76,
+    "nazwa": "X-Ray Vision",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 77, "nazwa": "My Little Unicorn", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 78,
+    "nazwa": "Book of Revelations",
+    "jakosc": 3,
+    "typ": "AKTYWNY",
+    "tagi": ["nolostbr", "book", "lazarussharedglobal"]
+  },
+  {
+    "idW": 79,
+    "nazwa": "The Mark",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["devil", "summonable", "offensive"]
+  },
+  {
+    "idW": 80,
+    "nazwa": "The Pact",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["devil", "summonable", "tearsup", "offensive"]
+  },
+  {
+    "idW": 81,
+    "nazwa": "Dead Cat",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["uniquefamiliar", "dead", "guppy", "nocantrip"]
+  },
+  {
+    "idW": 82,
+    "nazwa": "Lord of the Pit",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["devil", "nolostbr", "summonable"]
+  },
+  { "idW": 83, "nazwa": "The Nail", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["devil"] },
+  {
+    "idW": 84,
+    "nazwa": "We Need To Go Deeper!",
+    "jakosc": 2,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive"]
+  },
+  {
+    "idW": 85,
+    "nazwa": "Deck of Cards",
+    "jakosc": 2,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip", "stars"]
+  },
+  { "idW": 86, "nazwa": "Monstro's Tooth", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 87,
+    "nazwa": "Loki's Horns",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 88,
+    "nazwa": "Little Chubby",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 89,
+    "nazwa": "Spider Bite",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "spider", "offensive"]
+  },
+  {
+    "idW": 90,
+    "nazwa": "The Small Rock",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive"]
+  },
+  {
+    "idW": 91,
+    "nazwa": "Spelunker Hat",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 92, "nazwa": "Super Bandage", "jakosc": 2, "typ": "PASYWNY", "tagi": ["nolostbr"] },
+  { "idW": 93, "nazwa": "The Gamekid", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 94,
+    "nazwa": "Sack of Pennies",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip"]
+  },
+  {
+    "idW": 95,
+    "nazwa": "Robo-Baby",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "tech", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 96,
+    "nazwa": "Little C.H.A.D.",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable", "nocantrip"]
+  },
+  {
+    "idW": 97,
+    "nazwa": "The Book of Sin",
+    "jakosc": 2,
+    "typ": "AKTYWNY",
+    "tagi": ["book", "offensive"]
+  },
+  {
+    "idW": 98,
+    "nazwa": "The Relic",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable", "nocantrip"]
+  },
+  {
+    "idW": 99,
+    "nazwa": "Little Gish",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 100,
+    "nazwa": "Little Steven",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 101,
+    "nazwa": "The Halo",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive", "angel"]
+  },
+  {
+    "idW": 102,
+    "nazwa": "Mom's Bottle of Pills",
+    "jakosc": 1,
+    "typ": "AKTYWNY",
+    "tagi": ["mom", "offensive", "nocantrip"]
+  },
+  {
+    "idW": 103,
+    "nazwa": "The Common Cold",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 104,
+    "nazwa": "The Parasite",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 105,
+    "nazwa": "The D6",
+    "jakosc": 4,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  { "idW": 106, "nazwa": "Mr. Mega", "jakosc": 2, "typ": "PASYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 107,
+    "nazwa": "The Pinking Shears",
+    "jakosc": 2,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive"]
+  },
+  {
+    "idW": 108,
+    "nazwa": "The Wafer",
+    "jakosc": 4,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 109,
+    "nazwa": "Money = Power",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 110,
+    "nazwa": "Mom's Contacts",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "mom", "offensive"]
+  },
+  { "idW": 111, "nazwa": "The Bean", "jakosc": 0, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 112,
+    "nazwa": "Guardian Angel",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "monstermanual"]
+  },
+  {
+    "idW": 113,
+    "nazwa": "Demon Baby",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 114,
+    "nazwa": "Mom's Knife",
+    "jakosc": 4,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "mom", "offensive"]
+  },
+  {
+    "idW": 115,
+    "nazwa": "Ouija Board",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 116,
+    "nazwa": "9 Volt",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["battery", "summonable", "offensive", "nocantrip"]
+  },
+  {
+    "idW": 117,
+    "nazwa": "Dead Bird",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable", "dead"]
+  },
+  {
+    "idW": 118,
+    "nazwa": "Brimstone",
+    "jakosc": 4,
+    "typ": "PASYWNY",
+    "tagi": ["devil", "summonable", "offensive"]
+  },
+  { "idW": 119, "nazwa": "Blood Bag", "jakosc": 2, "typ": "PASYWNY", "tagi": ["nolostbr"] },
+  {
+    "idW": 120,
+    "nazwa": "Odd Mushroom",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "mushroom", "tearsup", "offensive"]
+  },
+  {
+    "idW": 122,
+    "nazwa": "Whore of Babylon",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 123,
+    "nazwa": "Monster Manual",
+    "jakosc": 1,
+    "typ": "AKTYWNY",
+    "tagi": ["book", "offensive"]
+  },
+  { "idW": 124, "nazwa": "Dead Sea Scrolls", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 125,
+    "nazwa": "Bobby-Bomb",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 126, "nazwa": "Razor Blade", "jakosc": 0, "typ": "AKTYWNY", "tagi": ["nolostbr"] },
+  {
+    "idW": 127,
+    "nazwa": "Forget Me Now",
+    "jakosc": 3,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  {
+    "idW": 128,
+    "nazwa": "Forever alone",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive", "fly"]
+  },
+  { "idW": 129, "nazwa": "Bucket of Lard", "jakosc": 1, "typ": "PASYWNY", "tagi": ["nolostbr"] },
+  { "idW": 130, "nazwa": "A Pony", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 131,
+    "nazwa": "Bomb Bag",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip"]
+  },
+  {
+    "idW": 132,
+    "nazwa": "A Lump of Coal",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 133,
+    "nazwa": "Guppy's Paw",
+    "jakosc": 3,
+    "typ": "AKTYWNY",
+    "tagi": ["nolostbr", "dead", "guppy"]
+  },
+  {
+    "idW": 134,
+    "nazwa": "Guppy's Tail",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "dead", "guppy", "offensive"]
+  },
+  { "idW": 135, "nazwa": "IV Bag", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["nolostbr"] },
+  { "idW": 136, "nazwa": "Best Friend", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 137,
+    "nazwa": "Remote Detonator",
+    "jakosc": 1,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  { "idW": 138, "nazwa": "Stigmata", "jakosc": 2, "typ": "PASYWNY", "tagi": ["summonable"] },
+  {
+    "idW": 139,
+    "nazwa": "Mom's Purse",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "mom", "offensive", "nocantrip"]
+  },
+  {
+    "idW": 140,
+    "nazwa": "Bob's Curse",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["bob", "summonable", "offensive"]
+  },
+  { "idW": 141, "nazwa": "Pageant Boy", "jakosc": 0, "typ": "PASYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 142,
+    "nazwa": "Scapular",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable", "angel"]
+  },
+  {
+    "idW": 143,
+    "nazwa": "Speed Ball",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "syringe", "offensive"]
+  },
+  {
+    "idW": 144,
+    "nazwa": "Bum Friend",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 145,
+    "nazwa": "Guppy's Head",
+    "jakosc": 2,
+    "typ": "AKTYWNY",
+    "tagi": ["dead", "guppy", "offensive"]
+  },
+  { "idW": 146, "nazwa": "Prayer Card", "jakosc": 3, "typ": "AKTYWNY", "tagi": ["nolostbr"] },
+  {
+    "idW": 147,
+    "nazwa": "Notched Axe",
+    "jakosc": 1,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  {
+    "idW": 148,
+    "nazwa": "Infestation",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 149,
+    "nazwa": "Ipecac",
+    "jakosc": 4,
+    "typ": "PASYWNY",
+    "tagi": ["bob", "summonable", "offensive"]
+  },
+  {
+    "idW": 150,
+    "nazwa": "Tough Love",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 151,
+    "nazwa": "The Mulligan",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "fly"]
+  },
+  {
+    "idW": 152,
+    "nazwa": "Technology 2",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tech", "offensive"]
+  },
+  {
+    "idW": 153,
+    "nazwa": "Mutant Spider",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "spider", "offensive"]
+  },
+  {
+    "idW": 154,
+    "nazwa": "Chemical Peel",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 155,
+    "nazwa": "The Peeper",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 156,
+    "nazwa": "Habit",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable", "nocantrip"]
+  },
+  {
+    "idW": 157,
+    "nazwa": "Bloody Lust",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 158,
+    "nazwa": "Crystal Ball",
+    "jakosc": 3,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "stars", "lazarussharedglobal"]
+  },
+  {
+    "idW": 159,
+    "nazwa": "Spirit of the Night",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["devil", "nolostbr", "summonable"]
+  },
+  { "idW": 160, "nazwa": "Crack the Sky", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 161,
+    "nazwa": "Ankh",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "nocantrip", "nochallenge"]
+  },
+  {
+    "idW": 162,
+    "nazwa": "Celtic Cross",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable", "angel"]
+  },
+  {
+    "idW": 163,
+    "nazwa": "Ghost Baby",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "monstermanual", "offensive"]
+  },
+  { "idW": 164, "nazwa": "The Candle", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 165,
+    "nazwa": "Cat-o-nine-tails",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 166, "nazwa": "D20", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 167,
+    "nazwa": "Harlequin Baby",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 168,
+    "nazwa": "Epic Fetus",
+    "jakosc": 4,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 169,
+    "nazwa": "Polyphemus",
+    "jakosc": 4,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 170,
+    "nazwa": "Daddy Longlegs",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "spider", "offensive"]
+  },
+  {
+    "idW": 171,
+    "nazwa": "Spider Butt",
+    "jakosc": 1,
+    "typ": "AKTYWNY",
+    "tagi": ["spider", "offensive"]
+  },
+  {
+    "idW": 172,
+    "nazwa": "Sacrificial Dagger",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable"]
+  },
+  { "idW": 173, "nazwa": "Mitre", "jakosc": 3, "typ": "PASYWNY", "tagi": ["summonable", "angel"] },
+  {
+    "idW": 174,
+    "nazwa": "Rainbow Baby",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "offensive"]
+  },
+  { "idW": 175, "nazwa": "Dad's Key", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 176, "nazwa": "Stem Cells", "jakosc": 1, "typ": "PASYWNY", "tagi": ["nolostbr"] },
+  { "idW": 177, "nazwa": "Portable Slot", "jakosc": 0, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 178,
+    "nazwa": "Holy Water",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 179,
+    "nazwa": "Fate",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 180,
+    "nazwa": "The Black Bean",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  { "idW": 181, "nazwa": "White Pony", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 182,
+    "nazwa": "Sacred Heart",
+    "jakosc": 4,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "angel"]
+  },
+  {
+    "idW": 183,
+    "nazwa": "Tooth Picks",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive"]
+  },
+  {
+    "idW": 184,
+    "nazwa": "Holy Grail",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable", "angel"]
+  },
+  {
+    "idW": 185,
+    "nazwa": "Dead Dove",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable", "angel"]
+  },
+  { "idW": 186, "nazwa": "Blood Rights", "jakosc": 0, "typ": "AKTYWNY", "tagi": ["nolostbr"] },
+  {
+    "idW": 187,
+    "nazwa": "Guppy's Hairball",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "guppy", "offensive"]
+  },
+  {
+    "idW": 188,
+    "nazwa": "Abel",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "offensive"]
+  },
+  {
+    "idW": 189,
+    "nazwa": "SMB Super Fan",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 190,
+    "nazwa": "Pyro",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  {
+    "idW": 191,
+    "nazwa": "3 Dollar Bill",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 192,
+    "nazwa": "Telepathy For Dummies",
+    "jakosc": 1,
+    "typ": "AKTYWNY",
+    "tagi": ["book", "offensive"]
+  },
+  {
+    "idW": 193,
+    "nazwa": "MEAT!",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 194,
+    "nazwa": "Magic 8 Ball",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "stars", "lazarussharedglobal"]
+  },
+  {
+    "idW": 195,
+    "nazwa": "Mom's Coin Purse",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["mom", "offensive", "nocantrip"]
+  },
+  {
+    "idW": 196,
+    "nazwa": "Squeezy",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive"]
+  },
+  {
+    "idW": 197,
+    "nazwa": "Jesus Juice",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 198, "nazwa": "Box", "jakosc": 0, "typ": "PASYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 199,
+    "nazwa": "Mom's Key",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "mom", "offensive"]
+  },
+  {
+    "idW": 200,
+    "nazwa": "Mom's Eyeshadow",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "mom", "offensive"]
+  },
+  {
+    "idW": 201,
+    "nazwa": "Iron Bar",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 202,
+    "nazwa": "Midas' Touch",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 203,
+    "nazwa": "Humbleing Bundle",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip"]
+  },
+  {
+    "idW": 204,
+    "nazwa": "Fanny Pack",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 205,
+    "nazwa": "Sharp Plug",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable", "nocantrip"]
+  },
+  {
+    "idW": 206,
+    "nazwa": "Guillotine",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive"]
+  },
+  {
+    "idW": 207,
+    "nazwa": "Ball of Bandages",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual"]
+  },
+  {
+    "idW": 208,
+    "nazwa": "Champion Belt",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 209,
+    "nazwa": "Butt Bombs",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["poop", "summonable", "offensive"]
+  },
+  { "idW": 210, "nazwa": "Gnawed Leaf", "jakosc": 1, "typ": "PASYWNY", "tagi": ["summonable"] },
+  {
+    "idW": 211,
+    "nazwa": "Spiderbaby",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable", "spider"]
+  },
+  { "idW": 212, "nazwa": "Guppy's Collar", "jakosc": 1, "typ": "PASYWNY", "tagi": ["guppy"] },
+  {
+    "idW": 213,
+    "nazwa": "Lost Contact",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 214,
+    "nazwa": "Anemic",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 215,
+    "nazwa": "Goat Head",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "lazarussharedglobal"]
+  },
+  {
+    "idW": 216,
+    "nazwa": "Ceremonial Robes",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 217,
+    "nazwa": "Mom's Wig",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "mom", "offensive"]
+  },
+  { "idW": 218, "nazwa": "Placenta", "jakosc": 2, "typ": "PASYWNY", "tagi": ["nolostbr"] },
+  { "idW": 219, "nazwa": "Old Bandage", "jakosc": 2, "typ": "PASYWNY", "tagi": ["nolostbr"] },
+  {
+    "idW": 220,
+    "nazwa": "Sad Bombs",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 221,
+    "nazwa": "Rubber Cement",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 222,
+    "nazwa": "Anti-Gravity",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive"]
+  },
+  { "idW": 223, "nazwa": "Pyromaniac", "jakosc": 4, "typ": "PASYWNY", "tagi": ["summonable"] },
+  {
+    "idW": 224,
+    "nazwa": "Cricket's Body",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "dead", "tearsup", "offensive"]
+  },
+  {
+    "idW": 225,
+    "nazwa": "Gimpy",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  { "idW": 226, "nazwa": "Black Lotus", "jakosc": 2, "typ": "PASYWNY", "tagi": ["nolostbr"] },
+  {
+    "idW": 227,
+    "nazwa": "Piggy Bank",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 228,
+    "nazwa": "Mom's Perfume",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "mom", "tearsup", "offensive"]
+  },
+  {
+    "idW": 229,
+    "nazwa": "Monstro's Lung",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 230,
+    "nazwa": "Abaddon",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["devil", "summonable", "offensive"]
+  },
+  {
+    "idW": 231,
+    "nazwa": "Ball of Tar",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 232, "nazwa": "Stop Watch", "jakosc": 4, "typ": "PASYWNY", "tagi": ["summonable"] },
+  {
+    "idW": 233,
+    "nazwa": "Tiny Planet",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 234,
+    "nazwa": "Infestation 2",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "spider", "offensive"]
+  },
+  {
+    "idW": 236,
+    "nazwa": "E. Coli",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["poop", "nolostbr", "summonable"]
+  },
+  {
+    "idW": 237,
+    "nazwa": "Death's Touch",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 238,
+    "nazwa": "Key Piece 1",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["uniquefamiliar", "offensive", "lazarusshared", "noeden", "nocantrip", "quest"]
+  },
+  {
+    "idW": 239,
+    "nazwa": "Key Piece 2",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["uniquefamiliar", "offensive", "lazarusshared", "noeden", "nocantrip", "quest"]
+  },
+  {
+    "idW": 240,
+    "nazwa": "Experimental Treatment",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["syringe", "offensive"]
+  },
+  {
+    "idW": 241,
+    "nazwa": "Contract from Below",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nogreed"]
+  },
+  { "idW": 242, "nazwa": "Infamy", "jakosc": 2, "typ": "PASYWNY", "tagi": ["summonable"] },
+  { "idW": 243, "nazwa": "Trinity Shield", "jakosc": 2, "typ": "PASYWNY", "tagi": ["summonable"] },
+  {
+    "idW": 244,
+    "nazwa": "Tech.5",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tech", "offensive"]
+  },
+  {
+    "idW": 245,
+    "nazwa": "20/20",
+    "jakosc": 4,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 246,
+    "nazwa": "Blue Map",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "lazarussharedglobal"]
+  },
+  {
+    "idW": 247,
+    "nazwa": "BFFS!",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 248,
+    "nazwa": "Hive Mind",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "spider", "offensive", "fly"]
+  },
+  {
+    "idW": 249,
+    "nazwa": "There's Options",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip", "lazarussharedglobal", "nogreed"]
+  },
+  {
+    "idW": 250,
+    "nazwa": "BOGO Bombs",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip"]
+  },
+  {
+    "idW": 251,
+    "nazwa": "Starter Deck",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip"]
+  },
+  {
+    "idW": 252,
+    "nazwa": "Little Baggy",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip"]
+  },
+  { "idW": 253, "nazwa": "Magic Scab", "jakosc": 2, "typ": "PASYWNY", "tagi": ["nolostbr"] },
+  {
+    "idW": 254,
+    "nazwa": "Blood Clot",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 255,
+    "nazwa": "Screw",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive"]
+  },
+  {
+    "idW": 256,
+    "nazwa": "Hot Bombs",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 257,
+    "nazwa": "Fire Mind",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 258,
+    "nazwa": "Missing No.",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip"]
+  },
+  {
+    "idW": 259,
+    "nazwa": "Dark Matter",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 260,
+    "nazwa": "Black Candle",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "lazarussharedglobal"]
+  },
+  {
+    "idW": 261,
+    "nazwa": "Proptosis",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 262,
+    "nazwa": "Missing Page 2",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 263,
+    "nazwa": "Clear Rune",
+    "jakosc": 2,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  {
+    "idW": 264,
+    "nazwa": "Smart Fly",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "fly"]
+  },
+  {
+    "idW": 265,
+    "nazwa": "Dry Baby",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "monstermanual"]
+  },
+  {
+    "idW": 266,
+    "nazwa": "Juicy Sack",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "spider", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 267,
+    "nazwa": "Robo-Baby 2.0",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "tech", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 268,
+    "nazwa": "Rotten Baby",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 269,
+    "nazwa": "Headless Baby",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 270,
+    "nazwa": "Leech",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 271,
+    "nazwa": "Mystery Sack",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 272,
+    "nazwa": "BBF",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive", "fly"]
+  },
+  {
+    "idW": 273,
+    "nazwa": "Bob's Brain",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["bob", "summonable", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 274,
+    "nazwa": "Best Bud",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable", "fly"]
+  },
+  {
+    "idW": 275,
+    "nazwa": "Lil Brimstone",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 276,
+    "nazwa": "Isaac's Heart",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["uniquefamiliar", "nolostbr", "summonable"]
+  },
+  {
+    "idW": 277,
+    "nazwa": "Lil Haunt",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive"]
+  },
+  { "idW": 278, "nazwa": "Dark Bum", "jakosc": 3, "typ": "PASYWNY", "tagi": ["summonable"] },
+  {
+    "idW": 279,
+    "nazwa": "Big Fan",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "fly"]
+  },
+  {
+    "idW": 280,
+    "nazwa": "Sissy Longlegs",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "spider", "monstermanual", "offensive"]
+  },
+  { "idW": 281, "nazwa": "Punching Bag", "jakosc": 1, "typ": "PASYWNY", "tagi": ["summonable"] },
+  { "idW": 282, "nazwa": "How to Jump", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["book"] },
+  {
+    "idW": 283,
+    "nazwa": "D100",
+    "jakosc": 3,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  { "idW": 284, "nazwa": "D4", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive", "nocantrip"] },
+  { "idW": 285, "nazwa": "D10", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 286,
+    "nazwa": "Blank Card",
+    "jakosc": 2,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  {
+    "idW": 287,
+    "nazwa": "Book of Secrets",
+    "jakosc": 1,
+    "typ": "AKTYWNY",
+    "tagi": ["book", "offensive"]
+  },
+  {
+    "idW": 288,
+    "nazwa": "Box of Spiders",
+    "jakosc": 1,
+    "typ": "AKTYWNY",
+    "tagi": ["spider", "offensive"]
+  },
+  { "idW": 289, "nazwa": "Red Candle", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 290,
+    "nazwa": "The Jar",
+    "jakosc": 0,
+    "typ": "AKTYWNY",
+    "tagi": ["nolostbr", "nocantrip"]
+  },
+  { "idW": 291, "nazwa": "Flush!", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["poop", "offensive"] },
+  {
+    "idW": 292,
+    "nazwa": "Satanic Bible",
+    "jakosc": 4,
+    "typ": "AKTYWNY",
+    "tagi": ["nolostbr", "book"]
+  },
+  { "idW": 293, "nazwa": "Head of Krampus", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 294, "nazwa": "Butter Bean", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 295, "nazwa": "Magic Fingers", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 296, "nazwa": "Converter", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["nolostbr"] },
+  { "idW": 297, "nazwa": "Pandora's Box", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 298, "nazwa": "Unicorn Stump", "jakosc": 1, "typ": "AKTYWNY", "tagi": [] },
+  {
+    "idW": 299,
+    "nazwa": "Taurus",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "nocantrip", "stars"]
+  },
+  {
+    "idW": 300,
+    "nazwa": "Aries",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "stars"]
+  },
+  {
+    "idW": 301,
+    "nazwa": "Cancer",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable", "stars"]
+  },
+  { "idW": 302, "nazwa": "Leo", "jakosc": 1, "typ": "PASYWNY", "tagi": ["summonable", "stars"] },
+  { "idW": 303, "nazwa": "Virgo", "jakosc": 2, "typ": "PASYWNY", "tagi": ["summonable", "stars"] },
+  {
+    "idW": 304,
+    "nazwa": "Libra",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "stars"]
+  },
+  {
+    "idW": 305,
+    "nazwa": "Scorpio",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "stars"]
+  },
+  {
+    "idW": 306,
+    "nazwa": "Sagittarius",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "stars"]
+  },
+  {
+    "idW": 307,
+    "nazwa": "Capricorn",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive", "stars"]
+  },
+  {
+    "idW": 308,
+    "nazwa": "Aquarius",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "stars"]
+  },
+  {
+    "idW": 309,
+    "nazwa": "Pisces",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive", "stars"]
+  },
+  {
+    "idW": 310,
+    "nazwa": "Eve's Mascara",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 311,
+    "nazwa": "Judas' Shadow",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "nocantrip", "nochallenge"]
+  },
+  {
+    "idW": 312,
+    "nazwa": "Maggy's Bow",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 313,
+    "nazwa": "Holy Mantle",
+    "jakosc": 4,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "angel"]
+  },
+  {
+    "idW": 314,
+    "nazwa": "Thunder Thighs",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 315,
+    "nazwa": "Strange Attractor",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 316,
+    "nazwa": "Cursed Eye",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 317,
+    "nazwa": "Mysterious Liquid",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 318,
+    "nazwa": "Gemini",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive", "stars"]
+  },
+  {
+    "idW": 319,
+    "nazwa": "Cain's Other Eye",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 320,
+    "nazwa": "???'s Only Friend",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive", "fly"]
+  },
+  { "idW": 321, "nazwa": "Samson's Chains", "jakosc": 1, "typ": "PASYWNY", "tagi": ["summonable"] },
+  {
+    "idW": 322,
+    "nazwa": "Mongo Baby",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "monstermanual", "offensive"]
+  },
+  { "idW": 323, "nazwa": "Isaac's Tears", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 324, "nazwa": "Undefined", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 325, "nazwa": "Scissors", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 326,
+    "nazwa": "Breath of Life",
+    "jakosc": 1,
+    "typ": "AKTYWNY",
+    "tagi": ["nolostbr", "nocantrip"]
+  },
+  {
+    "idW": 327,
+    "nazwa": "The Polaroid",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["offensive", "lazarusshared", "noeden", "quest"]
+  },
+  {
+    "idW": 328,
+    "nazwa": "The Negative",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["offensive", "lazarusshared", "noeden", "quest"]
+  },
+  {
+    "idW": 329,
+    "nazwa": "The Ludovico Technique",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 330,
+    "nazwa": "Soy Milk",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive"]
+  },
+  {
+    "idW": 331,
+    "nazwa": "Godhead",
+    "jakosc": 4,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "angel"]
+  },
+  {
+    "idW": 332,
+    "nazwa": "Lazarus' Rags",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "nocantrip", "nochallenge"]
+  },
+  {
+    "idW": 333,
+    "nazwa": "The Mind",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "lazarussharedglobal"]
+  },
+  { "idW": 334, "nazwa": "The Body", "jakosc": 3, "typ": "PASYWNY", "tagi": ["nolostbr"] },
+  { "idW": 335, "nazwa": "The Soul", "jakosc": 3, "typ": "PASYWNY", "tagi": ["summonable"] },
+  {
+    "idW": 336,
+    "nazwa": "Dead Onion",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "dead", "offensive"]
+  },
+  {
+    "idW": 337,
+    "nazwa": "Broken Watch",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "nocantrip"]
+  },
+  { "idW": 338, "nazwa": "The Boomerang", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 339,
+    "nazwa": "Safety Pin",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 340,
+    "nazwa": "Caffeine Pill",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 341,
+    "nazwa": "Torn Photo",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive"]
+  },
+  {
+    "idW": 342,
+    "nazwa": "Blue Cap",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "mushroom", "tearsup", "offensive"]
+  },
+  {
+    "idW": 343,
+    "nazwa": "Latch Key",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 344, "nazwa": "Match Book", "jakosc": 1, "typ": "PASYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 345,
+    "nazwa": "Synthoil",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "syringe", "offensive"]
+  },
+  { "idW": 346, "nazwa": "A Snack", "jakosc": 1, "typ": "PASYWNY", "tagi": ["nolostbr", "food"] },
+  { "idW": 347, "nazwa": "Diplopia", "jakosc": 3, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 348,
+    "nazwa": "Placebo",
+    "jakosc": 2,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  { "idW": 349, "nazwa": "Wooden Nickel", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 350,
+    "nazwa": "Toxic Shock",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 351, "nazwa": "Mega Bean", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 352, "nazwa": "Glass Cannon", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 353,
+    "nazwa": "Bomber Boy",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 354, "nazwa": "Crack Jacks", "jakosc": 2, "typ": "PASYWNY", "tagi": ["nolostbr"] },
+  {
+    "idW": 355,
+    "nazwa": "Mom's Pearls",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "mom", "offensive"]
+  },
+  {
+    "idW": 356,
+    "nazwa": "Car Battery",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["battery", "summonable", "offensive", "nocantrip"]
+  },
+  { "idW": 357, "nazwa": "Box of Friends", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 358,
+    "nazwa": "The Wiz",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 359,
+    "nazwa": "8 Inch Nails",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 360,
+    "nazwa": "Incubus",
+    "jakosc": 4,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 361,
+    "nazwa": "Fate's Reward",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 362,
+    "nazwa": "Lil Chest",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 363,
+    "nazwa": "Sworn Protector",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "monstermanual"]
+  },
+  {
+    "idW": 364,
+    "nazwa": "Friend Zone",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive", "fly"]
+  },
+  {
+    "idW": 365,
+    "nazwa": "Lost Fly",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive", "fly"]
+  },
+  {
+    "idW": 366,
+    "nazwa": "Scatter Bombs",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 367,
+    "nazwa": "Sticky Bombs",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "spider", "offensive"]
+  },
+  {
+    "idW": 368,
+    "nazwa": "Epiphora",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 369,
+    "nazwa": "Continuum",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 370,
+    "nazwa": "Mr. Dolly",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive"]
+  },
+  {
+    "idW": 371,
+    "nazwa": "Curse of the Tower",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 372,
+    "nazwa": "Charged Baby",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip"]
+  },
+  {
+    "idW": 373,
+    "nazwa": "Dead Eye",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 374,
+    "nazwa": "Holy Light",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "angel"]
+  },
+  { "idW": 375, "nazwa": "Host Hat", "jakosc": 3, "typ": "PASYWNY", "tagi": ["summonable"] },
+  {
+    "idW": 376,
+    "nazwa": "Restock",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nogreed"]
+  },
+  {
+    "idW": 377,
+    "nazwa": "Bursting Sack",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "spider", "offensive"]
+  },
+  {
+    "idW": 378,
+    "nazwa": "No. 2",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["poop", "summonable", "offensive"]
+  },
+  {
+    "idW": 379,
+    "nazwa": "Pupula Duplex",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 380,
+    "nazwa": "Pay To Play",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip", "lazarussharedglobal"]
+  },
+  {
+    "idW": 381,
+    "nazwa": "Eden's Blessing",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive", "nocantrip"]
+  },
+  {
+    "idW": 382,
+    "nazwa": "Friendly Ball",
+    "jakosc": 1,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  { "idW": 383, "nazwa": "Tear Detonator", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 384,
+    "nazwa": "Lil Gurdy",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 385,
+    "nazwa": "Bumbo",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 386, "nazwa": "D12", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 387, "nazwa": "Censer", "jakosc": 3, "typ": "PASYWNY", "tagi": ["summonable"] },
+  {
+    "idW": 388,
+    "nazwa": "Key Bum",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 389,
+    "nazwa": "Rune Bag",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip"]
+  },
+  {
+    "idW": 390,
+    "nazwa": "Seraphim",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 391,
+    "nazwa": "Betrayal",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 392,
+    "nazwa": "Zodiac",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "stars"]
+  },
+  {
+    "idW": 393,
+    "nazwa": "Serpent's Kiss",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 394,
+    "nazwa": "Marked",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive"]
+  },
+  {
+    "idW": 395,
+    "nazwa": "Tech X",
+    "jakosc": 4,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tech", "offensive"]
+  },
+  {
+    "idW": 396,
+    "nazwa": "Ventricle Razor",
+    "jakosc": 1,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  {
+    "idW": 397,
+    "nazwa": "Tractor Beam",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 398,
+    "nazwa": "God's Flesh",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "mushroom", "offensive"]
+  },
+  {
+    "idW": 399,
+    "nazwa": "Maw Of The Void",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["devil", "summonable", "offensive"]
+  },
+  {
+    "idW": 400,
+    "nazwa": "Spear Of Destiny",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 401,
+    "nazwa": "Explosivo",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 402,
+    "nazwa": "Chaos",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip"]
+  },
+  {
+    "idW": 403,
+    "nazwa": "Spider Mod",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "spider", "offensive"]
+  },
+  {
+    "idW": 404,
+    "nazwa": "Farting Baby",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "monstermanual"]
+  },
+  {
+    "idW": 405,
+    "nazwa": "GB Bug",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 406, "nazwa": "D8", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 407,
+    "nazwa": "Purity",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive"]
+  },
+  {
+    "idW": 408,
+    "nazwa": "Athame",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 409, "nazwa": "Empty Vessel", "jakosc": 2, "typ": "PASYWNY", "tagi": ["summonable"] },
+  {
+    "idW": 410,
+    "nazwa": "Evil Eye",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 411,
+    "nazwa": "Lusty Blood",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 412,
+    "nazwa": "Cambion Conception",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 413,
+    "nazwa": "Immaculate Conception",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 414,
+    "nazwa": "More Options",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip", "lazarussharedglobal"]
+  },
+  {
+    "idW": 415,
+    "nazwa": "Crown Of Light",
+    "jakosc": 4,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 416,
+    "nazwa": "Deep Pockets",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip", "lazarussharedglobal"]
+  },
+  {
+    "idW": 417,
+    "nazwa": "Succubus",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 418,
+    "nazwa": "Fruit Cake",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 419, "nazwa": "Teleport 2.0", "jakosc": 3, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 420,
+    "nazwa": "Black Powder",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 421, "nazwa": "Kidney Bean", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 422,
+    "nazwa": "Glowing Hourglass",
+    "jakosc": 3,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  {
+    "idW": 423,
+    "nazwa": "Circle of Protection",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable"]
+  },
+  {
+    "idW": 424,
+    "nazwa": "Sack Head",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 425, "nazwa": "Night Light", "jakosc": 1, "typ": "PASYWNY", "tagi": ["summonable"] },
+  {
+    "idW": 426,
+    "nazwa": "Obsessed Fan",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "fly"]
+  },
+  { "idW": 427, "nazwa": "Mine Crafter", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 428, "nazwa": "PJs", "jakosc": 2, "typ": "PASYWNY", "tagi": ["nolostbr"] },
+  {
+    "idW": 429,
+    "nazwa": "Head of the Keeper",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 430,
+    "nazwa": "Papa Fly",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive", "fly"]
+  },
+  {
+    "idW": 431,
+    "nazwa": "Multidimensional Baby",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "offensive"]
+  },
+  {
+    "idW": 432,
+    "nazwa": "Glitter Bombs",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 433,
+    "nazwa": "My Shadow",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 434,
+    "nazwa": "Jar of Flies",
+    "jakosc": 2,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip", "fly"]
+  },
+  {
+    "idW": 435,
+    "nazwa": "Lil Loki",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 436,
+    "nazwa": "Milk!",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["uniquefamiliar", "nolostbr", "summonable"]
+  },
+  { "idW": 437, "nazwa": "D7", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 438,
+    "nazwa": "Binky",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive"]
+  },
+  { "idW": 439, "nazwa": "Mom's Box", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["mom", "offensive"] },
+  {
+    "idW": 440,
+    "nazwa": "Kidney Stone",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 441, "nazwa": "Mega Blast", "jakosc": 4, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 442,
+    "nazwa": "Dark Prince's Crown",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable", "tearsup"]
+  },
+  {
+    "idW": 443,
+    "nazwa": "Apple!",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive"]
+  },
+  {
+    "idW": 444,
+    "nazwa": "Lead Pencil",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 445,
+    "nazwa": "Dog Tooth",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 446,
+    "nazwa": "Dead Tooth",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 447,
+    "nazwa": "Linger Bean",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 448,
+    "nazwa": "Shard of Glass",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  { "idW": 449, "nazwa": "Metal Plate", "jakosc": 1, "typ": "PASYWNY", "tagi": ["summonable"] },
+  {
+    "idW": 450,
+    "nazwa": "Eye of Greed",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 451,
+    "nazwa": "Tarot Cloth",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "stars"]
+  },
+  {
+    "idW": 452,
+    "nazwa": "Varicose Veins",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 453,
+    "nazwa": "Compound Fracture",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 454,
+    "nazwa": "Polydactyly",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 455,
+    "nazwa": "Dad's Lost Coin",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 456,
+    "nazwa": "Midnight Snack",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "food"]
+  },
+  { "idW": 457, "nazwa": "Cone Head", "jakosc": 2, "typ": "PASYWNY", "tagi": ["summonable"] },
+  {
+    "idW": 458,
+    "nazwa": "Belly Button",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 459,
+    "nazwa": "Sinus Infection",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 460,
+    "nazwa": "Glaucoma",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 461,
+    "nazwa": "Parasitoid",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "spider", "offensive", "fly"]
+  },
+  {
+    "idW": 462,
+    "nazwa": "Eye of Belial",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 463,
+    "nazwa": "Sulfuric Acid",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 464,
+    "nazwa": "Glyph of Balance",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 465,
+    "nazwa": "Analog Stick",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive"]
+  },
+  {
+    "idW": 466,
+    "nazwa": "Contagion",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 467,
+    "nazwa": "Finger!",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 468,
+    "nazwa": "Shade",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 469,
+    "nazwa": "Depression",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 470,
+    "nazwa": "Hushy",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 471,
+    "nazwa": "Lil Monstro",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 472,
+    "nazwa": "King Baby",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "offensive"]
+  },
+  {
+    "idW": 473,
+    "nazwa": "Big Chubby",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive"]
+  },
+  { "idW": 474, "nazwa": "Broken Glass Cannon", "jakosc": 0, "typ": "AKTYWNY", "tagi": [] },
+  { "idW": 475, "nazwa": "Plan C", "jakosc": 0, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 476, "nazwa": "D1", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 477,
+    "nazwa": "Void",
+    "jakosc": 4,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  { "idW": 478, "nazwa": "Pause", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 479, "nazwa": "Smelter", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 480, "nazwa": "Compost", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 481, "nazwa": "Dataminer", "jakosc": 0, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 482,
+    "nazwa": "Clicker",
+    "jakosc": 0,
+    "typ": "AKTYWNY",
+    "tagi": ["nolostbr", "nochallenge", "nodaily"]
+  },
+  { "idW": 483, "nazwa": "Mama Mega!", "jakosc": 3, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 484, "nazwa": "Wait What?", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 485, "nazwa": "Crooked Penny", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 486, "nazwa": "Dull Razor", "jakosc": 1, "typ": "AKTYWNY", "tagi": [] },
+  { "idW": 487, "nazwa": "Potato Peeler", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["nolostbr"] },
+  { "idW": 488, "nazwa": "Metronome", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 489, "nazwa": "D infinity", "jakosc": 4, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 490, "nazwa": "Eden's Soul", "jakosc": 3, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 491,
+    "nazwa": "Acid Baby",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "offensive"]
+  },
+  {
+    "idW": 492,
+    "nazwa": "YO LISTEN!",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "fly"]
+  },
+  {
+    "idW": 493,
+    "nazwa": "Adrenaline",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable", "syringe"]
+  },
+  {
+    "idW": 494,
+    "nazwa": "Jacob's Ladder",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 495,
+    "nazwa": "Ghost Pepper",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 496,
+    "nazwa": "Euthanasia",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "syringe", "offensive"]
+  },
+  {
+    "idW": 497,
+    "nazwa": "Camo Undies",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 498,
+    "nazwa": "Duality",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "lazarussharedglobal"]
+  },
+  {
+    "idW": 499,
+    "nazwa": "Eucharist",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "lazarussharedglobal"]
+  },
+  {
+    "idW": 500,
+    "nazwa": "Sack of Sacks",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 501,
+    "nazwa": "Greed's Gullet",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 502,
+    "nazwa": "Large Zit",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 503,
+    "nazwa": "Little Horn",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 504,
+    "nazwa": "Brown Nugget",
+    "jakosc": 0,
+    "typ": "AKTYWNY",
+    "tagi": ["poop", "offensive"]
+  },
+  {
+    "idW": 505,
+    "nazwa": "Poke Go",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  {
+    "idW": 506,
+    "nazwa": "Backstabber",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 507, "nazwa": "Sharp Straw", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 508,
+    "nazwa": "Mom's Razor",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "mom"]
+  },
+  {
+    "idW": 509,
+    "nazwa": "Bloodshot Eye",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual"]
+  },
+  { "idW": 510, "nazwa": "Delirious", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 511,
+    "nazwa": "Angry Fly",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive", "fly"]
+  },
+  { "idW": 512, "nazwa": "Black Hole", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 513,
+    "nazwa": "Bozo",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  { "idW": 514, "nazwa": "Broken Modem", "jakosc": 3, "typ": "PASYWNY", "tagi": ["summonable"] },
+  {
+    "idW": 515,
+    "nazwa": "Mystery Gift",
+    "jakosc": 3,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  { "idW": 516, "nazwa": "Sprinkler", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 517,
+    "nazwa": "Fast Bombs",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 518,
+    "nazwa": "Buddy in a Box",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "offensive"]
+  },
+  {
+    "idW": 519,
+    "nazwa": "Lil Delirium",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 520,
+    "nazwa": "Jumper Cables",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip"]
+  },
+  {
+    "idW": 521,
+    "nazwa": "Coupon",
+    "jakosc": 2,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  { "idW": 522, "nazwa": "Telekinesis", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 523,
+    "nazwa": "Moving Box",
+    "jakosc": 1,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  {
+    "idW": 524,
+    "nazwa": "Technology Zero",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tech", "offensive"]
+  },
+  {
+    "idW": 525,
+    "nazwa": "Leprosy",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 526,
+    "nazwa": "7 Seals",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 527, "nazwa": "Mr. ME!", "jakosc": 3, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 528,
+    "nazwa": "Angelic Prism",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 529,
+    "nazwa": "Pop!",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 530,
+    "nazwa": "Death's List",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 531,
+    "nazwa": "Haemolacria",
+    "jakosc": 4,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 532,
+    "nazwa": "Lachryphagy",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 533,
+    "nazwa": "Trisagion",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 534,
+    "nazwa": "Schoolbag",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip"]
+  },
+  { "idW": 535, "nazwa": "Blanket", "jakosc": 2, "typ": "PASYWNY", "tagi": ["summonable"] },
+  {
+    "idW": 536,
+    "nazwa": "Sacrificial Altar",
+    "jakosc": 2,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  {
+    "idW": 537,
+    "nazwa": "Lil Spewer",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive"]
+  },
+  { "idW": 538, "nazwa": "Marbles", "jakosc": 2, "typ": "PASYWNY", "tagi": ["summonable"] },
+  {
+    "idW": 539,
+    "nazwa": "Mystery Egg",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 540,
+    "nazwa": "Flat Stone",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 541, "nazwa": "Marrow", "jakosc": 1, "typ": "PASYWNY", "tagi": ["nolostbr"] },
+  { "idW": 542, "nazwa": "Slipped Rib", "jakosc": 2, "typ": "PASYWNY", "tagi": ["summonable"] },
+  {
+    "idW": 543,
+    "nazwa": "Hallowed Ground",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["poop", "nolostbr", "summonable"]
+  },
+  {
+    "idW": 544,
+    "nazwa": "Pointy Rib",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 545,
+    "nazwa": "Book of the Dead",
+    "jakosc": 3,
+    "typ": "AKTYWNY",
+    "tagi": ["book", "offensive"]
+  },
+  { "idW": 546, "nazwa": "Dad's Ring", "jakosc": 3, "typ": "PASYWNY", "tagi": ["summonable"] },
+  {
+    "idW": 547,
+    "nazwa": "Divorce Papers",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 548,
+    "nazwa": "Jaw Bone",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 549, "nazwa": "Brittle Bones", "jakosc": 3, "typ": "PASYWNY", "tagi": ["nolostbr"] },
+  {
+    "idW": 550,
+    "nazwa": "Broken Shovel",
+    "jakosc": 4,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "noeden", "lazarussharedglobal", "quest"]
+  },
+  {
+    "idW": 552,
+    "nazwa": "Mom's Shovel",
+    "jakosc": 4,
+    "typ": "AKTYWNY",
+    "tagi": ["mom", "offensive", "noeden", "lazarussharedglobal", "quest"]
+  },
+  {
+    "idW": 553,
+    "nazwa": "Mucormycosis",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["mushroom", "offensive"]
+  },
+  { "idW": 554, "nazwa": "2Spooky", "jakosc": 1, "typ": "PASYWNY", "tagi": ["summonable"] },
+  { "idW": 555, "nazwa": "Golden Razor", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 556, "nazwa": "Sulfur", "jakosc": 3, "typ": "AKTYWNY", "tagi": ["devil", "offensive"] },
+  { "idW": 557, "nazwa": "Fortune Cookie", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 558,
+    "nazwa": "Eye Sore",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 559,
+    "nazwa": "120 Volt",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 560,
+    "nazwa": "It Hurts",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 561,
+    "nazwa": "Almond Milk",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive"]
+  },
+  {
+    "idW": 562,
+    "nazwa": "Rock Bottom",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 563,
+    "nazwa": "Nancy Bombs",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 564,
+    "nazwa": "A Bar of Soap",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive"]
+  },
+  { "idW": 565, "nazwa": "Blood Puppy", "jakosc": 1, "typ": "PASYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 566,
+    "nazwa": "Dream Catcher",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip", "lazarussharedglobal"]
+  },
+  {
+    "idW": 567,
+    "nazwa": "Paschal Candle",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["uniquefamiliar", "summonable", "tearsup", "offensive", "nocantrip"]
+  },
+  { "idW": 568, "nazwa": "Divine Intervention", "jakosc": 2, "typ": "PASYWNY", "tagi": ["angel"] },
+  {
+    "idW": 569,
+    "nazwa": "Blood Oath",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["uniquefamiliar", "nolostbr", "summonable"]
+  },
+  {
+    "idW": 570,
+    "nazwa": "Playdough Cookie",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 571,
+    "nazwa": "Orphan Socks",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 572,
+    "nazwa": "Eye of the Occult",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["devil", "summonable", "offensive"]
+  },
+  {
+    "idW": 573,
+    "nazwa": "Immaculate Heart",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "angel"]
+  },
+  {
+    "idW": 574,
+    "nazwa": "Monstrance",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 575,
+    "nazwa": "The Intruder",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "spider", "offensive"]
+  },
+  {
+    "idW": 576,
+    "nazwa": "Dirty Mind",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["poop", "summonable", "offensive"]
+  },
+  {
+    "idW": 577,
+    "nazwa": "Damocles",
+    "jakosc": 2,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  { "idW": 578, "nazwa": "Free Lemonade", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 579,
+    "nazwa": "Spirit Sword",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 580,
+    "nazwa": "Red Key",
+    "jakosc": 3,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nogreed"]
+  },
+  {
+    "idW": 581,
+    "nazwa": "Psy Fly",
+    "jakosc": 4,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "fly"]
+  },
+  {
+    "idW": 582,
+    "nazwa": "Wavy Cap",
+    "jakosc": 1,
+    "typ": "AKTYWNY",
+    "tagi": ["mushroom", "offensive"]
+  },
+  {
+    "idW": 583,
+    "nazwa": "Rocket in a Jar",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 584,
+    "nazwa": "Book of Virtues",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["book", "offensive", "lazarussharedglobal"]
+  },
+  {
+    "idW": 585,
+    "nazwa": "Alabaster Box",
+    "jakosc": 2,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  {
+    "idW": 586,
+    "nazwa": "The Stairway",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["offensive", "nocantrip", "lazarussharedglobal"]
+  },
+  {
+    "idW": 588,
+    "nazwa": "Sol",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "stars"]
+  },
+  {
+    "idW": 589,
+    "nazwa": "Luna",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip", "stars", "lazarussharedglobal"]
+  },
+  {
+    "idW": 590,
+    "nazwa": "Mercurius",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "stars"]
+  },
+  {
+    "idW": 591,
+    "nazwa": "Venus",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "stars"]
+  },
+  {
+    "idW": 592,
+    "nazwa": "Terra",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "stars"]
+  },
+  {
+    "idW": 593,
+    "nazwa": "Mars",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "stars"]
+  },
+  {
+    "idW": 594,
+    "nazwa": "Jupiter",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "stars"]
+  },
+  {
+    "idW": 595,
+    "nazwa": "Saturnus",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "stars"]
+  },
+  {
+    "idW": 596,
+    "nazwa": "Uranus",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "stars"]
+  },
+  {
+    "idW": 597,
+    "nazwa": "Neptunus",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "stars"]
+  },
+  {
+    "idW": 598,
+    "nazwa": "Pluto",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive", "stars"]
+  },
+  {
+    "idW": 599,
+    "nazwa": "Voodoo Head",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip", "lazarussharedglobal"]
+  },
+  {
+    "idW": 600,
+    "nazwa": "Eye Drops",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive"]
+  },
+  {
+    "idW": 601,
+    "nazwa": "Act of Contrition",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "tearsup", "offensive", "lazarussharedglobal"]
+  },
+  {
+    "idW": 602,
+    "nazwa": "Member Card",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 603,
+    "nazwa": "Battery Pack",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["battery", "offensive"]
+  },
+  {
+    "idW": 604,
+    "nazwa": "Mom's Bracelet",
+    "jakosc": 1,
+    "typ": "AKTYWNY",
+    "tagi": ["mom", "offensive"]
+  },
+  { "idW": 605, "nazwa": "The Scooper", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 606,
+    "nazwa": "Ocular Rift",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 607,
+    "nazwa": "Boiled Baby",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 608,
+    "nazwa": "Freezer Baby",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 609,
+    "nazwa": "Eternal D6",
+    "jakosc": 3,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  {
+    "idW": 610,
+    "nazwa": "Bird Cage",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable", "dead"]
+  },
+  { "idW": 611, "nazwa": "Larynx", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 612,
+    "nazwa": "Lost Soul",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "nocantrip"]
+  },
+  {
+    "idW": 614,
+    "nazwa": "Blood Bombs",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  { "idW": 615, "nazwa": "Lil Dumpy", "jakosc": 3, "typ": "PASYWNY", "tagi": ["summonable"] },
+  { "idW": 616, "nazwa": "Bird's Eye", "jakosc": 3, "typ": "PASYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 617,
+    "nazwa": "Lodestone",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 618,
+    "nazwa": "Rotten Tomato",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 619,
+    "nazwa": "Birthright",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip"]
+  },
+  { "idW": 621, "nazwa": "Red Stew", "jakosc": 2, "typ": "PASYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 622,
+    "nazwa": "Genesis",
+    "jakosc": 3,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  { "idW": 623, "nazwa": "Sharp Key", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 624, "nazwa": "Booster Pack", "jakosc": 1, "typ": "PASYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 625,
+    "nazwa": "Mega Mush",
+    "jakosc": 4,
+    "typ": "AKTYWNY",
+    "tagi": ["mushroom", "offensive"]
+  },
+  {
+    "idW": 626,
+    "nazwa": "Knife Piece 1",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["uniquefamiliar", "lazarusshared", "noeden", "quest"]
+  },
+  {
+    "idW": 627,
+    "nazwa": "Knife Piece 2",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["uniquefamiliar", "lazarusshared", "noeden", "quest"]
+  },
+  {
+    "idW": 628,
+    "nazwa": "Death Certificate",
+    "jakosc": 4,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  {
+    "idW": 629,
+    "nazwa": "Bot Fly",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "fly"]
+  },
+  { "idW": 631, "nazwa": "Meat Cleaver", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 632,
+    "nazwa": "Evil Charm",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 633,
+    "nazwa": "Dogma",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["lazarusshared", "noeden", "quest"]
+  },
+  { "idW": 634, "nazwa": "Purgatory", "jakosc": 2, "typ": "PASYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 635,
+    "nazwa": "Stitches",
+    "jakosc": 1,
+    "typ": "AKTYWNY",
+    "tagi": ["uniquefamiliar", "offensive", "nocantrip"]
+  },
+  {
+    "idW": 636,
+    "nazwa": "R Key",
+    "jakosc": 4,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip", "nochallenge", "nodaily"]
+  },
+  {
+    "idW": 637,
+    "nazwa": "Knockout Drops",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 638, "nazwa": "Eraser", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 639, "nazwa": "Yuck Heart", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["nolostbr"] },
+  {
+    "idW": 640,
+    "nazwa": "Urn of Souls",
+    "jakosc": 3,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  {
+    "idW": 641,
+    "nazwa": "Akeldama",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 642,
+    "nazwa": "Magic Skin",
+    "jakosc": 2,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  {
+    "idW": 643,
+    "nazwa": "Revelation",
+    "jakosc": 4,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "angel"]
+  },
+  {
+    "idW": 644,
+    "nazwa": "Consolation Prize",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["tearsup", "offensive"]
+  },
+  {
+    "idW": 645,
+    "nazwa": "Tinytoma",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual"]
+  },
+  {
+    "idW": 646,
+    "nazwa": "Brimstone Bombs",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 647,
+    "nazwa": "4.5 Volt",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["battery", "summonable", "offensive", "nocantrip"]
+  },
+  {
+    "idW": 649,
+    "nazwa": "Fruity Plum",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "monstermanual", "offensive", "fly"]
+  },
+  {
+    "idW": 650,
+    "nazwa": "Plum Flute",
+    "jakosc": 1,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "fly"]
+  },
+  {
+    "idW": 651,
+    "nazwa": "Star of Bethlehem",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip", "stars"]
+  },
+  { "idW": 652, "nazwa": "Cube Baby", "jakosc": 1, "typ": "PASYWNY", "tagi": ["baby"] },
+  {
+    "idW": 653,
+    "nazwa": "Vade Retro",
+    "jakosc": 2,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  {
+    "idW": 654,
+    "nazwa": "False PHD",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip"]
+  },
+  { "idW": 655, "nazwa": "Spin to Win", "jakosc": 1, "typ": "AKTYWNY", "tagi": ["nocantrip"] },
+  {
+    "idW": 657,
+    "nazwa": "Vasculitis",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 658,
+    "nazwa": "Giant Cell",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 659,
+    "nazwa": "Tropicamide",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 660,
+    "nazwa": "Card Reading",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip", "stars", "lazarussharedglobal", "nogreed"]
+  },
+  {
+    "idW": 661,
+    "nazwa": "Quints",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "offensive"]
+  },
+  {
+    "idW": 663,
+    "nazwa": "Tooth and Nail",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 664, "nazwa": "Binge Eater", "jakosc": 4, "typ": "PASYWNY", "tagi": ["nolostbr"] },
+  {
+    "idW": 665,
+    "nazwa": "Guppy's Eye",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["guppy", "offensive"]
+  },
+  { "idW": 667, "nazwa": "Strawman", "jakosc": 2, "typ": "PASYWNY", "tagi": ["dead", "offensive"] },
+  {
+    "idW": 668,
+    "nazwa": "Dad's Note",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["lazarusshared", "noeden", "quest"]
+  },
+  {
+    "idW": 669,
+    "nazwa": "Sausage",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "lazarussharedglobal"]
+  },
+  {
+    "idW": 670,
+    "nazwa": "Options?",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nogreed"]
+  },
+  {
+    "idW": 671,
+    "nazwa": "Candy Heart",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 672,
+    "nazwa": "A Pound of Flesh",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "nokeeper", "nogreed"]
+  },
+  {
+    "idW": 673,
+    "nazwa": "Redemption",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "lazarusshared"]
+  },
+  { "idW": 674, "nazwa": "Spirit Shackles", "jakosc": 2, "typ": "PASYWNY", "tagi": [] },
+  {
+    "idW": 675,
+    "nazwa": "Cracked Orb",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 676,
+    "nazwa": "Empty Heart",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 677,
+    "nazwa": "Astral Projection",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 678,
+    "nazwa": "C Section",
+    "jakosc": 4,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 679,
+    "nazwa": "Lil Abaddon",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 680,
+    "nazwa": "Montezuma's Revenge",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["poop", "summonable", "offensive"]
+  },
+  {
+    "idW": 681,
+    "nazwa": "Lil Portal",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 682,
+    "nazwa": "Worm Friend",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 683,
+    "nazwa": "Bone Spurs",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 684,
+    "nazwa": "Hungry Soul",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 685, "nazwa": "Jar of Wisps", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 686,
+    "nazwa": "Soul Locket",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 687, "nazwa": "Friend Finder", "jakosc": 3, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 688, "nazwa": "Inner Child", "jakosc": 2, "typ": "PASYWNY", "tagi": [] },
+  {
+    "idW": 689,
+    "nazwa": "Glitched Crown",
+    "jakosc": 4,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip"]
+  },
+  { "idW": 690, "nazwa": "Belly Jelly", "jakosc": 3, "typ": "PASYWNY", "tagi": ["summonable"] },
+  {
+    "idW": 691,
+    "nazwa": "Sacred Orb",
+    "jakosc": 4,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip", "angel"]
+  },
+  {
+    "idW": 692,
+    "nazwa": "Sanguine Bond",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 693,
+    "nazwa": "The Swarm",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "fly"]
+  },
+  { "idW": 694, "nazwa": "Heartbreak", "jakosc": 3, "typ": "PASYWNY", "tagi": ["summonable"] },
+  {
+    "idW": 695,
+    "nazwa": "Bloody Gust",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 696,
+    "nazwa": "Salvation",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "angel"]
+  },
+  {
+    "idW": 697,
+    "nazwa": "Vanishing Twin",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["uniquefamiliar", "offensive", "lazarusshared", "nogreed"]
+  },
+  {
+    "idW": 698,
+    "nazwa": "Twisted Pair",
+    "jakosc": 4,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "baby", "monstermanual", "offensive"]
+  },
+  {
+    "idW": 699,
+    "nazwa": "Azazel's Rage",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 700,
+    "nazwa": "Echo Chamber",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive", "nocantrip", "stars"]
+  },
+  {
+    "idW": 701,
+    "nazwa": "Isaac's Tomb",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 702,
+    "nazwa": "Vengeful Spirit",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 703,
+    "nazwa": "Esau Jr.",
+    "jakosc": 2,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  { "idW": 704, "nazwa": "Berserk!", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 705, "nazwa": "Dark Arts", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 706,
+    "nazwa": "Abyss",
+    "jakosc": 4,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  { "idW": 707, "nazwa": "Supper", "jakosc": 1, "typ": "PASYWNY", "tagi": ["nolostbr", "food"] },
+  {
+    "idW": 708,
+    "nazwa": "Stapler",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 709, "nazwa": "Suplex!", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 710, "nazwa": "Bag of Crafting", "jakosc": 3, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 711,
+    "nazwa": "Flip",
+    "jakosc": 4,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  {
+    "idW": 712,
+    "nazwa": "Lemegeton",
+    "jakosc": 3,
+    "typ": "AKTYWNY",
+    "tagi": ["book", "offensive"]
+  },
+  { "idW": 713, "nazwa": "Sumptorium", "jakosc": 3, "typ": "AKTYWNY", "tagi": ["nolostbr"] },
+  { "idW": 714, "nazwa": "Recall", "jakosc": 0, "typ": "AKTYWNY", "tagi": ["noeden"] },
+  { "idW": 715, "nazwa": "Hold", "jakosc": 0, "typ": "AKTYWNY", "tagi": ["noeden", "nocantrip"] },
+  {
+    "idW": 716,
+    "nazwa": "Keeper's Sack",
+    "jakosc": 3,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 717,
+    "nazwa": "Keeper's Kin",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "spider", "offensive"]
+  },
+  { "idW": 719, "nazwa": "Keeper's Box", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 720, "nazwa": "Everything Jar", "jakosc": 3, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 721,
+    "nazwa": "TMTRAINER",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  { "idW": 722, "nazwa": "Anima Sola", "jakosc": 3, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  {
+    "idW": 723,
+    "nazwa": "Spindown Dice",
+    "jakosc": 4,
+    "typ": "AKTYWNY",
+    "tagi": ["offensive", "nocantrip"]
+  },
+  {
+    "idW": 724,
+    "nazwa": "Hypercoagulation",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["nolostbr", "summonable"]
+  },
+  {
+    "idW": 725,
+    "nazwa": "IBS",
+    "jakosc": 0,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 726,
+    "nazwa": "Hemoptysis",
+    "jakosc": 1,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  {
+    "idW": 727,
+    "nazwa": "Ghost Bombs",
+    "jakosc": 2,
+    "typ": "PASYWNY",
+    "tagi": ["summonable", "offensive"]
+  },
+  { "idW": 728, "nazwa": "Gello", "jakosc": 3, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 729, "nazwa": "Decap Attack", "jakosc": 2, "typ": "AKTYWNY", "tagi": ["offensive"] },
+  { "idW": 730, "nazwa": "Glass Eye", "jakosc": 3, "typ": "PASYWNY", "tagi": ["offensive"] },
+  { "idW": 731, "nazwa": "Stye", "jakosc": 2, "typ": "PASYWNY", "tagi": ["offensive"] },
+  { "idW": 732, "nazwa": "Mom's Ring", "jakosc": 3, "typ": "PASYWNY", "tagi": ["mom", "offensive"] }
+]
