@@ -5,7 +5,6 @@ import localFont from 'next/font/local'
 import { Inter, Pixelify_Sans } from 'next/font/google'
 import ThemeApplier from '@/components/ThemeApplier'
 import Ambience from '@/components/Ambience'
-import CardDecor from '@/components/CardDecor'
 import Sprite from '@/components/Sprite'
 import SideNav from '@/components/SideNav'
 import TopBar from '@/components/TopBar'
@@ -48,7 +47,6 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       <body>
         <ThemeApplier />
         <Ambience />
-        <CardDecor />
         <div className="app">
           <aside className="sidebar">
             <Link href="/" className="side-brand">
