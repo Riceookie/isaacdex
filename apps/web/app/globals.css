@@ -3031,3 +3031,449 @@ body::after {
   gap: 0.35rem;
   margin: 0;
 }
+
+/* ============================================================================
+   HUB — pergaminowy Pulpit (styl IsaacHub). Ciepłe postarzane kartki (papier
+   przez ::before z sepią, treść ostra na wierzchu, ciemny atrament), pinezki.
+   Scoped pod .hub, żeby nie ruszać reszty apki (na próbę).
+   ============================================================================ */
+.hub {
+  --ink: #2f2416;
+  --ink-muted: #6f5c42;
+  --paper-line: rgba(70, 52, 28, 0.18);
+  --paper-fill: rgba(255, 250, 236, 0.5);
+  --hub-red: #a5322a;
+  /* Wymuś JASNY papier (dark theme podmienia --paper-img na ciemny). */
+  --paper-img: url('/tboi/ui/paper.png');
+}
+
+/* Układ: główna kolumna + prawa szyna. */
+.hub-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(300px, 1fr);
+  gap: 1.2rem;
+  align-items: start;
+  margin-top: 1rem;
+}
+@media (max-width: 1000px) {
+  .hub-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.hub-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  min-width: 0;
+}
+.hub-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.hub-row2 {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 1.2rem;
+}
+@media (max-width: 700px) {
+  .hub-row2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Kartka pergaminowa ── */
+.hub .paper-card {
+  position: relative;
+  isolation: isolate;
+  padding: 1.2rem 1.3rem 1.35rem;
+  color: var(--ink);
+  border-radius: 4px;
+  /* Ciepły kremowy papier (gwarantuje jasność) + delikatne przyciemnienie w rogu. */
+  background:
+    radial-gradient(130% 120% at 22% 8%, rgba(255, 253, 245, 0.55), transparent 55%),
+    radial-gradient(90% 85% at 88% 96%, rgba(120, 80, 35, 0.16), transparent 60%),
+    linear-gradient(162deg, #ede1c8 0%, #e3d4b4 55%, #d7c49e 100%);
+  border: 1px solid #b9a577;
+  box-shadow:
+    0 11px 20px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 0 34px rgba(150, 110, 55, 0.1);
+}
+/* Faktura papieru + poszarpane brzegi — multiply, żeby zostało jasno; treść nietknięta. */
+.hub .paper-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 18px solid transparent;
+  border-image: var(--paper-img) 16 fill repeat;
+  filter: sepia(0.45) saturate(1.25) brightness(1.35);
+  mix-blend-mode: multiply;
+  opacity: 0.42;
+  border-radius: 4px;
+  pointer-events: none;
+}
+/* Pinezka wbita w górę (na przemian czerwona/szara, różne pozycje). */
+.hub .paper-card::after {
+  content: '';
+  position: absolute;
+  top: -7px;
+  left: 26px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 32%,
+    #ff9c93 0%,
+    #e5544b 38%,
+    #a02a22 78%,
+    #6c1a15 100%
+  );
+  box-shadow:
+    0 3px 4px rgba(0, 0, 0, 0.5),
+    inset -1px -1px 2px rgba(0, 0, 0, 0.4),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.5);
+  z-index: 2;
+}
+.hub .hub-rail .paper-card:nth-child(even)::after {
+  left: auto;
+  right: 30px;
+  background: radial-gradient(
+    circle at 35% 32%,
+    #cfd6dd 0%,
+    #9aa4ad 40%,
+    #5f6871 80%,
+    #3b4147 100%
+  );
+}
+/* Lekkie przekrzywienie jak przypiętych kartek. */
+.hub .hub-rail .paper-card:nth-child(odd) {
+  transform: rotate(-0.5deg);
+}
+.hub .hub-rail .paper-card:nth-child(even) {
+  transform: rotate(0.5deg);
+}
+
+/* Nagłówki i tekst na papierze = ciemny atrament. */
+.hub h1,
+.hub h2,
+.hub h3 {
+  color: var(--ink);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+  margin: 0;
+}
+.hub h2 {
+  font-size: 1.3rem;
+}
+.hub h3 {
+  font-size: 1.05rem;
+}
+.hub .muted,
+.hub .ink-muted {
+  color: var(--ink-muted);
+}
+.hub a {
+  color: var(--hub-red);
+}
+.hub .paper-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+}
+.hub .paper-more {
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.hub .pill-tab {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  background: rgba(120, 95, 60, 0.2);
+  border: 1px solid var(--paper-line);
+  border-radius: 99px;
+  padding: 0.15rem 0.55rem;
+  color: var(--ink);
+}
+.hub .view-more {
+  display: block;
+  text-align: center;
+  margin-top: 0.75rem;
+  padding: 0.4rem;
+  font-family: var(--dsp);
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  color: var(--ink);
+  background: rgba(120, 95, 60, 0.14);
+  border: 1px solid var(--paper-line);
+  border-radius: 8px;
+}
+.hub .view-more:hover {
+  background: rgba(120, 95, 60, 0.24);
+  text-decoration: none;
+}
+
+/* ── „Co słychać?" — wiersze feedu na papierze ── */
+.hub .wh-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.hub .wh-feed .feed-item {
+  background: var(--paper-fill);
+  border: 1px solid var(--paper-line);
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+  transform: none;
+  filter: none;
+}
+.hub .wh-feed .feed-item:hover {
+  transform: none;
+  filter: none;
+  border-color: rgba(70, 52, 28, 0.32);
+}
+.hub .wh-feed .feed-item.feed-run {
+  border-color: rgba(165, 50, 42, 0.4);
+}
+.hub .feed-avatar,
+.hub .feed-run-tile {
+  background: rgba(255, 250, 236, 0.7);
+  border-color: var(--paper-line);
+}
+.hub .wh-feed .feed-item,
+.hub .feed-line {
+  color: var(--ink);
+}
+.hub .feed-user {
+  font-weight: 700;
+}
+.hub .feed-cel {
+  color: var(--hub-red);
+}
+.hub .feed-meta {
+  color: var(--ink-muted);
+}
+.hub .feed-like,
+.hub .feed-comments {
+  color: var(--ink-muted);
+}
+.hub .feed-like {
+  background: rgba(255, 250, 236, 0.6);
+  border-color: var(--paper-line);
+}
+.hub .feed-like.on {
+  color: #fff;
+  background: var(--hub-red);
+  border-color: var(--hub-red);
+}
+
+/* Pasek postępu — ciemny „boss health bar" ładnie kontrastuje z papierem. */
+.hub .prog-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.hub .prog-row .bar {
+  flex: 1;
+  margin: 0.2rem 0;
+}
+.hub .prog-pct {
+  font-family: var(--dsp);
+  font-size: 1.15rem;
+  color: var(--hub-red);
+}
+
+/* ── Ranking wyzwania ── */
+.hub .lb-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.hub .lb-row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.32rem 0.5rem;
+  border-radius: 8px;
+}
+.hub .lb-row.me {
+  background: rgba(165, 50, 42, 0.14);
+  color: #8f2820;
+  font-weight: 700;
+}
+.hub .lb-rank {
+  width: 1.5em;
+  font-family: var(--dsp);
+  color: var(--ink-muted);
+}
+.hub .lb-ava {
+  width: 26px;
+  height: 26px;
+  image-rendering: pixelated;
+  object-fit: contain;
+}
+.hub .lb-user {
+  flex: 1;
+  min-width: 0;
+}
+.hub .lb-time {
+  font-family: var(--dsp);
+  letter-spacing: 0.03em;
+}
+
+/* ── Run dnia ── */
+.hub .rotd-thumb {
+  position: relative;
+  height: 108px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 0.6rem;
+  border: 2px solid rgba(40, 20, 15, 0.55);
+  background:
+    radial-gradient(circle at 50% 42%, #4a2320, #1b0d0b 75%),
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.25) 0 2px, transparent 2px 6px);
+}
+.hub .rotd-laser {
+  position: absolute;
+  top: 52%;
+  left: 18%;
+  width: 58%;
+  height: 5px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, transparent, #ff5a4a, #ffd6c8, #ff5a4a, transparent);
+  box-shadow: 0 0 9px 1px rgba(255, 90, 74, 0.8);
+}
+.hub .rotd-title {
+  font-weight: 700;
+  margin: 0.1rem 0 0.05rem;
+}
+.hub .rotd-meta {
+  display: flex;
+  gap: 0.9rem;
+  margin-top: 0.4rem;
+}
+.hub .rotd-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--ink-muted);
+  font-size: 0.85rem;
+}
+
+/* ── Profil mini (polaroid) ── */
+.hub .profile-mini .pm-top {
+  display: flex;
+  gap: 0.85rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.hub .pm-photo {
+  width: 66px;
+  height: 66px;
+  flex: none;
+  border-radius: 5px;
+  background: #f4ebd7;
+  border: 3px solid #fbf6ea;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  padding: 5px;
+  transform: rotate(-2.5deg);
+}
+.hub .pm-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+.hub .pm-id h3 {
+  margin: 0 0 0.15rem;
+}
+.hub .pm-id .small {
+  display: block;
+}
+.hub .pm-counts {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.4rem;
+  border-top: 1px solid var(--paper-line);
+  padding-top: 0.65rem;
+  text-align: center;
+}
+.hub .pm-counts span {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+  flex: 1;
+}
+.hub .pm-counts b {
+  font-family: var(--dsp);
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+
+/* ── Wyzwanie dnia ── */
+.hub .dc-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.hub .dc-ava {
+  width: 44px;
+  height: 44px;
+  image-rendering: pixelated;
+  object-fit: contain;
+  background: rgba(255, 250, 236, 0.6);
+  border: 1px solid var(--paper-line);
+  border-radius: 8px;
+  padding: 3px;
+  flex: none;
+}
+.hub .dc-row b {
+  font-family: var(--dsp);
+  letter-spacing: 0.02em;
+}
+.hub .dc-time {
+  color: #8f2820;
+  font-weight: 700;
+  margin: 0.55rem 0 0;
+}
+
+/* ── Najrzadsze (trending) ── */
+.hub .trend-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.hub .trend-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.hub .trend-rank {
+  font-family: var(--dsp);
+  color: var(--ink-muted);
+  width: 1.4em;
+}
+.hub .trend-list img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+.hub .trend-list .grow {
+  flex: 1;
+  min-width: 0;
+}
+.hub .trend-list b {
+  font-family: var(--dsp);
+  color: var(--hub-red);
+}
