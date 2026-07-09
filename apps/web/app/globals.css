@@ -3841,3 +3841,149 @@ body::after {
 .about-me p {
   margin: 0;
 }
+
+/* ============================================================================
+   PULPIT — sekcje z mockupu Home (globalne, var-based → działają na ciemnym
+   Pulpicie): Ranking wyzwania + Run dnia, Trendujące, Progress.
+   ============================================================================ */
+.home-row2 {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 1.1rem;
+}
+@media (max-width: 700px) {
+  .home-row2 {
+    grid-template-columns: 1fr;
+  }
+}
+.pill-tab {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 0.15rem 0.55rem;
+  color: var(--text);
+}
+.lb-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.lb-row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.32rem 0.5rem;
+  border-radius: 8px;
+}
+.lb-row.me {
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--accent);
+  font-weight: 700;
+}
+.lb-rank {
+  width: 1.5em;
+  font-family: var(--dsp);
+  color: var(--muted);
+}
+.lb-ava {
+  width: 26px;
+  height: 26px;
+  image-rendering: pixelated;
+  object-fit: contain;
+}
+.lb-user {
+  flex: 1;
+  min-width: 0;
+}
+.lb-time {
+  font-family: var(--dsp);
+  letter-spacing: 0.03em;
+}
+.rotd-thumb {
+  position: relative;
+  height: 108px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 0.6rem;
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  background:
+    radial-gradient(circle at 50% 42%, #4a2320, #1b0d0b 75%),
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.25) 0 2px, transparent 2px 6px);
+}
+.rotd-laser {
+  position: absolute;
+  top: 52%;
+  left: 18%;
+  width: 58%;
+  height: 5px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, transparent, #ff5a4a, #ffd6c8, #ff5a4a, transparent);
+  box-shadow: 0 0 9px 1px rgba(255, 90, 74, 0.8);
+}
+.rotd-title {
+  font-weight: 700;
+  margin: 0.1rem 0 0.05rem;
+}
+.rotd-meta {
+  display: flex;
+  gap: 0.9rem;
+  margin-top: 0.4rem;
+}
+.rotd-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.trend-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.trend-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.trend-rank {
+  font-family: var(--dsp);
+  color: var(--muted);
+  width: 1.4em;
+}
+.trend-list img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+.trend-list .grow {
+  flex: 1;
+  min-width: 0;
+}
+.trend-list b {
+  font-family: var(--dsp);
+  color: var(--accent);
+}
+.prog-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.prog-row .bar {
+  flex: 1;
+  margin: 0.2rem 0;
+}
+.prog-pct {
+  font-family: var(--dsp);
+  font-size: 1.15rem;
+  color: var(--accent);
+}
