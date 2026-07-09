@@ -3539,35 +3539,8 @@ body::after {
   pointer-events: none;
 }
 
-/* ── Pulpit ZOSTAJE ciemny (feed-first) — wypięty z pergaminu treści. Wyższa
-   specyficzność (.home-grid) bije globalny override pergaminu. ── */
-[data-theme='dark'] .container .home-grid :is(.card, .note, .profil-hero, .savefile, .feed-item) {
-  --text: #e9e2d6;
-  --muted: #a99f8f;
-  --border: #5a5348;
-  --line: rgba(255, 255, 255, 0.1);
-  --surface: rgba(255, 255, 255, 0.05);
-  --surface-2: rgba(255, 255, 255, 0.09);
-  --bg-2: #38342d;
-  --paper-img: url('/tboi/ui/paper-dark.png');
-}
-[data-theme='dark']
-  .container
-  .home-grid
-  :is(.card, .note, .profil-hero, .savefile)
-  :is(h1, h2, h3) {
-  color: #f2ece1;
-  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
-}
-[data-theme='dark'] .container .home-grid :is(.card, .note, .feed-item) a {
-  color: #e57a6f;
-}
-[data-theme='dark']
-  .container
-  .home-grid
-  :is(.card, .note, .profil-hero, .savefile, .feed-item)::after {
-  display: none;
-}
+/* Pulpit idzie za skinem kartek jak reszta (tainted=ciemny domyślnie, normal=jasny).
+   Wcześniej był na stałe ciemny — usunięte, żeby reagował na przełącznik Kartki. */
 
 /* ============================================================================
    PROFIL — layout jak IsaacHub (polaroid + meta, 6 kafli, recent runs,
@@ -4035,6 +4008,51 @@ body::after {
   padding: 0.05rem 0.32rem;
   color: var(--muted);
   flex: none;
+}
+
+/* ── Ramka „polaroid" na avatarze użytkownika (wszędzie gdzie pokazujemy pfp) ── */
+.avatar.sm.pfp-frame,
+.av-preview.pfp-frame {
+  background: #f4ebd7;
+  border: 3px solid #fbf6ea;
+  border-bottom-width: 10px;
+  border-radius: 4px;
+  box-shadow: 0 4px 9px rgba(0, 0, 0, 0.45);
+  transform: rotate(-2.5deg);
+  overflow: hidden;
+  padding: 5px;
+}
+.avatar.sm.pfp-frame img,
+.av-preview.pfp-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+/* ── Ozdoby na kartkach: plamy krwi + doodle (CardDecor) ── */
+.card-decor {
+  position: absolute;
+  pointer-events: none;
+  z-index: 3;
+  line-height: 0;
+}
+.card-decor svg {
+  display: block;
+}
+.card-decor.is-stain {
+  opacity: 0.24;
+}
+.card-decor.is-doodle {
+  opacity: 0.16;
+  color: #2a2018;
+}
+[data-cards='tainted'] .card-decor.is-doodle {
+  color: #d8cdbb;
+  opacity: 0.14;
+}
+[data-cards='tainted'] .card-decor.is-stain {
+  opacity: 0.32;
 }
 
 /* ============================================================================

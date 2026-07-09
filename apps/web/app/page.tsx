@@ -125,7 +125,7 @@ export default async function Home() {
         {/* Profil mini z licznikami (Obserwujący/Obserwowani/Runy) */}
         <div className="note me-card pin-synced">
           <div className="me-head">
-            <div className="avatar sm">
+            <div className="avatar sm pfp-frame">
               <ProfileAvatar fallbackSrc={ikonaPostaci(p.ulubiona || 'Isaac')} />
             </div>
             <div className="me-id">

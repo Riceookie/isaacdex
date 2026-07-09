@@ -54,7 +54,7 @@ export default function AvatarUpload({ fallbackSrc }: { fallbackSrc: string }) {
 
   return (
     <div className="avatar-upload">
-      <div className="avatar-box av-preview">
+      <div className="avatar-box av-preview pfp-frame">
         <img className="avatar-img" src={custom || fallbackSrc} alt="Podgląd avatara" />
       </div>
       <div className="avatar-upload-btns">
