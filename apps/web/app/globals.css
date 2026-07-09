@@ -3568,3 +3568,276 @@ body::after {
   :is(.card, .note, .profil-hero, .savefile, .feed-item)::after {
   display: none;
 }
+
+/* ============================================================================
+   PROFIL — layout jak IsaacHub (polaroid + meta, 6 kafli, recent runs,
+   favorite items, character completion, about me, friends).
+   ============================================================================ */
+/* Nagłówek karty (był tylko w .hub — tu globalnie). */
+.paper-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 0.7rem;
+}
+.paper-head :is(h1, h2, h3) {
+  margin: 0;
+}
+.paper-more {
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.pf-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(300px, 1fr);
+  gap: 1.1rem;
+  align-items: start;
+}
+@media (max-width: 1000px) {
+  .pf-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.pf-main,
+.pf-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  min-width: 0;
+}
+
+/* Hero: polaroid + tożsamość + meta */
+.pf-hero {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1.2rem;
+  align-items: start;
+}
+@media (max-width: 640px) {
+  .pf-hero {
+    grid-template-columns: 1fr;
+  }
+}
+.pf-photo {
+  width: 92px;
+  height: 104px;
+  flex: none;
+  background: #f4ebd7;
+  border: 4px solid #fbf6ea;
+  border-bottom-width: 15px;
+  box-shadow: 0 4px 9px rgba(0, 0, 0, 0.45);
+  transform: rotate(-2.5deg);
+  overflow: hidden;
+  padding: 6px;
+  display: grid;
+  place-items: center;
+}
+.pf-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+.pf-id h1 {
+  margin: 0 0 0.15rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.pf-edit {
+  font-size: 1rem;
+  text-decoration: none;
+  opacity: 0.65;
+}
+.pf-handle {
+  display: inline-block;
+  font-family: var(--dsp);
+  font-size: 0.8rem;
+  background: rgba(70, 52, 28, 0.14);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.05rem 0.45rem;
+}
+.pf-bio {
+  margin: 0.45rem 0 0.55rem;
+  font-style: italic;
+}
+.pf-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: right;
+  white-space: nowrap;
+}
+.pf-meta > div {
+  display: flex;
+  flex-direction: column;
+}
+.pf-meta b {
+  font-family: var(--dsp);
+  font-size: 0.9rem;
+}
+@media (max-width: 640px) {
+  .pf-meta {
+    text-align: left;
+  }
+}
+
+/* Fav char + progress obok siebie */
+.pf-favprog {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.65fr);
+  gap: 1.1rem;
+}
+@media (max-width: 640px) {
+  .pf-favprog {
+    grid-template-columns: 1fr;
+  }
+}
+.dead-god-card .hero-progress {
+  margin: 0.3rem 0;
+}
+.fav-char-card .fav-char {
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  text-align: center;
+}
+.fav-char-card .fav-char-name {
+  font-size: 1.05rem;
+}
+
+/* 6 kafli statystyk */
+.stat-tiles.six {
+  grid-template-columns: repeat(6, 1fr);
+}
+@media (max-width: 900px) {
+  .stat-tiles.six {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Recent runs */
+.runs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.run-row {
+  display: grid;
+  grid-template-columns: 1.3fr auto 1.1fr auto;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 0.5rem 0.65rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.run-result {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--dsp);
+  font-weight: 700;
+  line-height: 1.15;
+}
+.run-result.win {
+  color: #3f9c54;
+}
+.run-result.loss {
+  color: var(--accent);
+}
+.run-result .muted {
+  font-family: var(--bdy);
+  font-weight: 400;
+}
+.run-time {
+  font-family: var(--dsp);
+}
+.run-seed {
+  display: flex;
+  flex-direction: column;
+}
+.run-seed code {
+  font-family: var(--dsp);
+  letter-spacing: 0.04em;
+}
+.run-items {
+  display: flex;
+  gap: 0.25rem;
+  justify-content: flex-end;
+}
+@media (max-width: 640px) {
+  .run-row {
+    grid-template-columns: 1fr auto;
+  }
+  .run-seed,
+  .run-items {
+    display: none;
+  }
+}
+
+/* Favorite items */
+.fav-items {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.fav-item-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  width: 62px;
+  padding: 0.4rem 0.2rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  text-align: center;
+}
+.fav-item-tile .small {
+  font-size: 0.64rem;
+  line-height: 1.05;
+}
+
+/* Recent achievements + friends listy */
+.ra-list,
+.fr-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.ra-list li,
+.fr-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.ra-list img,
+.fr-list img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  flex: none;
+}
+.ra-list .grow,
+.fr-list .grow {
+  flex: 1;
+  min-width: 0;
+}
+.fr-status {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.fr-status.on {
+  color: #3f9c54;
+}
+.about-me p {
+  margin: 0;
+}
