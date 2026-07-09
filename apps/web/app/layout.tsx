@@ -7,7 +7,7 @@ import ThemeApplier from '@/components/ThemeApplier'
 import Sprite from '@/components/Sprite'
 import SideNav from '@/components/SideNav'
 import TopBar from '@/components/TopBar'
-import { getNick } from '@/lib/queries'
+import { getCompanionInfo } from '@/lib/queries'
 
 // Upheaval TT (BRK) — font menu The Binding of Isaac (Brian Kent / aenigma, freeware).
 const display = localFont({
@@ -33,7 +33,7 @@ export const metadata = {
 }
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
-  const nick = await getNick().catch(() => 'Isaac')
+  const { steamConnected } = await getCompanionInfo().catch(() => ({ steamConnected: true }))
   return (
     <html
       lang="pl"
@@ -53,7 +53,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             <SideNav />
           </aside>
           <div className="main-wrap">
-            <TopBar nick={nick} />
+            <TopBar steamConnected={steamConnected} />
             <main className="container">{children}</main>
           </div>
         </div>

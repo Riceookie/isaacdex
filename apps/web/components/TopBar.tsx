@@ -7,7 +7,7 @@ import CompanionMascot from '@/components/Companion'
 import { tytulSekcji } from '@/lib/nav'
 
 /** Górny pasek: papierowa „zakładka" z tytułem sekcji + companion + ikony narzędziowe. */
-export default function TopBar({ nick }: { nick: string }) {
+export default function TopBar({ steamConnected }: { steamConnected: boolean }) {
   const pathname = usePathname()
   const tytul = tytulSekcji(pathname)
 
@@ -18,7 +18,7 @@ export default function TopBar({ nick }: { nick: string }) {
         {tytul}
       </div>
 
-      <CompanionMascot nick={nick} />
+      <CompanionMascot steamConnected={steamConnected} />
 
       <div className="util">
         <span className="util-icon deco" aria-hidden="true" title="Poczta">

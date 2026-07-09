@@ -19,10 +19,15 @@ export const LICZBA_TRYBOW = Object.keys(TrybGry).length
 // Marki są wyliczane z achievementów (Hard) — jedna na bossa.
 export const MARK_NA_POSTAC = LICZBA_BOSSOW
 
-/** Lekki odczyt nicku (dla companiona w layoutcie). */
-export async function getNick(): Promise<string> {
-  const profil = await prisma.profil.findFirst({ select: { nick: true } })
-  return profil?.nick ?? 'Isaac'
+/** Lekki odczyt kontekstu companiona (dla layoutu): nick + czy Steam zsynchronizowany. */
+export async function getCompanionInfo(): Promise<{ nick: string; steamConnected: boolean }> {
+  const profil = await prisma.profil.findFirst({
+    select: { nick: true, ostatniSync: true },
+  })
+  return {
+    nick: profil?.nick ?? 'Isaac',
+    steamConnected: profil?.ostatniSync != null,
+  }
 }
 
 export async function getDashboard() {

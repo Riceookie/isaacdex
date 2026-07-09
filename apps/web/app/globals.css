@@ -2294,7 +2294,11 @@ body::before {
   top: 50%;
   transform: translateY(-50%);
   width: max-content;
-  max-width: min(360px, 34vw);
+  /* Węziej niż wcześniej: dłuższe kwestie łamią się na kilka linii,
+     zamiast rozjeżdżać się w prawo na ikony narzędziowe. */
+  max-width: 230px;
+  white-space: normal;
+  overflow-wrap: break-word;
   background: #f3e9cf;
   color: #241d16;
   border: 2.5px solid #3a2c1e;

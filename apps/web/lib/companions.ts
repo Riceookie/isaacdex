@@ -28,54 +28,93 @@ export function companionZId(id: string | null): Companion {
   return COMPANIONS.find((c) => c.id === id) ?? DOMYSLNY_COMPANION
 }
 
-// Ogólne teksty (mogą paść wszędzie) — trochę klimatu Isaaca.
-const OGOLNE = (n: string) => [
-  `Trzymam się Ciebie, ${n}.`,
-  'Curse of the Blind wcale nie jest taka zła.',
-  'Pamiętaj: nie płacz o skill issue.',
-  'Brimstone > wszystko. Zmień moje zdanie.',
-  'Może dziś Dead God, co?',
-  'Jeden run więcej nikomu nie zaszkodził…',
-  'Widziałeś ostatnio Guppy? Dobre combo.',
+// ── Kwestie companiona (EN) — pogrupowane, reagują na aktualną sekcję ──
+const GENERAL = [
+  'Welcome back.',
+  'Another day in the basement.',
+  'Still no Dead God?',
+  "Don't worry, today's the run.",
+  "Good luck. You'll need it.",
+  'I believe in you. Mostly.',
+  'Try not to skill issue today.',
+  'The basement missed you.',
+  'Back already?',
+  'Time to lose another run.',
 ]
 
-// Pula kwestii companiona zależna od strony (losowana + rotowana).
-export function kwestie(pathname: string, nick: string): string[] {
-  let base: string[]
-  if (pathname === '/')
-    base = [
-      `Cześć ${nick}! Gotowy dobić Dead Goda?`,
-      `Witaj z powrotem, ${nick}!`,
-      `Miłego grindu, ${nick}!`,
-      'Od czego dziś zaczynamy?',
-    ]
-  else if (pathname.startsWith('/doradca'))
-    base = [
-      'Kliknij item — powiem, czy brać czy zostawić.',
-      'Brać czy zostawić? Pytaj śmiało.',
-      'Pokaż mi item, ocenię go w mig.',
-    ]
-  else if (pathname.startsWith('/kolekcja'))
-    base = [
-      `Jeszcze kilka achievementów, ${nick}!`,
-      'Którego brakuje Ci do setki?',
-      'Ładna kolekcja się robi.',
-    ]
-  else if (pathname.startsWith('/statystyki'))
-    base = ['Twoje liczby wyglądają nieźle.', `Wykresy nie kłamią, ${nick}.`, 'Widzę progres!']
-  else if (pathname.startsWith('/znajomi'))
-    base = ['Zobacz, co ubili znajomi.', 'Kto dziś gra?', 'Pochwal się runem!']
-  else if (pathname.startsWith('/czat'))
-    base = ['Bądź miły na czacie 😉', 'Pisz śmiało!', 'Nie karm trolli.']
-  else if (pathname.startsWith('/profil') || pathname.startsWith('/kim-jestem'))
-    base = [`Ładny profil, ${nick}.`, 'Fajny avatar!', 'Ulubiona postać wybrana?']
-  else if (pathname.startsWith('/ustawienia'))
-    base = [
-      'Możesz mnie tu zmienić na innego familiara!',
-      'Wybierz sobie kumpla.',
-      'Tainted rządzi.',
-    ]
-  else base = [`Trzymam się Ciebie, ${nick}.`]
+// Otwarcie apki — dorzucane do puli Pulpitu.
+const OPENING = [
+  'Your save file awaits.',
+  "Who's getting traumatized today?",
+  "Let's see what everyone's been up to.",
+  'Hope your streak survived.',
+  'I smell a quality 0 item.',
+]
 
-  return [...base, ...OGOLNE(nick)]
+// Steam niepodłączony — popchnij do synchronizacji.
+const STEAM_OFF = [
+  'Psst... connect Steam so I can stalk your achievements.',
+  "I can't sync imaginary achievements.",
+  'Steam first, glory later.',
+]
+
+const HOME = [
+  'Fresh basement gossip.',
+  'Someone unlocked Dead God while you were gone.',
+  'People really love posting broken runs.',
+  "Your last run... we don't talk about it.",
+]
+
+const PROFILE = [
+  'Looking good.',
+  'Nice stats. Ignore the deaths.',
+  'The bio could use some personality.',
+  'Flex those achievements.',
+]
+
+const ACHIEVEMENTS = [
+  'Almost there.',
+  'One unlock at a time.',
+  'Completionists scare me.',
+  "Dead God won't unlock itself.",
+]
+
+const CHAT = [
+  'Be nice.',
+  'Or at least be funny.',
+  "Someone's arguing about Jacob & Esau again.",
+  'Remember: no seed spoilers.',
+]
+
+const FUNNY = [
+  'Ed forgot to nerf me.',
+  'Butter Bean is underrated.',
+  'Chaos deniers in shambles.',
+  "It's always Curse of the Blind.",
+  "50/50. It either happens or it doesn't.",
+  'Another quality 4? Surely.',
+  'Skill issue.',
+  'Rigged.',
+  'We ball.',
+  'Balling has consequences.',
+  "Don't pick up TMTRAINER.",
+  "You picked up TMTRAINER, didn't you?",
+  'Sacred Heart manifesting...',
+  'I blame Curse of the Lost.',
+  'Average Tainted Lost experience.',
+]
+
+/** Pula kwestii companiona zależna od strony (reaguje na sekcję). */
+export function kwestie(pathname: string, steamConnected = true): string[] {
+  // Brak podłączonego Steama ma pierwszeństwo — najpierw namów do synchronizacji.
+  if (!steamConnected) return [...STEAM_OFF, ...GENERAL]
+
+  let page: string[]
+  if (pathname === '/') page = [...HOME, ...OPENING]
+  else if (pathname.startsWith('/profil') || pathname.startsWith('/kim-jestem')) page = PROFILE
+  else if (pathname.startsWith('/kolekcja')) page = ACHIEVEMENTS
+  else if (pathname.startsWith('/czat')) page = CHAT
+  else page = GENERAL
+
+  return [...page, ...GENERAL, ...FUNNY]
 }
