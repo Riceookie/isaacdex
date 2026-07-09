@@ -3538,3 +3538,33 @@ body::after {
   opacity: 0.5;
   pointer-events: none;
 }
+
+/* ── Pulpit ZOSTAJE ciemny (feed-first) — wypięty z pergaminu treści. Wyższa
+   specyficzność (.home-grid) bije globalny override pergaminu. ── */
+[data-theme='dark'] .container .home-grid :is(.card, .note, .profil-hero, .savefile, .feed-item) {
+  --text: #e9e2d6;
+  --muted: #a99f8f;
+  --border: #5a5348;
+  --line: rgba(255, 255, 255, 0.1);
+  --surface: rgba(255, 255, 255, 0.05);
+  --surface-2: rgba(255, 255, 255, 0.09);
+  --bg-2: #38342d;
+  --paper-img: url('/tboi/ui/paper-dark.png');
+}
+[data-theme='dark']
+  .container
+  .home-grid
+  :is(.card, .note, .profil-hero, .savefile)
+  :is(h1, h2, h3) {
+  color: #f2ece1;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
+}
+[data-theme='dark'] .container .home-grid :is(.card, .note, .feed-item) a {
+  color: #e57a6f;
+}
+[data-theme='dark']
+  .container
+  .home-grid
+  :is(.card, .note, .profil-hero, .savefile, .feed-item)::after {
+  display: none;
+}
