@@ -46,7 +46,7 @@ export default function MarksGrid({ postac, bossy, tryby, zaznaczone }: Props) {
     <div>
       {err && (
         <p className="banner error">
-          <Sprite name="bomb" size={15} /> {err}
+          <Sprite name="bomb" size={18} /> {err}
         </p>
       )}
       <table className="marks">

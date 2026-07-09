@@ -6,6 +6,7 @@ import { procentUkonczenia, ocenItem, type Jakosc } from '@isaacdex/core'
 export async function getItemyZOcena() {
   const items = await prisma.item.findMany({ orderBy: [{ jakosc: 'desc' }, { nazwa: 'asc' }] })
   return items.map((i) => ({
+    idW: i.idW,
     nazwa: i.nazwa,
     jakosc: i.jakosc,
     typ: i.typ,
@@ -17,6 +18,12 @@ export const LICZBA_BOSSOW = Object.keys(BossKoncowy).length
 export const LICZBA_TRYBOW = Object.keys(TrybGry).length
 // Marki są wyliczane z achievementów (Hard) — jedna na bossa.
 export const MARK_NA_POSTAC = LICZBA_BOSSOW
+
+/** Lekki odczyt nicku (dla companiona w layoutcie). */
+export async function getNick(): Promise<string> {
+  const profil = await prisma.profil.findFirst({ select: { nick: true } })
+  return profil?.nick ?? 'Isaac'
+}
 
 export async function getDashboard() {
   // Niezależne zapytania równolegle (mniej round-tripów do bazy).
@@ -64,11 +71,16 @@ export async function getPostacMarks(nazwa: string) {
       })
     : []
   const zaznaczone = marks.filter((m) => m.zaliczone).map((m) => `${m.boss}:${m.tryb}`)
+  const roster = await prisma.postac.findMany({
+    orderBy: { kolejnosc: 'asc' },
+    select: { nazwa: true },
+  })
   return {
     postac: postac.nazwa,
     bossy: Object.values(BossKoncowy) as string[],
     tryby: ['HARD'],
     zaznaczone,
+    roster: roster.map((r) => r.nazwa),
   }
 }
 
@@ -198,4 +210,20 @@ export async function getStatystyki() {
     seria,
     latest: latest ? { nazwa: latest.nazwa, data: latest.dataOdblokowania!.toISOString() } : null,
   }
+}
+
+/**
+ * Kilka realnych achievementów ze Steama (z ikonami z CDN) do demo-feedu znajomych.
+ * Bierzemy odblokowane z ikoną; jak mało, dobieramy dowolne z ikoną.
+ */
+export async function getFeedIkony(ile = 6) {
+  const profil = await prisma.profil.findFirst()
+  if (!profil) return []
+  const ach = await prisma.steamAchievement.findMany({
+    where: { profilId: profil.id, ikonaUrl: { not: null } },
+    orderBy: [{ odblokowany: 'desc' }, { dataOdblokowania: 'desc' }],
+    take: ile,
+    select: { nazwa: true, ikonaUrl: true },
+  })
+  return ach.map((a) => ({ nazwa: a.nazwa, ikonaUrl: a.ikonaUrl as string }))
 }

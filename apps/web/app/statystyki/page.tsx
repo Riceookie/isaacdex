@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { getStatystyki, getDashboard } from '@/lib/queries'
 import { ikonaPostaci } from '@/lib/chars'
 import Sprite from '@/components/Sprite'
@@ -46,9 +47,7 @@ function WykresCzas({ seria }: { seria: { m: string; cum: number }[] }) {
       <path className="chart-line" d={linia} />
       {seria.map((p, i) => (
         <circle key={p.m} className="chart-dot" cx={x(i)} cy={y(p.cum)} r={3}>
-          <title>
-            {p.m}: {p.cum} odblokowanych
-          </title>
+          <title>{`${p.m}: ${p.cum} odblokowanych`}</title>
         </circle>
       ))}
       <text className="chart-txt" x={pad.l} y={H - 8}>
@@ -92,9 +91,7 @@ function WykresRzadkosc({ b }: { b: { legendarne: number; rzadkie: number; czest
               height={bh}
               rx={5}
             >
-              <title>
-                {d.label} ({d.pod}): {d.v}
-              </title>
+              <title>{`${d.label} (${d.pod}): ${d.v}`}</title>
             </rect>
             <text className="chart-txt big-num" x={bx + bw / 2} y={by - 7} textAnchor="middle">
               {d.v}
@@ -122,9 +119,6 @@ export default async function StatystykiPage() {
   if (!s) {
     return (
       <section>
-        <h1>
-          <Sprite name="stats" size={24} /> Statystyki
-        </h1>
         <div className="note">
           <p>Brak danych. Wejdź w Kolekcję i kliknij „Synchronizuj ze Steam".</p>
         </div>
@@ -134,10 +128,6 @@ export default async function StatystykiPage() {
 
   return (
     <section>
-      <h1>
-        <Sprite name="stats" size={24} /> Statystyki
-      </h1>
-
       <div className="tiles">
         <div className="tile">
           <span className="tile-num">
@@ -151,7 +141,7 @@ export default async function StatystykiPage() {
         </div>
         <div className="tile">
           <span className="tile-num">
-            <Sprite name="coin" size={18} /> {s.rarest ? `${s.rarest.p}%` : '—'}
+            <Sprite name="coin" size={22} /> {s.rarest ? `${s.rarest.p}%` : '—'}
           </span>
           <span className="muted small">najrzadszy{s.rarest ? `: ${s.rarest.nazwa}` : ''}</span>
         </div>
@@ -169,22 +159,26 @@ export default async function StatystykiPage() {
       </div>
 
       <div className="note">
-        <h2>Rzadkość Twoich odblokowanych</h2>
+        <h2>Rzadkosc Twoich odblokowanych</h2>
         <WykresRzadkosc b={s.buckets} />
       </div>
 
       <div className="note">
-        <h2>Ukończenie postaci</h2>
+        <h2>Ukonczenie postaci</h2>
         <div className="char-bars">
           {dash.postacie.map((c) => (
-            <div key={c.nazwa} className="char-bar">
+            <Link
+              key={c.nazwa}
+              href={`/profil/${encodeURIComponent(c.nazwa)}`}
+              className="char-bar"
+            >
               <img className="char-icon" src={ikonaPostaci(c.nazwa)} alt="" />
               <span className="char-name">{c.nazwa}</span>
               <div className="bar mini">
                 <div className="bar-fill" style={{ width: `${c.procent}%` }} />
               </div>
               <span className="char-pct">{c.procent}%</span>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

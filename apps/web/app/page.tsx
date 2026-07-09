@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { getProfil, getDashboard } from '@/lib/queries'
 import { ikonaPostaci } from '@/lib/chars'
 import Sprite from '@/components/Sprite'
+import HudStat from '@/components/HudStat'
+import ProfileAvatar from '@/components/ProfileAvatar'
 
 export const dynamic = 'force-dynamic'
 
@@ -24,12 +26,12 @@ export default async function Home() {
       {/* Pasek profilu + Dead God */}
       <div className="profil-hero">
         <div className="avatar">
-          <img className="avatar-img" src={ikonaPostaci(p.ulubiona || 'Isaac')} alt="" />
+          <ProfileAvatar fallbackSrc={ikonaPostaci(p.ulubiona || 'Isaac')} />
         </div>
         <div className="profil-id">
           <h1>{p.nick}</h1>
           <p className="muted small">
-            <Sprite name="skull" size={15} /> Dead God — {p.achProcent}% achievementów
+            <Sprite name="deadgod" size={20} /> Dead God — {p.achProcent}% achievementów
           </p>
           <div className="bar">
             <div className="bar-fill" style={{ width: `${p.achProcent}%` }} />
@@ -37,35 +39,23 @@ export default async function Home() {
         </div>
       </div>
 
-      {/* Kluczowe liczby */}
-      <div className="tiles">
-        <div className="tile">
-          <span className="tile-num">
-            {p.achUnlocked}/{p.achTotal}
-          </span>
-          <span className="muted small">achievementy</span>
-        </div>
-        <div className="tile">
-          <span className="tile-num">{dash.overall.procent}%</span>
-          <span className="muted small">completion marks</span>
-        </div>
-        <div className="tile">
-          <span className="tile-num">{p.marksTotal}</span>
-          <span className="muted small">zdobyte marki</span>
-        </div>
-        <div className="tile">
-          <span className="tile-num">
-            <Sprite name="coin" size={18} /> {p.showcase[0] ? `${p.showcase[0].p}%` : '—'}
-          </span>
-          <span className="muted small">najrzadszy</span>
-        </div>
+      {/* Kluczowe liczby — pasek w stylu HUD-a Isaaca */}
+      <div className="hud-row">
+        <HudStat icon="trophy" value={`${p.achUnlocked}/${p.achTotal}`} label="achievementy" />
+        <HudStat icon="starmark" value={`${dash.overall.procent}%`} label="completion marks" />
+        <HudStat icon="heartmark" value={p.marksTotal} label="zdobyte marki" />
+        <HudStat
+          icon="membercard"
+          value={p.showcase[0] ? `${p.showcase[0].p}%` : '—'}
+          label="najrzadszy"
+        />
       </div>
 
       {/* Dwie kolumny: ostatnie + postacie */}
       <div className="dash-cols">
         <div className="note">
           <h2>
-            <Sprite name="clock" size={18} /> Ostatnio odblokowane
+            <Sprite name="stopwatch" size={26} /> Ostatnio odblokowane
           </h2>
           <ul className="activity">
             {p.recent.slice(0, 5).map((a) => (
@@ -83,7 +73,7 @@ export default async function Home() {
 
         <div className="note">
           <h2>
-            <Sprite name="friends" size={18} /> Postępy postaci
+            <Sprite name="chad" size={26} /> Postepy postaci
           </h2>
           <div className="char-bars">
             {dash.postacie.slice(0, 6).map((c) => (
@@ -107,7 +97,7 @@ export default async function Home() {
 
       <p>
         <Link className="btn" href="/doradca">
-          <Sprite name="advisor" size={16} /> Doradca itemów
+          <Sprite name="foundsoul" size={22} /> Doradca itemów
         </Link>
       </p>
     </section>

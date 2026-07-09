@@ -56,9 +56,6 @@ export default function KolekcjaWidok({ achievements }: { achievements: Ach[] })
   return (
     <section>
       <div className="kol-head">
-        <h1>
-          <Sprite name="book" size={24} /> Kolekcja
-        </h1>
         <button className="btn" onClick={sync} disabled={busy}>
           {busy ? 'Synchronizuję…' : 'Synchronizuj ze Steam'}
         </button>
@@ -104,7 +101,7 @@ export default function KolekcjaWidok({ achievements }: { achievements: Ach[] })
       )}
       {msg && (
         <p className="banner error">
-          <Sprite name="bomb" size={15} /> {msg}
+          <Sprite name="bomb" size={18} /> {msg}
         </p>
       )}
 
@@ -146,7 +143,7 @@ export default function KolekcjaWidok({ achievements }: { achievements: Ach[] })
               {rzadka(sel.globalnyProcent) && (
                 <>
                   {' '}
-                  <Sprite name="coin" size={14} />
+                  <Sprite name="coin" size={18} />
                 </>
               )}
             </p>

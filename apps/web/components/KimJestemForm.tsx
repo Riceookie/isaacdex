@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ikonaPostaci } from '@/lib/chars'
 import Sprite from '@/components/Sprite'
+import AvatarUpload from '@/components/AvatarUpload'
 
 type Props = {
   nick: string
@@ -35,7 +36,6 @@ export default function KimJestemForm(p: Props) {
   const [nick, setNick] = useState(p.nick)
   const [opis, setOpis] = useState(p.opis)
   const [ulubiona, setUlubiona] = useState(p.ulubionaPostac)
-  const [steam, setSteam] = useState(p.zsynchronizowano)
   const [busy, setBusy] = useState(false)
   const [msg, setMsg] = useState<string | null>(null)
 
@@ -71,13 +71,11 @@ export default function KimJestemForm(p: Props) {
 
       <div className="whoami-top">
         <span className="hand-note">
-          Twój portret =<br />
-          ulubiona postać
+          Twój avatar =<br />
+          własny obraz
         </span>
-        <div className="avatar-box">
-          <img className="avatar-img" src={ikonaPostaci(ulubiona || 'Isaac')} alt="Avatar" />
-        </div>
-        <span className="red-note">← {ulubiona ? 'ulubiona' : 'domyślny'} profil</span>
+        <AvatarUpload fallbackSrc={ikonaPostaci(ulubiona || 'Isaac')} />
+        <span className="red-note">← bez obrazu = ulubiona postać</span>
       </div>
 
       <div className="whoami-name">
@@ -98,16 +96,9 @@ export default function KimJestemForm(p: Props) {
         </label>
       </div>
 
-      <label className="steam-check">
-        <input type="checkbox" checked={steam} onChange={(e) => setSteam(e.target.checked)} />
-        Użyć Steam do achievementów?
-      </label>
-      {steam && (
-        <p className="small">
-          Steam: <b>{p.steamId}</b> {p.zsynchronizowano ? '· zsynchronizowano ✓' : ''} —{' '}
-          <a href="/kolekcja">idź do Kolekcji, by zsynchronizować</a>
-        </p>
-      )}
+      <p className="small muted whoami-hint">
+        Konto Steam i synchronizację ustawisz w <a href="/ustawienia">Ustawieniach</a>.
+      </p>
 
       <div className="whoami-sides">
         <div className="side-note">
@@ -143,7 +134,7 @@ export default function KimJestemForm(p: Props) {
 
       {msg && (
         <p className="banner error">
-          <Sprite name="bomb" size={15} /> {msg}
+          <Sprite name="bomb" size={18} /> {msg}
         </p>
       )}
       <button className="btn full" onClick={zapisz} disabled={busy}>
