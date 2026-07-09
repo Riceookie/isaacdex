@@ -3477,3 +3477,64 @@ body::after {
   font-family: var(--dsp);
   color: var(--hub-red);
 }
+
+/* ============================================================================
+   TREŚĆ = JASNY PERGAMIN (cała apka). Sidebar i topbar zostają ciemne (jak w
+   mockupie IsaacHub). Wykorzystujemy istniejący system kartek papierowych
+   (border-image + zmienne atramentu), tylko wymuszamy JASNY wariant mimo
+   data-theme=dark — wyższa specyficzność (.container) bije reguły [data-theme].
+   ============================================================================ */
+/* Cały obszar treści na jasny papier: wymuś jasny --paper-img (dark theme dawał
+   paper-dark) — łapie wszystkie elementy paper-based (stat-tile, mark-cell, kafle). */
+.container {
+  --paper-img: url('/tboi/ui/paper.png');
+}
+/* „Stare" kafle papierowe (stat-tile/tile) mają w dark theme wyłączone ocieplające
+   sepia i jasny atrament → przywracamy jasny wariant w treści. */
+[data-theme='dark'] .container :is(.stat-tile, .tile) {
+  color: #2a2018;
+  text-shadow: none;
+  filter: sepia(0.42) saturate(1.28) hue-rotate(-8deg) brightness(1.02)
+    drop-shadow(0 5px 8px rgba(0, 0, 0, 0.45));
+}
+[data-theme='dark'] .container :is(.stat-num, .tile-num) {
+  color: #2f2416;
+}
+[data-theme='dark'] .container :is(.stat-label, .tile .muted) {
+  color: #6f5c42;
+}
+[data-theme='dark'] .container :is(.paper, .card, .note, .profil-hero, .savefile, .feed-item) {
+  --text: #2f2416;
+  --muted: #6f5c42;
+  --border: #b9a577;
+  --line: rgba(70, 52, 28, 0.16);
+  --surface: rgba(90, 60, 20, 0.08);
+  --surface-2: rgba(90, 60, 20, 0.13);
+  --bg-2: #efe4cb;
+  --paper-img: url('/tboi/ui/paper.png');
+}
+[data-theme='dark'] .container :is(.paper, .card, .note, .profil-hero, .savefile) :is(h1, h2, h3) {
+  color: #2f2416;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+[data-theme='dark'] .container :is(.paper, .card, .note, .profil-hero, .savefile, .feed-item) a {
+  color: #a5342c;
+}
+/* Wyłącz przekrzywienie/hover-filtry dziedziczone z motywu tam gdzie przeszkadzają
+   (feed w kartach) — pozostaje subtelny cień. */
+[data-theme='dark'] .container :is(.card, .note, .profil-hero, .savefile, .feed-item) {
+  filter: drop-shadow(0 8px 13px rgba(0, 0, 0, 0.5));
+  isolation: isolate;
+}
+/* Ocieplenie: papier paper.png jest chłodno-różowy → ciepła nakładka (multiply)
+   robi z niego tan jak w mockupie. Treść zostaje nietknięta (warstwa pod nią). */
+[data-theme='dark'] .container :is(.card, .note, .profil-hero, .savefile, .feed-item)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(158deg, #ecd7a8 0%, #ddc08a 58%, #d0b174 100%);
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+  pointer-events: none;
+}

@@ -54,7 +54,7 @@ export default function KolekcjaWidok({ achievements }: { achievements: Ach[] })
   }
 
   return (
-    <section>
+    <section className="note paper-panel">
       <div className="kol-head">
         <button className="btn" onClick={sync} disabled={busy}>
           {busy ? 'Synchronizuję…' : 'Synchronizuj ze Steam'}

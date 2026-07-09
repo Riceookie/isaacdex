@@ -32,7 +32,7 @@ export default function DoradcaWidok({ items }: { items: Item[] }) {
   )
 
   return (
-    <section>
+    <section className="note paper-panel">
       <p className="muted small">Kliknij item, żeby zobaczyć rekomendację „brać czy zostawić".</p>
 
       <div className="kol-tools">

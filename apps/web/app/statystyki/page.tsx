@@ -127,7 +127,7 @@ export default async function StatystykiPage() {
   }
 
   return (
-    <section>
+    <section className="note paper-panel">
       <div className="tiles">
         <div className="tile">
           <span className="tile-num">
