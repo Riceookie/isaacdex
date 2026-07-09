@@ -8,9 +8,10 @@ export default function ThemeApplier() {
   useEffect(() => {
     const floor = localStorage.getItem('idx_floor') || 'basement'
     document.documentElement.dataset.floor = floor
-    // Motyw: light = kremowe kartki, dark = „tainted" ciemne. Domyślnie TAINTED.
-    const theme = localStorage.getItem('idx_theme') === 'light' ? 'light' : 'dark'
-    document.documentElement.dataset.theme = theme
+    document.documentElement.dataset.theme = 'dark'
+    // Skin kartek: 'normal' = jasny pergamin (domyślnie), 'tainted' = ciemne splugawione.
+    const cards = localStorage.getItem('idx_cards') === 'tainted' ? 'tainted' : 'normal'
+    document.documentElement.dataset.cards = cards
     // Mucha DOMYŚLNIE wyłączona — włącza się tylko gdy user ją zapisał jako 'on'.
     const fly = localStorage.getItem('idx_fly') === 'on' ? 'on' : 'off'
     document.documentElement.dataset.fly = fly

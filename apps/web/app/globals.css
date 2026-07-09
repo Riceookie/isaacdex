@@ -4036,3 +4036,47 @@ body::after {
   color: var(--muted);
   flex: none;
 }
+
+/* ============================================================================
+   TAINTED — ciemne „splugawione" kartki (opcja w Ustawieniach). Nadpisuje jasny
+   pergamin treści gdy html ma data-cards='tainted'. Na końcu pliku, żeby przez
+   kolejność źródeł bił reguły jasnego pergaminu o tej samej specyficzności.
+   ============================================================================ */
+[data-cards='tainted'] .container {
+  --paper-img: url('/tboi/ui/paper-dark.png');
+}
+[data-cards='tainted'] .container :is(.card, .note, .profil-hero, .savefile, .feed-item) {
+  --text: #e9e2d6;
+  --muted: #a99f8f;
+  --border: #574f43;
+  --line: rgba(255, 255, 255, 0.09);
+  --surface: rgba(255, 255, 255, 0.05);
+  --surface-2: rgba(255, 255, 255, 0.09);
+  --bg-2: #322d26;
+  --paper-img: url('/tboi/ui/paper-dark.png');
+}
+[data-cards='tainted'] .container :is(.card, .note, .profil-hero, .savefile) :is(h1, h2, h3) {
+  color: #f2ece1;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.45);
+}
+[data-cards='tainted'] .container :is(.card, .note, .profil-hero, .savefile, .feed-item) a {
+  color: #e57a6f;
+}
+/* Zamiast ciepłej jasnej nakładki — ciemny „brud" (multiply pogłębia paper-dark). */
+[data-cards='tainted'] .container :is(.card, .note, .profil-hero, .savefile, .feed-item)::after {
+  background: linear-gradient(158deg, #4a3d29 0%, #2a2016 100%);
+  mix-blend-mode: multiply;
+  opacity: 0.4;
+}
+/* Kafle stat/tile z powrotem ciemne (bez ocieplającej sepii). */
+[data-cards='tainted'] .container :is(.stat-tile, .tile) {
+  color: #ece4d4;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.55);
+  filter: brightness(1.02) drop-shadow(0 5px 8px rgba(0, 0, 0, 0.5));
+}
+[data-cards='tainted'] .container :is(.stat-num, .tile-num) {
+  color: #f4ecdd;
+}
+[data-cards='tainted'] .container :is(.stat-label, .tile .muted) {
+  color: #b7ab97;
+}

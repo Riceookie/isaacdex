@@ -3,37 +3,37 @@
 import { useEffect, useState } from 'react'
 import Sprite from '@/components/Sprite'
 
-type Theme = 'light' | 'dark'
+type Cards = 'normal' | 'tainted'
 
-/** Przełącznik motywu: light = normalne (kremowe) kartki, dark = „tainted" ciemne. */
+/** Skin kartek: normal = jasny pergamin, tainted = ciemne „splugawione" kartki. */
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>('dark')
+  const [cards, setCards] = useState<Cards>('normal')
 
   useEffect(() => {
-    const saved = localStorage.getItem('idx_theme') === 'light' ? 'light' : 'dark'
-    setTheme(saved)
-    document.documentElement.dataset.theme = saved
+    const saved = localStorage.getItem('idx_cards') === 'tainted' ? 'tainted' : 'normal'
+    setCards(saved)
+    document.documentElement.dataset.cards = saved
   }, [])
 
-  function wybierz(t: Theme) {
-    setTheme(t)
-    document.documentElement.dataset.theme = t
-    localStorage.setItem('idx_theme', t)
+  function wybierz(c: Cards) {
+    setCards(c)
+    document.documentElement.dataset.cards = c
+    localStorage.setItem('idx_cards', c)
   }
 
   return (
-    <div className="theme-toggle" role="group" aria-label="Motyw kartek">
+    <div className="theme-toggle" role="group" aria-label="Skin kartek">
       <button
-        className={'theme-opt' + (theme === 'light' ? ' on' : '')}
-        onClick={() => wybierz('light')}
-        aria-pressed={theme === 'light'}
+        className={'theme-opt' + (cards === 'normal' ? ' on' : '')}
+        onClick={() => wybierz('normal')}
+        aria-pressed={cards === 'normal'}
       >
         <Sprite name="sun" size={26} /> Normalne kartki
       </button>
       <button
-        className={'theme-opt' + (theme === 'dark' ? ' on' : '')}
-        onClick={() => wybierz('dark')}
-        aria-pressed={theme === 'dark'}
+        className={'theme-opt' + (cards === 'tainted' ? ' on' : '')}
+        onClick={() => wybierz('tainted')}
+        aria-pressed={cards === 'tainted'}
       >
         <Sprite name="moon" size={26} /> Tainted (ciemne)
       </button>
