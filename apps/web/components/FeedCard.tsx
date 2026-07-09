@@ -28,7 +28,7 @@ export default function FeedCard({ w, ach }: { w: FeedWpis; ach?: Ach }) {
           </span>{' '}
           {w.typ === 'unlock' && (
             <>
-              odblokował(a){' '}
+              — odblokowano{' '}
               <span className="feed-cel">
                 {ach && <img className="feed-ach" src={ach.ikonaUrl} alt="" />}
                 {ach ? ach.nazwa : 'achievement'}
@@ -37,10 +37,10 @@ export default function FeedCard({ w, ach }: { w: FeedWpis; ach?: Ach }) {
           )}
           {w.typ === 'boss' && (
             <>
-              pokonał(a) <span className="feed-cel">{w.boss}</span> jako {w.jako}
+              — pokonano <span className="feed-cel">{w.boss}</span> jako {w.jako}
             </>
           )}
-          {w.typ === 'run' && <>{w.opis}</>}
+          {w.typ === 'run' && <>— {w.opis}</>}
         </p>
 
         {w.typ === 'run' && (

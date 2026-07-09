@@ -3944,7 +3944,38 @@ body::after {
 }
 .trend-list b {
   font-family: var(--dsp);
-  color: var(--accent);
+  color: var(--gold);
+}
+
+/* Legenda wykresu rzadkości + info o synchronizacji. */
+.chart-legend {
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  margin: 0 0 0.5rem;
+}
+.chart-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.lg-sw {
+  width: 14px;
+  height: 10px;
+  border-radius: 3px;
+  display: inline-block;
+  flex: none;
+}
+.lg-sw.red {
+  background: var(--accent);
+}
+.lg-sw.gold {
+  background: var(--gold);
+}
+.kol-head .sync-info {
+  text-align: right;
 }
 .prog-row {
   display: flex;

@@ -159,12 +159,20 @@ export default async function StatystykiPage() {
       </div>
 
       <div className="note">
-        <h2>Rzadkosc Twoich odblokowanych</h2>
+        <h2>Rzadkość Twoich odblokowanych</h2>
+        <div className="chart-legend">
+          <span>
+            <i className="lg-sw red" /> Częste / rzadkie
+          </span>
+          <span>
+            <i className="lg-sw gold" /> Legendarne (&lt;5% graczy)
+          </span>
+        </div>
         <WykresRzadkosc b={s.buckets} />
       </div>
 
       <div className="note">
-        <h2>Ukonczenie postaci</h2>
+        <h2>Ukończenie postaci</h2>
         <div className="char-bars">
           {dash.postacie.map((c) => (
             <Link

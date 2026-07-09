@@ -91,7 +91,7 @@ export async function getPostacMarks(nazwa: string) {
 
 export async function getKolekcja() {
   const profil = await prisma.profil.findFirst()
-  if (!profil) return { achievements: [] }
+  if (!profil) return { achievements: [], ostatniSync: null }
   const a = await prisma.steamAchievement.findMany({
     where: { profilId: profil.id },
     orderBy: [{ odblokowany: 'desc' }, { globalnyProcent: 'asc' }],
@@ -105,7 +105,7 @@ export async function getKolekcja() {
     odblokowany: x.odblokowany,
     dataOdblokowania: x.dataOdblokowania ? x.dataOdblokowania.toISOString() : null,
   }))
-  return { achievements }
+  return { achievements, ostatniSync: profil.ostatniSync ? profil.ostatniSync.toISOString() : null }
 }
 
 export async function getProfil() {

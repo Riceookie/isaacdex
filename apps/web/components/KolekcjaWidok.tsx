@@ -18,7 +18,13 @@ function rzadka(p: number | null) {
   return p != null && p < 5
 }
 
-export default function KolekcjaWidok({ achievements }: { achievements: Ach[] }) {
+export default function KolekcjaWidok({
+  achievements,
+  ostatniSync,
+}: {
+  achievements: Ach[]
+  ostatniSync: string | null
+}) {
   const router = useRouter()
   const [sel, setSel] = useState<Ach | null>(null)
   const [busy, setBusy] = useState(false)
@@ -57,8 +63,18 @@ export default function KolekcjaWidok({ achievements }: { achievements: Ach[] })
     <section className="note paper-panel">
       <div className="kol-head">
         <button className="btn" onClick={sync} disabled={busy}>
-          {busy ? 'Synchronizuję…' : 'Synchronizuj ze Steam'}
+          <Sprite name="gear" size={18} /> {busy ? 'Synchronizuję…' : 'Synchronizuj ze Steam'}
         </button>
+        <span className="sync-info muted small">
+          {busy
+            ? 'Zaciągam achievementy ze Steama…'
+            : ostatniSync
+              ? `Ostatnia synchronizacja: ${new Date(ostatniSync).toLocaleString('pl-PL', {
+                  dateStyle: 'medium',
+                  timeStyle: 'short',
+                })}`
+              : 'Jeszcze nie synchronizowano'}
+        </span>
       </div>
 
       {achievements.length > 0 ? (
