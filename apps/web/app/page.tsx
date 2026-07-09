@@ -53,7 +53,7 @@ export default async function Home() {
 
       {/* Dwie kolumny: ostatnie + postacie */}
       <div className="dash-cols">
-        <div className="note">
+        <div className="note pin-synced">
           <h2>
             <Sprite name="stopwatch" size={26} /> Ostatnio odblokowane
           </h2>

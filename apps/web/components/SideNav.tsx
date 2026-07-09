@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import type { CSSProperties } from 'react'
 import Sprite from '@/components/Sprite'
 import { NAV } from '@/lib/nav'
 
@@ -16,8 +17,9 @@ export default function SideNav() {
           <Link
             key={n.href}
             href={n.href}
-            className={'side-link' + (active ? ' active' : '')}
+            className={'side-link' + (active ? ' active' : '') + (n.accent ? ' has-accent' : '')}
             aria-current={active ? 'page' : undefined}
+            style={n.accent ? ({ '--nav-accent': n.accent } as CSSProperties) : undefined}
           >
             <Sprite name={n.icon} size={28} />
             <span>{n.label}</span>

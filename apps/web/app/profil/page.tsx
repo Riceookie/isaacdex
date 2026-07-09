@@ -49,7 +49,7 @@ export default async function ProfilPage() {
           </div>
 
           {/* Dead God progress — jak „DEAD GOD PROGRESS" w grze */}
-          <div className="note hero-progress-card">
+          <div className="note hero-progress-card pin-synced">
             <h2>
               <Sprite name="deadgod" size={24} /> Dead God — postęp
             </h2>
@@ -89,7 +89,7 @@ export default async function ProfilPage() {
 
           {/* Gablota najrzadszych — jak „FAVORITE ITEMS" */}
           {p.showcase.length > 0 && (
-            <div className="note">
+            <div className="note pin-featured">
               <h2>
                 <Sprite name="membercard" size={24} /> Gablota (najrzadsze)
               </h2>

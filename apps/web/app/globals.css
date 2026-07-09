@@ -2475,3 +2475,213 @@ body::before {
 .avatar-upload .avatar-img {
   object-fit: cover;
 }
+
+/* ============================================================================
+   PAKIET POPRAWEK (feedback recenzenta): pinezki semantyczne, mocniejsze
+   przekrzywienie papierów, hover „unosi kartkę", bounce przycisków, animacja
+   pasków, akcenty w sidebarze, tekstura tła + doodle/kurz. Na końcu pliku,
+   żeby przez kolejność źródeł nadpisać wcześniejsze reguły.
+   ============================================================================ */
+
+/* Warstwa klimatu pod treścią (doodle + kurz). */
+.app {
+  position: relative;
+  z-index: 1;
+}
+.ambience {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.ambience .doodle {
+  position: absolute;
+  opacity: 0.15;
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.45));
+}
+.ambience .dust {
+  position: absolute;
+  bottom: -12px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 240, 210, 0.9), rgba(255, 240, 210, 0));
+  opacity: 0;
+  animation-name: dust-rise;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes dust-rise {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.5;
+  }
+  88% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(-104vh);
+    opacity: 0;
+  }
+}
+
+/* #9 — subtelna tekstura tła: faktura + drobne „plamy". Prawie niewidoczna. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 17% 21%, rgba(130, 22, 16, 0.1), transparent 24%),
+    radial-gradient(circle at 83% 66%, rgba(95, 16, 12, 0.09), transparent 22%),
+    radial-gradient(circle at 58% 90%, rgba(70, 12, 9, 0.07), transparent 20%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+  background-repeat: no-repeat, no-repeat, no-repeat, repeat;
+  background-size:
+    auto,
+    auto,
+    auto,
+    150px 150px;
+  opacity: 0.55;
+  border: 0;
+}
+
+/* #3 — pinezki semantyczne. Bazowa jest czerwona/szara (wyżej); tu warianty. */
+:is(.card, .note, .profil-hero, .feed-item, .savefile).pin-synced::before {
+  left: 26px;
+  right: auto;
+  background: radial-gradient(
+    circle at 35% 32%,
+    #c6f2ce 0%,
+    #5bbf6a 40%,
+    #2f8a45 80%,
+    #1c5a2c 100%
+  );
+}
+:is(.card, .note, .profil-hero, .feed-item, .savefile).pin-featured::before {
+  left: 26px;
+  right: auto;
+  background: radial-gradient(
+    circle at 35% 32%,
+    #ffe9a8 0%,
+    #e0b64c 42%,
+    #a97e1e 82%,
+    #6e5011 100%
+  );
+}
+:is(.card, .note, .profil-hero, .feed-item, .savefile).pin-neutral::before {
+  left: 26px;
+  right: auto;
+  background: radial-gradient(
+    circle at 35% 32%,
+    #eef1f4 0%,
+    #b8c0c8 42%,
+    #7d868f 82%,
+    #4b525a 100%
+  );
+}
+
+/* #2 — mocniejsze przekrzywienie papierów (tablica jest „bałaganiarska"). */
+.dash-cols > .note:first-child {
+  transform: rotate(-1.1deg);
+}
+.dash-cols > .note:last-child {
+  transform: rotate(1deg);
+}
+.feed-item:nth-of-type(odd) {
+  transform: rotate(-0.7deg);
+}
+.feed-item:nth-of-type(even) {
+  transform: rotate(0.7deg);
+}
+
+/* #6 — hover: kartka się unosi, cień rośnie. */
+.card,
+.profil-hero,
+.savefile,
+.feed-item,
+.stat-tile,
+.dash-cols > .note {
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease;
+}
+:is(.card, .profil-hero, .savefile, .feed-item, .dash-cols > .note):hover {
+  transform: translateY(-4px) rotate(0deg);
+  filter: sepia(0.42) saturate(1.28) hue-rotate(-8deg) brightness(1)
+    drop-shadow(0 15px 22px rgba(0, 0, 0, 0.6));
+}
+[data-theme='dark'] :is(.card, .profil-hero, .savefile, .feed-item, .dash-cols > .note):hover {
+  filter: brightness(1.03) drop-shadow(0 15px 22px rgba(0, 0, 0, 0.62));
+}
+.stat-tile:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.06);
+}
+
+/* #6 — bounce przycisków. */
+.btn {
+  transition:
+    filter 0.15s,
+    transform 0.14s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.15s;
+}
+.btn:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+}
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* #6 — paski progresu „wyrastają" po wejściu na stronę. */
+@keyframes bar-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.bar-fill {
+  transform-origin: left center;
+  animation: bar-grow 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Sidebar — kolorowe akcenty tylko na kluczowych pozycjach (reszta szara). */
+.side-link.has-accent:not(.active) .sprite {
+  filter: brightness(1.05) drop-shadow(0 0 4px var(--nav-accent))
+    drop-shadow(0 1px 0 rgba(0, 0, 0, 0.5));
+}
+.side-link.has-accent:not(.active)::after {
+  content: '';
+  position: absolute;
+  right: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--nav-accent);
+  box-shadow: 0 0 6px var(--nav-accent);
+}
+
+/* Szacunek dla „ogranicz ruch": bez dryfu/bounce/wyrastania pasków. */
+@media (prefers-reduced-motion: reduce) {
+  .ambience .dust {
+    display: none;
+  }
+  .bar-fill {
+    animation: none;
+  }
+  .btn:hover,
+  :is(.card, .profil-hero, .savefile, .feed-item, .dash-cols > .note):hover,
+  .stat-tile:hover {
+    transform: none;
+  }
+}
