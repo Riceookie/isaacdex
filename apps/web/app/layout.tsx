@@ -40,6 +40,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       lang="pl"
       data-floor="basement"
       data-theme="dark"
+      data-cards="tainted"
       data-fly="off"
       className={`${display.variable} ${displayFb.variable} ${hand.variable}`}
     >

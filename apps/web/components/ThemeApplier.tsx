@@ -9,8 +9,8 @@ export default function ThemeApplier() {
     const floor = localStorage.getItem('idx_floor') || 'basement'
     document.documentElement.dataset.floor = floor
     document.documentElement.dataset.theme = 'dark'
-    // Skin kartek: 'normal' = jasny pergamin (domyślnie), 'tainted' = ciemne splugawione.
-    const cards = localStorage.getItem('idx_cards') === 'tainted' ? 'tainted' : 'normal'
+    // Skin kartek: 'tainted' = ciemne splugawione (DOMYŚLNIE), 'normal' = jasny pergamin.
+    const cards = localStorage.getItem('idx_cards') === 'normal' ? 'normal' : 'tainted'
     document.documentElement.dataset.cards = cards
     // Mucha DOMYŚLNIE wyłączona — włącza się tylko gdy user ją zapisał jako 'on'.
     const fly = localStorage.getItem('idx_fly') === 'on' ? 'on' : 'off'

@@ -7,10 +7,10 @@ type Cards = 'normal' | 'tainted'
 
 /** Skin kartek: normal = jasny pergamin, tainted = ciemne „splugawione" kartki. */
 export default function ThemeToggle() {
-  const [cards, setCards] = useState<Cards>('normal')
+  const [cards, setCards] = useState<Cards>('tainted')
 
   useEffect(() => {
-    const saved = localStorage.getItem('idx_cards') === 'tainted' ? 'tainted' : 'normal'
+    const saved = localStorage.getItem('idx_cards') === 'normal' ? 'normal' : 'tainted'
     setCards(saved)
     document.documentElement.dataset.cards = saved
   }, [])
