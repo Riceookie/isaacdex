@@ -1,14 +1,20 @@
 import Link from 'next/link'
-import { getProfil, getDashboard } from '@/lib/queries'
+import { getProfil, getDashboard, getFeedIkony } from '@/lib/queries'
 import { ikonaPostaci } from '@/lib/chars'
 import Sprite from '@/components/Sprite'
-import HudStat from '@/components/HudStat'
 import ProfileAvatar from '@/components/ProfileAvatar'
+import FeedCard from '@/components/FeedCard'
+import { FEED } from '@/lib/feed'
 
 export const dynamic = 'force-dynamic'
 
 export default async function Home() {
-  const [p, dash] = await Promise.all([getProfil(), getDashboard()])
+  const unlockCount = FEED.filter((w) => w.typ === 'unlock').length
+  const [p, dash, ikony] = await Promise.all([
+    getProfil(),
+    getDashboard(),
+    getFeedIkony(unlockCount),
+  ])
 
   if (!p) {
     return (
@@ -21,62 +27,79 @@ export default async function Home() {
     )
   }
 
+  // Prawdziwe ikony achievementów przypisujemy kolejnym wpisom typu „unlock".
+  let ui = 0
+
   return (
-    <section>
-      {/* Pasek profilu + Dead God */}
-      <div className="profil-hero">
-        <div className="avatar">
-          <ProfileAvatar fallbackSrc={ikonaPostaci(p.ulubiona || 'Isaac')} />
+    <section className="home-grid">
+      {/* GŁÓWNA KOLUMNA — aktywność znajomych (gwiazda strony). */}
+      <div className="home-feed">
+        <div className="feed-head">
+          <h2>
+            <Sprite name="friendfinder" size={26} /> Aktywność znajomych
+          </h2>
+          <Link className="small" href="/znajomi">
+            → Wszyscy znajomi
+          </Link>
         </div>
-        <div className="profil-id">
-          <h1>{p.nick}</h1>
-          <p className="muted small">
-            <Sprite name="deadgod" size={20} /> Dead God — {p.achProcent}% achievementów
-          </p>
+
+        <p className="banner demo">
+          <Sprite name="bomb" size={16} /> DEMO — przykładowy feed. Ikony achievementów prawdziwe
+          (Steam). Konta i obserwowanie w projekcie końcowym.
+        </p>
+
+        <div className="feed">
+          {FEED.map((w, i) => {
+            const ach = w.typ === 'unlock' ? ikony[ui++ % Math.max(1, ikony.length)] : undefined
+            return <FeedCard key={i} w={w} ach={ach} />
+          })}
+        </div>
+      </div>
+
+      {/* PRAWA SZYNA — Twoje statystyki (profil zszedł z pierwszego planu). */}
+      <aside className="home-aside">
+        <div className="note me-card pin-synced">
+          <div className="me-head">
+            <div className="avatar sm">
+              <ProfileAvatar fallbackSrc={ikonaPostaci(p.ulubiona || 'Isaac')} />
+            </div>
+            <div className="me-id">
+              <h3>{p.nick}</h3>
+              <span className="muted small">
+                <Sprite name="deadgod" size={16} /> Dead God {p.achProcent}%
+              </span>
+            </div>
+          </div>
           <div className="bar">
             <div className="bar-fill" style={{ width: `${p.achProcent}%` }} />
           </div>
-        </div>
-      </div>
-
-      {/* Kluczowe liczby — pasek w stylu HUD-a Isaaca */}
-      <div className="hud-row">
-        <HudStat icon="trophy" value={`${p.achUnlocked}/${p.achTotal}`} label="achievementy" />
-        <HudStat icon="starmark" value={`${dash.overall.procent}%`} label="completion marks" />
-        <HudStat icon="heartmark" value={p.marksTotal} label="zdobyte marki" />
-        <HudStat
-          icon="membercard"
-          value={p.showcase[0] ? `${p.showcase[0].p}%` : '—'}
-          label="najrzadszy"
-        />
-      </div>
-
-      {/* Dwie kolumny: ostatnie + postacie */}
-      <div className="dash-cols">
-        <div className="note pin-synced">
-          <h2>
-            <Sprite name="stopwatch" size={26} /> Ostatnio odblokowane
-          </h2>
-          <ul className="activity">
-            {p.recent.slice(0, 5).map((a) => (
-              <li key={a.nazwa}>
-                {a.ikonaUrl && <img src={a.ikonaUrl} alt="" />}
-                <span className="grow">{a.nazwa}</span>
-                <span className="muted small">{new Date(a.data).toLocaleDateString('pl-PL')}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="small">
-            <Link href="/kolekcja">→ Cała kolekcja</Link>
-          </p>
+          <div className="me-stats">
+            <div>
+              <b>
+                {p.achUnlocked}/{p.achTotal}
+              </b>
+              <span className="muted small">achiev.</span>
+            </div>
+            <div>
+              <b>{dash.overall.procent}%</b>
+              <span className="muted small">completion</span>
+            </div>
+            <div>
+              <b>{p.marksTotal}</b>
+              <span className="muted small">marki</span>
+            </div>
+          </div>
+          <Link className="small" href="/profil">
+            → Mój profil
+          </Link>
         </div>
 
         <div className="note">
-          <h2>
-            <Sprite name="chad" size={26} /> Postepy postaci
-          </h2>
+          <h3>
+            <Sprite name="chad" size={22} /> Twoje postępy
+          </h3>
           <div className="char-bars">
-            {dash.postacie.slice(0, 6).map((c) => (
+            {dash.postacie.slice(0, 5).map((c) => (
               <div key={c.nazwa} className="char-bar">
                 <img className="char-icon" src={ikonaPostaci(c.nazwa)} alt="" />
                 <Link className="char-name" href={`/profil/${encodeURIComponent(c.nazwa)}`}>
@@ -89,17 +112,15 @@ export default async function Home() {
               </div>
             ))}
           </div>
-          <p className="small">
-            <Link href="/statystyki">→ Wszystkie statystyki</Link>
-          </p>
+          <Link className="small" href="/statystyki">
+            → Wszystkie statystyki
+          </Link>
         </div>
-      </div>
 
-      <p>
-        <Link className="btn" href="/doradca">
-          <Sprite name="foundsoul" size={22} /> Doradca itemów
+        <Link className="btn full" href="/doradca">
+          <Sprite name="foundsoul" size={20} /> Doradca itemów
         </Link>
-      </p>
+      </aside>
     </section>
   )
 }
