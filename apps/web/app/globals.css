@@ -3987,3 +3987,52 @@ body::after {
   font-size: 1.15rem;
   color: var(--accent);
 }
+
+/* ── Chat: dodatki do mockupu (voice, offline, typing, GIF) ── */
+.chan.voice .chan-voice-ic {
+  flex: none;
+  opacity: 0.75;
+}
+.online-offline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.55rem 0.2rem 0.1rem;
+  border-top: 1px solid var(--line);
+  margin-top: 0.55rem;
+}
+.chat-typing {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.typing-avs {
+  display: inline-flex;
+  flex: none;
+}
+.typing-avs img {
+  width: 22px;
+  height: 22px;
+  image-rendering: pixelated;
+  object-fit: contain;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  margin-left: -6px;
+}
+.typing-avs img:first-child {
+  margin-left: 0;
+}
+.typing-dots {
+  letter-spacing: 2px;
+}
+.ci-gif {
+  font-family: var(--dsp);
+  font-size: 0.7rem;
+  font-weight: 800;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.05rem 0.32rem;
+  color: var(--muted);
+  flex: none;
+}

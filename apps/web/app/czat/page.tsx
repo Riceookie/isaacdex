@@ -5,8 +5,10 @@ export const metadata = { title: 'Czat — IsaacDex' }
 
 // DEMO: statyczny czat w klimacie Isaaca (jak IsaacHub). Brak backendu — dane mock.
 const KANALY = {
+  info: ['welcome', 'announcements', 'rules'],
   czat: ['basement-chat', 'item-discussion', 'run-showcase', 'memes', 'music-bot'],
   runs: ['looking-for-group', 'daily-challenge'],
+  voice: ['Basement I', 'Basement II'],
 }
 
 type Wiad = {
@@ -86,6 +88,14 @@ export default function CzatPage() {
             <span className="chan-caret">▾</span>
           </div>
 
+          <div className="chan-group">Info</div>
+          {KANALY.info.map((k) => (
+            <div key={k} className="chan">
+              <span className="hash">#</span>
+              {k}
+            </div>
+          ))}
+
           <div className="chan-group">Czat</div>
           {KANALY.czat.map((k) => (
             <div key={k} className={'chan' + (k === aktywny ? ' active' : '')}>
@@ -98,6 +108,27 @@ export default function CzatPage() {
           {KANALY.runs.map((k) => (
             <div key={k} className="chan">
               <span className="hash">#</span>
+              {k}
+            </div>
+          ))}
+
+          <div className="chan-group">Voice</div>
+          {KANALY.voice.map((k) => (
+            <div key={k} className="chan voice">
+              <svg
+                className="chan-voice-ic"
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M4 9v6h4l5 4V5L8 9H4z" strokeLinecap="round" />
+                <path d="M17 8a5 5 0 010 8" strokeLinecap="round" />
+              </svg>
               {k}
             </div>
           ))}
@@ -156,6 +187,7 @@ export default function CzatPage() {
           <div className="chat-input">
             <span className="ci-plus">+</span>
             <input className="ci-field" placeholder={`Napisz na #${aktywny}`} readOnly />
+            <span className="ci-gif">GIF</span>
             <Sprite name="coin" size={18} />
             <Sprite name="heart" size={18} />
           </div>
@@ -198,6 +230,20 @@ export default function CzatPage() {
                 </li>
               ))}
             </ul>
+            <div className="online-offline muted small">
+              <span>Offline — 1 255</span>
+              <span className="chan-caret">Pokaż ▾</span>
+            </div>
+          </div>
+
+          <div className="note chat-typing">
+            <span className="typing-avs">
+              <img src={ikonaPostaci('Isaac')} alt="" />
+              <img src={ikonaPostaci('Azazel')} alt="" />
+            </span>
+            <span className="muted small">
+              <b>Ananas</b>, <b>VoidKing</b> piszą<span className="typing-dots">…</span>
+            </span>
           </div>
         </aside>
       </div>
