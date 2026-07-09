@@ -33,7 +33,8 @@ export default function CompanionMascot({ steamConnected = true }: { steamConnec
     }
     let cancelled = false
     const pool = kwestie(pathname, steamConnected)
-    let idx = pathname.length % pool.length
+    // Losowy start + losowa kolejność, żeby nie powtarzał w kółko tego samego.
+    let idx = Math.floor(Math.random() * pool.length)
 
     async function run() {
       // krótki oddech na start (żeby nie strzelało od razu przy nawigacji)

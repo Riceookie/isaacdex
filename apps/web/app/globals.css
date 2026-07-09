@@ -1885,30 +1885,67 @@ body::before {
 /* ============================================================================
    Czat (demo) — układ jak IsaacHub: kanały | wiadomości | info/online.
    ============================================================================ */
+/* Czat wypełnia viewport — scrolluje się WNĘTRZE (wiadomości/listy), nie strona. */
+.chat {
+  height: calc(100vh - 108px);
+  overflow: hidden;
+}
 .chat-grid {
   display: grid;
-  grid-template-columns: 230px minmax(0, 1fr) 300px;
+  grid-template-columns: 210px minmax(0, 1fr) 270px;
   gap: 1rem;
   align-items: stretch;
-  min-height: calc(100vh - 150px);
+  height: 100%;
+}
+.chat-grid > * {
+  min-height: 0; /* pozwala dzieciom się kurczyć → wewnętrzny scroll */
 }
 .chat-grid .note {
   margin: 0;
 }
-@media (max-width: 1120px) {
+.chat-channels {
+  overflow-y: auto;
+}
+.chat-main {
+  display: flex;
+  flex-direction: column;
+}
+.chat-msgs {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+.chat-input {
+  flex: none;
+}
+.chat-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
+}
+@media (max-width: 980px) {
   .chat-grid {
-    grid-template-columns: 210px minmax(0, 1fr);
+    grid-template-columns: 190px minmax(0, 1fr);
   }
   .chat-side {
     display: none;
   }
 }
-@media (max-width: 720px) {
+@media (max-width: 680px) {
+  .chat {
+    height: auto;
+    overflow: visible;
+  }
   .chat-grid {
     grid-template-columns: 1fr;
+    height: auto;
   }
   .chat-channels {
     display: none;
+  }
+  .chat-msgs {
+    max-height: 60vh;
   }
 }
 
@@ -4094,7 +4131,7 @@ body::after {
 [data-cards='tainted'] .container {
   --paper-img: url('/tboi/ui/paper-dark.png');
 }
-[data-cards='tainted'] .container :is(.card, .note, .profil-hero, .savefile, .feed-item) {
+[data-cards='tainted'] .container :is(.paper, .card, .note, .profil-hero, .savefile, .feed-item) {
   --text: #e9e2d6;
   --muted: #a99f8f;
   --border: #574f43;
@@ -4104,15 +4141,15 @@ body::after {
   --bg-2: #322d26;
   --paper-img: url('/tboi/ui/paper-dark.png');
 }
-[data-cards='tainted'] .container :is(.card, .note, .profil-hero, .savefile) :is(h1, h2, h3) {
+[data-cards='tainted'] .container :is(.paper, .card, .note, .profil-hero, .savefile) :is(h1, h2, h3) {
   color: #f2ece1;
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.45);
 }
-[data-cards='tainted'] .container :is(.card, .note, .profil-hero, .savefile, .feed-item) a {
+[data-cards='tainted'] .container :is(.paper, .card, .note, .profil-hero, .savefile, .feed-item) a {
   color: #e57a6f;
 }
 /* Zamiast ciepłej jasnej nakładki — ciemny „brud" (multiply pogłębia paper-dark). */
-[data-cards='tainted'] .container :is(.card, .note, .profil-hero, .savefile, .feed-item)::after {
+[data-cards='tainted'] .container :is(.paper, .card, .note, .profil-hero, .savefile, .feed-item)::after {
   background: linear-gradient(158deg, #4a3d29 0%, #2a2016 100%);
   mix-blend-mode: multiply;
   opacity: 0.4;
@@ -4128,4 +4165,27 @@ body::after {
 }
 [data-cards='tainted'] .container :is(.stat-label, .tile .muted) {
   color: #b7ab97;
+}
+
+/* Modal (doradca/kolekcja) idzie za skinem — jawne tło (nie przez var(--surface)). */
+[data-theme='dark'] .container .modal {
+  background: linear-gradient(160deg, #ede1c8, #e0d0ad);
+  color: #2f2416;
+  border: 1px solid #b9a577;
+}
+[data-cards='tainted'] .container .modal {
+  background: #2b2721;
+  color: #e9e2d6;
+  border: 1px solid #574f43;
+}
+[data-cards='tainted'] .container .modal :is(h1, h2, h3) {
+  color: #f2ece1;
+}
+
+/* Lajki: czarne serce gdy niepolubione, czerwone gdy polubione. */
+.feed-like:not(.on) .sprite {
+  filter: grayscale(1) brightness(0.3);
+}
+.feed-like.on .sprite {
+  filter: none;
 }
