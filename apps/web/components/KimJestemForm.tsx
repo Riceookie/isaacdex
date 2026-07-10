@@ -5,8 +5,7 @@ import { useRouter } from 'next/navigation'
 import { ikonaPostaci } from '@/lib/chars'
 import Sprite from '@/components/Sprite'
 import AvatarUpload from '@/components/AvatarUpload'
-import DecorMark from '@/components/DecorMark'
-import { DECORATIONS, DEFAULT_DECOR, type DecorId } from '@/lib/pfpDecor'
+import { DECORATIONS, DEFAULT_DECOR, decorOdblokowana, type DecorId } from '@/lib/pfpDecor'
 
 type Props = {
   nick: string
@@ -15,6 +14,7 @@ type Props = {
   steamId: string
   zsynchronizowano: boolean
   postacie: string[]
+  odblokowane: string[]
 }
 
 // Losowe imiona w klimacie TBOI.
@@ -45,6 +45,7 @@ export default function KimJestemForm(p: Props) {
   const [decor, setDecor] = useState<DecorId>(DEFAULT_DECOR)
   const [busy, setBusy] = useState(false)
   const [msg, setMsg] = useState<string | null>(null)
+  const odblokSet = new Set(p.odblokowane)
 
   useEffect(() => {
     setAvatar(localStorage.getItem('idx_avatar'))
@@ -100,23 +101,61 @@ export default function KimJestemForm(p: Props) {
           </p>
           <span className="side-label">Dekoracja avatara</span>
           <div className="decor-picker">
-            {DECORATIONS.map((d) => (
-              <button
-                key={d.id}
-                type="button"
-                className={'decor-pick' + (decor === d.id ? ' sel' : '')}
-                onClick={() => setDecor(d.id)}
-                data-tip={d.label}
-                aria-label={d.label}
-              >
-                {d.id === 'none' ? (
-                  <span className="decor-none">✕</span>
-                ) : (
-                  <DecorMark id={d.id} className="decor-swatch" />
-                )}
-              </button>
-            ))}
+            {DECORATIONS.map((d) => {
+              const locked = !decorOdblokowana(d, odblokSet)
+              return (
+                <button
+                  key={d.id}
+                  type="button"
+                  className={
+                    'decor-pick' + (decor === d.id ? ' sel' : '') + (locked ? ' locked' : '')
+                  }
+                  onClick={() => !locked && setDecor(d.id)}
+                  disabled={locked}
+                  data-tip={locked ? d.unlock?.text : d.label}
+                  aria-label={locked ? `${d.label} (zablokowane)` : d.label}
+                >
+                  <span className="decor-swatch">
+                    {d.id === 'none' ? (
+                      <span className="decor-none">✕</span>
+                    ) : d.overlay ? (
+                      <img src={d.overlay} alt="" />
+                    ) : (
+                      <img className="sprite" src={d.src} alt="" />
+                    )}
+                  </span>
+                  {locked && (
+                    <svg
+                      className="decor-lock"
+                      viewBox="0 0 24 24"
+                      width="12"
+                      height="12"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path d="M12 2a4 4 0 00-4 4v3H6.5A1.5 1.5 0 005 10.5v9A1.5 1.5 0 006.5 21h11a1.5 1.5 0 001.5-1.5v-9A1.5 1.5 0 0017.5 9H16V6a4 4 0 00-4-4zm-2 4a2 2 0 114 0v3h-4V6z" />
+                    </svg>
+                  )}
+                </button>
+              )
+            })}
           </div>
+          {(() => {
+            const d = DECORATIONS.find((x) => x.id === decor)
+            const locked = d && !decorOdblokowana(d, odblokSet)
+            const zablokowane = DECORATIONS.filter((x) => !decorOdblokowana(x, odblokSet))
+            if (locked && d?.unlock) {
+              return <p className="decor-req">{d.unlock.text}</p>
+            }
+            if (zablokowane.length) {
+              return (
+                <p className="small muted decor-hint">
+                  {zablokowane.length} dekoracji zablokowanych — odblokuj achievementy w grze.
+                </p>
+              )
+            }
+            return null
+          })()}
         </div>
       </div>
 

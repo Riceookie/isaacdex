@@ -163,6 +163,15 @@ export async function getProfilSetup() {
     prisma.profil.findFirst(),
     prisma.postac.findMany({ orderBy: { kolejnosc: 'asc' } }),
   ])
+  // Nazwy (displayName) odblokowanych achievementów — do bramkowania zablokowanych dekoracji.
+  const odblokowane = profil
+    ? (
+        await prisma.steamAchievement.findMany({
+          where: { profilId: profil.id, odblokowany: true },
+          select: { nazwa: true },
+        })
+      ).map((a) => a.nazwa)
+    : []
   return {
     nick: profil?.nick ?? '',
     opis: profil?.opis ?? '',
@@ -170,6 +179,7 @@ export async function getProfilSetup() {
     steamId: profil?.steamId64 ?? '',
     zsynchronizowano: profil?.ostatniSync != null,
     postacie: postacie.map((p) => p.nazwa),
+    odblokowane,
   }
 }
 

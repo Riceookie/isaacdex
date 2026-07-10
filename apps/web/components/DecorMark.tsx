@@ -1,37 +1,21 @@
 import { getDecor, type DecorId } from '@/lib/pfpDecor'
 
-// Prezentacyjny znacznik dekoracji pfp (sprite z gry albo odręczne doodle).
-// Czysto na podstawie przekazanego id — BEZ localStorage (używa go ProfileAvatar,
-// który czyta preferencję, oraz podgląd w edytorze, który pokazuje wartość roboczą).
-export default function DecorMark({
-  id,
-  className = 'pfp-decor',
-}: {
-  id: DecorId
-  className?: string
-}) {
+// Prezentacyjny render dekoracji ramki pfp — czysto z id (BEZ localStorage).
+// Overlay = pełna nakładka na ramkę; sprite pozycjonowany = pojedynczy obrazek w rogu.
+// Używany przez ProfileAvatar (dekoracja utrwalona) i podgląd w edytorze/pickerze.
+export default function DecorMark({ id }: { id: DecorId }) {
   const d = getDecor(id)
   if (d.id === 'none') return null
 
-  if (d.d) {
+  if (d.overlay) {
     return (
-      <span className={`${className} is-doodle`} aria-hidden="true">
-        <svg
-          viewBox="0 0 32 32"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2.4}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d={d.d} />
-        </svg>
-      </span>
+      <img className="pfp-overlay" src={d.overlay} alt="" aria-hidden="true" draggable={false} />
     )
   }
 
+  const pos = d.pos ?? 'br'
   return (
-    <span className={className} aria-hidden="true">
+    <span className={`pfp-decor pos-${pos}`} aria-hidden="true">
       <img className="sprite" src={d.src} alt="" draggable={false} />
     </span>
   )
