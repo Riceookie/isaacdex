@@ -19,6 +19,13 @@ export type DecorId =
   | 'blood'
   | 'bomb'
   | 'fly'
+  | 'key'
+  | 'bombblack'
+  | 'redbaby'
+  | 'darkbaby'
+  | 'hairball'
+  | 'attackfly'
+  | 'poop'
 
 export type Pos = 'tl' | 'tr' | 'bl' | 'br' | 'wrap'
 
@@ -78,6 +85,14 @@ export const DECORATIONS: Decor[] = [
   { id: 'blood', label: 'Krew', src: '/tboi/blood-splatter.svg', pos: 'wrap' },
   { id: 'bomb', label: 'Bomba', src: '/tboi/icons/bomb.webp', pos: 'bl' },
   { id: 'fly', label: 'Mucha', src: '/tboi/fly-big.png', pos: 'br' },
+  // ── Wolne dekoracje ze sprite'ów gry (klatki wycięte ze spritesheetów) ──
+  { id: 'key', label: 'Klucz', src: '/tboi/decor/key.png', pos: 'br' },
+  { id: 'bombblack', label: 'Czarna bomba', src: '/tboi/decor/bomb-black.png', pos: 'tl' },
+  { id: 'redbaby', label: 'Incubus', src: '/tboi/decor/red-baby.png', pos: 'tl' },
+  { id: 'darkbaby', label: 'Lil Brimstone', src: '/tboi/decor/dark-baby.png', pos: 'tl' },
+  { id: 'hairball', label: 'Guppy’s Hairball', src: '/tboi/decor/hairball.png', pos: 'bl' },
+  { id: 'attackfly', label: 'Mucha bojowa', src: '/tboi/decor/fly-attack.png', pos: 'tr' },
+  { id: 'poop', label: 'Kupa', src: '/tboi/decor/poop.png', pos: 'br' },
 ]
 
 export const DEFAULT_DECOR: DecorId = 'none'
