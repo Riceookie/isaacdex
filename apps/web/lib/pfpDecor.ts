@@ -17,14 +17,11 @@ export type DecorId =
   | 'heart'
   | 'spider'
   | 'blood'
-  | 'bomb'
-  | 'fly'
   | 'key'
   | 'bombblack'
   | 'redbaby'
   | 'darkbaby'
   | 'hairball'
-  | 'attackfly'
   | 'poop'
 
 export type Pos = 'tl' | 'tr' | 'bl' | 'br' | 'wrap'
@@ -79,20 +76,17 @@ export const DECORATIONS: Decor[] = [
   },
 
   // ── Wolne dekoracje z pojedynczych sprite'ów ──
-  { id: 'coin', label: 'Moneta', src: '/tboi/icons/coin.webp', pos: 'bl' },
-  { id: 'heart', label: 'Serce', src: '/tboi/icons/heart.webp', pos: 'br' },
-  { id: 'spider', label: 'Pająk', src: '/tboi/items/collectibles/mutantspider.png', pos: 'bl' },
-  { id: 'blood', label: 'Krew', src: '/tboi/blood-splatter.svg', pos: 'wrap' },
-  { id: 'bomb', label: 'Bomba', src: '/tboi/icons/bomb.webp', pos: 'bl' },
-  { id: 'fly', label: 'Mucha', src: '/tboi/fly-big.png', pos: 'br' },
-  // ── Wolne dekoracje ze sprite'ów gry (klatki wycięte ze spritesheetów) ──
-  { id: 'key', label: 'Klucz', src: '/tboi/decor/key.png', pos: 'br' },
-  { id: 'bombblack', label: 'Czarna bomba', src: '/tboi/decor/bomb-black.png', pos: 'tl' },
-  { id: 'redbaby', label: 'Incubus', src: '/tboi/decor/red-baby.png', pos: 'tl' },
-  { id: 'darkbaby', label: 'Lil Brimstone', src: '/tboi/decor/dark-baby.png', pos: 'tl' },
-  { id: 'hairball', label: 'Guppy’s Hairball', src: '/tboi/decor/hairball.png', pos: 'bl' },
-  { id: 'attackfly', label: 'Mucha bojowa', src: '/tboi/decor/fly-attack.png', pos: 'tr' },
-  { id: 'poop', label: 'Kupa', src: '/tboi/decor/poop.png', pos: 'br' },
+  // ── Wolne dekoracje (sprite w rogu wg zdjęć #7–#18) ──
+  { id: 'coin', label: 'Moneta', src: '/tboi/icons/coin.webp', pos: 'bl' }, // #8
+  { id: 'heart', label: 'Serce', src: '/tboi/icons/heart.webp', pos: 'br' }, // #12
+  { id: 'spider', label: 'Pająk', src: '/tboi/items/collectibles/mutantspider.png', pos: 'bl' }, // #13
+  { id: 'blood', label: 'Krew', src: '/tboi/blood-splatter.svg', pos: 'tl' }, // #11
+  { id: 'key', label: 'Klucz', src: '/tboi/decor/key.png', pos: 'br' }, // #7
+  { id: 'bombblack', label: 'Czarna bomba', src: '/tboi/decor/bomb-black.png', pos: 'tl' }, // #21
+  { id: 'redbaby', label: 'Incubus', src: '/tboi/decor/red-baby.png', pos: 'tl' }, // #15
+  { id: 'darkbaby', label: 'Lil Brimstone', src: '/tboi/decor/dark-baby.png', pos: 'tl' }, // #16
+  { id: 'hairball', label: 'Guppy’s Hairball', src: '/tboi/decor/hairball.png', pos: 'bl' }, // #17
+  { id: 'poop', label: 'Kupa', src: '/tboi/decor/poop.png', pos: 'br' }, // #18
 ]
 
 export const DEFAULT_DECOR: DecorId = 'none'
