@@ -11,17 +11,11 @@ export type DecorId =
   | 'death'
   | 'brownie'
   | 'steven'
-  | 'forgotten'
-  | 'deadgod'
   | 'coin'
   | 'heart'
-  | 'spider'
   | 'blood'
   | 'key'
   | 'bombblack'
-  | 'redbaby'
-  | 'darkbaby'
-  | 'hairball'
   | 'poop'
 
 export type Pos = 'tl' | 'tr' | 'bl' | 'br' | 'wrap'
@@ -59,33 +53,12 @@ export const DECORATIONS: Decor[] = [
     overlay: '/tboi/decor/steven.png',
     unlock: { ach: 'Little Steven', text: 'Wymaga achievementu „Little Steven"' },
   },
-  // Zablokowane, na razie bez sprite'a (Karol ich nie ma — pokazują stan „zablokowane").
-  {
-    id: 'forgotten',
-    label: 'Forgotten Lullaby',
-    src: '/tboi/items/collectibles/mutantspider.png',
-    pos: 'br',
-    unlock: { ach: 'Forgotten Lullaby', text: 'Wymaga achievementu „Forgotten Lullaby"' },
-  },
-  {
-    id: 'deadgod',
-    label: 'Dead God',
-    src: '/tboi/blood-splatter.svg',
-    pos: 'wrap',
-    unlock: { ach: 'Dead God', text: 'Wymaga achievementu „Dead God"' },
-  },
-
-  // ── Wolne dekoracje z pojedynczych sprite'ów ──
-  // ── Wolne dekoracje (sprite w rogu wg zdjęć #7–#18) ──
-  { id: 'coin', label: 'Moneta', src: '/tboi/icons/coin.webp', pos: 'bl' }, // #8
+  // ── Wolne dekoracje (sprite z gry w rogu ramki wg zdjęć #7–#21) ──
+  { id: 'coin', label: 'Moneta', src: '/tboi/decor/coin.png', pos: 'bl' }, // #8
   { id: 'heart', label: 'Serce', src: '/tboi/icons/heart.webp', pos: 'br' }, // #12
-  { id: 'spider', label: 'Pająk', src: '/tboi/items/collectibles/mutantspider.png', pos: 'bl' }, // #13
   { id: 'blood', label: 'Krew', src: '/tboi/blood-splatter.svg', pos: 'tl' }, // #11
-  { id: 'key', label: 'Klucz', src: '/tboi/decor/key.png', pos: 'br' }, // #7
+  { id: 'key', label: 'Klucz', src: '/tboi/decor/key.png', pos: 'br' }, // #7 (biały klucz kościany)
   { id: 'bombblack', label: 'Czarna bomba', src: '/tboi/decor/bomb-black.png', pos: 'tl' }, // #21
-  { id: 'redbaby', label: 'Incubus', src: '/tboi/decor/red-baby.png', pos: 'tl' }, // #15
-  { id: 'darkbaby', label: 'Lil Brimstone', src: '/tboi/decor/dark-baby.png', pos: 'tl' }, // #16
-  { id: 'hairball', label: 'Guppy’s Hairball', src: '/tboi/decor/hairball.png', pos: 'bl' }, // #17
   { id: 'poop', label: 'Kupa', src: '/tboi/decor/poop.png', pos: 'br' }, // #18
 ]
 
