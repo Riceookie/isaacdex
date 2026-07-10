@@ -24,6 +24,7 @@ export type Decor = {
   id: DecorId
   label: string
   overlay?: string // pełna nakładka (public/tboi/decor/…)
+  thumb?: string // przycięta miniatura do pickera (overlaye są w większości przezroczyste)
   src?: string // pojedynczy sprite pozycjonowany
   pos?: Pos
   size?: number // rozmiar sprite'a jako % szerokości ramki
@@ -39,27 +40,56 @@ export const DECORATIONS: Decor[] = [
     id: 'death',
     label: 'Death',
     overlay: '/tboi/decor/death.png',
+    thumb: '/tboi/decor/th-death.png',
     unlock: { ach: "Death's Touch", text: 'Wymaga achievementu „Death’s Touch"' },
   },
   {
     id: 'brownie',
     label: 'Brownie',
     overlay: '/tboi/decor/brownie.png',
+    thumb: '/tboi/decor/th-brownie.png',
     unlock: { ach: 'A Secret Exit', text: 'Wymaga achievementu „A Secret Exit"' },
   },
   {
     id: 'steven',
     label: 'Little Steven',
     overlay: '/tboi/decor/steven.png',
+    thumb: '/tboi/decor/th-steven.png',
     unlock: { ach: 'Little Steven', text: 'Wymaga achievementu „Little Steven"' },
   },
-  // ── Wolne dekoracje (sprite z gry w rogu ramki wg zdjęć #7–#21) ──
-  { id: 'coin', label: 'Moneta', src: '/tboi/decor/coin.png', pos: 'bl' }, // #8
-  { id: 'heart', label: 'Serce', src: '/tboi/icons/heart.webp', pos: 'br' }, // #12
-  { id: 'blood', label: 'Krew', src: '/tboi/blood-splatter.svg', pos: 'tl' }, // #11
-  { id: 'key', label: 'Klucz', src: '/tboi/decor/key.png', pos: 'br' }, // #7 (biały klucz kościany)
-  { id: 'bombblack', label: 'Czarna bomba', src: '/tboi/decor/bomb-black.png', pos: 'tl' }, // #21
-  { id: 'poop', label: 'Kupa', src: '/tboi/decor/poop.png', pos: 'br' }, // #18
+  // ── Wolne dekoracje — nakładki wycięte 1:1 z Twoich zdjęć (#7–#21), więc pozycja
+  //    i sprite dokładnie jak w mockupach ──
+  {
+    id: 'coin',
+    label: 'Moneta',
+    overlay: '/tboi/decor/ov-coin.png',
+    thumb: '/tboi/decor/th-coin.png',
+  }, // #8
+  {
+    id: 'heart',
+    label: 'Serce',
+    overlay: '/tboi/decor/ov-heart.png',
+    thumb: '/tboi/decor/th-heart.png',
+  }, // #12
+  {
+    id: 'blood',
+    label: 'Krew',
+    overlay: '/tboi/decor/ov-blood.png',
+    thumb: '/tboi/decor/th-blood.png',
+  }, // #11
+  { id: 'key', label: 'Klucz', overlay: '/tboi/decor/ov-key.png', thumb: '/tboi/decor/th-key.png' }, // #7
+  {
+    id: 'bombblack',
+    label: 'Czarna bomba',
+    overlay: '/tboi/decor/ov-bomb.png',
+    thumb: '/tboi/decor/th-bomb.png',
+  }, // #21
+  {
+    id: 'poop',
+    label: 'Kupa',
+    overlay: '/tboi/decor/ov-poop.png',
+    thumb: '/tboi/decor/th-poop.png',
+  }, // #18
 ]
 
 export const DEFAULT_DECOR: DecorId = 'none'

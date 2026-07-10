@@ -118,10 +118,8 @@ export default function KimJestemForm(p: Props) {
                   <span className="decor-swatch">
                     {d.id === 'none' ? (
                       <span className="decor-none">✕</span>
-                    ) : d.overlay ? (
-                      <img src={d.overlay} alt="" />
                     ) : (
-                      <img className="sprite" src={d.src} alt="" />
+                      <img className="sprite" src={d.thumb || d.overlay || d.src} alt="" />
                     )}
                   </span>
                   {locked && (
