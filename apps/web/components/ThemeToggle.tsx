@@ -12,12 +12,18 @@ export default function ThemeToggle() {
   useEffect(() => {
     const saved = localStorage.getItem('idx_cards') === 'normal' ? 'normal' : 'tainted'
     setCards(saved)
-    document.documentElement.dataset.cards = saved
+    zastosuj(saved)
   }, [])
+
+  function zastosuj(c: Cards) {
+    document.documentElement.dataset.cards = c
+    // Motyw idzie ZA skinem: normal → jasne UI, tainted → ciemne (spójnie z ThemeApplier).
+    document.documentElement.dataset.theme = c === 'normal' ? 'light' : 'dark'
+  }
 
   function wybierz(c: Cards) {
     setCards(c)
-    document.documentElement.dataset.cards = c
+    zastosuj(c)
     localStorage.setItem('idx_cards', c)
   }
 

@@ -4,6 +4,7 @@ import { ikonaPostaci } from '@/lib/chars'
 import Sprite from '@/components/Sprite'
 import ProfileAvatar from '@/components/ProfileAvatar'
 import ItemSprite from '@/components/ItemSprite'
+import FrameDecor from '@/components/FrameDecor'
 
 export const dynamic = 'force-dynamic'
 
@@ -66,14 +67,6 @@ export default async function ProfilPage() {
   }
 
   const ulubionaPostac = p.ulubiona || p.fav?.nazwa || 'Isaac'
-  const gameStats = [
-    { icon: 'skull' as const, num: '1 282', label: 'Runy' },
-    { icon: 'trophy' as const, num: '437', label: 'Wygrane' },
-    { icon: 'heartmark' as const, num: '2 194', label: 'Śmierci' },
-    { icon: 'starmark' as const, num: '34,1%', label: 'Win rate' },
-    { icon: 'stopwatch' as const, num: '14:32', label: 'Najlepszy czas' },
-    { icon: 'membercard' as const, num: '27', label: 'Best streak' },
-  ]
 
   return (
     <section className="pf-page">
@@ -82,8 +75,16 @@ export default async function ProfilPage() {
         <div className="pf-main">
           {/* Karta profilu (polaroid + tożsamość + meta) */}
           <div className="profil-hero pf-hero pin-synced">
+            <FrameDecor kind="spider" pos="tr" />
             <div className="pf-photo">
               <ProfileAvatar fallbackSrc={ikonaPostaci(ulubionaPostac)} />
+              <img
+                className="pf-blood"
+                src="/tboi/blood-splatter.svg"
+                alt=""
+                aria-hidden="true"
+                draggable={false}
+              />
             </div>
             <div className="pf-id">
               <h1>
@@ -101,9 +102,6 @@ export default async function ProfilPage() {
                 <span className="badge">
                   <img className="badge-ava" src={ikonaPostaci(ulubionaPostac)} alt="" />{' '}
                   {ulubionaPostac} main
-                </span>
-                <span className="badge">
-                  <Sprite name="stopwatch" size={18} /> 1000+ godzin
                 </span>
               </p>
             </div>
@@ -126,7 +124,7 @@ export default async function ProfilPage() {
           {/* Ulubiona postać + Dead God progress obok siebie */}
           <div className="pf-favprog">
             <div className="note fav-char-card">
-              <h3>Ulubiona postać</h3>
+              <h3>Ulubiona postac</h3>
               <div className="fav-char">
                 <div className="fav-char-portrait">
                   <img src={ikonaPostaci(ulubionaPostac)} alt={ulubionaPostac} />
@@ -136,7 +134,7 @@ export default async function ProfilPage() {
             </div>
             <div className="note dead-god-card pin-featured">
               <h3>
-                <Sprite name="deadgod" size={20} /> Dead God — postęp
+                <Sprite name="deadgod" size={20} /> Dead God — postep
               </h3>
               <div className="hero-progress">
                 <div className="bar">
@@ -148,17 +146,6 @@ export default async function ProfilPage() {
                 {p.achUnlocked}/{p.achTotal} achievementów
               </p>
             </div>
-          </div>
-
-          {/* 6 kafli statystyk gry */}
-          <div className="stat-tiles six">
-            {gameStats.map((st) => (
-              <div key={st.label} className="stat-tile">
-                <Sprite name={st.icon} size={28} />
-                <span className="stat-num">{st.num}</span>
-                <span className="stat-label">{st.label}</span>
-              </div>
-            ))}
           </div>
 
           {/* Recent Runs */}
@@ -226,7 +213,7 @@ export default async function ProfilPage() {
             <div className="paper-head">
               <h3>Ulubione itemy</h3>
               <Link className="paper-more" href="/doradca">
-                Doradca →
+                Zmień →
               </Link>
             </div>
             <div className="fav-items">
@@ -243,7 +230,7 @@ export default async function ProfilPage() {
           <div className="note">
             <div className="paper-head">
               <h3>
-                <Sprite name="chad" size={22} /> Postępy postaci
+                <Sprite name="chad" size={22} /> Postepy postaci
               </h3>
               <Link className="paper-more" href="/statystyki">
                 Statystyki →

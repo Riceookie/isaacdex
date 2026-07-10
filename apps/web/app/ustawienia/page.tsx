@@ -28,8 +28,11 @@ export default async function UstawieniaPage() {
           )}
         </p>
         <div className="settings-row">
-          <Link className="btn" href="/kolekcja">
-            <Sprite name="book" size={18} /> Synchronizuj w Kolekcji
+          <Link className="btn sync-btn" href="/kolekcja">
+            <Sprite name="book" size={20} /> Synchronizuj w Kolekcji
+            <span className="sync-arrow" aria-hidden="true">
+              →
+            </span>
           </Link>
         </div>
       </div>

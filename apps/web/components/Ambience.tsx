@@ -2,96 +2,87 @@
 
 import { useEffect, useState } from 'react'
 
-/** Odręczne doodle Isaaca (styl kredką) — pojedynczy kolor, currentColor. */
-const DOODLES: Record<string, React.ReactNode> = {
-  smile: (
-    <>
-      <circle cx="16" cy="16" r="12" />
-      <circle cx="11.5" cy="13" r="1.4" fill="currentColor" stroke="none" />
-      <circle cx="20.5" cy="13" r="1.4" fill="currentColor" stroke="none" />
-      <path d="M10 19c2 3 10 3 12 0" />
-    </>
-  ),
-  sad: (
-    <>
-      <circle cx="16" cy="16" r="12" />
-      <circle cx="11.5" cy="13" r="1.4" fill="currentColor" stroke="none" />
-      <circle cx="20.5" cy="13" r="1.4" fill="currentColor" stroke="none" />
-      <path d="M10 22c2-3 10-3 12 0" />
-    </>
-  ),
-  fly: (
-    <>
-      <ellipse cx="16" cy="18" rx="4" ry="5" />
-      <path d="M12 14c-5-4-9-3-9 0 0 2 4 3 8 2" />
-      <path d="M20 14c5-4 9-3 9 0 0 2-4 3-8 2" />
-      <path d="M16 8v3" />
-    </>
-  ),
-  poop: (
-    <>
-      <path d="M9 27h14c1.5 0 2.5-2 1-3 2-1 1-4-1-4 1.5-2-1-4-3-3 0-3-6-3-6 0-2-1-4 1-3 3-2 0-3 3-1 4-1.5 1 0 3 1.5 3z" />
-    </>
-  ),
-  bomb: (
-    <>
-      <circle cx="15" cy="19" r="9" />
-      <path d="M20 11l3-3" />
-      <path d="M23 8c0-2 3-2 3 0" />
-    </>
-  ),
-  laser: (
-    <>
-      <path d="M3 16l6-2-4-3 8 1-3-4 7 3-1-5 4 6 3-3-1 6" />
-    </>
-  ),
-}
-const NAZWY = Object.keys(DOODLES)
+// Pula elementów tła. Sprity z gry (muchy/krew/pająk) + kredkowe „doodle" (odręczne
+// rysunki Isaaca). `waga` = ile razy trafia do losowania. Element ma `src` (sprite)
+// albo `d` (ścieżka SVG doodla).
+type PoolItem = { typ: string; waga: number; klasa: string; src?: string; d?: string }
+const POOL: PoolItem[] = [
+  { typ: 'fly', src: '/tboi/Fly.png', waga: 5, klasa: 'amb-fly' },
+  { typ: 'fly-big', src: '/tboi/fly-big.png', waga: 2, klasa: 'amb-fly' },
+  { typ: 'blood', src: '/tboi/blood-splatter.svg', waga: 2, klasa: 'amb-blood' },
+  { typ: 'spider', src: '/tboi/items/collectibles/mutantspider.png', waga: 1, klasa: 'amb-spider' },
+  // Doodle (kredka, currentColor).
+  {
+    typ: 'doodle',
+    d: 'M10 19c2 3 10 3 12 0M11.5 13h.01M20.5 13h.01M16 4a12 12 0 100 24',
+    waga: 1,
+    klasa: 'amb-doodle',
+  },
+  { typ: 'doodle', d: 'M4 20c4-8 8 8 12 0s8-8 12 0', waga: 1, klasa: 'amb-doodle' },
+  { typ: 'doodle', d: 'M16 4v24M6 8l20 16M26 8L6 24', waga: 1, klasa: 'amb-doodle' },
+  {
+    typ: 'doodle',
+    d: 'M16 18a4 5 0 100-.01M12 14c-5-4-9-3-9 0M20 14c5-4 9-3 9 0',
+    waga: 1,
+    klasa: 'amb-doodle',
+  },
+]
+const LOSOWNIK = POOL.flatMap((p) => Array<PoolItem>(p.waga).fill(p))
 const KOLORY = ['#e5544b', '#e0b64c', '#5bbf6a', '#8a6fd6', '#c98a4e']
 
-type Plama = {
+type Rekwizyt = {
   id: number
-  typ: string
-  kolor: string
+  klasa: string
+  src?: string
+  d?: string
+  kolor?: string
+  size: number
   top: string
   left: string
   rot: number
-  scale: number
+  opacity: number
+  delay: number
 }
 
 /**
- * Warstwa klimatu: kilka losowych doodle w rogach ekranu + dryfujące drobinki kurzu.
- * Losowane po zamontowaniu (po stronie klienta), więc inne przy każdym odświeżeniu i
- * bez rozjazdu hydratacji. Nieklikalne, pod treścią.
+ * Warstwa klimatu: linie CRT + winieta (efekt ekranu) oraz rozsypane po CAŁYM ekranie
+ * sprity z gry (muchy, krew, pająk) i kredkowe doodle + dryfujące drobinki kurzu.
+ * Losowane po zamontowaniu (klient), więc inne przy każdym odświeżeniu i bez rozjazdu
+ * hydratacji. Nieklikalne, pod treścią (nie na kartkach).
  */
 export default function Ambience() {
-  const [plamy, setPlamy] = useState<Plama[]>([])
+  const [rekwizyty, setRekwizyty] = useState<Rekwizyt[]>([])
 
   useEffect(() => {
-    const ile = 5 + Math.floor(Math.random() * 3) // 5–7 doodli
+    const ile = 16 + Math.floor(Math.random() * 8) // 16–23 elementów, rozsypane wszędzie
     const rand = (a: number, b: number) => a + Math.random() * (b - a)
-    const naKrawedzi = () => {
-      // trzymaj doodle przy brzegach (rogi/krawędzie), z dala od środka
-      const os = () => (Math.random() < 0.5 ? rand(2, 16) : rand(84, 96))
-      return { top: `${os()}%`, left: `${os()}%` }
-    }
-    const nowe: Plama[] = Array.from({ length: ile }, (_, i) => {
-      const { top, left } = naKrawedzi()
+    const os = () => rand(1, 97) // po całym ekranie
+    const nowe: Rekwizyt[] = Array.from({ length: ile }, (_, i) => {
+      const p = LOSOWNIK[Math.floor(Math.random() * LOSOWNIK.length)]
+      const fly = p.typ.startsWith('fly')
+      const doodle = p.typ === 'doodle'
       return {
         id: i,
-        typ: NAZWY[Math.floor(Math.random() * NAZWY.length)],
-        kolor: KOLORY[Math.floor(Math.random() * KOLORY.length)],
-        top,
-        left,
-        rot: rand(-18, 18),
-        scale: rand(0.8, 1.4),
+        klasa: p.klasa,
+        src: p.src,
+        d: p.d,
+        kolor: doodle ? KOLORY[Math.floor(Math.random() * KOLORY.length)] : undefined,
+        size: fly ? rand(18, 30) : doodle ? rand(22, 34) : rand(22, 34),
+        top: `${os()}%`,
+        left: `${os()}%`,
+        rot: rand(-20, 20),
+        opacity: fly ? rand(0.35, 0.6) : doodle ? rand(0.16, 0.28) : rand(0.22, 0.4),
+        delay: rand(0, 2),
       }
     })
-    setPlamy(nowe)
+    setRekwizyty(nowe)
   }, [])
 
   return (
     <div className="ambience" aria-hidden="true">
+      {/* Efekt ekranu kineskopu (linie skanowania + winieta) — czysty CSS. */}
+      <div className="crt" />
+
       {/* Dryfujący kurz (statyczne pozycje, żeby nie rozjechać hydratacji). */}
       <span
         className="dust"
@@ -118,28 +109,47 @@ export default function Ambience() {
         style={{ left: '92%', animationDelay: '14s', animationDuration: '16s' }}
       />
 
-      {plamy.map((p) => (
-        <svg
-          key={p.id}
-          className="doodle"
-          viewBox="0 0 32 32"
-          width={30}
-          height={30}
-          fill="none"
-          stroke={p.kolor}
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          style={{
-            top: p.top,
-            left: p.left,
-            transform: `rotate(${p.rot}deg) scale(${p.scale})`,
-            color: p.kolor,
-          }}
-        >
-          {DOODLES[p.typ]}
-        </svg>
-      ))}
+      {rekwizyty.map((r) =>
+        r.d ? (
+          <svg
+            key={r.id}
+            className={`amb-sprite ${r.klasa}`}
+            viewBox="0 0 32 32"
+            width={r.size}
+            height={r.size}
+            fill="none"
+            stroke={r.kolor}
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{
+              top: r.top,
+              left: r.left,
+              opacity: r.opacity,
+              transform: `rotate(${r.rot}deg)`,
+            }}
+          >
+            <path d={r.d} />
+          </svg>
+        ) : (
+          <img
+            key={r.id}
+            className={`sprite amb-sprite ${r.klasa}`}
+            src={r.src}
+            width={r.size}
+            height={r.size}
+            alt=""
+            draggable={false}
+            style={{
+              top: r.top,
+              left: r.left,
+              opacity: r.opacity,
+              transform: `rotate(${r.rot}deg)`,
+              animationDelay: `${r.delay}s`,
+            }}
+          />
+        ),
+      )}
     </div>
   )
 }

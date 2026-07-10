@@ -70,12 +70,12 @@ export default function KimJestemForm(p: Props) {
       <h1>WHO AM I?</h1>
 
       <div className="whoami-top">
-        <span className="hand-note">
-          Twój avatar =<br />
-          własny obraz
-        </span>
         <AvatarUpload fallbackSrc={ikonaPostaci(ulubiona || 'Isaac')} />
-        <span className="red-note">← bez obrazu = ulubiona postać</span>
+        <p className="small muted whoami-avatar-cap">
+          Kliknij, by wgrać własny avatar.
+          <br />
+          Bez obrazu użyjemy ikony ulubionej postaci.
+        </p>
       </div>
 
       <div className="whoami-name">
@@ -91,7 +91,6 @@ export default function KimJestemForm(p: Props) {
             <button className="dice" type="button" onClick={losujImie} data-tip="Losowe imię">
               <Sprite name="d6" size={20} />
             </button>
-            <span className="red-note">← losowe</span>
           </span>
         </label>
       </div>

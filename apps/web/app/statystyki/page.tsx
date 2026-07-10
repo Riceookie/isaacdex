@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { getStatystyki, getDashboard } from '@/lib/queries'
-import { ikonaPostaci } from '@/lib/chars'
+import { ikonaPostaci, jestTainted } from '@/lib/chars'
 import Sprite from '@/components/Sprite'
 
 export const dynamic = 'force-dynamic'
@@ -127,8 +127,8 @@ export default async function StatystykiPage() {
   }
 
   return (
-    <section className="note paper-panel">
-      <div className="tiles">
+    <section className="stats-board">
+      <div className="tiles sb-tiles">
         <div className="tile">
           <span className="tile-num">
             {s.unlocked}/{s.total}
@@ -153,13 +153,13 @@ export default async function StatystykiPage() {
         </div>
       </div>
 
-      <div className="note">
+      <div className="note sb-card sb-time">
         <h2>Odblokowania w czasie</h2>
         <WykresCzas seria={s.seria} />
       </div>
 
-      <div className="note">
-        <h2>Rzadkość Twoich odblokowanych</h2>
+      <div className="note sb-card sb-rare">
+        <h2>Rzadkosc Twoich odblokowanych</h2>
         <div className="chart-legend">
           <span>
             <i className="lg-sw red" /> Częste / rzadkie
@@ -171,24 +171,49 @@ export default async function StatystykiPage() {
         <WykresRzadkosc b={s.buckets} />
       </div>
 
-      <div className="note">
-        <h2>Ukończenie postaci</h2>
+      <div className="note sb-card sb-chars">
+        <h2>Ukonczenie postaci</h2>
         <div className="char-bars">
-          {dash.postacie.map((c) => (
-            <Link
-              key={c.nazwa}
-              href={`/profil/${encodeURIComponent(c.nazwa)}`}
-              className="char-bar"
-            >
-              <img className="char-icon" src={ikonaPostaci(c.nazwa)} alt="" />
-              <span className="char-name">{c.nazwa}</span>
-              <div className="bar mini">
-                <div className="bar-fill" style={{ width: `${c.procent}%` }} />
-              </div>
-              <span className="char-pct">{c.procent}%</span>
-            </Link>
-          ))}
+          {dash.postacie.map((c) => {
+            // Postacie splugawione (Tainted) nie mają completion marks jako achievementów
+            // Steam — Web API nie zwraca ich odblokowań, więc zamiast mylącego „0%"
+            // pokazujemy jawnie „bez danych Steam" (patrz przypis pod listą).
+            const bezDanych = jestTainted(c.nazwa) && c.zaliczone === 0
+            return (
+              <Link
+                key={c.nazwa}
+                href={`/profil/${encodeURIComponent(c.nazwa)}`}
+                className={`char-bar${bezDanych ? ' char-bar--nodata' : ''}`}
+              >
+                <img className="char-icon" src={ikonaPostaci(c.nazwa)} alt="" />
+                <span className="char-name">{c.nazwa}</span>
+                {bezDanych ? (
+                  <span
+                    className="char-nodata"
+                    title="Steam Web API nie udostępnia completion marks postaci Tainted"
+                  >
+                    bez danych Steam
+                  </span>
+                ) : (
+                  <>
+                    <div className="bar mini">
+                      <div className="bar-fill" style={{ width: `${c.procent}%` }} />
+                    </div>
+                    <span className="char-pct">{c.procent}%</span>
+                  </>
+                )}
+              </Link>
+            )
+          })}
         </div>
+        <p className="small muted char-nodata-note">
+          <Sprite name="godhead" size={14} />
+          <span>
+            Postacie <b>splugawione (Tainted)</b> pokazują „bez danych Steam" — ich completion marks
+            nie są achievementami Steam, więc Web API ich nie zwraca. Liczą się tylko marki postaci
+            bazowych.
+          </span>
+        </p>
       </div>
     </section>
   )

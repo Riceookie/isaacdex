@@ -31,6 +31,25 @@
   --wall-img: url('/tboi/ui/wall-frame.png');
   --page-bg: radial-gradient(ellipse 90% 75% at 50% 38%, #272521 0%, #131110 52%, #060505 100%);
 }
+/* NORMAL (jasny pergamin): całe UI jaśnieje — chrome, powierzchnie i tło idą za
+   skinem 'normal'. Ciepła paleta papieru, żeby pasowała do ramek border-image. */
+[data-theme='light'] {
+  --bg: #e8dcc6;
+  --bg-2: #ded0b6;
+  --surface: #f1e8d5;
+  --surface-2: #e6d9bf;
+  --border: #c3b092;
+  --line: rgba(60, 45, 25, 0.14);
+  --text: #2b2521;
+  --muted: #6d5f4e;
+  --paper-img: url('/tboi/ui/paper.png');
+  --wall-img: url('/tboi/ui/wall-frame-basement.png');
+  --page-bg: radial-gradient(ellipse 90% 75% at 50% 38%, #efe3ca 0%, #ddccab 52%, #c4ad86 100%);
+}
+/* Kolor za body (widoczny przy overscrollu) też jaśnieje. */
+html[data-theme='light'] {
+  background: #c4ad86;
+}
 
 * {
   box-sizing: border-box;
@@ -379,6 +398,39 @@ a:hover {
   gap: 0.6rem;
   margin-top: 1rem;
 }
+/* „Rozwiń/Zwiń" — odsłania zwinięte wpisy feedu, żeby widok mieścił się w oknie. */
+.feed-more {
+  align-self: center;
+  margin-top: 0.2rem;
+  padding: 0.35rem 1rem;
+  font-family: var(--dsp);
+  font-size: 0.9rem;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: inherit;
+}
+.feed-more:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+/* Stonowany, cienki pasek scrolla dla obszarów fit-to-viewport. */
+.item-grid,
+.ach-grid,
+.char-bars,
+.runs-list {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+:is(.item-grid, .ach-grid, .char-bars, .runs-list)::-webkit-scrollbar {
+  width: 8px;
+}
+:is(.item-grid, .ach-grid, .char-bars, .runs-list)::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--border) 80%, transparent);
+  border-radius: 8px;
+}
 .feed-item {
   display: flex;
   align-items: center;
@@ -601,6 +653,11 @@ a:hover {
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 0.5rem;
   margin-top: 1rem;
+  /* Fit-to-viewport: katalog itemów scrolluje się wewnątrz, nie rozpycha strony. */
+  max-height: 56vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 4px;
 }
 .item-card {
   display: flex;
@@ -683,6 +740,11 @@ a:hover {
   grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
   gap: 6px;
   margin-top: 1rem;
+  /* Fit-to-viewport: siatka achievementów scrolluje się wewnątrz, nie rozpycha strony. */
+  max-height: 56vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 4px;
 }
 .ach {
   aspect-ratio: 1;
@@ -815,6 +877,11 @@ a:hover {
   flex-direction: column;
   gap: 0.4rem;
   margin-top: 0.6rem;
+  /* Fit-to-viewport: lista 34 postaci scrolluje się wewnątrz sekcji. */
+  max-height: 42vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 4px;
 }
 .char-bar {
   display: grid;
@@ -824,9 +891,116 @@ a:hover {
   color: var(--text);
   font-size: 0.88rem;
 }
+
+/* ============================================================================
+   STATYSTYKI — bento na stałą wysokość (mieści się w oknie, bez scrolla strony).
+   Górny pasek kafli + dwa wykresy (lewa) + lista postaci (prawa, scroll).
+   ============================================================================ */
+.stats-board {
+  /* 112px = topbar + górny padding kontenera; -4rem margin kasuje jego dolny padding. */
+  height: calc(100dvh - 112px);
+  margin-top: 0.4rem;
+  margin-bottom: -4rem;
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    'tiles tiles'
+    'time  chars'
+    'rare  chars';
+}
+.sb-tiles {
+  grid-area: tiles;
+  margin: 0;
+}
+.sb-tiles .tile {
+  padding: 0.6rem 0.8rem;
+}
+.sb-tiles .tile-num {
+  font-size: 1.3rem;
+}
+.sb-time {
+  grid-area: time;
+}
+.sb-rare {
+  grid-area: rare;
+}
+.sb-chars {
+  grid-area: chars;
+}
+/* Karty bento wypełniają komórkę; wykres skaluje się do dostępnej wysokości. */
+.sb-card {
+  min-height: 0;
+  min-width: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.sb-card h2 {
+  font-size: 1.05rem;
+  margin-bottom: 0.2rem;
+}
+.sb-card .chart {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  margin-top: 0.2rem;
+}
+/* Lista postaci wypełnia całą komórkę i scrolluje się wewnątrz. */
+.sb-chars .char-bars {
+  flex: 1;
+  min-height: 0;
+  max-height: none;
+}
+/* Wąskie ekrany: rezygnujemy ze stałej wysokości — normalny, pionowy układ. */
+@media (max-width: 820px) {
+  .stats-board {
+    height: auto;
+    margin-bottom: 0;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'tiles'
+      'time'
+      'rare'
+      'chars';
+  }
+  .sb-card {
+    overflow: visible;
+  }
+  .sb-chars .char-bars {
+    max-height: 50vh;
+  }
+}
 .char-pct {
   text-align: right;
   color: var(--muted);
+}
+/* Tainted bez danych Steam: zajmuje miejsce paska+% (grid-column span), przygaszone. */
+.char-nodata {
+  grid-column: 3 / span 2;
+  text-align: right;
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--muted);
+  opacity: 0.85;
+  white-space: nowrap;
+}
+.char-bar--nodata {
+  opacity: 0.78;
+}
+.char-nodata-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin: 0.7rem 0.2rem 0;
+  line-height: 1.45;
+}
+.char-nodata-note .sprite {
+  flex: none;
+  margin-top: 2px;
 }
 
 /* ── Ikony postaci ── */
@@ -1007,21 +1181,15 @@ a:hover {
 }
 .whoami-top {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
+  gap: 0.5rem;
   margin-bottom: 1.4rem;
 }
-.hand-note {
-  color: var(--muted);
-  font-size: 0.8rem;
-  text-align: right;
-  line-height: 1.3;
-}
-.red-note {
-  color: var(--accent);
-  font-size: 0.8rem;
+.whoami-avatar-cap {
+  text-align: center;
+  margin: 0;
+  line-height: 1.35;
 }
 .avatar-box {
   width: 88px;
@@ -1066,7 +1234,7 @@ a:hover {
 }
 .whoami-sides {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 1rem;
   margin: 1rem 0;
 }
@@ -1385,6 +1553,12 @@ a.char-bar:hover {
   --page-bg: radial-gradient(ellipse 100% 80% at 50% 32%, #161513 0%, #0c0b0a 55%, #050505 100%);
   --sidebar-bg: #100f0d;
 }
+/* Normal (jasny) skin: ten późniejszy :root wyżej redefiniował --page-bg z powrotem
+   na ciemny (równa specyficzność, wygrywa kolejnością) — przywróć jasne tło strony,
+   żeby obszar treści był spójnie jasny (nie czarny za kartkami). */
+[data-theme='light'] {
+  --page-bg: radial-gradient(ellipse 90% 75% at 50% 38%, #efe3ca 0%, #ddccab 52%, #c4ad86 100%);
+}
 
 /* Bez drewnianej ramy pokoju — tablica ma sięgać do krawędzi jak w mockupie. */
 body::after {
@@ -1549,6 +1723,18 @@ button.util-icon:hover,
 }
 .util-icon.deco {
   cursor: default;
+}
+/* Normal (jasny) skin: ikony narzędziowe muszą być ciemnym atramentem na jasnym tle
+   (domyślne jasnoszare kolory znikają na papierze). */
+[data-theme='light'] .util-icon {
+  border-color: rgba(60, 45, 25, 0.18);
+  background: rgba(60, 45, 25, 0.05);
+  color: #5a4b39;
+}
+[data-theme='light'] button.util-icon:hover,
+[data-theme='light'] .util-icon:not(.deco):hover {
+  color: #2a2018;
+  background: rgba(60, 45, 25, 0.1);
 }
 .avatar-chip {
   display: inline-flex;
@@ -2278,7 +2464,8 @@ body::before {
   flex: none;
   width: 56px;
   height: 56px;
-  margin: 0 0 0 0.4rem;
+  /* Trochę bardziej w lewo (bliżej zakładki tytułu). */
+  margin: 0 0 0 -0.6rem;
   z-index: 6;
 }
 .companion-mini {
@@ -2331,9 +2518,8 @@ body::before {
   top: 50%;
   transform: translateY(-50%);
   width: max-content;
-  /* Węziej niż wcześniej: dłuższe kwestie łamią się na kilka linii,
-     zamiast rozjeżdżać się w prawo na ikony narzędziowe. */
-  max-width: 230px;
+  /* Dłuższy dymek — kwestie mieszczą się w mniejszej liczbie linii. */
+  max-width: 340px;
   white-space: normal;
   overflow-wrap: break-word;
   background: #f3e9cf;
@@ -2442,29 +2628,62 @@ body::before {
   }
 }
 .comp-opt {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.6rem 0.3rem;
+  gap: 0.4rem;
+  padding: 0.7rem 0.3rem 0.55rem;
   border: 2px solid var(--border);
-  border-radius: 10px;
+  border-radius: 12px;
   background: var(--surface);
-  color: var(--text);
+  color: var(--muted);
   cursor: inherit;
   font-family: var(--dsp);
   font-size: 0.78rem;
   letter-spacing: 0.02em;
+  transition:
+    transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.12s,
+    background 0.12s,
+    color 0.12s;
 }
 .comp-opt img {
   width: 46px;
   height: 46px;
   image-rendering: pixelated;
   object-fit: contain;
+  /* Portret na okrągłym „pedestale", jak wybór postaci w grze. */
+  background: radial-gradient(circle at 50% 45%, var(--surface-2), transparent 72%);
+  border-radius: 50%;
+  padding: 3px;
+}
+.comp-opt:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  color: var(--text);
 }
 .comp-opt.on {
   border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  color: var(--text);
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+/* Znaczek „wybrane" w rogu aktywnego kafla. */
+.comp-opt.on::after {
+  content: '✓';
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  font-size: 0.7rem;
+  color: #fff;
+  background: var(--accent);
+  border: 2px solid var(--surface);
+  border-radius: 50%;
 }
 
 /* ── Ulubiona postać (portret na profilu) ── */
@@ -2532,10 +2751,68 @@ body::before {
   pointer-events: none;
   overflow: hidden;
 }
-.ambience .doodle {
+/* Rozsypane w tle sprity z gry (muchy/krew/pająk). Pod treścią, nieklikalne. */
+.ambience .amb-sprite {
   position: absolute;
-  opacity: 0.15;
-  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.45));
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.5));
+}
+/* Muchy delikatnie „bzyczą" w miejscu. */
+.ambience .amb-fly {
+  animation: amb-buzz 0.5s steps(2, end) infinite;
+}
+@keyframes amb-buzz {
+  0% {
+    transform: rotate(-3deg) translate(0, 0);
+  }
+  25% {
+    transform: rotate(2deg) translate(0.8px, -1px);
+  }
+  50% {
+    transform: rotate(-2deg) translate(-0.7px, 0.8px);
+  }
+  75% {
+    transform: rotate(3deg) translate(0.6px, 0.6px);
+  }
+  100% {
+    transform: rotate(-3deg) translate(0, 0);
+  }
+}
+/* ── Immersja CRT (efekt ekranu; z-index z .ambience = 0) ── */
+.crt {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.16) 0,
+    rgba(0, 0, 0, 0.16) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity: 0.45;
+}
+/* Winieta ekranu kineskopu — ciemniejące rogi. */
+.crt::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 118% 100% at 50% 48%,
+    transparent 55%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+}
+/* W trybie NORMAL (jasny) immersja dużo słabsza — strona ma jaśnieć. */
+[data-theme='light'] .crt {
+  opacity: 0.14;
+}
+[data-theme='light'] .ambience .amb-sprite {
+  opacity: 0.22 !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ambience .amb-fly {
+    animation: none;
+  }
 }
 .ambience .dust {
   position: absolute;
@@ -2674,6 +2951,38 @@ body::after {
 }
 .btn:active {
   transform: translateY(1px);
+}
+
+/* „Synchronizuj w Kolekcji" — wyraźny CTA (gradient + połysk + strzałka na hover). */
+.sync-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.62rem 1.25rem;
+  font-family: var(--dsp);
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent) 88%, #fff) 0%,
+    var(--accent) 45%,
+    color-mix(in srgb, var(--accent) 80%, #000) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 3px 0 color-mix(in srgb, var(--accent) 60%, #000),
+    0 6px 12px rgba(0, 0, 0, 0.4);
+}
+.sync-btn:active {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 1px 0 color-mix(in srgb, var(--accent) 60%, #000);
+}
+.sync-arrow {
+  transition: transform 0.14s ease;
+}
+.sync-btn:hover .sync-arrow {
+  transform: translateX(4px);
 }
 
 /* #6 — paski progresu „wyrastają" po wejściu na stronę. */
@@ -2916,11 +3225,16 @@ body::after {
   animation: comp-pop 0.14s ease;
 }
 .notif-pop-head {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
   padding: 0.6rem 0.85rem;
   font-family: var(--dsp);
   font-size: 1rem;
   letter-spacing: 0.02em;
   border-bottom: 1px solid var(--border);
+  /* Akcentowy pasek na górze panelu. */
+  box-shadow: inset 0 3px 0 var(--accent);
 }
 .notif-list {
   list-style: none;
@@ -2931,19 +3245,39 @@ body::after {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  padding: 0.55rem 0.85rem;
-  border-bottom: 1px solid var(--border);
+  padding: 0.6rem 0.85rem;
+  border-bottom: 1px solid var(--line);
+  transition: background 0.12s;
+}
+.notif-item:hover {
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+.notif-item:last-child {
+  border-bottom: 0;
 }
 .notif-ic {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   flex: none;
-  border-radius: 9px;
+  border-radius: 10px;
   background: var(--surface-2);
   border: 1px solid var(--border);
   display: grid;
   place-items: center;
   overflow: hidden;
+}
+/* Kolor obwódki ikony zależny od typu powiadomienia. */
+.notif-ic--follow {
+  border-color: var(--ok);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ok) 40%, transparent);
+}
+.notif-ic--comment {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+.notif-ic--sync {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--gold) 40%, transparent);
 }
 .notif-ic img {
   width: 100%;
@@ -3022,6 +3356,49 @@ body::after {
 /* Basement Radio — seed dnia. */
 .radio-card h3 {
   margin-bottom: 0.55rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+/* Przycisk „graj" radia — po prawej w nagłówku. */
+.radio-play {
+  margin-left: auto;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  cursor: inherit;
+  transition:
+    border-color 0.12s,
+    color 0.12s;
+}
+.radio-play:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+/* „ON AIR" — pulsujące czerwone tło ramki i przycisku, gdy radio gra. */
+.radio-card.on-air {
+  animation: radio-onair 0.7s ease-in-out;
+}
+.radio-card.on-air .radio-play {
+  border-color: var(--accent);
+  color: #fff;
+  background: var(--accent);
+}
+@keyframes radio-onair {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+  50% {
+    box-shadow: 0 0 14px 2px color-mix(in srgb, var(--accent) 55%, transparent);
+  }
 }
 .radio-seed {
   display: flex;
@@ -3600,16 +3977,12 @@ body::after {
   white-space: nowrap;
 }
 
+/* Profil = JEDEN scroll całej strony (nie dwie osobne kolumny). Układ kafli zostaje. */
 .pf-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.55fr) minmax(300px, 1fr);
   gap: 1.1rem;
   align-items: start;
-}
-@media (max-width: 1000px) {
-  .pf-grid {
-    grid-template-columns: 1fr;
-  }
 }
 .pf-main,
 .pf-side {
@@ -3617,6 +3990,17 @@ body::after {
   flex-direction: column;
   gap: 1.1rem;
   min-width: 0;
+}
+/* Lista runów płynie w głównym scrollu strony (bez wewnętrznego scrolla). */
+.pf-main .runs-list {
+  max-height: none;
+  overflow: visible;
+  padding-right: 0;
+}
+@media (max-width: 1000px) {
+  .pf-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Hero: polaroid + tożsamość + meta */
@@ -3644,6 +4028,18 @@ body::after {
   padding: 6px;
   display: grid;
   place-items: center;
+  position: relative;
+}
+/* Plama krwi rozbryzgnięta na polaroidzie (przycięta do fotki przez overflow). */
+.pf-blood {
+  position: absolute;
+  top: -4px;
+  left: -6px;
+  width: 52px;
+  height: 52px;
+  opacity: 0.85;
+  pointer-events: none;
+  transform: rotate(-10deg);
 }
 .pf-photo img {
   width: 100%;
@@ -3735,6 +4131,11 @@ body::after {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+  /* Fit-to-viewport: lista runów scrolluje się wewnątrz karty. */
+  max-height: 32vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 4px;
 }
 .run-row {
   display: grid;
@@ -4123,6 +4524,71 @@ body::after {
   opacity: 0.32;
 }
 
+/* ── Deklaratywne ozdoby ramek (FrameDecor): prawdziwe sprity z gry ── */
+.frame-decor {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+  line-height: 0;
+}
+.frame-decor .fd-img {
+  display: block;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.5));
+}
+.fd-blood .fd-img {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
+  opacity: 0.92;
+}
+/* Mucha lekko „bzyczy" — drobny dygot w miejscu (sprite ma już skrzydła). */
+.fd-fly .fd-img {
+  animation: fd-buzz 0.5s steps(2, end) infinite;
+}
+@keyframes fd-buzz {
+  0% {
+    transform: translate(0, 0) rotate(-2deg);
+  }
+  25% {
+    transform: translate(0.6px, -0.8px) rotate(1deg);
+  }
+  50% {
+    transform: translate(-0.5px, 0.6px) rotate(-1deg);
+  }
+  75% {
+    transform: translate(0.4px, 0.5px) rotate(2deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(-2deg);
+  }
+}
+/* Pająk zwisa z nitki: cienka nić do górnej krawędzi + kołysanie od punktu zaczepu. */
+.fd-spider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: 50% 0;
+  animation: fd-sway 4.5s ease-in-out infinite;
+}
+.fd-thread {
+  width: 1px;
+  height: 14px;
+  background: rgba(150, 150, 160, 0.5);
+}
+@keyframes fd-sway {
+  0%,
+  100% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fd-spider,
+  .fd-fly .fd-img {
+    animation: none;
+  }
+}
+
 /* ============================================================================
    TAINTED — ciemne „splugawione" kartki (opcja w Ustawieniach). Nadpisuje jasny
    pergamin treści gdy html ma data-cards='tainted'. Na końcu pliku, żeby przez
@@ -4141,7 +4607,10 @@ body::after {
   --bg-2: #322d26;
   --paper-img: url('/tboi/ui/paper-dark.png');
 }
-[data-cards='tainted'] .container :is(.paper, .card, .note, .profil-hero, .savefile) :is(h1, h2, h3) {
+[data-cards='tainted']
+  .container
+  :is(.paper, .card, .note, .profil-hero, .savefile)
+  :is(h1, h2, h3) {
   color: #f2ece1;
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.45);
 }
@@ -4149,7 +4618,9 @@ body::after {
   color: #e57a6f;
 }
 /* Zamiast ciepłej jasnej nakładki — ciemny „brud" (multiply pogłębia paper-dark). */
-[data-cards='tainted'] .container :is(.paper, .card, .note, .profil-hero, .savefile, .feed-item)::after {
+[data-cards='tainted']
+  .container
+  :is(.paper, .card, .note, .profil-hero, .savefile, .feed-item)::after {
   background: linear-gradient(158deg, #4a3d29 0%, #2a2016 100%);
   mix-blend-mode: multiply;
   opacity: 0.4;

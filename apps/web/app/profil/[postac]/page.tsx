@@ -1,7 +1,9 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getPostacMarks } from '@/lib/queries'
+import { jestTainted } from '@/lib/chars'
 import MarksBoard from '@/components/MarksBoard'
+import Sprite from '@/components/Sprite'
 
 export const dynamic = 'force-dynamic'
 
@@ -28,6 +30,17 @@ export default async function ProfilPostaci({ params }: { params: { postac: stri
       <p className="small">
         <Link href="/">← Pulpit</Link>
       </p>
+
+      {jestTainted(data.postac) && data.zaznaczone.length === 0 && (
+        <p className="small muted char-nodata-note">
+          <Sprite name="godhead" size={14} />
+          <span>
+            To postać <b>splugawiona (Tainted)</b> — jej completion marks nie są achievementami
+            Steam, więc Web API ich nie zwraca i tablica pozostaje pusta. Śledzimy tylko marki
+            postaci bazowych.
+          </span>
+        </p>
+      )}
 
       <MarksBoard
         postac={data.postac}

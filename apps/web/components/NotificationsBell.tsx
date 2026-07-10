@@ -82,7 +82,7 @@ export default function NotificationsBell() {
           <ul className="notif-list">
             {NOTIFS.map((n) => (
               <li key={n.id} className="notif-item" role="menuitem">
-                <span className="notif-ic">
+                <span className={'notif-ic notif-ic--' + n.typ}>
                   {n.postac ? (
                     <img src={ikonaPostaci(n.postac)} alt="" />
                   ) : (

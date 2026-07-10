@@ -1,5 +1,6 @@
 import Sprite from '@/components/Sprite'
 import FeedCard from '@/components/FeedCard'
+import FeedMore from '@/components/FeedMore'
 import { getFeedIkony } from '@/lib/queries'
 import { FEED } from '@/lib/feed'
 
@@ -10,6 +11,12 @@ export default async function ZnajomiPage() {
   const unlockCount = FEED.filter((w) => w.typ === 'unlock').length
   const ikony = await getFeedIkony(unlockCount)
   let ui = 0
+  // Feed policzony raz (ikony z licznika `ui`), potem podzielony na widoczne + zwijane,
+  // żeby lista znajomych mieściła się w oknie bez scrolla strony.
+  const feedNodes = FEED.map((w, i) => {
+    const ach = w.typ === 'unlock' ? ikony[ui++ % Math.max(1, ikony.length)] : undefined
+    return <FeedCard key={i} w={w} ach={ach} />
+  })
 
   return (
     <section>
@@ -19,10 +26,8 @@ export default async function ZnajomiPage() {
       </p>
 
       <div className="feed">
-        {FEED.map((w, i) => {
-          const ach = w.typ === 'unlock' ? ikony[ui++ % Math.max(1, ikony.length)] : undefined
-          return <FeedCard key={i} w={w} ach={ach} />
-        })}
+        {feedNodes.slice(0, 4)}
+        <FeedMore count={feedNodes.length - 4}>{feedNodes.slice(4)}</FeedMore>
       </div>
     </section>
   )

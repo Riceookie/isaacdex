@@ -1,30 +1,18 @@
 import Link from 'next/link'
-import { getProfil, getDashboard, getFeedIkony } from '@/lib/queries'
+import { getProfil, getFeedIkony } from '@/lib/queries'
 import { ikonaPostaci } from '@/lib/chars'
 import Sprite from '@/components/Sprite'
 import ProfileAvatar from '@/components/ProfileAvatar'
 import FeedCard from '@/components/FeedCard'
+import FeedMore from '@/components/FeedMore'
 import BasementRadio from '@/components/BasementRadio'
 import { FEED } from '@/lib/feed'
 
 export const dynamic = 'force-dynamic'
 
-// DEMO — dane społecznościowe (realny backend = projekt końcowy).
-const LEADERBOARD = [
-  { user: 'VoidKing', postac: 'Azazel', czas: '00:12:43' },
-  { user: 'Ananas', postac: 'Isaac', czas: '00:13:02' },
-  { user: 'Lilith', postac: 'The Lost', czas: '00:13:30' },
-  { user: 'BasementDweller', postac: 'Cain', czas: '00:13:59', ty: true },
-  { user: 'Jorge', postac: 'Samson', czas: '00:14:21' },
-]
-
 export default async function Home() {
   const wpisyUnlock = FEED.slice(0, 6).filter((w) => w.typ === 'unlock').length
-  const [p, dash, ikony] = await Promise.all([
-    getProfil(),
-    getDashboard(),
-    getFeedIkony(wpisyUnlock),
-  ])
+  const [p, ikony] = await Promise.all([getProfil(), getFeedIkony(wpisyUnlock)])
 
   if (!p) {
     return (
@@ -38,6 +26,12 @@ export default async function Home() {
   }
 
   let ui = 0
+  // Feed liczony raz (ikony achievementów z licznika `ui`), potem dzielony na
+  // widoczne od razu + zwijane, żeby Pulpit mieścił się w oknie bez scrolla strony.
+  const feedNodes = FEED.slice(0, 6).map((w, i) => {
+    const ach = w.typ === 'unlock' ? ikony[ui++ % Math.max(1, ikony.length)] : undefined
+    return <FeedCard key={i} w={w} ach={ach} />
+  })
 
   return (
     <section className="home-grid">
@@ -45,7 +39,7 @@ export default async function Home() {
       <div className="home-feed">
         <div className="feed-head">
           <h2>
-            <Sprite name="friendfinder" size={26} /> Co słychać?
+            <Sprite name="friendfinder" size={26} /> Co slychac?
           </h2>
           <Link className="small" href="/znajomi">
             → Wszyscy znajomi
@@ -58,65 +52,8 @@ export default async function Home() {
         </p>
 
         <div className="feed">
-          {FEED.slice(0, 6).map((w, i) => {
-            const ach = w.typ === 'unlock' ? ikony[ui++ % Math.max(1, ikony.length)] : undefined
-            return <FeedCard key={i} w={w} ach={ach} />
-          })}
-        </div>
-
-        {/* Ranking wyzwania + Run dnia obok siebie (jak mockup Home) */}
-        <div className="home-row2">
-          <div className="note lb-card">
-            <div className="feed-head">
-              <h3>Ranking wyzwania dnia</h3>
-              <span className="pill-tab">GLOBAL</span>
-            </div>
-            <ol className="lb-list">
-              {LEADERBOARD.map((r, i) => (
-                <li key={r.user} className={'lb-row' + (r.ty ? ' me' : '')}>
-                  <span className="lb-rank">{i + 1}.</span>
-                  <img className="lb-ava" src={ikonaPostaci(r.postac)} alt="" />
-                  <span className="lb-user">
-                    {r.user}
-                    {r.ty && ' (Ty)'}
-                  </span>
-                  <span className="lb-time">{r.czas}</span>
-                </li>
-              ))}
-            </ol>
-          </div>
-
-          <div className="note rotd-card">
-            <div className="feed-head">
-              <h3>Run dnia</h3>
-            </div>
-            <div className="rotd-thumb" aria-hidden="true">
-              <span className="rotd-laser" />
-            </div>
-            <p className="rotd-title">Szalony brim run</p>
-            <p className="muted small">
-              autor: <span className="feed-user">BloodMachine</span>
-            </p>
-            <div className="rotd-meta">
-              <span>
-                <Sprite name="heart" size={16} /> 312
-              </span>
-              <span className="feed-comments">
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinejoin="round"
-                >
-                  <path d="M4 5h16v11H9l-4 3v-3H4z" strokeLinecap="round" />
-                </svg>
-                45
-              </span>
-            </div>
-          </div>
+          {feedNodes.slice(0, 3)}
+          <FeedMore count={feedNodes.length - 3}>{feedNodes.slice(3)}</FeedMore>
         </div>
       </div>
 
@@ -135,20 +72,6 @@ export default async function Home() {
               </span>
             </div>
           </div>
-          <div className="me-stats">
-            <div>
-              <b>28</b>
-              <span className="muted small">Obserwujący</span>
-            </div>
-            <div>
-              <b>14</b>
-              <span className="muted small">Obserwowani</span>
-            </div>
-            <div>
-              <b>342</b>
-              <span className="muted small">Runy</span>
-            </div>
-          </div>
           <Link className="small" href="/profil">
             → Mój profil
           </Link>
@@ -157,7 +80,7 @@ export default async function Home() {
         {/* Progress */}
         <div className="note">
           <div className="feed-head">
-            <h3>Postęp</h3>
+            <h3>Postep</h3>
           </div>
           <p className="small muted">Dead God</p>
           <div className="prog-row">
@@ -175,7 +98,7 @@ export default async function Home() {
         {p.showcase.length > 0 && (
           <div className="note">
             <div className="feed-head">
-              <h3>Trendujące (najrzadsze)</h3>
+              <h3>Trendujace (najrzadsze)</h3>
               <Link className="paper-more" href="/statystyki">
                 Wszystkie →
               </Link>
