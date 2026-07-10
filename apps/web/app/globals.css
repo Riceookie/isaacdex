@@ -4419,11 +4419,10 @@ body::after {
 .pfp-overlay {
   position: absolute;
   left: 50%;
-  top: 46%;
-  width: 148%;
-  height: 148%;
+  top: 50%;
+  width: 112%;
+  height: auto;
   transform: translate(-50%, -50%);
-  object-fit: contain;
   z-index: 4;
   pointer-events: none;
   image-rendering: pixelated;
