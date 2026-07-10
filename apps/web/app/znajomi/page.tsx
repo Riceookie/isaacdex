@@ -1,6 +1,7 @@
 import Sprite from '@/components/Sprite'
 import FeedCard from '@/components/FeedCard'
 import FeedMore from '@/components/FeedMore'
+import FriendSearch from '@/components/FriendSearch'
 import { getFeedIkony } from '@/lib/queries'
 import { FEED } from '@/lib/feed'
 
@@ -21,13 +22,21 @@ export default async function ZnajomiPage() {
   return (
     <section>
       <p className="banner demo">
-        <Sprite name="bomb" size={18} /> DEMO — przykładowi znajomi. Ikony achievementów są
-        prawdziwe (ze Steama). Konta i obserwowanie dojdą w projekcie końcowym.
+        <Sprite name="bomb" size={18} /> DEMO — przykładowi znajomi i wyszukiwarka graczy. Ikony
+        achievementów są prawdziwe (ze Steama). Realne konta i obserwowanie dojdą w projekcie
+        końcowym.
       </p>
 
-      <div className="feed">
-        {feedNodes.slice(0, 4)}
-        <FeedMore count={feedNodes.length - 4}>{feedNodes.slice(4)}</FeedMore>
+      <div className="znajomi-grid">
+        <FriendSearch />
+
+        <div className="znajomi-feed">
+          <h2 className="paper-head">Aktywność znajomych</h2>
+          <div className="feed">
+            {feedNodes.slice(0, 4)}
+            <FeedMore count={feedNodes.length - 4}>{feedNodes.slice(4)}</FeedMore>
+          </div>
+        </div>
       </div>
     </section>
   )

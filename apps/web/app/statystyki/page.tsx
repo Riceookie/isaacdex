@@ -127,8 +127,8 @@ export default async function StatystykiPage() {
   }
 
   return (
-    <section className="stats-board">
-      <div className="tiles sb-tiles">
+    <section className="note paper-panel">
+      <div className="tiles">
         <div className="tile">
           <span className="tile-num">
             {s.unlocked}/{s.total}
@@ -153,12 +153,12 @@ export default async function StatystykiPage() {
         </div>
       </div>
 
-      <div className="note sb-card sb-time">
+      <div className="note">
         <h2>Odblokowania w czasie</h2>
         <WykresCzas seria={s.seria} />
       </div>
 
-      <div className="note sb-card sb-rare">
+      <div className="note">
         <h2>Rzadkosc Twoich odblokowanych</h2>
         <div className="chart-legend">
           <span>
@@ -171,7 +171,7 @@ export default async function StatystykiPage() {
         <WykresRzadkosc b={s.buckets} />
       </div>
 
-      <div className="note sb-card sb-chars">
+      <div className="note">
         <h2>Ukonczenie postaci</h2>
         <div className="char-bars">
           {dash.postacie.map((c) => {

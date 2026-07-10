@@ -1,24 +1,29 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
+import DecorMark from '@/components/DecorMark'
+import type { DecorId } from '@/lib/pfpDecor'
 
 const MAX = 512 // px — avatar skalowany do kwadratu, żeby localStorage nie puchł
 
-/** Wybór własnego avatara z pliku → skaluje do data URL i zapisuje w localStorage. */
-export default function AvatarUpload({ fallbackSrc }: { fallbackSrc: string }) {
-  const [custom, setCustom] = useState<string | null>(null)
+/**
+ * Wybór własnego avatara z pliku → skaluje do data URL. KONTROLOWANY: nie zapisuje
+ * niczego sam, tylko zgłasza wybór przez `onPick` (rodzic – edytor profilu – trzyma
+ * wartość roboczą i utrwala ją dopiero po kliknięciu „Zapisz"). Podgląd pokazuje też
+ * wybraną dekorację pfp, żeby było widać, jak avatar wygląda po zapisie.
+ */
+export default function AvatarUpload({
+  fallbackSrc,
+  value,
+  onPick,
+  decor,
+}: {
+  fallbackSrc: string
+  value: string | null
+  onPick: (dataUrl: string | null) => void
+  decor: DecorId
+}) {
   const inputRef = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    setCustom(localStorage.getItem('idx_avatar'))
-  }, [])
-
-  function zapisz(dataUrl: string | null) {
-    if (dataUrl) localStorage.setItem('idx_avatar', dataUrl)
-    else localStorage.removeItem('idx_avatar')
-    setCustom(dataUrl)
-    window.dispatchEvent(new Event('idx-avatar'))
-  }
 
   function onFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
@@ -45,7 +50,7 @@ export default function AvatarUpload({ fallbackSrc }: { fallbackSrc: string }) {
           MAX,
           MAX,
         )
-        zapisz(canvas.toDataURL('image/webp', 0.85))
+        onPick(canvas.toDataURL('image/webp', 0.85))
       }
       img.src = reader.result as string
     }
@@ -55,7 +60,8 @@ export default function AvatarUpload({ fallbackSrc }: { fallbackSrc: string }) {
   return (
     <div className="avatar-upload">
       <div className="avatar-box av-preview pfp-frame">
-        <img className="avatar-img" src={custom || fallbackSrc} alt="Podgląd avatara" />
+        <img className="avatar-img" src={value || fallbackSrc} alt="Podgląd avatara" />
+        <DecorMark id={decor} />
       </div>
       <div className="avatar-upload-btns">
         <input
@@ -68,13 +74,13 @@ export default function AvatarUpload({ fallbackSrc }: { fallbackSrc: string }) {
         <button type="button" className="btn" onClick={() => inputRef.current?.click()}>
           Wybierz obraz…
         </button>
-        {custom && (
-          <button type="button" className="chip" onClick={() => zapisz(null)}>
+        {value && (
+          <button type="button" className="chip" onClick={() => onPick(null)}>
             Usuń (wróć do postaci)
           </button>
         )}
       </div>
-      <p className="small muted">Obraz zapisuje się w Twojej przeglądarce.</p>
+      <p className="small muted">Zapisuje się po kliknięciu „Zapisz profil".</p>
     </div>
   )
 }

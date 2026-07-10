@@ -78,13 +78,6 @@ export default async function ProfilPage() {
             <FrameDecor kind="spider" pos="tr" />
             <div className="pf-photo">
               <ProfileAvatar fallbackSrc={ikonaPostaci(ulubionaPostac)} />
-              <img
-                className="pf-blood"
-                src="/tboi/blood-splatter.svg"
-                alt=""
-                aria-hidden="true"
-                draggable={false}
-              />
             </div>
             <div className="pf-id">
               <h1>

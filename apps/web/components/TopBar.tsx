@@ -22,20 +22,6 @@ export default function TopBar({ steamConnected }: { steamConnected: boolean }) 
       <CompanionMascot steamConnected={steamConnected} />
 
       <div className="util">
-        <span className="util-icon deco" aria-hidden="true" title="Poczta">
-          <svg
-            width="22"
-            height="22"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.9"
-            strokeLinejoin="round"
-          >
-            <rect x="3" y="5" width="18" height="14" rx="1.5" />
-            <path d="M3.5 6l8.5 6 8.5-6" strokeLinecap="round" />
-          </svg>
-        </span>
         <Link href="/czat" className="util-icon" aria-label="Czat" title="Czat">
           <svg
             width="22"
