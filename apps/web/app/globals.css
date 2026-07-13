@@ -1210,14 +1210,16 @@ textarea.input {
   white-space: nowrap;
   font-family: var(--bdy);
   font-size: 0.75rem;
-  color: var(--text);
-  background: var(--surface-2);
-  border: 1px solid var(--border);
+  /* Kolory NA SZTYWNO, bo --surface-2/--text bywają półprzezroczyste (i inne na pergaminie),
+     przez co dymek prześwitywał i był nieczytelny. */
+  color: #f2ece2;
+  background: #1c1822;
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 8px;
   padding: 0.25rem 0.5rem;
   z-index: 60;
   pointer-events: none;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.55);
 }
 
 /* ── Mucha off → zwykły kursor ── */
@@ -3954,7 +3956,7 @@ body::after {
   pointer-events: none;
   transform: rotate(-10deg);
 }
-.pf-photo img {
+.pf-photo > img:not(.pfp-overlay) {
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -4405,79 +4407,68 @@ body::after {
   overflow: visible;
   padding: 5px;
 }
-.avatar.sm.pfp-frame > img,
-.av-preview.pfp-frame > img {
+/* Mały avatar = polaroid przeskalowany 54/92 ≈ 0,587: proporcje 92:104 i krawędzie/padding
+   w tej samej skali. Dzięki temu padding-box (od którego liczą się procenty nakładki) ma te
+   same proporcje co przy dużym polaroidzie i dekoracja siada identycznie. */
+.avatar.sm.pfp-frame {
+  height: 61px;
+  border-width: 2.35px;
+  border-bottom-width: 8.8px;
+  padding: 3.5px;
+}
+.avatar.sm.pfp-frame > img:not(.pfp-overlay),
+.av-preview.pfp-frame > img:not(.pfp-overlay) {
   width: 100%;
   height: 100%;
   object-fit: contain;
   image-rendering: pixelated;
 }
+/* Podgląd avatara w edytorze = ta sama geometria co polaroid na /profil (.pf-photo),
+   żeby dekoracje pfp renderowały się IDENTYCZNIE jak w profilu (a nie w kwadracie
+   z .avatar-box). Bez tego overlay skalowany pod ramkę 92×104 siedział źle w kwadracie 88×88. */
+.av-preview.pfp-frame {
+  width: 92px;
+  height: 104px;
+  border: 4px solid #fbf6ea;
+  border-bottom-width: 15px;
+  border-radius: 0;
+  padding: 6px;
+  display: grid;
+  place-items: center;
+}
 
-/* ── Dekoracje ramki pfp: overlay (pełna nakładka) albo sprite w rogu ──
-   Renderowane przez ProfileAvatar wszędzie, gdzie pokazywany jest avatar. Kontener
-   ramki ma overflow:visible, żeby sprity mogły wystawać poza polaroid (jak w mockupach). */
+/* ── Dekoracje ramki pfp ──
+   Renderowane przez ProfileAvatar wszędzie, gdzie pokazywany jest avatar. Kontener ramki
+   ma overflow:visible, żeby sprity mogły wystawać poza polaroid (jak na zdjęciach).
+
+   Wszystkie nakładki leżą na WSPÓLNEJ kanwie 351×335 px zmierzonej ze zdjęć referencyjnych
+   (= 175,5×167,5 CSS px przy polaroidzie 92×104), prawie wyśrodkowanej na polaroidzie.
+   Wszystkie rysują się NAD ramką (żadna nie jest za nią).
+
+   UWAGA na dwie pułapki, przez które nakładka siadała za wysoko i za mała:
+     1. Procenty elementu absolutnego liczą się od PADDING-BOXA rodzica (92−2×4 = 84 px),
+        a nie od ramki 92 px → width: 208.93% = 175,5 / 84.
+     2. left/top:50% to środek padding-boxa, który leży 5,5 px WYŻEJ niż środek polaroidu
+        (dolna krawędź ramki ma 15 px, górna 4 px) → to przesunięcie jest wliczone w translate.
+   Stąd:
+     • translate(-2.91%, 1.39%) = przesunięcie kanwy względem środka polaroidu (z korektą
+       padding-boxa), w % własnego rozmiaru nakładki, obrócone do układu przechylonej ramki,
+     • rotate(2.5deg) — KONTR-OBRÓT: ramka ma rotate(-2.5deg), a sprity na zdjęciach stoją
+       pionowo, więc nakładkę trzeba wyprostować.
+   Procenty (nie px) sprawiają, że ta sama geometria działa też na mniejszym avatarze —
+   dlatego .avatar.sm.pfp-frame ma proporcje polaroidu (54×61) i proporcjonalne krawędzie. */
 .pfp-overlay {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 112%;
+  width: 208.93%;
   height: auto;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) translate(-2.92%, 1.54%) rotate(2.5deg);
   z-index: 4;
   pointer-events: none;
   image-rendering: pixelated;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
 }
-.pfp-decor {
-  position: absolute;
-  width: 52%;
-  height: 52%;
-  z-index: 4;
-  display: flex;
-  pointer-events: none;
-  line-height: 0;
-}
-.pfp-decor img,
-.pfp-decor .sprite {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  image-rendering: pixelated;
-  filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.55));
-}
-.pfp-decor.pos-br {
-  right: -8%;
-  bottom: -8%;
-  align-items: flex-end;
-  justify-content: flex-end;
-}
-.pfp-decor.pos-bl {
-  left: -8%;
-  bottom: -8%;
-  align-items: flex-end;
-  justify-content: flex-start;
-}
-.pfp-decor.pos-tr {
-  right: -8%;
-  top: -8%;
-  align-items: flex-start;
-  justify-content: flex-end;
-}
-.pfp-decor.pos-tl {
-  left: -8%;
-  top: -8%;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-.pfp-decor.pos-wrap {
-  inset: -12%;
-  width: 124%;
-  height: 124%;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.9;
-}
-
 /* ── Picker dekoracji pfp w edytorze profilu (kim-jestem) ── */
 .whoami-avatar-side {
   display: flex;

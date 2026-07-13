@@ -119,7 +119,12 @@ export default function KimJestemForm(p: Props) {
                     {d.id === 'none' ? (
                       <span className="decor-none">✕</span>
                     ) : (
-                      <img className="sprite" src={d.thumb || d.overlay || d.src} alt="" />
+                      <img
+                        className="sprite"
+                        src={d.thumb || d.overlay}
+                        alt=""
+                        style={d.thumbScale ? { transform: `scale(${d.thumbScale})` } : undefined}
+                      />
                     )}
                   </span>
                   {locked && (

@@ -1,104 +1,128 @@
 // Dekoracje ramki pfp (frame decorations) — nakładane na polaroid profilu.
-// Dwa rodzaje:
-//  • overlay — pełna, gotowa nakładka PNG (sprite wpozycjonowany na przezroczystym
-//    płótnie ~ rozmiar ramki; np. edytowane sprity Death/Brownie/Little Steven),
-//  • sprite pozycjonowany — pojedynczy sprite w rogu ramki (`src` + `pos` + `size`).
-// Część dekoracji jest ZABLOKOWANA — wymaga konkretnego achievementu Steam (`unlock.ach`
-// = displayName). Jeśli gracz go nie ma, dekoracja jest niedostępna w pickerze.
+//
+// Każda dekoracja to nakładka PNG na WSPÓLNEJ kanwie (351×341 px w skali zrzutów, czyli
+// 175,5×170,5 CSS px przy polaroidzie 92×104). Geometrię — skalę, przesunięcie i kontr-obrót
+// przechylonej ramki — ustawia jedna klasa `.pfp-overlay` w globals.css, więc wszystkie
+// dekoracje siadają tak jak na zdjęciach referencyjnych (frame_decoration*.png); zmierzony
+// błąd pozycji to ułamek piksela.
+//
+// Sprity: death/brownie/deadgod/blood pochodzą z edytowanych sprite'ów użytkownika
+// (edited_frame1–4), reszta z dumpu gry / wiki (klucz, moneta, serce, kupa, mucha, Steven,
+// The Siren) — dopasowane do zdjęć skalą i pozycją.
+//
+// Część dekoracji jest ZABLOKOWANA — wymaga achievementu Steam (`unlock.ach` = displayName).
 
 export type DecorId =
   | 'none'
   | 'death'
+  | 'deadgod'
   | 'brownie'
   | 'steven'
+  | 'siren'
   | 'coin'
   | 'heart'
   | 'blood'
   | 'key'
-  | 'bombblack'
+  | 'fly'
   | 'poop'
-
-export type Pos = 'tl' | 'tr' | 'bl' | 'br' | 'wrap'
 
 export type Decor = {
   id: DecorId
   label: string
-  overlay?: string // pełna nakładka (public/tboi/decor/…)
-  thumb?: string // przycięta miniatura do pickera (overlaye są w większości przezroczyste)
-  src?: string // pojedynczy sprite pozycjonowany
-  pos?: Pos
-  size?: number // rozmiar sprite'a jako % szerokości ramki
+  overlay?: string // nakładka na wspólnej kanwie (public/tboi/decor/ov-*.png)
+  thumb?: string // ikona TYLKO na guziku w pickerze (nie ma wpływu na sprite na avatarze)
+  thumbScale?: number // korekta wielkości ikony na guziku (1 = domyślna)
   unlock?: { ach: string; text: string } // wymagany achievement (displayName) + opis PL
 }
 
-// Kolejność = kolejność w pickerze. „Brak" pierwsze.
+// Kolejność = kolejność w pickerze. „Brak" pierwsze, potem odblokowywane, potem wolne.
 export const DECORATIONS: Decor[] = [
   { id: 'none', label: 'Brak' },
 
-  // ── Dekoracje z gotowych nakładek (edytowane sprity) — ZABLOKOWANE ──
+  // ── Wymagają achievementu ──
   {
     id: 'death',
-    label: 'Death',
-    overlay: '/tboi/decor/death.png',
+    label: 'Ultra Death',
+    overlay: '/tboi/decor/ov-death.png',
     thumb: '/tboi/decor/th-death.png',
     unlock: { ach: "Death's Touch", text: 'Wymaga achievementu „Death’s Touch"' },
   },
   {
+    id: 'deadgod',
+    label: 'Dogma',
+    overlay: '/tboi/decor/ov-deadgod.png',
+    thumb: '/tboi/decor/th-deadgod.png',
+    unlock: { ach: 'Dead God', text: 'Wymaga achievementu „Dead God"' },
+  },
+  {
+    id: 'siren',
+    label: 'The Siren',
+    overlay: '/tboi/decor/ov-siren.png',
+    thumb: '/tboi/decor/th-siren.png',
+    unlock: { ach: 'Forgotten Lullaby', text: 'Wymaga achievementu „Forgotten Lullaby"' },
+  },
+  {
     id: 'brownie',
-    label: 'Brownie',
-    overlay: '/tboi/decor/brownie.png',
+    label: 'Turdlet',
+    overlay: '/tboi/decor/ov-brownie.png',
     thumb: '/tboi/decor/th-brownie.png',
     unlock: { ach: 'A Secret Exit', text: 'Wymaga achievementu „A Secret Exit"' },
   },
   {
     id: 'steven',
-    label: 'Little Steven',
-    overlay: '/tboi/decor/steven.png',
+    label: 'Steven',
+    overlay: '/tboi/decor/ov-steven.png',
     thumb: '/tboi/decor/th-steven.png',
     unlock: { ach: 'Little Steven', text: 'Wymaga achievementu „Little Steven"' },
   },
-  // ── Wolne dekoracje — nakładki wycięte 1:1 z Twoich zdjęć (#7–#21), więc pozycja
-  //    i sprite dokładnie jak w mockupach ──
+
+  // ── Wolne ──
   {
     id: 'coin',
     label: 'Moneta',
     overlay: '/tboi/decor/ov-coin.png',
     thumb: '/tboi/decor/th-coin.png',
-  }, // #8
+    thumbScale: 1.2,
+  },
   {
     id: 'heart',
     label: 'Serce',
     overlay: '/tboi/decor/ov-heart.png',
     thumb: '/tboi/decor/th-heart.png',
-  }, // #12
+  },
   {
     id: 'blood',
     label: 'Krew',
     overlay: '/tboi/decor/ov-blood.png',
     thumb: '/tboi/decor/th-blood.png',
-  }, // #11
-  { id: 'key', label: 'Klucz', overlay: '/tboi/decor/ov-key.png', thumb: '/tboi/decor/th-key.png' }, // #7
+  },
   {
-    id: 'bombblack',
-    label: 'Czarna bomba',
-    overlay: '/tboi/decor/ov-bomb.png',
-    thumb: '/tboi/decor/th-bomb.png',
-  }, // #21
+    id: 'key',
+    label: 'Klucz',
+    overlay: '/tboi/decor/ov-key.png',
+    thumb: '/tboi/decor/th-key.png',
+    thumbScale: 0.78,
+  },
+  { id: 'fly', label: 'Mucha', overlay: '/tboi/decor/ov-fly.png', thumb: '/tboi/decor/th-fly.png' },
   {
     id: 'poop',
     label: 'Kupa',
     overlay: '/tboi/decor/ov-poop.png',
     thumb: '/tboi/decor/th-poop.png',
-  }, // #18
+  },
 ]
 
 export const DEFAULT_DECOR: DecorId = 'none'
 
 const MAP = new Map<DecorId, Decor>(DECORATIONS.map((d) => [d.id, d]))
 
+// Stare id z poprzedniej wersji dekoracji (zapisane w localStorage u istniejących userów).
+const ALIASY: Record<string, DecorId> = { bombblack: 'fly' }
+
 /** Bezpieczne pobranie dekoracji po id (fallback = „Brak"). */
 export function getDecor(id: string | null | undefined): Decor {
-  return MAP.get(id as DecorId) ?? DECORATIONS[0]
+  const key = (ALIASY[id as string] ?? id) as DecorId
+  return MAP.get(key) ?? DECORATIONS[0]
 }
 
 /** Czy dekoracja jest dostępna dla gracza (odblokowana albo bez wymagań). */
