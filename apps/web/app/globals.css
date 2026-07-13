@@ -675,6 +675,20 @@ a:hover {
 .item-card:hover {
   border-color: var(--accent);
 }
+/* Karta Encyklopedii: nazwa + jednolinijkowy opis pod nią (opis ucinamy wielokropkiem,
+   żeby siatka została równa). */
+.item-card .item-txt {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.item-card .item-desc {
+  font-size: 0.7rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .item-card.q4 {
   border-left-color: #4ec98a;
 }
@@ -801,6 +815,356 @@ a:hover {
 }
 .ach-big.off {
   filter: grayscale(1) brightness(0.5);
+}
+
+/* ── Encyklopedia: szczegóły wpisu (układ jak na wiki Isaaca) ──
+   Modal jest szerszy niż domyślny (.modal 360px) i wyrównany do lewej, bo to czytanka,
+   a nie potwierdzenie. Scrolluje się w środku, żeby długie opisy nie rozpychały ekranu. */
+.modal.enc-detal {
+  max-width: 560px;
+  text-align: left;
+  max-height: 85vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+/* Hero detalu: ikona w ramce (jak pedestał w grze) + nazwa + cytat + znaczniki. */
+.ed-hero {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0 2rem 1rem 0;
+}
+.ed-ramka {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.07), transparent 70%), var(--surface-2);
+  box-shadow: inset 0 0 22px rgba(0, 0, 0, 0.35);
+}
+.ed-ramka .sprite {
+  image-rendering: pixelated;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+.ed-tytul h2 {
+  margin: 0;
+  line-height: 1.15;
+}
+.ed-znaczniki {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.4rem;
+}
+.ed-close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.7rem;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: var(--muted);
+  cursor: inherit;
+  font-size: 0.8rem;
+}
+.ed-close:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+.modal.enc-detal {
+  position: relative;
+}
+.ed-cytat {
+  margin: 0.2rem 0 0;
+  font-style: italic;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+.ed-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.35rem 1rem;
+  margin: 0 0 0.4rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.ed-wiersz {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+.ed-wiersz dt {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.ed-wiersz dd {
+  margin: 0;
+  font-size: 0.85rem;
+}
+.ed-stars {
+  letter-spacing: 1px;
+}
+.ed-star {
+  color: var(--border);
+}
+.ed-star.on {
+  color: #e0b64c;
+}
+.ed-sekcja {
+  margin-top: 0.9rem;
+}
+.ed-sekcja h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 0.45rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.ed-sekcja h3 .sprite {
+  image-rendering: pixelated;
+  opacity: 0.85;
+}
+.ed-opis {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+/* Itemy startowe postaci — ikona + nazwa w jednym „żetonie". */
+.ed-itemy {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.ed-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.55rem 0.25rem 0.3rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.8rem;
+}
+
+/* „Wygląd": obrazki z wiki (Isaac w kostiumie itemu, efekt łez) — pixel art, więc
+   powiększamy je bez wygładzania. */
+.ed-podglad {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.ed-podglad figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.ed-podglad img {
+  image-rendering: pixelated;
+  max-width: 130px;
+  max-height: 110px;
+  width: auto;
+  height: auto;
+}
+.ed-unlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--border);
+  border-left: 4px solid #e5544b;
+  border-radius: 10px;
+  background: var(--surface-2);
+  font-size: 0.85rem;
+}
+.ed-unlock.zdobyte {
+  border-left-color: #4ec98a;
+}
+.ed-warunek {
+  color: var(--text);
+}
+/* ── Encyklopedia: lista (szukajka, filtry, karty, szkielet ładowania) ── */
+.enc-szukajka {
+  position: relative;
+  display: flex;
+  flex: 1 1 220px;
+}
+.enc-clear,
+.enc-kbd {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 0.35rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 0.7rem;
+  line-height: 1;
+}
+.enc-clear {
+  cursor: inherit;
+}
+.enc-clear:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+.chip-licznik {
+  opacity: 0.6;
+  font-size: 0.72em;
+  margin-left: 0.15rem;
+}
+.enc-pasek {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.6rem;
+}
+.enc-pusto {
+  padding: 1.6rem 0;
+  text-align: center;
+}
+
+/* Karty: hover unosi i podświetla ikonę — ta sama reakcja w każdej sekcji. */
+.item-card {
+  transition:
+    transform 0.12s ease,
+    border-color 0.12s ease;
+}
+.item-card:hover {
+  transform: translateY(-2px);
+}
+.item-card .item-sprite,
+.item-card .sprite {
+  transition: transform 0.12s ease;
+}
+.item-card:hover .sprite {
+  transform: scale(1.12);
+}
+/* Trinkety i postacie dostają takie same kolorowe krawędzie jak itemy (q0–q4). */
+.item-card.trinket {
+  border-left-color: #b98cd8;
+}
+.item-card.trinket.zablokowany {
+  border-left-color: var(--border);
+}
+.item-card.trinket.zablokowany .sprite {
+  filter: grayscale(1) brightness(0.55);
+}
+.item-card.postac.tainted {
+  border-left-color: #7a7f8c;
+}
+.item-card.pickup {
+  border-left-color: #e0b64c;
+}
+.item-card.transformacja {
+  border-left-color: #4ec98a;
+}
+.item-card.kostka {
+  border-left-color: #5fb4d8;
+}
+.item-card.boss {
+  border-left-color: #e5544b;
+}
+.item-card.przeciwnik {
+  border-left-color: #b98cd8;
+}
+/* Portrety bossów i potworów są większe niż ikony itemów — trzymamy je w karbach karty. */
+.item-card.boss .item-sprite,
+.item-card.przeciwnik .item-sprite {
+  object-fit: contain;
+}
+
+/* Szkielet ładowania — kształt docelowej listy, delikatny „oddech". */
+.szkielet {
+  display: block;
+  border-radius: 10px;
+  background: linear-gradient(
+    90deg,
+    var(--surface-2) 25%,
+    rgba(255, 255, 255, 0.06) 37%,
+    var(--surface-2) 63%
+  );
+  background-size: 400% 100%;
+  animation: szk 1.4s ease infinite;
+}
+@keyframes szk {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+.szk-linia {
+  height: 12px;
+  margin-bottom: 0.9rem;
+}
+.szk-linia.w40 {
+  width: 40%;
+}
+.szk-input {
+  height: 38px;
+  flex: 1 1 220px;
+}
+.szk-chip {
+  height: 30px;
+  width: 74px;
+  border-radius: 999px;
+}
+.szk-karta {
+  height: 58px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .szkielet {
+    animation: none;
+  }
+  .item-card,
+  .item-card .sprite {
+    transition: none;
+  }
+}
+
+/* Tekst tylko dla czytników ekranu. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* ── Statystyki ── */

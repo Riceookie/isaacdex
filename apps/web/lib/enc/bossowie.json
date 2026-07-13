@@ -1,0 +1,664 @@
+[
+  {
+    "nazwa": "Monstro",
+    "ikona": "/tboi/bossowie/monstro.png",
+    "hp": 250,
+    "obrazenia": 1,
+    "opis": "Monstro is a boss that can appear in the Basement and the Burning Basement."
+  },
+  {
+    "nazwa": "Larry Jr.",
+    "ikona": "/tboi/bossowie/larry-jr.png",
+    "hp": 22,
+    "obrazenia": 1,
+    "opis": "Larry Jr. is a boss that can appear in the Basement and the Burning Basement."
+  },
+  {
+    "nazwa": "Chub",
+    "ikona": "/tboi/bossowie/chub.png",
+    "hp": 350,
+    "obrazenia": 2,
+    "opis": "Chub is a boss that can appear in the Caves and the Flooded Caves."
+  },
+  {
+    "nazwa": "Gurdy",
+    "ikona": "/tboi/bossowie/gurdy.png",
+    "hp": 595,
+    "obrazenia": 1,
+    "opis": "Gurdy is a boss that can appear in the Caves and the Flooded Caves."
+  },
+  {
+    "nazwa": "Monstro II",
+    "ikona": "/tboi/bossowie/monstro-ii.png",
+    "hp": 632,
+    "obrazenia": 1,
+    "opis": "Monstro II is a boss that can appear in the Depths and the Dank Depths."
+  },
+  {
+    "nazwa": "Mom",
+    "ikona": "/tboi/bossowie/mom.png",
+    "hp": 645,
+    "obrazenia": 2,
+    "opis": "Mom is the boss that appears on the second floor of Chapter 3 (Depths, Necropolis, Dank Depths). She is the initial final boss of the game, and defeating her for the first time unlocks both the Epilogue ending and Chapter 4 (Womb)."
+  },
+  {
+    "nazwa": "Scolex",
+    "ikona": "/tboi/bossowie/scolex.png",
+    "hp": 300,
+    "obrazenia": 2,
+    "opis": "Scolex is a boss that can appear in the Womb and the Scarred Womb."
+  },
+  {
+    "nazwa": "Mom's Heart",
+    "ikona": "/tboi/bossowie/mom-s-heart.png",
+    "hp": 950,
+    "obrazenia": 0,
+    "opis": "Mom's Heart is a boss that can appear on the second floor of Chapter 4 (Womb, Utero), and is the final boss of Endings 1-11."
+  },
+  {
+    "nazwa": "Famine",
+    "ikona": "/tboi/bossowie/famine.png",
+    "hp": 240,
+    "obrazenia": 2,
+    "opis": "Famine is a Harbinger that can appear in all environments of Chapter 1 (Basement, Cellar, Burning Basement)."
+  },
+  {
+    "nazwa": "Pestilence",
+    "ikona": "/tboi/bossowie/pestilence.png",
+    "hp": 280,
+    "obrazenia": 2,
+    "opis": "Pestilence is a Harbinger that can appear in all environments of Chapter 2 (Caves, Catacombs, Flooded Caves)."
+  },
+  {
+    "nazwa": "War",
+    "ikona": "/tboi/bossowie/war.png",
+    "hp": 500,
+    "obrazenia": 2,
+    "opis": "War is a Harbinger that can appear in all environments of Chapter 3 (Depths, Necropolis, Dank Depths)."
+  },
+  {
+    "nazwa": "Death",
+    "ikona": "/tboi/bossowie/death.png",
+    "hp": 450,
+    "obrazenia": 2,
+    "opis": "Death occurs when Isaac runs out of health. There are multiple ways to cause this."
+  },
+  {
+    "nazwa": "Duke of Flies",
+    "ikona": "/tboi/bossowie/duke-of-flies.png",
+    "hp": null,
+    "obrazenia": null
+  },
+  {
+    "nazwa": "Peep",
+    "ikona": "/tboi/bossowie/peep.png",
+    "hp": 450,
+    "obrazenia": 2,
+    "opis": "Peep is a boss that can appear in all environments of Chapter 2 (Caves, Catacombs, Flooded Caves)."
+  },
+  {
+    "nazwa": "Loki",
+    "ikona": "/tboi/bossowie/loki.png",
+    "hp": 350,
+    "obrazenia": 2,
+    "opis": "Loki is a boss that can appear in all environments of Chapter 3 (Depths, Necropolis, Dank Depths)."
+  },
+  {
+    "nazwa": "Blastocyst",
+    "ikona": "/tboi/bossowie/blastocyst.png",
+    "hp": 300,
+    "obrazenia": 2,
+    "opis": "The large Blastocyst has 190 HP / 300 HP, the medium forms have 75 HP, and the small forms have 30 HP."
+  },
+  {
+    "nazwa": "Gemini",
+    "ikona": "/tboi/bossowie/gemini.png",
+    "hp": 140,
+    "obrazenia": 1,
+    "opis": "Each twin has 140 HP. The large twin is called Contusion and the small twin is called Suture.https://www.reddit.com/r/bindingofisaac/comments/8ylum7/hey_guys_its_me_edmund_im_the_guy_that_made_this/e2cbvdf/edmundm:51416553970"
+  },
+  {
+    "nazwa": "Fistula",
+    "ikona": "/tboi/bossowie/fistula.png",
+    "hp": 60,
+    "obrazenia": 2,
+    "opis": "The large Fistula has 60 HP, the medium forms have 15 HP, and the small forms have 8 HP."
+  },
+  {
+    "nazwa": "Gish",
+    "ikona": "/tboi/bossowie/gish.png",
+    "hp": 632,
+    "obrazenia": 1,
+    "opis": "Gish is a boss that can appear in the Depths and the Dank Depths."
+  },
+  {
+    "nazwa": "Steven",
+    "ikona": "/tboi/bossowie/steven.png",
+    "hp": 140,
+    "obrazenia": 1,
+    "opis": "If Big Steven reaches 50% HP, they separate:"
+  },
+  {
+    "nazwa": "C.H.A.D.",
+    "ikona": "/tboi/bossowie/c-h-a-d.png",
+    "hp": 350,
+    "obrazenia": 2,
+    "opis": "C.H.A.D. is a boss that can appear in the Caves and the Flooded Caves."
+  },
+  {
+    "nazwa": "Headless Horseman",
+    "ikona": "/tboi/bossowie/headless-horseman.png",
+    "hp": 60,
+    "obrazenia": 2,
+    "opis": "Headless Horseman is a Harbinger that can appear in all environments of Chapters 1, 2, 3, and 4; replacing any other Horsemen."
+  },
+  {
+    "nazwa": "The Fallen",
+    "ikona": "/tboi/bossowie/the-fallen.png",
+    "hp": 60,
+    "obrazenia": 2,
+    "opis": "The Fallen is a boss that can appear on any main path Chapter, with the prerequisite that Isaac has entered (not just encountered) a Devil Room through any methods, and with the following exceptions:"
+  },
+  {
+    "nazwa": "Satan",
+    "ikona": "/tboi/bossowie/satan.png",
+    "hp": 600,
+    "obrazenia": 2,
+    "opis": "Satan is the boss of Sheol, and the final boss of Ending 12."
+  },
+  { "nazwa": "It Lives!", "ikona": "/tboi/bossowie/it-lives.png", "hp": null, "obrazenia": null },
+  {
+    "nazwa": "The Hollow",
+    "ikona": "/tboi/bossowie/the-hollow.png",
+    "hp": 26,
+    "obrazenia": 1,
+    "opis": "The Hollow is a boss that can appear in the Catacombs."
+  },
+  {
+    "nazwa": "The Carrion Queen",
+    "ikona": "/tboi/bossowie/the-carrion-queen.png",
+    "hp": 350,
+    "obrazenia": 2
+  },
+  {
+    "nazwa": "Gurdy Jr.",
+    "ikona": "/tboi/bossowie/gurdy-jr.png",
+    "hp": 250,
+    "obrazenia": 1,
+    "opis": "Gurdy Jr. is a boss that can appear in all environments of Chapter 2 (Caves, Catacombs, Flooded Caves)."
+  },
+  {
+    "nazwa": "The Husk",
+    "ikona": "/tboi/bossowie/the-husk.png",
+    "hp": 150,
+    "obrazenia": 1,
+    "opis": "The Husk is a boss that can appear in the Catacombs."
+  },
+  {
+    "nazwa": "The Bloat",
+    "ikona": "/tboi/bossowie/the-bloat.png",
+    "hp": 450,
+    "obrazenia": 2,
+    "opis": "The Bloat is a boss that can appear in Necropolis and:"
+  },
+  {
+    "nazwa": "Lokii",
+    "ikona": "/tboi/bossowie/lokii.png",
+    "hp": 350,
+    "obrazenia": 2,
+    "opis": "The fight against Lokii resembles fighting two individual Lokis. Each half of Lokii teleports to random locations in the room and has the same attacks which they perform independently of each other:"
+  },
+  {
+    "nazwa": "The Blighted Ovum",
+    "ikona": "/tboi/bossowie/the-blighted-ovum.png",
+    "hp": 140,
+    "obrazenia": 1
+  },
+  {
+    "nazwa": "Teratoma",
+    "ikona": "/tboi/bossowie/teratoma.png",
+    "hp": 60,
+    "obrazenia": 2,
+    "opis": "The large Teratoma has 60 HP, the medium forms have 15 HP, and the small forms have 8 HP, for a total of 153 HP."
+  },
+  { "nazwa": "The Widow", "ikona": "/tboi/bossowie/the-widow.png", "hp": null, "obrazenia": null },
+  {
+    "nazwa": "Mask of Infamy",
+    "ikona": "/tboi/bossowie/mask-of-infamy.png",
+    "hp": 150,
+    "obrazenia": 1,
+    "opis": "Mask of Infamy is a boss that can appear in Necropolis."
+  },
+  {
+    "nazwa": "The Wretched",
+    "ikona": "/tboi/bossowie/the-wretched.png",
+    "hp": 215,
+    "obrazenia": 1,
+    "opis": "The Wretched is a boss that can appear in the Catacombs."
+  },
+  {
+    "nazwa": "Pin",
+    "ikona": "/tboi/bossowie/pin.png",
+    "hp": 100,
+    "obrazenia": 1,
+    "opis": "Pin is a boss that can appear in the Cellar."
+  },
+  {
+    "nazwa": "Conquest",
+    "ikona": "/tboi/bossowie/conquest.png",
+    "hp": 500,
+    "obrazenia": 2,
+    "opis": "Conquest is a Harbinger that can appear in all environments of Chapter 4 (Womb, Utero, Scarred Womb)."
+  },
+  {
+    "nazwa": "Isaac",
+    "ikona": "/tboi/bossowie/isaac.png",
+    "hp": 2000,
+    "obrazenia": 1,
+    "opis": "Isaac Moriah is the titular main character of The Binding of Isaac, returning from the original 2011 version of the game. Isaac is the only character unlocked by default."
+  },
+  { "nazwa": "???", "ikona": "/tboi/bossowie/.png", "hp": 2000, "obrazenia": 1 },
+  {
+    "nazwa": "Daddy Long Legs",
+    "ikona": "/tboi/bossowie/daddy-long-legs.png",
+    "hp": 500,
+    "obrazenia": 1,
+    "opis": "Daddy Long Legs is a boss that can appear:"
+  },
+  {
+    "nazwa": "Triachnid",
+    "ikona": "/tboi/bossowie/triachnid.png",
+    "hp": 500,
+    "obrazenia": 1,
+    "opis": "Triachnid's head hangs down stationary and can perform the following attacks:"
+  },
+  {
+    "nazwa": "The Haunt",
+    "ikona": "/tboi/bossowie/the-haunt.png",
+    "hp": null,
+    "obrazenia": null,
+    "opis": "The battle begins with three Lil' Haunts circling The Haunt, who floats around the room and is invulnerable. The Haunt and its Lil' Haunts can still do contact damage to Isaac while incorporeal."
+  },
+  {
+    "nazwa": "Dingle",
+    "ikona": "/tboi/bossowie/dingle.png",
+    "hp": 300,
+    "obrazenia": 1,
+    "opis": "Dingle remains stationary and performs the following attacks:"
+  },
+  {
+    "nazwa": "Mega Maw",
+    "ikona": "/tboi/bossowie/mega-maw.png",
+    "hp": 350,
+    "obrazenia": 1,
+    "opis": "Mega Maw is stationary and will perform the following attacks:"
+  },
+  {
+    "nazwa": "Mega Maw II",
+    "ikona": "/tboi/bossowie/mega-maw-ii.png",
+    "hp": null,
+    "obrazenia": null
+  },
+  {
+    "nazwa": "Mega Fatty",
+    "ikona": "/tboi/bossowie/mega-fatty.png",
+    "hp": 600,
+    "obrazenia": 1,
+    "opis": "File:Mega Fatty ingame.png| Mega Fatty in-game."
+  },
+  {
+    "nazwa": "Mega Fatty II",
+    "ikona": "/tboi/bossowie/mega-fatty-ii.png",
+    "hp": null,
+    "obrazenia": null
+  },
+  {
+    "nazwa": "Mega Gurdy",
+    "ikona": "/tboi/bossowie/mega-gurdy.png",
+    "hp": null,
+    "obrazenia": null
+  },
+  {
+    "nazwa": "Dark One",
+    "ikona": "/tboi/bossowie/dark-one.png",
+    "hp": 400,
+    "obrazenia": 1,
+    "opis": "File:Boss Dark One ingame.png| Dark One in-game."
+  },
+  {
+    "nazwa": "Dark One II",
+    "ikona": "/tboi/bossowie/dark-one-ii.png",
+    "hp": null,
+    "obrazenia": null
+  },
+  {
+    "nazwa": "Polycephalus",
+    "ikona": "/tboi/bossowie/polycephalus.png",
+    "hp": 200,
+    "obrazenia": 1,
+    "opis": "Polycephalus burrows underground when Isaac is not within range. While burrowed he becomes invincible and follows Isaac's movements. When close to Isaac, he pops out and performs one of the following attacks:"
+  },
+  { "nazwa": "Mega Fred", "ikona": "/tboi/bossowie/mega-fred.png", "hp": null, "obrazenia": null },
+  {
+    "nazwa": "The Lamb",
+    "ikona": "/tboi/bossowie/the-lamb.png",
+    "hp": 2000,
+    "obrazenia": 2,
+    "opis": "Then I saw a Lamb, looking as if it had been slain, standing at the center of the throne, encircled by the four living creatures and the elders..."
+  },
+  {
+    "nazwa": "Mega Satan",
+    "ikona": "/tboi/bossowie/mega-satan.png",
+    "hp": 3000,
+    "obrazenia": 2,
+    "opis": "Mega Satan is a boss that appears in Chapter 6 (Chest, Dark Room), and is the final boss of Ending 16."
+  },
+  {
+    "nazwa": "Gurglings",
+    "ikona": "/tboi/bossowie/gurglings.png",
+    "hp": null,
+    "obrazenia": null,
+    "opis": "The Gurglings spawn as a pair and wander around the room. Each individual Gurgling has one attack in total which is performed independently of the other:"
+  },
+  {
+    "nazwa": "The Stain",
+    "ikona": "/tboi/bossowie/the-stain.png",
+    "hp": 400,
+    "obrazenia": 1,
+    "opis": "The Stain is a boss added in The Binding of Isaac: Afterbirth that can appear:"
+  },
+  {
+    "nazwa": "Brownie",
+    "ikona": "/tboi/bossowie/brownie.png",
+    "hp": 400,
+    "obrazenia": 1,
+    "opis": "Brownie is a boss added in The Binding of Isaac: Afterbirth that can appear in all environments of Chapter 3 (Depths, Necropolis, Dank Depths)."
+  },
+  {
+    "nazwa": "The Forsaken",
+    "ikona": "/tboi/bossowie/the-forsaken.png",
+    "hp": 220,
+    "obrazenia": 1,
+    "opis": "The Forsaken is a boss added in The Binding of Isaac: Afterbirth that can appear:"
+  },
+  {
+    "nazwa": "Little Horn",
+    "ikona": "/tboi/bossowie/little-horn.png",
+    "hp": 200,
+    "obrazenia": 1,
+    "opis": "Little Horn is a boss added in The Binding of Isaac: Afterbirth that can appear in all environments of Chapter 1 (Basement, Cellar, Burning Basement)."
+  },
+  {
+    "nazwa": "Rag Man",
+    "ikona": "/tboi/bossowie/rag-man.png",
+    "hp": 200,
+    "obrazenia": 1,
+    "opis": "Rag Man is a boss added in The Binding of Isaac: Afterbirth that can appear:"
+  },
+  {
+    "nazwa": "Ultra Greed",
+    "ikona": "/tboi/bossowie/ultra-greed.png",
+    "hp": 3500,
+    "obrazenia": 2,
+    "opis": "Ultra Greed is the final boss of Greed Mode and Ending 18."
+  },
+  {
+    "nazwa": "Hush",
+    "ikona": "/tboi/bossowie/hush.png",
+    "hp": 6666,
+    "obrazenia": 1,
+    "opis": "Hush is the boss of ???, and the final boss of Ending 17."
+  },
+  {
+    "nazwa": "Dangle",
+    "ikona": "/tboi/bossowie/dangle.png",
+    "hp": 375,
+    "obrazenia": 1,
+    "opis": "Dangle is a boss added in The Binding of Isaac: Afterbirth that can appear:"
+  },
+  { "nazwa": "Turdling", "ikona": "/tboi/bossowie/turdling.png", "hp": 50, "obrazenia": 1 },
+  {
+    "nazwa": "The Frail",
+    "ikona": "/tboi/bossowie/the-frail.png",
+    "hp": 200,
+    "obrazenia": 1,
+    "opis": "The Frail is a boss added in The Binding of Isaac: Afterbirth that can appear:"
+  },
+  {
+    "nazwa": "Rag Mega",
+    "ikona": "/tboi/bossowie/rag-mega.png",
+    "hp": 120,
+    "obrazenia": 1,
+    "opis": "Rag Mega is a boss added in The Binding of Isaac: Afterbirth † that can appear in all environments of Chapter 2 (Caves, Catacombs, Flooded Caves)."
+  },
+  {
+    "nazwa": "Sisters Vis",
+    "ikona": "/tboi/bossowie/sisters-vis.png",
+    "hp": 350,
+    "obrazenia": 1,
+    "opis": "Sisters Vis are a boss added in The Binding of Isaac: Afterbirth † that can appear in all environments of Chapter 3 (Depths, Necropolis, Dank Depths) and Chapter 4 (Womb, Utero, Scarred Womb)."
+  },
+  {
+    "nazwa": "Big Horn",
+    "ikona": "/tboi/bossowie/big-horn.png",
+    "hp": 480,
+    "obrazenia": 1,
+    "opis": "Big Horn is a boss added in The Binding of Isaac: Afterbirth † that can appear in all environments of Chapter 2 (Caves, Catacombs, Flooded Caves)."
+  },
+  {
+    "nazwa": "Delirium",
+    "ikona": "/tboi/bossowie/delirium.png",
+    "hp": 10000,
+    "obrazenia": 1,
+    "opis": "Delirium is a boss added in The Binding of Isaac: Afterbirth †. It is the main boss of The Void and the final boss of Ending 20."
+  },
+  {
+    "nazwa": "Ultra Greedier",
+    "ikona": "/tboi/bossowie/ultra-greedier.png",
+    "hp": 2500,
+    "obrazenia": 2
+  },
+  {
+    "nazwa": "The Matriarch",
+    "ikona": "/tboi/bossowie/the-matriarch.png",
+    "hp": 700,
+    "obrazenia": 1,
+    "opis": "The Matriarch is a boss added in Booster Pack #5 of The Binding of Isaac: Afterbirth † that can appear:"
+  },
+  {
+    "nazwa": "The Pile",
+    "ikona": "/tboi/bossowie/the-pile.png",
+    "hp": 580,
+    "obrazenia": 1,
+    "opis": "The Pile is a boss added in The Binding of Isaac: Repentance that can appear in Necropolis, as well as in the Ashpit in the alternate path."
+  },
+  {
+    "nazwa": "Reap Creep",
+    "ikona": "/tboi/bossowie/reap-creep.png",
+    "hp": 690,
+    "obrazenia": 1,
+    "opis": "Reap Creep is a boss added in The Binding of Isaac: Repentance that can appear in the Depths and the Dank Depths, as well as in the Mines in the alternate path."
+  },
+  {
+    "nazwa": "Beelzeblub",
+    "ikona": "/tboi/bossowie/beelzeblub.png",
+    "hp": null,
+    "obrazenia": null
+  },
+  {
+    "nazwa": "Wormwood",
+    "ikona": "/tboi/bossowie/wormwood.png",
+    "hp": 200,
+    "obrazenia": 1,
+    "opis": "Wormwood is a boss added in The Binding of Isaac: Repentance that can appear in Downpour and Dross."
+  },
+  {
+    "nazwa": "The Rainmaker",
+    "ikona": "/tboi/bossowie/the-rainmaker.png",
+    "hp": null,
+    "obrazenia": null,
+    "opis": "The Rainmaker is a boss added in The Binding of Isaac: Repentance that can appear in Downpour."
+  },
+  {
+    "nazwa": "The Visage",
+    "ikona": "/tboi/bossowie/the-visage.png",
+    "hp": 620,
+    "obrazenia": 1,
+    "opis": "The Visage is a boss added in The Binding of Isaac: Repentance that can appear in Gehenna."
+  },
+  {
+    "nazwa": "The Siren",
+    "ikona": "/tboi/bossowie/the-siren.png",
+    "hp": null,
+    "obrazenia": null,
+    "opis": "The Siren is a boss added in The Binding of Isaac: Repentance that can appear in the Mausoleum."
+  },
+  {
+    "nazwa": "Tuff Twins",
+    "ikona": "/tboi/bossowie/tuff-twins.png",
+    "hp": null,
+    "obrazenia": null,
+    "opis": "Tuff Twins is a boss added in The Binding of Isaac: Repentance that can appear in the Mines."
+  },
+  {
+    "nazwa": "The Heretic",
+    "ikona": "/tboi/bossowie/the-heretic.png",
+    "hp": 789,
+    "obrazenia": 1,
+    "opis": "The Heretic is a boss added in The Binding of Isaac: Repentance that can appear in the Mausoleum."
+  },
+  {
+    "nazwa": "Hornfel",
+    "ikona": "/tboi/bossowie/hornfel.png",
+    "hp": 240,
+    "obrazenia": 2,
+    "opis": "Hornfel is a boss added in The Binding of Isaac: Repentance that can appear in the Mines."
+  },
+  {
+    "nazwa": "Great Gideon",
+    "ikona": "/tboi/bossowie/great-gideon.png",
+    "hp": 6,
+    "obrazenia": 0,
+    "opis": "Great Gideon is a boss added in The Binding of Isaac: Repentance that can appear in the Mines and the Ashpit."
+  },
+  {
+    "nazwa": "Baby Plum",
+    "ikona": "/tboi/bossowie/baby-plum.png",
+    "hp": 234,
+    "obrazenia": 1,
+    "opis": "Baby Plum is a boss added in The Binding of Isaac: Repentance that can appear in all environments of Chapter 1 (Basement, Cellar, Burning Basement)."
+  },
+  {
+    "nazwa": "The Scourge",
+    "ikona": "/tboi/bossowie/the-scourge.png",
+    "hp": 950,
+    "obrazenia": 1,
+    "opis": "The Scourge is a boss added in The Binding of Isaac: Repentance that can appear in the Corpse."
+  },
+  {
+    "nazwa": "Chimera",
+    "ikona": "/tboi/bossowie/chimera.png",
+    "hp": 1050,
+    "obrazenia": 1,
+    "opis": "Chimera is a boss added in The Binding of Isaac: Repentance that can appear in the Corpse."
+  },
+  {
+    "nazwa": "Rotgut",
+    "ikona": "/tboi/bossowie/rotgut.png",
+    "hp": 600,
+    "obrazenia": 1,
+    "opis": "The first phase occurs against Rotgut's \"face\" in his regular boss room. Rotgut is stationary in the center of the room and performs the following attacks:"
+  },
+  {
+    "nazwa": "Mother",
+    "ikona": "/tboi/bossowie/mother.png",
+    "hp": 2222,
+    "obrazenia": 1,
+    "opis": "Upon entering the boss room in Corpse II, the room is empty except for a hole in its center. Walking into it drops Isaac down into the arena where Mother is fought."
+  },
+  {
+    "nazwa": "Mom (Mausoleum)",
+    "ikona": "/tboi/bossowie/mom-mausoleum.png",
+    "hp": null,
+    "obrazenia": null
+  },
+  {
+    "nazwa": "Mom's Heart (Mausoleum)",
+    "ikona": "/tboi/bossowie/mom-s-heart-mausoleum.png",
+    "hp": null,
+    "obrazenia": null
+  },
+  {
+    "nazwa": "Min-Min",
+    "ikona": "/tboi/bossowie/min-min.png",
+    "hp": null,
+    "obrazenia": null,
+    "opis": "Min-Min is a boss added in The Binding of Isaac: Repentance that can appear in Downpour."
+  },
+  {
+    "nazwa": "Clog",
+    "ikona": "/tboi/bossowie/clog.png",
+    "hp": 420,
+    "obrazenia": 1,
+    "opis": "Clog is a boss introduced in The Binding of Isaac: Repentance and can appear in Dross."
+  },
+  {
+    "nazwa": "Singe",
+    "ikona": "/tboi/bossowie/singe.png",
+    "hp": 444,
+    "obrazenia": 1,
+    "opis": "Singe is a boss added in The Binding of Isaac: Repentance that can appear in the Ashpit."
+  },
+  {
+    "nazwa": "Bumbino",
+    "ikona": "/tboi/bossowie/bumbino.png",
+    "hp": 385,
+    "obrazenia": 1,
+    "opis": "Bumbino is a boss added in The Binding of Isaac: Repentance that can appear in all environments of Chapter 2 (Caves, Catacombs, Flooded Caves)."
+  },
+  {
+    "nazwa": "Colostomia",
+    "ikona": "/tboi/bossowie/colostomia.png",
+    "hp": 380,
+    "obrazenia": 1,
+    "opis": "Colostomia is a boss introduced in The Binding of Isaac: Repentance that can appear in Dross."
+  },
+  {
+    "nazwa": "The Shell",
+    "ikona": "/tboi/bossowie/the-shell.png",
+    "hp": 35,
+    "obrazenia": 1,
+    "opis": "The Shell is a boss added in The Binding of Isaac: Repentance that can appear in the Ashpit."
+  },
+  {
+    "nazwa": "Turdlet",
+    "ikona": "/tboi/bossowie/turdlet.png",
+    "hp": 190,
+    "obrazenia": 1,
+    "opis": "Turdlet is a boss added in The Binding of Isaac: Repentance that can appear in Dross."
+  },
+  { "nazwa": "Raglich", "ikona": "/tboi/bossowie/raglich.png", "hp": 792, "obrazenia": 1 },
+  {
+    "nazwa": "Dogma",
+    "ikona": "/tboi/bossowie/dogma.png",
+    "hp": 1200,
+    "obrazenia": 1,
+    "opis": "Dogma is a boss added in The Binding of Isaac: Repentance and is the first boss of Home."
+  },
+  {
+    "nazwa": "The Beast",
+    "ikona": null,
+    "hp": 10000,
+    "obrazenia": 1,
+    "opis": "The Beast is a boss added in The Binding of Isaac: Repentance DLC. She appears in Home and is the final boss of Ending 22, as well as The Binding of Isaac as a whole."
+  },
+  { "nazwa": "Horny Boys", "ikona": "/tboi/bossowie/horny-boys.png", "hp": 707, "obrazenia": 1 },
+  {
+    "nazwa": "Clutch",
+    "ikona": "/tboi/bossowie/clutch.png",
+    "hp": 500,
+    "obrazenia": 1,
+    "opis": "Clutch is a boss added in The Binding of Isaac: Repentance (update v1.7.8) that appears in the Ashpit."
+  },
+  { "nazwa": "Cadavra", "ikona": null, "hp": null, "obrazenia": null }
+]

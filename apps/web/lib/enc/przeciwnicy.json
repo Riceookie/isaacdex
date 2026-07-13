@@ -1,0 +1,2517 @@
+[
+  {
+    "nazwa": "Frowning Gaper",
+    "ikona": "/tboi/przeciwnicy/frowning-gaper.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Gaper",
+    "ikona": "/tboi/przeciwnicy/gaper.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": "Gapers walk towards Isaac by the most direct route possible. They will actively path around obstacles and other enemies that block their path to Isaac. Upon death, they will usually transform into a Pacer or with a slightly lower chance a Gusher."
+  },
+  {
+    "nazwa": "Flaming Gaper",
+    "ikona": "/tboi/przeciwnicy/flaming-gaper.png",
+    "hp": 9,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Rotten Gaper",
+    "ikona": "/tboi/przeciwnicy/rotten-gaper.png",
+    "hp": 24,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Gurgle",
+    "ikona": "/tboi/przeciwnicy/gurgle.png",
+    "hp": 40,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Crackle",
+    "ikona": "/tboi/przeciwnicy/crackle.png",
+    "hp": 40,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Nulls",
+    "ikona": "/tboi/przeciwnicy/nulls.png",
+    "hp": 30,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Cyclopia",
+    "ikona": "/tboi/przeciwnicy/cyclopia.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Blue Gaper",
+    "ikona": "/tboi/przeciwnicy/blue-gaper.png",
+    "hp": 16,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Greed Gaper",
+    "ikona": "/tboi/przeciwnicy/greed-gaper.png",
+    "hp": 9,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Wraith",
+    "ikona": "/tboi/przeciwnicy/wraith.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Deep Gaper",
+    "ikona": "/tboi/przeciwnicy/deep-gaper.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Blurb",
+    "ikona": "/tboi/przeciwnicy/blurb.png",
+    "hp": 16,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Level 2 Gaper",
+    "ikona": "/tboi/przeciwnicy/level-2-gaper.png",
+    "hp": 40,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Level 2 Horf",
+    "ikona": "/tboi/przeciwnicy/level-2-horf.png",
+    "hp": 20,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Level 2 Gusher",
+    "ikona": "/tboi/przeciwnicy/level-2-gusher.png",
+    "hp": 20,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Twitchy",
+    "ikona": "/tboi/przeciwnicy/twitchy.png",
+    "hp": 40,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Dead Isaac",
+    "ikona": "/tboi/przeciwnicy/dead-isaac.png",
+    "hp": 40,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Faceless",
+    "ikona": "/tboi/przeciwnicy/faceless.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": "The Faceless is a monster added in The Binding of Isaac: Repentance. It takes on the appearance of a Gaper with most of its head cut off, but with its entire spine still intact. Initially, it wanders around the room aimlessly, occasionally firing out 6 blood shots in a hexagonal shape."
+  },
+  {
+    "nazwa": "Tainted Faceless",
+    "ikona": "/tboi/przeciwnicy/tainted-faceless.png",
+    "hp": 100,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Exorcist",
+    "ikona": "/tboi/przeciwnicy/exorcist.png",
+    "hp": 25,
+    "obrazenia": 1,
+    "opis": "Exorcists are enemies found exclusively in the fight against The Heretic, and can never be found naturally. They take the appearance of a Gaper with its head's skin rolled down, revealing its skull."
+  },
+  {
+    "nazwa": "Fanatic",
+    "ikona": "/tboi/przeciwnicy/fanatic.png",
+    "hp": 35,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Candler",
+    "ikona": "/tboi/przeciwnicy/candler.png",
+    "hp": 25,
+    "obrazenia": 1,
+    "opis": "Candlers are an enemy added in The Binding of Isaac: Repentance. They fly around the room, bouncing off walls, and spawn flames beneath them."
+  },
+  {
+    "nazwa": "Dump",
+    "ikona": "/tboi/przeciwnicy/dump.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": "Dump is a monster that is exclusive to Dross."
+  },
+  {
+    "nazwa": "Dump Head",
+    "ikona": "/tboi/przeciwnicy/dump-head.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Gusher",
+    "ikona": "/tboi/przeciwnicy/gusher.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Pacer",
+    "ikona": "/tboi/przeciwnicy/pacer.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": "Pacers wander around the room aimlessly and can be spawned when a Gaper, a Flaming Gaper or a Frowning Gaper is killed."
+  },
+  {
+    "nazwa": "Splasher",
+    "ikona": "/tboi/przeciwnicy/splasher.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Black Globin's Body",
+    "ikona": "/tboi/przeciwnicy/black-globin-s-body.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Horf",
+    "ikona": "/tboi/przeciwnicy/horf.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": "Horfs are disembodied human heads with their eyes gouged out. Horfs remain immobile in one spot, firing blood shots at Isaac when he gets in their range. They will fire shots directly at Isaac when they're about ½-room width away from him, even though their shots can travel the entire room's length."
+  },
+  {
+    "nazwa": "Psychic Horf",
+    "ikona": "/tboi/przeciwnicy/psychic-horf.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Sub Horf",
+    "ikona": "/tboi/przeciwnicy/sub-horf.png",
+    "hp": 14,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Tainted Sub Horf",
+    "ikona": "/tboi/przeciwnicy/tainted-sub-horf.png",
+    "hp": 50,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Necro",
+    "ikona": "/tboi/przeciwnicy/necro.png",
+    "hp": 22,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Fly",
+    "ikona": "/tboi/przeciwnicy/fly.png",
+    "hp": 3,
+    "obrazenia": 0,
+    "opis": "Flies are enemies that buzz around the room randomly, but slowly hover towards Isaac. They cannot damage Isaac at all, even by touch, making them completely harmless. However, they can turn into Pooters if they fly around Poop for too long."
+  },
+  {
+    "nazwa": "Attack Fly",
+    "ikona": "/tboi/przeciwnicy/attack-fly.png",
+    "hp": 0,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Moter",
+    "ikona": "/tboi/przeciwnicy/moter.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Eternal Fly",
+    "ikona": "/tboi/przeciwnicy/eternal-fly.png",
+    "hp": 300,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Ring Fly",
+    "ikona": "/tboi/przeciwnicy/ring-fly.png",
+    "hp": 5,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Dart Fly",
+    "ikona": "/tboi/przeciwnicy/dart-fly.png",
+    "hp": 5,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Swarm",
+    "ikona": "/tboi/przeciwnicy/swarm.png",
+    "hp": 5,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Hush Fly",
+    "ikona": "/tboi/przeciwnicy/hush-fly.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Willo",
+    "ikona": "/tboi/przeciwnicy/willo.png",
+    "hp": 6,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Army Fly",
+    "ikona": "/tboi/przeciwnicy/army-fly.png",
+    "hp": 5,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Ultra Famine Fly",
+    "ikona": "/tboi/przeciwnicy/ultra-famine-fly.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Ultra Pestilence Fly",
+    "ikona": "/tboi/przeciwnicy/ultra-pestilence-fly.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Fly Bomb",
+    "ikona": "/tboi/przeciwnicy/fly-bomb.png",
+    "hp": 7,
+    "obrazenia": 1,
+    "opis": "Fly Bombs are enemies added in The Binding of Isaac: Repentance. They are characterized by their appearance of a small Bomb with wings."
+  },
+  {
+    "nazwa": "Eternal Fly Bomb",
+    "ikona": "/tboi/przeciwnicy/eternal-fly-bomb.png",
+    "hp": 7,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Sucker",
+    "ikona": "/tboi/przeciwnicy/sucker.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": "Suckers fly slowly towards Isaac and, upon death, fire 4 shots in the cardinal directions."
+  },
+  {
+    "nazwa": "Spit",
+    "ikona": "/tboi/przeciwnicy/spit.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  { "nazwa": "Ink", "ikona": "/tboi/przeciwnicy/ink.png", "hp": 10, "obrazenia": 1, "opis": null },
+  {
+    "nazwa": "Soul Sucker",
+    "ikona": "/tboi/przeciwnicy/soul-sucker.png",
+    "hp": 18,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Mama Fly",
+    "ikona": "/tboi/przeciwnicy/mama-fly.png",
+    "hp": 44,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Bulb",
+    "ikona": "/tboi/przeciwnicy/bulb.png",
+    "hp": 10,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Bloodfly",
+    "ikona": "/tboi/przeciwnicy/bloodfly.png",
+    "hp": 6,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Tainted Sucker",
+    "ikona": "/tboi/przeciwnicy/tainted-sucker.png",
+    "hp": 14,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Pooter",
+    "ikona": "/tboi/przeciwnicy/pooter.png",
+    "hp": 8,
+    "obrazenia": 0,
+    "opis": "The Pooter wanders very slowly around the room to the point where they stay put, and they shoot one bullet at Isaac. Pooters will not shoot if Isaac wears Skatole."
+  },
+  {
+    "nazwa": "Super Pooter",
+    "ikona": "/tboi/przeciwnicy/super-pooter.png",
+    "hp": 8,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Tainted Pooter",
+    "ikona": "/tboi/przeciwnicy/tainted-pooter.png",
+    "hp": 75,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Clotty",
+    "ikona": "/tboi/przeciwnicy/clotty.png",
+    "hp": 15,
+    "obrazenia": 1,
+    "opis": "Clotties are enemies that wander around the room, randomly shooting four blood shots in the cardinal directions. These can be particularly difficult to deal with early on if the player isn't careful. Two of them are also spawned from Mega Clotties when killed."
+  },
+  {
+    "nazwa": "Clot",
+    "ikona": "/tboi/przeciwnicy/clot.png",
+    "hp": 15,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "I.Blob",
+    "ikona": "/tboi/przeciwnicy/i-blob.png",
+    "hp": 15,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Grilled Clotty",
+    "ikona": "/tboi/przeciwnicy/grilled-clotty.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Cloggy",
+    "ikona": "/tboi/przeciwnicy/cloggy.png",
+    "hp": 15,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Mulligan",
+    "ikona": "/tboi/przeciwnicy/mulligan.png",
+    "hp": 13,
+    "obrazenia": 0,
+    "opis": "Mulligans are enemies that will actively try to avoid Isaac; their eyes widen and their speed increases when doing so. When running away, they may walk over spikes or into a fire."
+  },
+  {
+    "nazwa": "Mulligoon",
+    "ikona": "/tboi/przeciwnicy/mulligoon.png",
+    "hp": 13,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Mulliboom",
+    "ikona": "/tboi/przeciwnicy/mulliboom.png",
+    "hp": 13,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Hive",
+    "ikona": "/tboi/przeciwnicy/hive.png",
+    "hp": 20,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Drowned Hive",
+    "ikona": "/tboi/przeciwnicy/drowned-hive.png",
+    "hp": 18,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Holy Mulligan",
+    "ikona": "/tboi/przeciwnicy/holy-mulligan.png",
+    "hp": 40,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Tainted Mulligan",
+    "ikona": "/tboi/przeciwnicy/tainted-mulligan.png",
+    "hp": 100,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Nest",
+    "ikona": "/tboi/przeciwnicy/nest.png",
+    "hp": 20,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Leper",
+    "ikona": "/tboi/przeciwnicy/leper.png",
+    "hp": 60,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Leper Flesh",
+    "ikona": "/tboi/przeciwnicy/leper-flesh.png",
+    "hp": 5,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Prey",
+    "ikona": "/tboi/przeciwnicy/prey.png",
+    "hp": 14,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Mullighoul",
+    "ikona": "/tboi/przeciwnicy/mullighoul.png",
+    "hp": 14,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Bouncer",
+    "ikona": "/tboi/przeciwnicy/bouncer.png",
+    "hp": 30,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Gas Dwarf",
+    "ikona": "/tboi/przeciwnicy/gas-dwarf.png",
+    "hp": 13,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Danny",
+    "ikona": "/tboi/przeciwnicy/danny.png",
+    "hp": 40,
+    "obrazenia": 1,
+    "opis": "Dannies are an enemy added in The Binding of Isaac: Repentance. They are exclusive to Mines and Ashpit."
+  },
+  {
+    "nazwa": "Coal Boy",
+    "ikona": "/tboi/przeciwnicy/coal-boy.png",
+    "hp": 40,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Blaster",
+    "ikona": "/tboi/przeciwnicy/blaster.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": "The Blaster is an enemy that is exclusive to Mines. It is characterized by a large boulder with holes on its upper body and its lack of arms."
+  },
+  {
+    "nazwa": "Maggot",
+    "ikona": "/tboi/przeciwnicy/maggot.png",
+    "hp": 15,
+    "obrazenia": 1,
+    "opis": "A Maggot is a type of monster introduced in the vanilla content of The Binding of Isaac: Rebirth. They can be commonly found in Chapter 2. They can also be found wandering about within libraries."
+  },
+  {
+    "nazwa": "Charger",
+    "ikona": "/tboi/przeciwnicy/charger.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": "Chargers are a more advanced form of Maggot."
+  },
+  {
+    "nazwa": "My Shadow",
+    "ikona": "/tboi/przeciwnicy/my-shadow.png",
+    "hp": 0,
+    "obrazenia": 0,
+    "opis": "The dark friendly chargers act like normal chargers and will charge at enemies when they have a chance. They will attack enemies until they run out of hp either from contact with enemies or hazards (e.g. spikes or Fire place)."
+  },
+  {
+    "nazwa": "Drowned Charger",
+    "ikona": "/tboi/przeciwnicy/drowned-charger.png",
+    "hp": 22,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Dank Charger",
+    "ikona": "/tboi/przeciwnicy/dank-charger.png",
+    "hp": 26,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Carrion Princess",
+    "ikona": "/tboi/przeciwnicy/carrion-princess.png",
+    "hp": 26,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Small Leech",
+    "ikona": "/tboi/przeciwnicy/small-leech.png",
+    "hp": 5,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Small Maggot",
+    "ikona": "/tboi/przeciwnicy/small-maggot.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Level 2 Charger",
+    "ikona": "/tboi/przeciwnicy/level-2-charger.png",
+    "hp": 40,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Elleech",
+    "ikona": "/tboi/przeciwnicy/elleech.png",
+    "hp": 60,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Blood Puppy",
+    "ikona": "/tboi/przeciwnicy/blood-puppy.png",
+    "hp": 0,
+    "obrazenia": 2,
+    "opis": "File:Familiar bloodpuppy level1.png|A tame Blood Puppy."
+  },
+  {
+    "nazwa": "Spitty",
+    "ikona": "/tboi/przeciwnicy/spitty.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": "Spitties are maggot-like monsters introduced in the vanilla content of The Binding of Isaac: Rebirth, and can be only encountered in Chapter 2."
+  },
+  {
+    "nazwa": "Tainted Spitty",
+    "ikona": "/tboi/przeciwnicy/tainted-spitty.png",
+    "hp": 60,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Conjoined Spitty",
+    "ikona": "/tboi/przeciwnicy/conjoined-spitty.png",
+    "hp": 18,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Globin",
+    "ikona": "/tboi/przeciwnicy/globin.png",
+    "hp": 33,
+    "obrazenia": 2,
+    "opis": "Globins chase after Isaac, similar to Gapers but are much faster. Instead of dying, they will collapse into goo and then regenerate after a few moments unless destroyed in their goo form. Each time a Globin is turned into goo form, it will have its total health decreased. Globins will do 1 full heart of damage on contact."
+  },
+  {
+    "nazwa": "Gazing Globin",
+    "ikona": "/tboi/przeciwnicy/gazing-globin.png",
+    "hp": 33,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Dank Globin",
+    "ikona": "/tboi/przeciwnicy/dank-globin.png",
+    "hp": 33,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Cursed Globin",
+    "ikona": "/tboi/przeciwnicy/cursed-globin.png",
+    "hp": 33,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Black Globin",
+    "ikona": "/tboi/przeciwnicy/black-globin.png",
+    "hp": 33,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Clickety Clack",
+    "ikona": "/tboi/przeciwnicy/clickety-clack.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Gasbag",
+    "ikona": "/tboi/przeciwnicy/gasbag.png",
+    "hp": 80,
+    "obrazenia": 1,
+    "opis": "Gasbags are a unique enemy type found only in Corpse. While they are alive, they emit a ring of toxic gas that deals damage to Isaac if he stands in it for too long. Additionally, Gasbags will occasionally spawn a chain of 4 Army Fly to chase Isaac. Gasbags will only spawn flies if there are less than 8 army flies in the room, no matter how many Gasbags there are."
+  },
+  {
+    "nazwa": "Cohort",
+    "ikona": "/tboi/przeciwnicy/cohort.png",
+    "hp": 125,
+    "obrazenia": 2,
+    "opis": "Cohorts are enemies resembling a giant Globin in the shape of Monstro. They act similarly to Monstro, and have the following attacks:"
+  },
+  {
+    "nazwa": "Boom Fly",
+    "ikona": "/tboi/przeciwnicy/boom-fly.png",
+    "hp": 8,
+    "obrazenia": 1,
+    "opis": "Boom Flies fly across the room diagonally in straight diagonal lines, dealing contact damage. Explodes upon death."
+  },
+  {
+    "nazwa": "Red Boom Fly",
+    "ikona": "/tboi/przeciwnicy/red-boom-fly.png",
+    "hp": 8,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Drowned Boom Fly",
+    "ikona": "/tboi/przeciwnicy/drowned-boom-fly.png",
+    "hp": 8,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Dragon Fly",
+    "ikona": "/tboi/przeciwnicy/dragon-fly.png",
+    "hp": 8,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Dragon Fly X",
+    "ikona": "/tboi/przeciwnicy/dragon-fly-x.png",
+    "hp": 8,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Bone Fly",
+    "ikona": "/tboi/przeciwnicy/bone-fly.png",
+    "hp": 8,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Sick Boom Fly",
+    "ikona": "/tboi/przeciwnicy/sick-boom-fly.png",
+    "hp": 8,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Tainted Boom Fly",
+    "ikona": "/tboi/przeciwnicy/tainted-boom-fly.png",
+    "hp": 20,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Maw",
+    "ikona": "/tboi/przeciwnicy/maw.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": "Maws slowly drift towards Isaac while spitting a blood shot at him when near him, the latter behavior is similar to that of Horfs."
+  },
+  {
+    "nazwa": "Red Maw",
+    "ikona": "/tboi/przeciwnicy/red-maw.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Psychic Maw",
+    "ikona": "/tboi/przeciwnicy/psychic-maw.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Host",
+    "ikona": "/tboi/przeciwnicy/host.png",
+    "hp": 14,
+    "obrazenia": 0,
+    "opis": "Hosts are immobile skulls. When lowered down, which is their normal state, they are invincible to every source of damage except status effects such as poison, burning, being knocked into a wall by Hemoptysis, or knockout drops' knockback. Occasionally, they will pop up and shoot three spread shots towards Isaac, revealing a fleshy stem that can be damaged."
+  },
+  {
+    "nazwa": "Red Host",
+    "ikona": "/tboi/przeciwnicy/red-host.png",
+    "hp": 15,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Hard Host",
+    "ikona": "/tboi/przeciwnicy/hard-host.png",
+    "hp": 15,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Mobile Host",
+    "ikona": "/tboi/przeciwnicy/mobile-host.png",
+    "hp": 14,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Flesh Mobile Host",
+    "ikona": "/tboi/przeciwnicy/flesh-mobile-host.png",
+    "hp": 27,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Floast",
+    "ikona": "/tboi/przeciwnicy/floast.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  { "nazwa": "Mushroom", "ikona": null, "hp": 23, "obrazenia": 1, "opis": null },
+  {
+    "nazwa": "Hopper",
+    "ikona": "/tboi/przeciwnicy/hopper.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": "A Hopper jumps around the room, doing contact damage to Isaac. They jump slowly around the room until Isaac gets close to them, at which point they start chasing Isaac. They can jump across rocks and gaps."
+  },
+  {
+    "nazwa": "Eggy",
+    "ikona": "/tboi/przeciwnicy/eggy.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Tainted Hopper",
+    "ikona": "/tboi/przeciwnicy/tainted-hopper.png",
+    "hp": 80,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Leaper",
+    "ikona": "/tboi/przeciwnicy/leaper.png",
+    "hp": 25,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Sticky Leaper",
+    "ikona": "/tboi/przeciwnicy/sticky-leaper.png",
+    "hp": 28,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Flaming Hopper",
+    "ikona": "/tboi/przeciwnicy/flaming-hopper.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Trite",
+    "ikona": "/tboi/przeciwnicy/trite.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": "The Trite is a spider variant of the Hoppers. Leaps with less frequency, but at greater distances. This can make them extremely dangerous, as they could potentially leap from one side of the room to the other, catching the player off guard."
+  },
+  {
+    "nazwa": "Ragling",
+    "ikona": "/tboi/przeciwnicy/ragling.png",
+    "hp": 13,
+    "obrazenia": 1,
+    "opis": null
+  },
+  { "nazwa": "Rag man's Ragling", "ikona": null, "hp": 30, "obrazenia": 1, "opis": null },
+  {
+    "nazwa": "Blister",
+    "ikona": "/tboi/przeciwnicy/blister.png",
+    "hp": 16,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Boil",
+    "ikona": "/tboi/przeciwnicy/boil.png",
+    "hp": 20,
+    "obrazenia": 0,
+    "opis": "Boils start as small red spheres that slowly grow to full size. When at their full size, they can spurt out a cluster of blood shots at Isaac, similar to one of Monstro's attacks. Boils decrease in size when hit, but will regenerate to their full size until fully destroyed."
+  },
+  { "nazwa": "Gut", "ikona": "/tboi/przeciwnicy/gut.png", "hp": 20, "obrazenia": 0, "opis": null },
+  {
+    "nazwa": "Sack",
+    "ikona": "/tboi/przeciwnicy/sack.png",
+    "hp": 20,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Blue Boil",
+    "ikona": "/tboi/przeciwnicy/blue-boil.png",
+    "hp": 20,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Gush",
+    "ikona": "/tboi/przeciwnicy/gush.png",
+    "hp": 20,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Pustule",
+    "ikona": "/tboi/przeciwnicy/pustule.png",
+    "hp": 19,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Walking Boil",
+    "ikona": "/tboi/przeciwnicy/walking-boil.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Walking Gut",
+    "ikona": "/tboi/przeciwnicy/walking-gut.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Walking Sack",
+    "ikona": "/tboi/przeciwnicy/walking-sack.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Brain",
+    "ikona": "/tboi/przeciwnicy/brain.png",
+    "hp": 20,
+    "obrazenia": 2,
+    "opis": "Brains slide around the room erratically in the cardinal directions, leaving a trail of Red Creep, they deal a whole heart of contact damage. When Isaac is within line of sight they will charge in his direction until they collide with an obstacle or another enemy similar to Knights."
+  },
+  {
+    "nazwa": "Black Globin's Head",
+    "ikona": "/tboi/przeciwnicy/black-globin-s-head.png",
+    "hp": 20,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Festering Guts",
+    "ikona": "/tboi/przeciwnicy/festering-guts.png",
+    "hp": 22,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Poison Mind",
+    "ikona": "/tboi/przeciwnicy/poison-mind.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  { "nazwa": "Pon", "ikona": "/tboi/przeciwnicy/pon.png", "hp": 20, "obrazenia": 1, "opis": null },
+  {
+    "nazwa": "Gyro",
+    "ikona": "/tboi/przeciwnicy/gyro.png",
+    "hp": 18,
+    "obrazenia": 1,
+    "opis": "Gyros were introduced in The Binding of Isaac: Repentance. They look like a piece of meat with a bone right through the middle."
+  },
+  {
+    "nazwa": "Grilled Gyro",
+    "ikona": "/tboi/przeciwnicy/grilled-gyro.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Mr. Maw",
+    "ikona": "/tboi/przeciwnicy/mr-maw.png",
+    "hp": 25,
+    "obrazenia": 1,
+    "opis": "Mr. Maw walks towards Isaac and when in range it will launch its head towards him. It appears to be a Maw attached to a Gusher and will turn into either upon death depending on the killed body segment. It can also randomly separate at will into a Gusher and a Maw."
+  },
+  {
+    "nazwa": "Mr. Red Maw",
+    "ikona": "/tboi/przeciwnicy/mr-red-maw.png",
+    "hp": 25,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Swinger",
+    "ikona": "/tboi/przeciwnicy/swinger.png",
+    "hp": 38,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Mr. Mine",
+    "ikona": "/tboi/przeciwnicy/mr-mine.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Baby",
+    "ikona": "/tboi/przeciwnicy/baby.png",
+    "hp": 25,
+    "obrazenia": 1,
+    "opis": "Babies slowly float towards Isaac, occasionally shooting a single projectile towards him. They can also occasionally teleport to anywhere in the room."
+  },
+  {
+    "nazwa": "Angelic Baby",
+    "ikona": "/tboi/przeciwnicy/angelic-baby.png",
+    "hp": 25,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Angelic Baby (small)",
+    "ikona": "/tboi/przeciwnicy/angelic-baby-small.png",
+    "hp": 16,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Wrinkly Baby",
+    "ikona": "/tboi/przeciwnicy/wrinkly-baby.png",
+    "hp": 25,
+    "obrazenia": 1,
+    "opis": null
+  },
+  { "nazwa": "Imp", "ikona": "/tboi/przeciwnicy/imp.png", "hp": 25, "obrazenia": 1, "opis": null },
+  {
+    "nazwa": "Unborn",
+    "ikona": "/tboi/przeciwnicy/unborn.png",
+    "hp": 32,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Baby Begotten",
+    "ikona": "/tboi/przeciwnicy/baby-begotten.png",
+    "hp": 18,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Vis",
+    "ikona": "/tboi/przeciwnicy/vis.png",
+    "hp": 25,
+    "obrazenia": 1,
+    "opis": "Vis are enemies most commonly found in The Depths. They are headless like Hoppers and have their entire torso cut open. When Isaac lines up with the Vis in a cardinal direction, it will fire a Brimstone beam in that direction."
+  },
+  {
+    "nazwa": "Double Vis",
+    "ikona": "/tboi/przeciwnicy/double-vis.png",
+    "hp": 25,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Chubber",
+    "ikona": "/tboi/przeciwnicy/chubber.png",
+    "hp": 25,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Scarred Double Vis",
+    "ikona": "/tboi/przeciwnicy/scarred-double-vis.png",
+    "hp": 22,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Vis Versa",
+    "ikona": "/tboi/przeciwnicy/vis-versa.png",
+    "hp": 25,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Evis",
+    "ikona": "/tboi/przeciwnicy/evis.png",
+    "hp": 40,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Guts",
+    "ikona": "/tboi/przeciwnicy/guts.png",
+    "hp": 25,
+    "obrazenia": 1,
+    "opis": "Guts is a monster that attaches itself to a wall or obstacle, such as a rock, rolling around the contour of the terrain."
+  },
+  {
+    "nazwa": "Scarred Guts",
+    "ikona": "/tboi/przeciwnicy/scarred-guts.png",
+    "hp": 28,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Slog",
+    "ikona": "/tboi/przeciwnicy/slog.png",
+    "hp": 28,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Cyst",
+    "ikona": "/tboi/przeciwnicy/cyst.png",
+    "hp": 25,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Knight",
+    "ikona": "/tboi/przeciwnicy/knight.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": "Knights are enemies that can normally only be damaged from their exposed brains on the backs of their heads. However, explosions, attacks that pierce enemies (Brimstone, Cupid's Arrow, etc.), or melee attacks (Spirit Sword, Mom's Knife, etc.), will deal damage from any direction."
+  },
+  {
+    "nazwa": "Selfless Knight",
+    "ikona": "/tboi/przeciwnicy/selfless-knight.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Loose Knight",
+    "ikona": "/tboi/przeciwnicy/loose-knight.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Brainless Knight",
+    "ikona": "/tboi/przeciwnicy/brainless-knight.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Black Knight",
+    "ikona": "/tboi/przeciwnicy/black-knight.png",
+    "hp": 30,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Floating Knight",
+    "ikona": "/tboi/przeciwnicy/floating-knight.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Bone Knight",
+    "ikona": "/tboi/przeciwnicy/bone-knight.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Whipper",
+    "ikona": "/tboi/przeciwnicy/whipper.png",
+    "hp": 35,
+    "obrazenia": 1,
+    "opis": "Whippers are fiendish enemies added in The Binding of Isaac: Repentance."
+  },
+  {
+    "nazwa": "Snapper",
+    "ikona": "/tboi/przeciwnicy/snapper.png",
+    "hp": 35,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Flagellant",
+    "ikona": "/tboi/przeciwnicy/flagellant.png",
+    "hp": 42,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Dople",
+    "ikona": "/tboi/przeciwnicy/dople.png",
+    "hp": 20,
+    "obrazenia": 0,
+    "opis": "Doples mirror Isaac's movements exactly. They attack by firing projectiles but only when Isaac fires tears, and these shots are fired at the same frequency as Isaac's tears."
+  },
+  {
+    "nazwa": "Evil Twin",
+    "ikona": "/tboi/przeciwnicy/evil-twin.png",
+    "hp": 20,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Leech",
+    "ikona": "/tboi/przeciwnicy/leech.png",
+    "hp": 0,
+    "obrazenia": 1,
+    "opis": "Tends to get confused when attacking Maggot like enemies and just moves around in the attacking animation without attacking anything until the Maggot is killed by The Player."
+  },
+  {
+    "nazwa": "Kamikaze Leech",
+    "ikona": "/tboi/przeciwnicy/kamikaze-leech.png",
+    "hp": 25,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Holy Leech",
+    "ikona": "/tboi/przeciwnicy/holy-leech.png",
+    "hp": 25,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Adult Leech",
+    "ikona": "/tboi/przeciwnicy/adult-leech.png",
+    "hp": 90,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Lump",
+    "ikona": "/tboi/przeciwnicy/lump.png",
+    "hp": 30,
+    "obrazenia": 1,
+    "opis": "Lumps remain stationary in one spot and shoot a spread of three shots towards Isaac when he comes within range, then they burrow underground and resurface in a different part of the room. If they resurface in range to shoot at Isaac, they will do so incredibly quickly before burrowing underground again."
+  },
+  {
+    "nazwa": "Tar Boy",
+    "ikona": "/tboi/przeciwnicy/tar-boy.png",
+    "hp": 55,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "MemBrain",
+    "ikona": "/tboi/przeciwnicy/membrain.png",
+    "hp": 62,
+    "obrazenia": 2,
+    "opis": "MemBrains are much larger Brains that slowly move around the room and occasionally hop to fire 8 blood shots in all directions. They have a large amount of health and will split into two Brains upon death. Membrains deal a whole heart of damage with contact and projectiles."
+  },
+  {
+    "nazwa": "Mama Guts",
+    "ikona": "/tboi/przeciwnicy/mama-guts.png",
+    "hp": 62,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Dead Meat",
+    "ikona": "/tboi/przeciwnicy/dead-meat.png",
+    "hp": 62,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Dinga",
+    "ikona": "/tboi/przeciwnicy/dinga.png",
+    "hp": 62,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Mega Clotty",
+    "ikona": "/tboi/przeciwnicy/mega-clotty.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Para-Bite",
+    "ikona": "/tboi/przeciwnicy/para-bite.png",
+    "hp": 35,
+    "obrazenia": 2,
+    "opis": "The Para-Bite is a monster introduced in the vanilla content of The Binding of Isaac: Rebirth. They can be only encountered in Chapter 4."
+  },
+  {
+    "nazwa": "Scarred Para-Bite",
+    "ikona": "/tboi/przeciwnicy/scarred-para-bite.png",
+    "hp": 35,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Fred",
+    "ikona": "/tboi/przeciwnicy/fred.png",
+    "hp": 20,
+    "obrazenia": 2,
+    "opis": "Fred is a monster that can be encountered in Chapter 4."
+  },
+  {
+    "nazwa": "Eye",
+    "ikona": "/tboi/przeciwnicy/eye.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": "Eyes are immobile and attack by rotating towards Isaac and firing a Technology laser towards his position. Non-Eye enemies hit by the lasers take 8 damage."
+  },
+  {
+    "nazwa": "Bloodshot Eye",
+    "ikona": "/tboi/przeciwnicy/bloodshot-eye.png",
+    "hp": 0,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Holy Eye",
+    "ikona": "/tboi/przeciwnicy/holy-eye.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Embryo",
+    "ikona": "/tboi/przeciwnicy/embryo.png",
+    "hp": 12,
+    "obrazenia": 1,
+    "opis": "Embryos are monsters that hop around the room, dealing contact damage. They are relatively harmless as they do not move much from their position and don’t target the player."
+  },
+  {
+    "nazwa": "Spider",
+    "ikona": "/tboi/przeciwnicy/spider.png",
+    "hp": 6,
+    "obrazenia": 1,
+    "opis": "Spiders are arachnid enemies that can be commonly found in most chapters. They move quickly and will go in all directions randomly, making them unpredictable. However, if they have a direct line of sight on Isaac, and are close enough, they will move towards him. They are also able to fit through small diagonal gaps."
+  },
+  {
+    "nazwa": "Big Spider",
+    "ikona": "/tboi/przeciwnicy/big-spider.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Strider",
+    "ikona": "/tboi/przeciwnicy/strider.png",
+    "hp": 6,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Rock Spider",
+    "ikona": "/tboi/przeciwnicy/rock-spider.png",
+    "hp": 12,
+    "obrazenia": 1,
+    "opis": "Rock Spiders are small spider-legged stones and they were added to The Binding of Isaac: Repentance. They behave very closely to Spider, but they are exclusive to Mines and Ashpit and skitter at a slower speed"
+  },
+  {
+    "nazwa": "Tinted Rock Spider",
+    "ikona": "/tboi/przeciwnicy/tinted-rock-spider.png",
+    "hp": 22,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Coal Spider",
+    "ikona": "/tboi/przeciwnicy/coal-spider.png",
+    "hp": 15,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Swarm Spider",
+    "ikona": "/tboi/przeciwnicy/swarm-spider.png",
+    "hp": 4,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Keeper",
+    "ikona": "/tboi/przeciwnicy/keeper.png",
+    "hp": 36,
+    "obrazenia": 1,
+    "opis": "Keeper is a secret character added in The Binding of Isaac: Afterbirth."
+  },
+  {
+    "nazwa": "Buttlicker",
+    "ikona": "/tboi/przeciwnicy/buttlicker.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": "Buttlickers are monsters that wander around randomly in straight lines similar to Larry Jr.."
+  },
+  {
+    "nazwa": "Butt Slicker",
+    "ikona": "/tboi/przeciwnicy/butt-slicker.png",
+    "hp": 16,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Hanger",
+    "ikona": "/tboi/przeciwnicy/hanger.png",
+    "hp": 40,
+    "obrazenia": 0,
+    "opis": "Hangers are dead Shopkeepers that are hostile. They can shoot 3 projectiles at the player that will steal coins on hit (similar to Greed and Keepers). The Hanger is very slow and can float over obstacles. The best strategy is to be constantly moving. They always have an Eternal Fly circling them, which will become an Attack Fly once the Hanger is dead."
+  },
+  {
+    "nazwa": "Swarmer",
+    "ikona": "/tboi/przeciwnicy/swarmer.png",
+    "hp": 40,
+    "obrazenia": 0,
+    "opis": "Swarmers float aimlessly around the room, occasionally spawning Attack Fly. When hit, they will spawn a Pooter, and when destroyed, they will spawn a Boom Fly. Swarmers do not deal contact damage."
+  },
+  {
+    "nazwa": "Mask + Heart",
+    "ikona": null,
+    "hp": null,
+    "obrazenia": null,
+    "opis": "The Mask + Heart is an enemy commonly found in Necropolis, uncommonly in Womb/Utero, and rarely in Catacombs. Hearts may be found on their own in The Womb/Utero as well."
+  },
+  { "nazwa": "Mask II + 1/2 Heart", "ikona": null, "hp": null, "obrazenia": null, "opis": null },
+  {
+    "nazwa": "Baby Long Legs",
+    "ikona": "/tboi/przeciwnicy/baby-long-legs.png",
+    "hp": 16,
+    "obrazenia": 1,
+    "opis": "Baby Long Legs quickly run away from Isaac and occasionally stops to spawn a Spider. Usually, they can spawn a maximum of 3 Spiders. They run around erratically when Isaac is nearby and can sometimes run directly into him when this occurs."
+  },
+  {
+    "nazwa": "Small Baby Long Legs",
+    "ikona": "/tboi/przeciwnicy/small-baby-long-legs.png",
+    "hp": 12,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Crazy Long Legs",
+    "ikona": "/tboi/przeciwnicy/crazy-long-legs.png",
+    "hp": 16,
+    "obrazenia": 1,
+    "opis": "The Crazy Long Legs runs towards Isaac and stops to spit 8 medium range blood shots in an all directions."
+  },
+  {
+    "nazwa": "Small Crazy Long Legs",
+    "ikona": "/tboi/przeciwnicy/small-crazy-long-legs.png",
+    "hp": 12,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Fatty",
+    "ikona": "/tboi/przeciwnicy/fatty.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": "Fatties walk slowly toward Isaac, occasionally stopping to fart, which pushes Isaac away without dealing damage if he is too close. This will also push away adjacent enemies to a lesser degree."
+  },
+  {
+    "nazwa": "Pale Fatty",
+    "ikona": "/tboi/przeciwnicy/pale-fatty.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Flaming Fatty",
+    "ikona": "/tboi/przeciwnicy/flaming-fatty.png",
+    "hp": 18,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Fat Sack",
+    "ikona": "/tboi/przeciwnicy/fat-sack.png",
+    "hp": 16,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Blubber",
+    "ikona": "/tboi/przeciwnicy/blubber.png",
+    "hp": 16,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Half Sack",
+    "ikona": "/tboi/przeciwnicy/half-sack.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Conjoined Fatty",
+    "ikona": "/tboi/przeciwnicy/conjoined-fatty.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Blue Conjoined Fatty",
+    "ikona": "/tboi/przeciwnicy/blue-conjoined-fatty.png",
+    "hp": 60,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Stoney",
+    "ikona": "/tboi/przeciwnicy/stoney.png",
+    "hp": 50,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Cross Stoney",
+    "ikona": "/tboi/przeciwnicy/cross-stoney.png",
+    "hp": 50,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Bubbles",
+    "ikona": "/tboi/przeciwnicy/bubbles.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Quakey",
+    "ikona": "/tboi/przeciwnicy/quakey.png",
+    "hp": 45,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Big Bony",
+    "ikona": "/tboi/przeciwnicy/big-bony.png",
+    "hp": 50,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Gutted Fatty",
+    "ikona": "/tboi/przeciwnicy/gutted-fatty.png",
+    "hp": 80,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Gutted Fatty Eye",
+    "ikona": "/tboi/przeciwnicy/gutted-fatty-eye.png",
+    "hp": 80,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Peeping Fatty",
+    "ikona": "/tboi/przeciwnicy/peeping-fatty.png",
+    "hp": 60,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Peeping Fatty Eye",
+    "ikona": "/tboi/przeciwnicy/peeping-fatty-eye.png",
+    "hp": 60,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Bloaty",
+    "ikona": "/tboi/przeciwnicy/bloaty.png",
+    "hp": 26,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Vis Fatty",
+    "ikona": "/tboi/przeciwnicy/vis-fatty.png",
+    "hp": 40,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Fetal Demon",
+    "ikona": "/tboi/przeciwnicy/fetal-demon.png",
+    "hp": 40,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Shady",
+    "ikona": "/tboi/przeciwnicy/shady.png",
+    "hp": 80,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Death's Head",
+    "ikona": "/tboi/przeciwnicy/death-s-head.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": "Death's Heads are invulnerable, flying enemies that move diagonally around the room and deal contact damage. They will bounce off of Isaac, walls, and each other, generally causing chaos in a room. They immediately die when the room is cleared. They can be killed if hit with the Chaos Card, Little Horn, or Euthanasia."
+  },
+  {
+    "nazwa": "Dank Death's Head",
+    "ikona": "/tboi/przeciwnicy/dank-death-s-head.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Cursed Death's Head",
+    "ikona": "/tboi/przeciwnicy/cursed-death-s-head.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Brimstone Death's Head",
+    "ikona": "/tboi/przeciwnicy/brimstone-death-s-head.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Redskull",
+    "ikona": "/tboi/przeciwnicy/redskull.png",
+    "hp": 80,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Flesh Death's Head",
+    "ikona": "/tboi/przeciwnicy/flesh-death-s-head.png",
+    "hp": 30,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Dusty Death's Head",
+    "ikona": "/tboi/przeciwnicy/dusty-death-s-head.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Ultra Death Head",
+    "ikona": "/tboi/przeciwnicy/ultra-death-head.png",
+    "hp": 100,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Mom's Hand",
+    "ikona": "/tboi/przeciwnicy/mom-s-hand.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": "Mom's Hands are tricky foes. When these enemies spawn (either at the start of a room or in a Challenge Room wave), Mom's laugh can be heard and the ground may shake. After this, a disembodied hand will come down to try and grab Isaac, pausing in a stunned state for a brief moment before going back up to repeat this."
+  },
+  {
+    "nazwa": "Mom's Dead Hand",
+    "ikona": "/tboi/przeciwnicy/mom-s-dead-hand.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Level 2 Fly",
+    "ikona": "/tboi/przeciwnicy/level-2-fly.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": "The Level 2 Fly is an enemy that moves towards Isaac somewhat erratically, dealing contact damage."
+  },
+  {
+    "nazwa": "Full Fly",
+    "ikona": "/tboi/przeciwnicy/full-fly.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Level 2 Willo",
+    "ikona": "/tboi/przeciwnicy/level-2-willo.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Level 2 Spider",
+    "ikona": "/tboi/przeciwnicy/level-2-spider.png",
+    "hp": 13,
+    "obrazenia": 1,
+    "opis": "Level 2 Spiders wander around the room unpredictably and crawl towards Isaac if he is nearby. They combine the abilities of both the normal Spider and the Trite, though unlike the Trite, they do not leap as often and not as far."
+  },
+  {
+    "nazwa": "Ticking Spider",
+    "ikona": "/tboi/przeciwnicy/ticking-spider.png",
+    "hp": 13,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Migraine",
+    "ikona": "/tboi/przeciwnicy/migraine.png",
+    "hp": 16,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Dip",
+    "ikona": "/tboi/przeciwnicy/dip.png",
+    "hp": 3,
+    "obrazenia": 1,
+    "opis": "Dips move by making small dashes in random directions and are commonly found on most floors. They can also be spawned by some bosses, like Dingle and Mega Fatty, as well as enemies like Squirts and Dingas."
+  },
+  { "nazwa": "Corn", "ikona": "/tboi/przeciwnicy/corn.png", "hp": 3, "obrazenia": 1, "opis": null },
+  {
+    "nazwa": "Brownie Corn",
+    "ikona": "/tboi/przeciwnicy/brownie-corn.png",
+    "hp": 3,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Big Corn",
+    "ikona": "/tboi/przeciwnicy/big-corn.png",
+    "hp": 6,
+    "obrazenia": 1,
+    "opis": null
+  },
+  { "nazwa": "Drip", "ikona": "/tboi/przeciwnicy/drip.png", "hp": 3, "obrazenia": 1, "opis": null },
+  {
+    "nazwa": "Wizoob",
+    "ikona": "/tboi/przeciwnicy/wizoob.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": "Wizoobs are ghost enemies that disappear, then reappear near Isaac and spit a cluster of spectral tears at him. While they can appear to any side of Isaac, they most often will appear below him."
+  },
+  {
+    "nazwa": "Red Ghost",
+    "ikona": "/tboi/przeciwnicy/red-ghost.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Squirt",
+    "ikona": "/tboi/przeciwnicy/squirt.png",
+    "hp": 15,
+    "obrazenia": 1,
+    "opis": "The Squirt is a medium-sized poop enemy that does contact damage to Isaac by periodically dashing to him. Two Squirts spawn from Dingas when killed. It splits into two Dips when killed."
+  },
+  {
+    "nazwa": "Dank Squirt",
+    "ikona": "/tboi/przeciwnicy/dank-squirt.png",
+    "hp": 15,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Hardy",
+    "ikona": "/tboi/przeciwnicy/hardy.png",
+    "hp": 42,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Splurt",
+    "ikona": "/tboi/przeciwnicy/splurt.png",
+    "hp": 15,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Cod Worm",
+    "ikona": "/tboi/przeciwnicy/cod-worm.png",
+    "hp": 20,
+    "obrazenia": 2,
+    "opis": "A Cod Worm is a special variant of the Para-Bite in an immobile shell that can be found in Chapter 4. It was introduced in the vanilla content of The Binding of Isaac: Rebirth."
+  },
+  {
+    "nazwa": "Oob",
+    "ikona": "/tboi/przeciwnicy/oob.png",
+    "hp": 100,
+    "obrazenia": 1,
+    "opis": "Oob will float slowly around the room randomly and occasionally spawn a Brain. If Isaac lines up horizontal to it, it charges quickly covering the room once."
+  },
+  {
+    "nazwa": "Black Maw",
+    "ikona": "/tboi/przeciwnicy/black-maw.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Skinny",
+    "ikona": "/tboi/przeciwnicy/skinny.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": "A Skinny is a variant of the Gaper with melted faces and a very small Red Creep trail behind them. Skinnies travel much slower than normal Gapers, making them easy to kill without receiving damage."
+  },
+  {
+    "nazwa": "Rotty",
+    "ikona": "/tboi/przeciwnicy/rotty.png",
+    "hp": 16,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Crispy",
+    "ikona": "/tboi/przeciwnicy/crispy.png",
+    "hp": 12,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Bony",
+    "ikona": "/tboi/przeciwnicy/bony.png",
+    "hp": 8,
+    "obrazenia": 1,
+    "opis": "Bonies are skeleton enemies which wander around the room and quickly throw bone projectiles at Isaac when he lines up with them."
+  },
+  {
+    "nazwa": "Holy Bony",
+    "ikona": "/tboi/przeciwnicy/holy-bony.png",
+    "hp": 60,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Black Bony",
+    "ikona": "/tboi/przeciwnicy/black-bony.png",
+    "hp": 8,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Revenant",
+    "ikona": "/tboi/przeciwnicy/revenant.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Quad Revenant",
+    "ikona": "/tboi/przeciwnicy/quad-revenant.png",
+    "hp": 35,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Maze Roamer",
+    "ikona": "/tboi/przeciwnicy/maze-roamer.png",
+    "hp": 12,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Homunculus",
+    "ikona": "/tboi/przeciwnicy/homunculus.png",
+    "hp": 36,
+    "obrazenia": 1,
+    "opis": "Homunculi attempt to chase Isaac but have a limited range of movement due to spawning attached to a wall or an Obstacle. Given enough time it will detach, spawning a small pool of Red Creep and shooting 6 projectiles in all directions and chasing quickly after Isaac. It also leaves a small pool of Red Creep upon death."
+  },
+  {
+    "nazwa": "Begotten",
+    "ikona": "/tboi/przeciwnicy/begotten.png",
+    "hp": 60,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Tumor",
+    "ikona": "/tboi/przeciwnicy/tumor.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": "Tumors are enemies that slowly float across the room diagonally bouncing off walls. They occasionally fire 6 blood shots in all directions, and fire even more quickly when attacked."
+  },
+  {
+    "nazwa": "Planetoid",
+    "ikona": "/tboi/przeciwnicy/planetoid.png",
+    "hp": 28,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Camillo Jr.",
+    "ikona": "/tboi/przeciwnicy/camillo-jr.png",
+    "hp": 32,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Psy Tumor",
+    "ikona": "/tboi/przeciwnicy/psy-tumor.png",
+    "hp": 40,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Poofer",
+    "ikona": "/tboi/przeciwnicy/poofer.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Nerve Ending",
+    "ikona": "/tboi/przeciwnicy/nerve-ending.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": "Nerve Endings are purely static enemies with no proactive means of dealing damage, aside from contact damage."
+  },
+  {
+    "nazwa": "Nerve Ending 2",
+    "ikona": "/tboi/przeciwnicy/nerve-ending-2.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Bishop",
+    "ikona": "/tboi/przeciwnicy/bishop.png",
+    "hp": 14,
+    "obrazenia": 1,
+    "opis": "Bishops are stationary enemies added in The Binding of Isaac: Repentance. They appear only in Mausoleum and Cathedral."
+  },
+  {
+    "nazwa": "One Tooth",
+    "ikona": "/tboi/przeciwnicy/one-tooth.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": "One Tooths slowly fly towards Isaac, charging at random intervals at considerably higher speed. They will shy away from Isaac if directly approached."
+  },
+  {
+    "nazwa": "Fat Bat",
+    "ikona": "/tboi/przeciwnicy/fat-bat.png",
+    "hp": 35,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Gurgling",
+    "ikona": "/tboi/przeciwnicy/gurgling.png",
+    "hp": 24,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Goat",
+    "ikona": "/tboi/przeciwnicy/goat.png",
+    "hp": 18,
+    "obrazenia": 1,
+    "opis": "Goats are an enemy added in The Binding of Isaac: Repentance."
+  },
+  {
+    "nazwa": "Black Goat",
+    "ikona": "/tboi/przeciwnicy/black-goat.png",
+    "hp": 24,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Cultist",
+    "ikona": "/tboi/przeciwnicy/cultist.png",
+    "hp": 24,
+    "obrazenia": 1,
+    "opis": "Cultists are an enemy added in The Binding of Isaac: Repentance."
+  },
+  {
+    "nazwa": "Blood Cultist",
+    "ikona": "/tboi/przeciwnicy/blood-cultist.png",
+    "hp": 24,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Grub",
+    "ikona": "/tboi/przeciwnicy/grub.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": "A Grub is a type of monster that appear infrequently in Caves and beyond. They are similar in appearance to Larry Jr. and can spawn alongside Larry Jr. or The Hollow in their respective boss rooms."
+  },
+  {
+    "nazwa": "Wall Creep",
+    "ikona": "/tboi/przeciwnicy/wall-creep.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": "Wall Creeps will try to line up with Isaac, and shoot three blood shots quickly in a horizontal line. They walk moderately quickly on the wall they were originally placed onto and they cannot move on another wall. They have a long blood-shot range, but Isaac can attack them safely by shooting diagonally."
+  },
+  {
+    "nazwa": "Soy Creep",
+    "ikona": "/tboi/przeciwnicy/soy-creep.png",
+    "hp": 13,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Tainted Soy Creep",
+    "ikona": "/tboi/przeciwnicy/tainted-soy-creep.png",
+    "hp": 50,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Rage Creep",
+    "ikona": "/tboi/przeciwnicy/rage-creep.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Blind Creep",
+    "ikona": "/tboi/przeciwnicy/blind-creep.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "The Thing",
+    "ikona": "/tboi/przeciwnicy/the-thing.png",
+    "hp": 15,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Round Worm",
+    "ikona": "/tboi/przeciwnicy/round-worm.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": "A Round Worm is an enemy introduced in the vanilla content of The Binding of Isaac: Rebirth. They appear from Chapter 1 to Chapter 4."
+  },
+  {
+    "nazwa": "Tube Worm",
+    "ikona": "/tboi/przeciwnicy/tube-worm.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Tainted Round Worm",
+    "ikona": "/tboi/przeciwnicy/tainted-round-worm.png",
+    "hp": 100,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Tainted Tube Worm",
+    "ikona": "/tboi/przeciwnicy/tainted-tube-worm.png",
+    "hp": 100,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Night Crawler",
+    "ikona": "/tboi/przeciwnicy/night-crawler.png",
+    "hp": 35,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Roundy",
+    "ikona": "/tboi/przeciwnicy/roundy.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Ulcer",
+    "ikona": "/tboi/przeciwnicy/ulcer.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Fire Worm",
+    "ikona": "/tboi/przeciwnicy/fire-worm.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Mole",
+    "ikona": "/tboi/przeciwnicy/mole.png",
+    "hp": 12,
+    "obrazenia": 1,
+    "opis": "The Mole is a monster added in The Binding of Isaac: Repentance."
+  },
+  {
+    "nazwa": "Tainted Mole",
+    "ikona": "/tboi/przeciwnicy/tainted-mole.png",
+    "hp": 80,
+    "obrazenia": 2,
+    "opis": null
+  },
+  {
+    "nazwa": "Lil' Haunt",
+    "ikona": "/tboi/przeciwnicy/lil-haunt.png",
+    "hp": 0,
+    "obrazenia": 2,
+    "opis": "Lil' Haunts are ghost enemies that slightly mimic the movements of Isaac, which allows them to \"chase\" him if Isaac constantly tries running away from them. Occasionally, they stop to spew blood shots towards the location Isaac will be in if he doesn't stop moving; this did not have an animation up till Repentance, making it difficult to telegraph."
+  },
+  {
+    "nazwa": "Polty",
+    "ikona": "/tboi/przeciwnicy/polty.png",
+    "hp": 14,
+    "obrazenia": 1,
+    "opis": "Polty is an enemy added in The Binding of Isaac: Repentance."
+  },
+  {
+    "nazwa": "Kineti",
+    "ikona": "/tboi/przeciwnicy/kineti.png",
+    "hp": 45,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Dust",
+    "ikona": "/tboi/przeciwnicy/dust.png",
+    "hp": 22,
+    "obrazenia": 1,
+    "opis": "Dust follows Isaac and is only visible when in close proximity to him. Dust will speed up when close, but damaging it will cause it to teleport away, typically around corners of the room. They are immune to damage when invisible."
+  },
+  {
+    "nazwa": "Dukie",
+    "ikona": "/tboi/przeciwnicy/dukie.png",
+    "hp": 25,
+    "obrazenia": 1,
+    "opis": "Dukie is an enemy added in The Binding of Isaac: Afterbirth. It floats diagonally around the room, occasionally spitting out 1-2 Dart Fly. Dukies do not attack in any other way but can still do contact damage."
+  },
+  {
+    "nazwa": "Meatball",
+    "ikona": "/tboi/przeciwnicy/meatball.png",
+    "hp": 15,
+    "obrazenia": 1,
+    "opis": "Meatballs are grotesque enemies found only in Chapter 4. They slowly slide around the room aimlessly. If Isaac is in sight, they will stop to spew a fountain of short-range blood shots in all directions or spit a line of damaging Red Creep towards Isaac. Upon death, they spawn a Host, which can be faintly seen partially sticking out of the Meatball on one side."
+  },
+  {
+    "nazwa": "Ministro",
+    "ikona": "/tboi/przeciwnicy/ministro.png",
+    "hp": 9,
+    "obrazenia": 1,
+    "opis": "Ministros hop around the room aimlessly but will hop in the general direction of Isaac if he gets too close. They will occasionally pause to spit a disorganized cluster of projectiles akin to Monstro. Ministros are unlocked by defeating The Lamb for the first time."
+  },
+  {
+    "nazwa": "Fistuloid",
+    "ikona": "/tboi/przeciwnicy/fistuloid.png",
+    "hp": 30,
+    "obrazenia": 1,
+    "opis": "The Fistuloid flies towards Isaac in an erratic waving motion. When it gets close to Isaac, it fires a blood shot at him and propels itself in the opposite direction. Upon death, it fires a maggot that flies off-screen. The maggot is fired in the cardinal direction closest to Isaac and will do a full heart of damage if touched."
+  },
+  {
+    "nazwa": "Fly Trap",
+    "ikona": "/tboi/przeciwnicy/fly-trap.png",
+    "hp": 16,
+    "obrazenia": 1,
+    "opis": "Fly Traps are enemies added in The Binding of Isaac: Repentance."
+  },
+  {
+    "nazwa": "Poot Mine",
+    "ikona": "/tboi/przeciwnicy/poot-mine.png",
+    "hp": 12,
+    "obrazenia": 1,
+    "opis": "Poot Mines are an enemy added in The Binding of Isaac: Repentance. They are encountered only in Dross."
+  },
+  {
+    "nazwa": "Bombgagger",
+    "ikona": "/tboi/przeciwnicy/bombgagger.png",
+    "hp": 26,
+    "obrazenia": 1,
+    "opis": "Bombgaggers are monsters added in The Binding of Isaac: Repentance DLC and are exclusively found in Ashpit."
+  },
+  {
+    "nazwa": "Flesh Maiden",
+    "ikona": "/tboi/przeciwnicy/flesh-maiden.png",
+    "hp": 24,
+    "obrazenia": 1,
+    "opis": "Flesh Maidens are monsters added in The Binding of Isaac: Repentance DLC and exclusively found in Ashpit."
+  },
+  {
+    "nazwa": "Morningstar",
+    "ikona": "/tboi/przeciwnicy/morningstar.png",
+    "hp": 60,
+    "obrazenia": 2,
+    "opis": "Morningstars are enemies that float towards Isaac only when Isaac is moving. They get faster as they move, eventually reaching a point where Isaac cannot outrun them unless he has a high speed stat. When Isaac stops moving, their speed resets and they stop in place. They deal a full heart of contact damage."
+  },
+  {
+    "nazwa": "Needle",
+    "ikona": "/tboi/przeciwnicy/needle.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": "Needles are monsters that resemble a miniature Pin, and added in The Binding of Isaac: Repentance DLC."
+  },
+  {
+    "nazwa": "Pasty",
+    "ikona": "/tboi/przeciwnicy/pasty.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Fissure",
+    "ikona": "/tboi/przeciwnicy/fissure.png",
+    "hp": 6,
+    "obrazenia": 1,
+    "opis": "The Fissure is a monster exclusive to Downpour, resembling a fish wearing a skull on its head. Fissures do not need to be defeated to clear the room, and rather act as a stage hazard, spawning endlessly by jumping out of pits and bouncing off walls until they land in a pit again. They can be damaged normally, despite their vague resemblance to Hosts."
+  },
+  {
+    "nazwa": "Portal",
+    "ikona": "/tboi/przeciwnicy/portal.png",
+    "hp": 9,
+    "obrazenia": 0,
+    "opis": "Portals are enigmatic entities that appear on many floors/ only in The Void. They continuously spawn enemies until they are destroyed or spawn a certain number of enemies."
+  },
+  {
+    "nazwa": "Lil Portal",
+    "ikona": "/tboi/przeciwnicy/lil-portal.png",
+    "hp": 0,
+    "obrazenia": 0,
+    "opis": "A portal can be created next to a door which can block off an entire section of the map and cause a soft lock."
+  },
+  {
+    "nazwa": "Henry",
+    "ikona": "/tboi/przeciwnicy/henry.png",
+    "hp": 80,
+    "obrazenia": 1,
+    "opis": "Henry is a monster added in The Binding of Isaac: Repentance DLC and is exclusively found in Dross."
+  },
+  {
+    "nazwa": "Stone Grimace",
+    "ikona": "/tboi/przeciwnicy/stone-grimace.png",
+    "hp": 20,
+    "obrazenia": 0,
+    "opis": "A Stone Grimace is an invincible stationary statue with the shape of a head with a wide-open mouth and hollow eyes. Stone Grimaces will sporadically spit a Red bullet in Isaac's direction until the room is cleared by killing regular enemies, or by pressing Pressure Plates. When the room is cleared, the Stone Grimace closes its eyes and mouth."
+  },
+  {
+    "nazwa": "Vomit Grimace",
+    "ikona": "/tboi/przeciwnicy/vomit-grimace.png",
+    "hp": 20,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Triple Grimace",
+    "ikona": "/tboi/przeciwnicy/triple-grimace.png",
+    "hp": 20,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Stone Eye",
+    "ikona": "/tboi/przeciwnicy/stone-eye.png",
+    "hp": 1,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Constant Stone Shooter",
+    "ikona": "/tboi/przeciwnicy/constant-stone-shooter.png",
+    "hp": 1,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Cross Stone Shooter",
+    "ikona": "/tboi/przeciwnicy/cross-stone-shooter.png",
+    "hp": 1,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Brimstone Head",
+    "ikona": "/tboi/przeciwnicy/brimstone-head.png",
+    "hp": 1,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Gaping Maw",
+    "ikona": "/tboi/przeciwnicy/gaping-maw.png",
+    "hp": 100,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Broken Gaping Maw",
+    "ikona": "/tboi/przeciwnicy/broken-gaping-maw.png",
+    "hp": 100,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Quake Grimace",
+    "ikona": "/tboi/przeciwnicy/quake-grimace.png",
+    "hp": 20,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Bomb Grimace",
+    "ikona": "/tboi/przeciwnicy/bomb-grimace.png",
+    "hp": 20,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Peep Eye",
+    "ikona": "/tboi/przeciwnicy/peep-eye.png",
+    "hp": 450,
+    "obrazenia": 1,
+    "opis": "Peep Eyes spawn in pairs and float diagonally around the room over obstacles, bouncing off of walls and other monsters and dealing contact damage to Isaac. They are completely invulnerable and can also block projectiles. They are only spawned by Peep as apart of his fight, one at 66% HP and a second at 33% HP and are destroyed once Peep is killed."
+  },
+  {
+    "nazwa": "Bloat Eye",
+    "ikona": "/tboi/przeciwnicy/bloat-eye.png",
+    "hp": 450,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Mockulus",
+    "ikona": "/tboi/przeciwnicy/mockulus.png",
+    "hp": 40,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Poky",
+    "ikona": "/tboi/przeciwnicy/poky.png",
+    "hp": 100,
+    "obrazenia": 1,
+    "opis": "Pokies are invulnerable enemies that slide around the room aimlessly in cardinal directions, dealing contact damage. They may move slightly faster towards Isaac if he gets in their sight. When the enemies or Pressure Plates are cleared from the room, the Poky stops moving and no longer does contact damage."
+  },
+  {
+    "nazwa": "Slide",
+    "ikona": "/tboi/przeciwnicy/slide.png",
+    "hp": 100,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Wall Hugger",
+    "ikona": "/tboi/przeciwnicy/wall-hugger.png",
+    "hp": 100,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Grudge",
+    "ikona": "/tboi/przeciwnicy/grudge.png",
+    "hp": 100,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Ball and Chain",
+    "ikona": "/tboi/przeciwnicy/ball-and-chain.png",
+    "hp": 100,
+    "obrazenia": 2,
+    "opis": "Ball and Chain are an indestructible enemy that rotate at various speeds around an obstacle which they are attached to with chains of varying lengths. Touching the chain does not harm Isaac. They can destroy rocks and other obstacles they come into contact with."
+  },
+  {
+    "nazwa": "Spikeball",
+    "ikona": "/tboi/przeciwnicy/spikeball.png",
+    "hp": 100,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Singe's Ball",
+    "ikona": "/tboi/przeciwnicy/singe-s-ball.png",
+    "hp": 100,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Pitfall",
+    "ikona": "/tboi/przeciwnicy/pitfall.png",
+    "hp": 0,
+    "obrazenia": 0,
+    "opis": "Pitfalls are invulnerable and stationary enemies which Isaac can walk over. When Isaac walks over a pitfall, he falls in, takes damage, and pops back out after a short delay. Pitfalls disappear after falling into them. They are only spawned by several of Little Horn's attacks."
+  },
+  {
+    "nazwa": "Suction Pitfall",
+    "ikona": "/tboi/przeciwnicy/suction-pitfall.png",
+    "hp": 0,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Teleport Pitfall",
+    "ikona": "/tboi/przeciwnicy/teleport-pitfall.png",
+    "hp": 0,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Death Scythe",
+    "ikona": "/tboi/przeciwnicy/death-scythe.png",
+    "hp": 50,
+    "obrazenia": 2,
+    "opis": "Death Scythes are enemies spawned by Death that either stay stationary for a few seconds before accelerating toward Isaac or immediately home in on him. They have 50 HP in total, but spawn with only 15 HP. They deal 1 full heart of damage. If Death is killed, any Death Scythes he summoned are immediately destroyed."
+  },
+  {
+    "nazwa": "Ultra Death Scythe",
+    "ikona": "/tboi/przeciwnicy/ultra-death-scythe.png",
+    "hp": 100,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Corn Mine",
+    "ikona": "/tboi/przeciwnicy/corn-mine.png",
+    "hp": 8,
+    "obrazenia": 0,
+    "opis": "Corn Mines are stationary dirt like enemies that will go off either when their health is depleted, after some time passes that they begin the detonation process by flashing, or if Isaac gets close to them that they'll instantly begin to detonate. This will release a cloud of poisonous gas similar to one released from Mushrooms and fire eight corny shots in all directions."
+  },
+  {
+    "nazwa": "Siren Minion",
+    "ikona": "/tboi/przeciwnicy/siren-minion.png",
+    "hp": 0,
+    "obrazenia": 0,
+    "opis": "Siren Minions are spawned by The Siren as one of her attacks and shoot projectiles towards Isaac while orbiting the boss. They are only spawned if Siren does not have 3 follower/orbital familiars stolen from Isaac. Technically classified as familiars and not enemies, their enemy status and HP is determined by the Siren Helper enemy that controls them."
+  },
+  {
+    "nazwa": "Siren Helper",
+    "ikona": "/tboi/przeciwnicy/siren-helper.png",
+    "hp": 60,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Dark Ball",
+    "ikona": "/tboi/przeciwnicy/dark-ball.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": "Dark Balls chase Isaac, flying at a moderate pace and take increased knockback from tears. They're most often encountered when spawned by Little Horn, Big Horn and Blisters but can be sometimes encountered in some rare rooms in the Caves or Flooded Caves as well as Mausoleum rooms with Bishops."
+  },
+  {
+    "nazwa": "Purple Ball",
+    "ikona": "/tboi/przeciwnicy/purple-ball.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Visage Plasma",
+    "ikona": "/tboi/przeciwnicy/visage-plasma.png",
+    "hp": 50,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Ultra Pestilence Fly Ball",
+    "ikona": "/tboi/przeciwnicy/ultra-pestilence-fly-ball.png",
+    "hp": 200,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Ultra Greed Coin (Spinner)",
+    "ikona": "/tboi/przeciwnicy/ultra-greed-coin-spinner.png",
+    "hp": 50,
+    "obrazenia": 1,
+    "opis": null
+  },
+  {
+    "nazwa": "Ultra Greed Coin (Key)",
+    "ikona": "/tboi/przeciwnicy/ultra-greed-coin-key.png",
+    "hp": 60,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Ultra Greed Coin (Bomb)",
+    "ikona": "/tboi/przeciwnicy/ultra-greed-coin-bomb.png",
+    "hp": 50,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Ultra Greed Coin (Heart)",
+    "ikona": "/tboi/przeciwnicy/ultra-greed-coin-heart.png",
+    "hp": 40,
+    "obrazenia": 0,
+    "opis": null
+  },
+  {
+    "nazwa": "Dummy",
+    "ikona": null,
+    "hp": 10000,
+    "obrazenia": 0,
+    "opis": "Dummy is a special enemy available through the Debug Console's spawn command."
+  }
+]

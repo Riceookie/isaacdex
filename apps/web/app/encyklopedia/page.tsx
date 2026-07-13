@@ -13,25 +13,14 @@ export default function EncyklopediaPage() {
       <p className="muted">Wszystko o Isaacu w jednym miejscu — wybierz dział.</p>
 
       <div className="tiles">
-        {SEKCJE.map((s) => {
-          const tresc = (
-            <>
-              <Sprite name={s.icon} size={28} />
-              <strong>{s.label}</strong>
-              <span className="muted small">{s.opis}</span>
-              {!s.href && <span className="muted small">Wkrótce</span>}
-            </>
-          )
-          return s.href ? (
-            <Link key={s.slug} className="tile" href={s.href}>
-              {tresc}
-            </Link>
-          ) : (
-            <div key={s.slug} className="tile" aria-disabled="true">
-              {tresc}
-            </div>
-          )
-        })}
+        {SEKCJE.map((s) => (
+          <Link key={s.slug} className="tile" href={s.href}>
+            <Sprite name={s.icon} size={28} />
+            <strong>{s.label}</strong>
+            <span className="muted small">{s.opis}</span>
+            {!s.gotowe && <span className="muted small">Wkrótce</span>}
+          </Link>
+        ))}
       </div>
     </section>
   )

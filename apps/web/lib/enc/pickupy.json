@@ -1,0 +1,512 @@
+[
+  {
+    "rodzina": "Serca",
+    "nazwa": "Red Heart",
+    "plik": "Red Heart.png",
+    "wartosc": "red",
+    "opis": "Heals red=2 with Maggy's Bow. Humbleing Bundle and Equality! can replace this with a Double Heart.",
+    "odblokowanie": null,
+    "szansa": "39.98%",
+    "ikona": "/tboi/pickupy/red-heart.png"
+  },
+  {
+    "rodzina": "Serca",
+    "nazwa": "Half Red Heart",
+    "plik": "Half Red Heart.png",
+    "wartosc": "red",
+    "opis": "Heals red with Maggy's Bow.",
+    "odblokowanie": null,
+    "szansa": "39.99%",
+    "ikona": "/tboi/pickupy/half-red-heart.png"
+  },
+  {
+    "rodzina": "Serca",
+    "nazwa": "Soul Heart",
+    "plik": "Soul Heart.png",
+    "wartosc": "soul",
+    "opis": "Soul Hearts are blue hearts that are added to the end of the health bar. Soul Hearts are not permanent; once lost, they cannot be replenished, although new ones may be picked up. Soul Hearts will be depleted before Red Hearts in most cases. However, donating to a Blood Donation Machine or a Devil Beggar will deplete Red Hearts first as long as Isaac has more than half a Red Heart (a full heart in Womb and beyond). Blood Donation Machines and Devil Beggars will now deplete Isaac's last half or full Red Heart before depleting Soul Hearts.",
+    "odblokowanie": null,
+    "szansa": "6.73%",
+    "ikona": "/tboi/pickupy/soul-heart.png"
+  },
+  {
+    "rodzina": "Serca",
+    "nazwa": "Eternal Heart",
+    "plik": "Eternal Heart.png",
+    "wartosc": "red",
+    "opis": "When held until the next floor, Eternal Hearts will grant Isaac a Red Heart container. They will also give a Red Heart container if two are collected on the same floor. Characters that cannot gain Red Heart containers will instead be given a Soul Heart ( Black Heart in the case of Dark Judas and Tainted Judas). Eternal Hearts are placed in the second half of the last Red Heart container or Bone Heart, even when it is full (the Eternal Heart will overlap with the Red Heart in this case). If Isaac has no Red Heart containers or Bone Hearts, they are placed in the second half of his first Soul Heart or Black Heart. In an online match, will revive a dead player.",
+    "odblokowanie": null,
+    "szansa": "1.80%",
+    "ikona": "/tboi/pickupy/eternal-heart.png"
+  },
+  {
+    "rodzina": "Serca",
+    "nazwa": "Double Heart",
+    "plik": "Double Heart.png",
+    "wartosc": "red=2",
+    "opis": "Doesn't appear naturally. Can only be found by using certain items or encountering certain rooms. Has a ~4.21% spawn rate in Normal Mode and ~1.69% in Hard Mode. Heals red=4 with Maggy's Bow.",
+    "odblokowanie": null,
+    "szansa": "4.21%",
+    "ikona": "/tboi/pickupy/double-heart.png"
+  },
+  {
+    "rodzina": "Serca",
+    "nazwa": "Black Heart",
+    "plik": "Black Heart.png",
+    "wartosc": "black",
+    "opis": "When depleted, invokes The Necronomicon effect, dealing 40 damage to every vulnerable enemy in the room. If Isaac holds A Missing Page, or has the Missing Page 2, the damage dealt will be doubled to 80. If Isaac obtains both, the damage will be tripled to 120. Acts like a Soul Heart otherwise.",
+    "odblokowanie": null,
+    "szansa": "0.50%",
+    "ikona": "/tboi/pickupy/black-heart.png"
+  },
+  {
+    "rodzina": "Serca",
+    "nazwa": "Gold Heart",
+    "plik": "Gold Heart.png",
+    "wartosc": "red",
+    "opis": "Gold Hearts do not actually add more health, instead forming an outline around the last heart in Isaac's health bar. When that heart is depleted, the Gold Heart will break and 3-8 Coins will be dropped around Isaac. Gold Hearts flash when depleted and will temporarily turn enemies golden like Midas' Touch. In Repentance+ when picked up with a character that does not have any containers such as The Lost or Tainted Lost, the heart will immediately explode into coins.",
+    "odblokowanie": "Gold Heart",
+    "szansa": "0.63%",
+    "ikona": "/tboi/pickupy/gold-heart.png"
+  },
+  {
+    "rodzina": "Serca",
+    "nazwa": "Half Soul Heart",
+    "plik": "Half Soul Heart.png",
+    "wartosc": "soul",
+    "opis": "Can replace regular Soul Heart drops. Like whole Soul Hearts, they can be used to refill a half Black Heart.",
+    "odblokowanie": "rMr. Resetter!context pop Everything is Terrible!!!",
+    "szansa": "2.24%",
+    "ikona": "/tboi/pickupy/half-soul-heart.png"
+  },
+  {
+    "rodzina": "Serca",
+    "nazwa": "Scared Heart",
+    "plik": "Red Heart.png",
+    "wartosc": "red",
+    "opis": "Identical to the standard Red Heart, but pulses faster. It will run away as Isaac, Dark Bum, or Super Bum moves towards it. Heals red=2 with Maggy's Bow. Humbleing Bundle and Equality! will not double this.",
+    "odblokowanie": "Mr. Resetter!",
+    "szansa": "0.87%",
+    "ikona": "/tboi/pickupy/scared-heart.png"
+  },
+  {
+    "rodzina": "Serca",
+    "nazwa": "Blended Heart",
+    "plik": "Blended Heart.png",
+    "wartosc": "red/soul/redsoul",
+    "opis": "Fills up a full Red Heart container, but will act as a Soul Heart when no containers are free. If Isaac is only missing half a Red Heart, it will fill that half, and give him half a Soul Heart as well. Dark Bum and The Jar will not collect this. Heals red=2 or red with Maggy's Bow.",
+    "odblokowanie": null,
+    "szansa": "0.87%",
+    "ikona": "/tboi/pickupy/blended-heart.png"
+  },
+  {
+    "rodzina": "Serca",
+    "nazwa": "Bone Heart",
+    "plik": "Bone heart.png",
+    "wartosc": "bone",
+    "opis": "Takes three hits to deplete and can be refilled with Red Hearts ( and Rotten Hearts), but disappears permanently upon depleting. Cannot be filled as ???, Tainted ???, Dark Judas, Tainted Judas, Tainted Forgotten, or Tainted Bethany and only protects against one hit as these characters.",
+    "odblokowanie": "Bone Heart",
+    "szansa": "0.47%",
+    "ikona": "/tboi/pickupy/bone-heart.png"
+  },
+  {
+    "rodzina": "Serca",
+    "nazwa": "Rotten Heart",
+    "plik": "Rotten Heart.png",
+    "wartosc": null,
+    "opis": "Rotten Hearts fill up one whole heart container, or the rightmost Red Heart if all of Isaac's heart containers are full, but can only take a half heart of damage each before being depleted (so, for example, two Rotten Hearts will be depleted if a full heart of damage is taken). Each Rotten Heart in Isaac's life bar spawns two Blue Flies upon clearing a room.",
+    "odblokowanie": "Rotten Heart",
+    "szansa": "1.71%",
+    "ikona": "/tboi/pickupy/rotten-heart.png"
+  },
+  {
+    "rodzina": "Monety",
+    "nazwa": "Penny",
+    "plik": "Penny.png",
+    "wartosc": "1",
+    "opis": "Humbleing Bundle and Equality! can replace this with a Double Penny.",
+    "odblokowanie": "Always unlocked",
+    "szansa": "92.63%",
+    "ikona": "/tboi/pickupy/penny.png"
+  },
+  {
+    "rodzina": "Monety",
+    "nazwa": "Nickel",
+    "plik": "Nickel.png",
+    "wartosc": "5",
+    "opis": null,
+    "odblokowanie": "Always unlocked",
+    "szansa": "4.68%",
+    "ikona": "/tboi/pickupy/nickel.png"
+  },
+  {
+    "rodzina": "Monety",
+    "nazwa": "Dime",
+    "plik": "Dime.png",
+    "wartosc": "10",
+    "opis": null,
+    "odblokowanie": "Always unlocked",
+    "szansa": "1.00%",
+    "ikona": "/tboi/pickupy/dime.png"
+  },
+  {
+    "rodzina": "Monety",
+    "nazwa": "Double Penny",
+    "plik": "Double Penny.png",
+    "wartosc": "2",
+    "opis": "Doesn't spawn naturally. Can only be found by using certain items or encountering certain rooms.",
+    "odblokowanie": "Always unlocked",
+    "szansa": "0.00%",
+    "ikona": "/tboi/pickupy/double-penny.png"
+  },
+  {
+    "rodzina": "Monety",
+    "nazwa": "Lucky Penny",
+    "plik": "Lucky Penny.png",
+    "wartosc": "1",
+    "opis": "Increases luck by 1 when picked up. Humbleing Bundle and Equality! will not double this. Bumbo and Bum Friend will pick this up, but will not give Isaac any luck.",
+    "odblokowanie": "Lucky Pennies",
+    "szansa": "0.94%",
+    "ikona": "/tboi/pickupy/lucky-penny.png"
+  },
+  {
+    "rodzina": "Monety",
+    "nazwa": "Sticky Nickel",
+    "plik": "Nickel.png",
+    "wartosc": "5",
+    "opis": "Will flip upside-down when Isaac tries to collect it. Afterwards, it will get stuck on the ground, unable to be picked up unless blasted off the ground with an explosion. Bumbo and Bum Friend are unable to pick this up; they instead hover over them, attempting to pick them up.",
+    "odblokowanie": "Sticky Nickels",
+    "szansa": "0.25%",
+    "ikona": "/tboi/pickupy/sticky-nickel.png"
+  },
+  {
+    "rodzina": "Monety",
+    "nazwa": "Golden Penny",
+    "plik": "Golden Penny.png",
+    "wartosc": "1",
+    "opis": "Spawns another golden penny in a random spot in the same room after being picked up, but has a 10% chance of disappearing instead.",
+    "odblokowanie": "Golden Penny",
+    "szansa": "0.50%",
+    "ikona": "/tboi/pickupy/golden-penny.png"
+  },
+  {
+    "rodzina": "Klucze",
+    "nazwa": "Key",
+    "plik": "Key.png",
+    "wartosc": "1",
+    "opis": "Humbleing Bundle and Equality! can replace this with a Key Ring.",
+    "odblokowanie": null,
+    "szansa": "96.08%",
+    "ikona": "/tboi/pickupy/key.png"
+  },
+  {
+    "rodzina": "Klucze",
+    "nazwa": "Golden Key",
+    "plik": "Golden Key.png",
+    "wartosc": "0",
+    "opis": "Will not add to the player's key count, but when picked up, it will allow the player to use keys on anything that requires them without subtracting from their total for the duration of the current floor, even if the current number of keys is 0. Sharp Key ignores the Golden Key and will still subtract keys from the key count, while in Repentance+ the Key Master will immediately give out their item reward in exchange for the Golden Key.",
+    "odblokowanie": null,
+    "szansa": "1.97%",
+    "ikona": "/tboi/pickupy/golden-key.png"
+  },
+  {
+    "rodzina": "Klucze",
+    "nazwa": "Key Ring",
+    "plik": "Key Ring.png",
+    "wartosc": "2",
+    "opis": "Doesn't spawn naturally. Can only be found by using certain items or encountering certain rooms.",
+    "odblokowanie": null,
+    "szansa": "0.00%",
+    "ikona": "/tboi/pickupy/key-ring.png"
+  },
+  {
+    "rodzina": "Klucze",
+    "nazwa": "Charged Key",
+    "plik": "Charged Key.gif",
+    "wartosc": "1",
+    "opis": "Acts as a Lil' Battery when picked up. Key Bum will pick this up, but will not give Isaac any active charge. Key Bum will drop a Lil' Battery when picking the key up.",
+    "odblokowanie": "Charged Key",
+    "szansa": "1.96%",
+    "ikona": "/tboi/pickupy/charged-key.png"
+  },
+  {
+    "rodzina": "Bomby",
+    "nazwa": "Bomb",
+    "plik": "Bomb.png",
+    "wartosc": "1",
+    "opis": "BOGO Bombs, Humbleing Bundle, and Equality! can replace this with a Double Bomb.",
+    "odblokowanie": null,
+    "szansa": "74.84%",
+    "ikona": "/tboi/pickupy/bomb.png"
+  },
+  {
+    "rodzina": "Bomby",
+    "nazwa": "Double Bomb",
+    "plik": "Double Bomb.png",
+    "wartosc": "2",
+    "opis": "Grants two bombs.",
+    "odblokowanie": null,
+    "szansa": "12.47%",
+    "ikona": "/tboi/pickupy/double-bomb.png"
+  },
+  {
+    "rodzina": "Bomby",
+    "nazwa": "Troll Bomb",
+    "plik": "Troll Bomb.png",
+    "wartosc": "0",
+    "opis": "Cannot be picked up. Spawns already ignited and will explode after a few seconds. Safety Scissors will turn this into a Bomb before it explodes.",
+    "odblokowanie": null,
+    "szansa": "9.9%",
+    "ikona": "/tboi/pickupy/troll-bomb.png"
+  },
+  {
+    "rodzina": "Bomby",
+    "nazwa": "Golden Bomb",
+    "plik": "Golden Bomb.png",
+    "wartosc": "0",
+    "opis": "Will not add to the player's bomb count, but when picked up, it will allow the player to place bombs without subtracting from their total for the duration of the current floor, even if the current number of bombs is 0. Bomb Bums ignore the Golden bomb and still subtract bombs from the bomb count.",
+    "odblokowanie": "Gold Bomb",
+    "szansa": "0.89%",
+    "ikona": "/tboi/pickupy/golden-bomb.png"
+  },
+  {
+    "rodzina": "Bomby",
+    "nazwa": "Mega Troll Bomb",
+    "plik": "Mega Troll Bomb.png",
+    "wartosc": "0",
+    "opis": "Like Troll Bombs, but are bigger (like bombs upgraded with Mr. Mega) and will chase Isaac if they are nearby (as if under the influence of Magneto). Safety Scissors will turn this into a Double Bomb before it explodes.",
+    "odblokowanie": null,
+    "szansa": "1.78%",
+    "ikona": "/tboi/pickupy/mega-troll-bomb.png"
+  },
+  {
+    "rodzina": "Bomby",
+    "nazwa": "Golden Troll Bomb",
+    "plik": "Golden Troll Bomb.png",
+    "wartosc": "0",
+    "opis": "Like troll bombs, but are able to explode endlessly, mimicking the effect of a golden bomb pickup. Safety Scissors will turn this into a Golden Bomb before it explodes.",
+    "odblokowanie": null,
+    "szansa": "0.12%",
+    "ikona": "/tboi/pickupy/golden-troll-bomb.png"
+  },
+  {
+    "rodzina": "Bomby",
+    "nazwa": "Giga Bomb",
+    "plik": "Giga Bomb.png",
+    "wartosc": "1",
+    "opis": "Thrown by Bombgaggers, Ultra War, and are spawned naturally in some rooms in Ashpit as well as one Super Secret Room layout. Explodes and destroys tiles in a diamond shape. Giga bombs deal 300 damage to enemies. Can be obtained by the player with Safety Scissors or Everything Jar.",
+    "odblokowanie": null,
+    "szansa": "0.00%",
+    "ikona": "/tboi/pickupy/giga-bomb.png"
+  },
+  {
+    "rodzina": "Bomby",
+    "nazwa": "Throwable Bomb",
+    "plik": "Throwable Bomb.png",
+    "wartosc": "0",
+    "opis": "Can only be picked up and thrown, explodes a few seconds after pickup. Spawned only by the Bomb Grimace enemy.",
+    "odblokowanie": null,
+    "szansa": "0.00%",
+    "ikona": "/tboi/pickupy/throwable-bomb.png"
+  },
+  {
+    "rodzina": "Bomby",
+    "nazwa": "Poop Nugget",
+    "plik": "Poop Nugget.png",
+    "wartosc": "1",
+    "opis": "Drops from Tainted ??? when dealing damage to enemies.",
+    "odblokowanie": null,
+    "szansa": null,
+    "ikona": "/tboi/pickupy/poop-nugget.png"
+  },
+  {
+    "rodzina": "Bomby",
+    "nazwa": "Big Poop Nugget",
+    "plik": "Big Poop Nugget.png",
+    "wartosc": "3",
+    "opis": "Any bomb pickups that would normally spawn are replaced with this when playing as Tainted ???; this does not affect Troll Bombs and their variants.",
+    "odblokowanie": null,
+    "szansa": null,
+    "ikona": "/tboi/pickupy/big-poop-nugget.png"
+  },
+  {
+    "rodzina": "Baterie",
+    "nazwa": "Lil' Battery",
+    "plik": "Lil' Battery.png",
+    "wartosc": "Full 6",
+    "opis": "If Isaac has The Battery with no overcharge, only the main charge bar is filled. If the main bar is full, the overcharge is filled.",
+    "odblokowanie": null,
+    "szansa": "32.72%",
+    "ikona": "/tboi/pickupy/lil-battery.png"
+  },
+  {
+    "rodzina": "Baterie",
+    "nazwa": "Micro Battery",
+    "plik": "Micro Battery.png",
+    "wartosc": "2",
+    "opis": null,
+    "odblokowanie": null,
+    "szansa": "65.45%",
+    "ikona": "/tboi/pickupy/micro-battery.png"
+  },
+  {
+    "rodzina": "Baterie",
+    "nazwa": "Mega Battery",
+    "plik": "Mega Battery.png",
+    "wartosc": "Full (x2)",
+    "opis": "Overcharges Isaac's active item up to two full charges as if The Battery was held. If Isaac has multiple active items, it will charge all of them twice.",
+    "odblokowanie": null,
+    "szansa": "1.00%",
+    "ikona": "/tboi/pickupy/mega-battery.png"
+  },
+  {
+    "rodzina": "Baterie",
+    "nazwa": "Golden Battery",
+    "plik": "Golden Battery.png",
+    "wartosc": "6",
+    "opis": "Deals a full heart of damage when picked up. Another golden battery will spawn in a random room, but it is not shown on the map until discovered.",
+    "odblokowanie": "Golden Battery",
+    "szansa": "0.83%",
+    "ikona": "/tboi/pickupy/golden-battery.png"
+  },
+  {
+    "rodzina": "Skrzynie",
+    "nazwa": "Chest",
+    "plik": "Chest.png",
+    "wartosc": null,
+    "opis": "Normal chests have no requirements to open. When opened, they will contain one of the following: Pickups: If a chest spawns pickups, 2-3 of the following batches of pickups will spawn. The same batch can be chosen multiple times. If Isaac has Mom's Key, an additional batch of 2-3 pickups spawns, up to a total of 4-6.",
+    "odblokowanie": null,
+    "szansa": null,
+    "ikona": "/tboi/pickupy/chest.png"
+  },
+  {
+    "rodzina": "Skrzynie",
+    "nazwa": "Locked Chest",
+    "plik": "Locked Chest.png",
+    "wartosc": null,
+    "opis": "Locked Chests (or alternatively Golden Chests) require a key to open unless Isaac has Paper Clip or a Golden key; trying to open it without the means to will push the chest instead. When opened, they'll contain one of the following: Pickups: Follows the same pickup generation rules as normal chests, but spawns 2-6 batches of pickups instead.",
+    "odblokowanie": null,
+    "szansa": null,
+    "ikona": "/tboi/pickupy/locked-chest.png"
+  },
+  {
+    "rodzina": "Skrzynie",
+    "nazwa": "Red Chest",
+    "plik": "Red Chest.png",
+    "wartosc": null,
+    "opis": "Red Chests are most commonly found in Curse Rooms and Devil Rooms, but can also occasionally replace normal chests. If Isaac is holding The Left Hand trinket, all chests will turn into Red Chests. They can contain the following: 2 Spiders or 2 Striders in Downpour/Dross Teleport to the Devil Room or Angel Room",
+    "odblokowanie": null,
+    "szansa": null,
+    "ikona": "/tboi/pickupy/red-chest.png"
+  },
+  {
+    "rodzina": "Skrzynie",
+    "nazwa": "Bomb Chest",
+    "plik": "Bomb Chest.png",
+    "wartosc": null,
+    "opis": "Bomb Chests (or alternatively Stone Chests) are grey chests that have an appearance similar to stone. They are unique in that they will only open if hit by an explosion. They give the same rewards as Golden Chests. Stone Chests are most commonly found in Challenge Rooms, Curse Rooms, and Vaults, and they will occasionally replace normal chests.",
+    "odblokowanie": null,
+    "szansa": null,
+    "ikona": "/tboi/pickupy/bomb-chest.png"
+  },
+  {
+    "rodzina": "Skrzynie",
+    "nazwa": "Eternal Chest",
+    "plik": "Eternal Chest.png",
+    "wartosc": null,
+    "opis": "Eternal Chests are similar in appearance to Golden Chests, except that they are a bright blue instead of gold and emit a pale glow. They have the same requirements to unlock and rewards as locked chests, but with an additional feature: the chest will close itself after a few seconds, at which point it can be opened again for more rewards at the cost of another key.",
+    "odblokowanie": null,
+    "szansa": null,
+    "ikona": "/tboi/pickupy/eternal-chest.png"
+  },
+  {
+    "rodzina": "Skrzynie",
+    "nazwa": "Spiked Chest",
+    "plik": "Spiked Chest.png",
+    "wartosc": null,
+    "opis": "Spiked Chests are brown-colored chests with spikes protruding from them. Opening the chest will deal half a heart of damage to Isaac unless he has a way to resist the damage, such as with invulnerability effects or Holy Mantle. The Forgotten can also open spiked chests without taking damage by swinging their bone club. They give the same rewards as normal Chests.",
+    "odblokowanie": null,
+    "szansa": null,
+    "ikona": "/tboi/pickupy/spiked-chest.png"
+  },
+  {
+    "rodzina": "Skrzynie",
+    "nazwa": "Mimic Chest",
+    "plik": "Mimic Chest.png",
+    "wartosc": null,
+    "opis": "Mimic Chests appear similar to normal Chests (both for the sprite and the mini-map icon) until Isaac gets close to them, at which point they sprout spikes and act the same as a Spiked Chest. They can be distinguished from normal Chests by their darker, brown coloring, the grayish spots on each side of the latch where the spikes will sprout from, and a tiny bloodstain.",
+    "odblokowanie": null,
+    "szansa": null,
+    "ikona": "/tboi/pickupy/mimic-chest.png"
+  },
+  {
+    "rodzina": "Skrzynie",
+    "nazwa": "Old Chest",
+    "plik": "Old Chest.png",
+    "wartosc": null,
+    "opis": "Old Chests are similar in shape to Golden Chests, but have the color of a normal Chest and a worn-down appearance. They have the same requirements as locked chests. When opened, they contain one of the following: 1-3 soul hearts (43% chance) An Old Chest item (10% chance)",
+    "odblokowanie": null,
+    "szansa": null,
+    "ikona": "/tboi/pickupy/old-chest.png"
+  },
+  {
+    "rodzina": "Skrzynie",
+    "nazwa": "Wooden Chest",
+    "plik": "Wooden Chest.png",
+    "wartosc": null,
+    "opis": "Wooden Chests appear similar to normal Chests, but have a wooden texture. When opened, they contain one of the following: 2 cards or runes (45% chance) A Wooden Chest item (10% chance)",
+    "odblokowanie": null,
+    "szansa": null,
+    "ikona": "/tboi/pickupy/wooden-chest.png"
+  },
+  {
+    "rodzina": "Skrzynie",
+    "nazwa": "Mega Chest",
+    "plik": "Mega Chest.png",
+    "wartosc": null,
+    "opis": "Mega Chests appear similar to Golden Chests but are larger in appearance. They require 1-7 keys to open. When opened, they contain one of the following: Pickups equivalent to 5 Locked Chests, including trinkets, cards, and runes. Mega Chests have a 1% chance to replace any golden chest, and appear in one super secret room layout next to 2 keys.",
+    "odblokowanie": null,
+    "szansa": null,
+    "ikona": "/tboi/pickupy/mega-chest.png"
+  },
+  {
+    "rodzina": "Skrzynie",
+    "nazwa": "Haunted Chest",
+    "plik": "Haunted Chest.png",
+    "wartosc": null,
+    "opis": "Haunted Chests appear nearly identical to normal Chests, but are slightly lighter in color and are haunted by a Polty. A haunted chest deals collision damage while the Polty is inside it. When Isaac gets close enough to a Haunted Chest, the Polty will emerge and throw the chest at him, breaking it open and dealing half a heart of damage if it hits.",
+    "odblokowanie": null,
+    "szansa": null,
+    "ikona": "/tboi/pickupy/haunted-chest.png"
+  },
+  {
+    "rodzina": "Skrzynie",
+    "nazwa": "Mom's Chest",
+    "plik": "Mom's Chest.png",
+    "wartosc": null,
+    "opis": "Mom's Chest appears in Home. Mom's Chest has no requirements to open. It contains a Red Key upon the first visit (used to access the hidden closet), and on later encounters, an item from the Mom's Chest item pool. Can't be duplicated with Rune of Jera or Diplopia.",
+    "odblokowanie": null,
+    "szansa": null,
+    "ikona": "/tboi/pickupy/mom-s-chest.png"
+  },
+  {
+    "rodzina": "Worki",
+    "nazwa": "Grab Bag",
+    "plik": "Grab Bag.png",
+    "wartosc": null,
+    "opis": "The Grab Bag will spawn 1-4 random pickups upon touching it. They will not drop any hearts, pills, or chests, and they have an increased chance to drop Lil' battery. Sack Head has a 33% chance to replace pickups with sacks. Shops have a chance to sell sacks for seven coins. Random sacks have a 99.0% chance to be a grab bag.",
+    "odblokowanie": null,
+    "szansa": null,
+    "ikona": "/tboi/pickupy/grab-bag.png"
+  },
+  {
+    "rodzina": "Worki",
+    "nazwa": "Black Sack",
+    "plik": "Black Sack.png",
+    "wartosc": null,
+    "opis": "A Black Sack will spawn 2-3 pills, Black Hearts or Bone Hearts, and/or bombs when collected. Only one heart can spawn from one sack, but there may be two pills or bombs. Random sacks have a 1% chance to be a black sack.",
+    "odblokowanie": null,
+    "szansa": null,
+    "ikona": "/tboi/pickupy/black-sack.png"
+  }
+]

@@ -1,0 +1,305 @@
+[
+  {
+    "nazwa": "Guppy",
+    "opis": "Grants flight and spawns a Blue Fly each time a tear hits an enemy. Grants flight and adds a 66% chance to spawn a Blue Fly when a tear hits an enemy.",
+    "wymog": "three items from this set",
+    "itemy": [
+      { "idW": 145, "nazwa": "Guppy's Head", "trinket": false },
+      { "idW": 133, "nazwa": "Guppy's Paw", "trinket": false },
+      { "idW": 81, "nazwa": "Dead Cat", "trinket": false },
+      { "idW": 212, "nazwa": "Guppy's Collar", "trinket": false },
+      { "idW": 134, "nazwa": "Guppy's Tail", "trinket": false },
+      { "idW": 187, "nazwa": "Guppy's Hairball", "trinket": false },
+      { "idW": 665, "nazwa": "Guppy's Eye", "trinket": false },
+      { "idW": 169, "nazwa": "Kid's Drawing", "trinket": true }
+    ],
+    "ikona": "/tboi/transformacje/guppy.png"
+  },
+  {
+    "nazwa": "Beelzebub",
+    "opis": "After obtaining 3 fly items from the following list ( 3 items with the fly item tag), Isaac turns into a giant humanoid fly and gains flight. While in this form, the following flies transform into Blue Flies: Fly, Attack Fly, Level 2 Fly, Ring Fly, Full Fly, Dart Fly, Swarm, and Army Fly.",
+    "wymog": null,
+    "itemy": [
+      { "idW": 434, "nazwa": "Jar of Flies", "trinket": false },
+      { "idW": 650, "nazwa": "Plum Flute", "trinket": false },
+      { "idW": 320, "nazwa": "???'s Only Friend", "trinket": false },
+      { "idW": 511, "nazwa": "Angry Fly", "trinket": false },
+      { "idW": 272, "nazwa": "BBF", "trinket": false },
+      { "idW": 274, "nazwa": "Best Bud", "trinket": false },
+      { "idW": 279, "nazwa": "Big Fan", "trinket": false },
+      { "idW": 57, "nazwa": "Distant Admiration", "trinket": false },
+      { "idW": 128, "nazwa": "Forever alone", "trinket": false },
+      { "idW": 364, "nazwa": "Friend Zone", "trinket": false },
+      { "idW": 10, "nazwa": "Halo of Flies", "trinket": false },
+      { "idW": 248, "nazwa": "Hive Mind", "trinket": false },
+      { "idW": 365, "nazwa": "Lost Fly", "trinket": false },
+      { "idW": 151, "nazwa": "The Mulligan", "trinket": false },
+      { "idW": 426, "nazwa": "Obsessed Fan", "trinket": false },
+      { "idW": 430, "nazwa": "Papa Fly", "trinket": false },
+      { "idW": 9, "nazwa": "Skatole", "trinket": false },
+      { "idW": 264, "nazwa": "Smart Fly", "trinket": false },
+      { "idW": 629, "nazwa": "Bot Fly", "trinket": false },
+      { "idW": 649, "nazwa": "Fruity Plum", "trinket": false },
+      { "idW": 461, "nazwa": "Parasitoid", "trinket": false },
+      { "idW": 581, "nazwa": "Psy Fly", "trinket": false },
+      { "idW": 693, "nazwa": "The Swarm", "trinket": false },
+      { "idW": null, "nazwa": "YO LISTEN! | r", "trinket": false }
+    ],
+    "ikona": "/tboi/transformacje/beelzebub.png"
+  },
+  {
+    "nazwa": "Fun Guy",
+    "opis": "+1 Red Heart Container.",
+    "wymog": null,
+    "itemy": [
+      { "idW": 625, "nazwa": "Mega Mush", "trinket": false },
+      { "idW": 582, "nazwa": "Wavy Cap", "trinket": false },
+      { "idW": 11, "nazwa": "1up!", "trinket": false },
+      { "idW": 342, "nazwa": "Blue Cap", "trinket": false },
+      { "idW": 398, "nazwa": "God's Flesh", "trinket": false },
+      { "idW": 12, "nazwa": "Magic Mushroom", "trinket": false },
+      { "idW": 71, "nazwa": "Mini Mush", "trinket": false },
+      { "idW": 553, "nazwa": "Mucormycosis", "trinket": false },
+      { "idW": null, "nazwa": "Odd Mushroom (Large)", "trinket": false },
+      { "idW": null, "nazwa": "Odd Mushroom (Thin)", "trinket": false }
+    ],
+    "ikona": "/tboi/transformacje/fun-guy.png"
+  },
+  {
+    "nazwa": "Seraphim",
+    "opis": "Grants flight and gives +3 Soul Hearts.",
+    "wymog": null,
+    "itemy": [
+      { "idW": 33, "nazwa": "The Bible", "trinket": false },
+      { "idW": 185, "nazwa": "Dead Dove", "trinket": false },
+      { "idW": 101, "nazwa": "The Halo", "trinket": false },
+      { "idW": 184, "nazwa": "Holy Grail", "trinket": false },
+      { "idW": 313, "nazwa": "Holy Mantle", "trinket": false },
+      { "idW": 173, "nazwa": "Mitre", "trinket": false },
+      { "idW": 72, "nazwa": "Rosary", "trinket": false },
+      { "idW": 112, "nazwa": "Guardian Angel", "trinket": false },
+      { "idW": null, "nazwa": "Sworn Protector | nr", "trinket": false },
+      { "idW": 162, "nazwa": "Celtic Cross", "trinket": false },
+      { "idW": 568, "nazwa": "Divine Intervention", "trinket": false },
+      { "idW": 331, "nazwa": "Godhead", "trinket": false },
+      { "idW": 374, "nazwa": "Holy Light", "trinket": false },
+      { "idW": 573, "nazwa": "Immaculate Heart", "trinket": false },
+      { "idW": 643, "nazwa": "Revelation", "trinket": false },
+      { "idW": 182, "nazwa": "Sacred Heart", "trinket": false },
+      { "idW": 696, "nazwa": "Salvation", "trinket": false },
+      { "idW": 691, "nazwa": "Sacred Orb", "trinket": false },
+      { "idW": null, "nazwa": "Scapular | r", "trinket": false }
+    ],
+    "ikona": "/tboi/transformacje/seraphim.png"
+  },
+  {
+    "nazwa": "Bob",
+    "opis": "Isaac leaves a trail of green poisonous creep as he walks that deals 6 damage per second.",
+    "wymog": null,
+    "itemy": [
+      { "idW": 42, "nazwa": "Bob's Rotten Head", "trinket": false },
+      { "idW": 273, "nazwa": "Bob's Brain", "trinket": false },
+      { "idW": 140, "nazwa": "Bob's Curse", "trinket": false },
+      { "idW": 149, "nazwa": "Ipecac", "trinket": false },
+      { "idW": 71, "nazwa": "Bob's Bladder", "trinket": true }
+    ],
+    "ikona": "/tboi/transformacje/bob.png"
+  },
+  {
+    "nazwa": "Spun",
+    "opis": "Gives +2 damage and +0.15 speed, and spawns a random pill upon transformation.",
+    "wymog": null,
+    "itemy": [
+      { "idW": 493, "nazwa": "Adrenaline", "trinket": false },
+      { "idW": 496, "nazwa": "Euthanasia", "trinket": false },
+      { "idW": 240, "nazwa": "Experimental Treatment", "trinket": false },
+      { "idW": 70, "nazwa": "Growth Hormones", "trinket": false },
+      { "idW": 14, "nazwa": "Roid Rage", "trinket": false },
+      { "idW": 143, "nazwa": "Speed Ball", "trinket": false },
+      { "idW": 345, "nazwa": "Synthoil", "trinket": false },
+      { "idW": 13, "nazwa": "The Virus", "trinket": false }
+    ],
+    "ikona": "/tboi/transformacje/spun.png"
+  },
+  {
+    "nazwa": "Yes Mother?",
+    "opis": "Isaac gains a stationary knife that trails directly behind him. It synergizes like Mom's Knife would.",
+    "wymog": null,
+    "itemy": [
+      { "idW": 102, "nazwa": "Mom's Bottle of Pills", "trinket": false },
+      { "idW": 39, "nazwa": "Mom's Bra", "trinket": false },
+      { "idW": 41, "nazwa": "Mom's Pad", "trinket": false },
+      { "idW": 552, "nazwa": "Mom's Shovel", "trinket": false },
+      { "idW": 439, "nazwa": "Mom's Box", "trinket": false },
+      { "idW": null, "nazwa": "Mom's Bracelet | r", "trinket": false },
+      { "idW": 195, "nazwa": "Mom's Coin Purse", "trinket": false },
+      { "idW": 110, "nazwa": "Mom's Contacts", "trinket": false },
+      { "idW": 55, "nazwa": "Mom's Eye", "trinket": false },
+      { "idW": 200, "nazwa": "Mom's Eyeshadow", "trinket": false },
+      { "idW": 30, "nazwa": "Mom's Heels", "trinket": false },
+      { "idW": 199, "nazwa": "Mom's Key", "trinket": false },
+      { "idW": 114, "nazwa": "Mom's Knife", "trinket": false },
+      { "idW": 31, "nazwa": "Mom's Lipstick", "trinket": false },
+      { "idW": 355, "nazwa": "Mom's Pearls", "trinket": false },
+      { "idW": 228, "nazwa": "Mom's Perfume", "trinket": false },
+      { "idW": 139, "nazwa": "Mom's Purse", "trinket": false },
+      { "idW": 508, "nazwa": "Mom's Razor", "trinket": false },
+      { "idW": 732, "nazwa": "Mom's Ring", "trinket": false },
+      { "idW": 29, "nazwa": "Mom's Underwear", "trinket": false },
+      { "idW": 217, "nazwa": "Mom's Wig", "trinket": false }
+    ],
+    "ikona": "/tboi/transformacje/yes-mother.png"
+  },
+  {
+    "nazwa": "Conjoined",
+    "opis": "Adds two tumors that fire diagonally from Isaac's head. -0.3 Damage, -0.3 Tears.",
+    "wymog": null,
+    "itemy": [
+      { "idW": 8, "nazwa": "Brother Bobby", "trinket": false },
+      { "idW": 167, "nazwa": "Harlequin Baby", "trinket": false },
+      { "idW": 269, "nazwa": "Headless Baby", "trinket": false },
+      { "idW": 100, "nazwa": "Little Steven", "trinket": false },
+      { "idW": 322, "nazwa": "Mongo Baby", "trinket": false },
+      { "idW": 268, "nazwa": "Rotten Baby", "trinket": false },
+      { "idW": 67, "nazwa": "Sister Maggy", "trinket": false },
+      { "idW": 188, "nazwa": "Abel", "trinket": false },
+      { "idW": 491, "nazwa": "Acid Baby", "trinket": false },
+      { "idW": 607, "nazwa": "Boiled Baby", "trinket": false },
+      { "idW": 518, "nazwa": "Buddy in a Box", "trinket": false },
+      { "idW": 652, "nazwa": "Cube Baby", "trinket": false },
+      { "idW": 113, "nazwa": "Demon Baby", "trinket": false },
+      { "idW": 265, "nazwa": "Dry Baby", "trinket": false },
+      { "idW": 404, "nazwa": "Farting Baby", "trinket": false },
+      { "idW": 608, "nazwa": "Freezer Baby", "trinket": false },
+      { "idW": 163, "nazwa": "Ghost Baby", "trinket": false },
+      { "idW": 112, "nazwa": "Guardian Angel", "trinket": false },
+      { "idW": 360, "nazwa": "Incubus", "trinket": false },
+      { "idW": 472, "nazwa": "King Baby", "trinket": false },
+      { "idW": 679, "nazwa": "Lil Abaddon", "trinket": false },
+      { "idW": 275, "nazwa": "Lil Brimstone", "trinket": false },
+      { "idW": 435, "nazwa": "Lil Loki", "trinket": false },
+      { "idW": 431, "nazwa": "Multidimensional Baby", "trinket": false },
+      { "idW": 661, "nazwa": "Quints", "trinket": false },
+      { "idW": 174, "nazwa": "Rainbow Baby", "trinket": false },
+      { "idW": 95, "nazwa": "Robo-Baby", "trinket": false },
+      { "idW": 267, "nazwa": "Robo-Baby 2.0", "trinket": false },
+      { "idW": 390, "nazwa": "Seraphim", "trinket": false },
+      { "idW": 363, "nazwa": "Sworn Protector", "trinket": false },
+      { "idW": null, "nazwa": "Twisted Pair | r", "trinket": false }
+    ],
+    "ikona": "/tboi/transformacje/conjoined.png"
+  },
+  {
+    "nazwa": "Leviathan",
+    "opis": "Grants flight and gives +2 Black Hearts.",
+    "wymog": null,
+    "itemy": [
+      { "idW": 83, "nazwa": "The Nail", "trinket": false },
+      { "idW": 556, "nazwa": "Sulfur", "trinket": false },
+      { "idW": 230, "nazwa": "Abaddon", "trinket": false },
+      { "idW": 118, "nazwa": "Brimstone", "trinket": false },
+      { "idW": 79, "nazwa": "The Mark", "trinket": false },
+      { "idW": 80, "nazwa": "The Pact", "trinket": false },
+      { "idW": 51, "nazwa": "Pentagram", "trinket": false },
+      { "idW": 159, "nazwa": "Spirit of the Night", "trinket": false },
+      { "idW": 399, "nazwa": "Maw of the Void", "trinket": false },
+      { "idW": 572, "nazwa": "Eye of the Occult", "trinket": false },
+      { "idW": null, "nazwa": "Lord of the Pit | r", "trinket": false }
+    ],
+    "ikona": "/tboi/transformacje/leviathan.png"
+  },
+  {
+    "nazwa": "Oh Crap",
+    "opis": "Whenever a pile of poop is destroyed, restores half of a red heart.",
+    "wymog": null,
+    "itemy": [
+      { "idW": 291, "nazwa": "Flush!", "trinket": false },
+      { "idW": 36, "nazwa": "The Poop", "trinket": false },
+      { "idW": null, "nazwa": "Brown Nugget | r", "trinket": false },
+      { "idW": 236, "nazwa": "E. Coli", "trinket": false },
+      { "idW": 209, "nazwa": "Butt Bombs", "trinket": false },
+      { "idW": 576, "nazwa": "Dirty Mind", "trinket": false },
+      { "idW": 543, "nazwa": "Hallowed Ground", "trinket": false },
+      { "idW": 680, "nazwa": "Montezuma's Revenge", "trinket": false },
+      { "idW": null, "nazwa": "Number Two", "trinket": false },
+      { "idW": null, "nazwa": "Skatole | r", "trinket": false }
+    ],
+    "ikona": "/tboi/transformacje/oh-crap.png"
+  },
+  {
+    "nazwa": "Bookworm",
+    "opis": "Roughly 25% of the time, Isaac shoots an extra tear, like 20/20.",
+    "wymog": null,
+    "itemy": [
+      { "idW": 65, "nazwa": "Anarchist Cookbook", "trinket": false },
+      { "idW": 33, "nazwa": "The Bible", "trinket": false },
+      { "idW": 59, "nazwa": "The Book of Belial", "trinket": false },
+      { "idW": 78, "nazwa": "Book of Revelations", "trinket": false },
+      { "idW": 287, "nazwa": "Book of Secrets", "trinket": false },
+      { "idW": 58, "nazwa": "Book of Shadows", "trinket": false },
+      { "idW": 97, "nazwa": "The Book of Sin", "trinket": false },
+      { "idW": 545, "nazwa": "Book of the Dead", "trinket": false },
+      { "idW": 282, "nazwa": "How to Jump", "trinket": false },
+      { "idW": 35, "nazwa": "The Necronomicon", "trinket": false },
+      { "idW": 123, "nazwa": "Monster Manual", "trinket": false },
+      { "idW": 292, "nazwa": "Satanic Bible", "trinket": false },
+      { "idW": 192, "nazwa": "Telepathy For Dummies", "trinket": false },
+      { "idW": 712, "nazwa": "Lemegeton", "trinket": false },
+      { "idW": 584, "nazwa": "Book of Virtues", "trinket": false }
+    ],
+    "ikona": "/tboi/transformacje/bookworm.png"
+  },
+  {
+    "nazwa": "Adult",
+    "opis": "+1 Red Heart container.",
+    "wymog": null,
+    "itemy": [{ "idW": null, "nazwa": "Puberty pill", "trinket": false }],
+    "ikona": "/tboi/transformacje/adult.png"
+  },
+  {
+    "nazwa": "Spider Baby",
+    "opis": "Spawns a spider familiar that applies random status effects to enemies it comes in contact with.",
+    "wymog": null,
+    "itemy": [
+      { "idW": 288, "nazwa": "Box of Spiders", "trinket": false },
+      { "idW": 171, "nazwa": "Spider Butt", "trinket": false },
+      { "idW": 153, "nazwa": "Mutant Spider", "trinket": false },
+      { "idW": null, "nazwa": "Spider Baby", "trinket": false },
+      { "idW": 89, "nazwa": "Spider Bite", "trinket": false },
+      { "idW": 403, "nazwa": "Spider Mod", "trinket": false },
+      { "idW": 211, "nazwa": "Spiderbaby", "trinket": false },
+      { "idW": 377, "nazwa": "Bursting Sack", "trinket": false },
+      { "idW": 170, "nazwa": "Daddy Longlegs", "trinket": false },
+      { "idW": 248, "nazwa": "Hive Mind", "trinket": false },
+      { "idW": 234, "nazwa": "Infestation 2", "trinket": false },
+      { "idW": 575, "nazwa": "The Intruder", "trinket": false },
+      { "idW": 266, "nazwa": "Juicy Sack", "trinket": false },
+      { "idW": 717, "nazwa": "Keeper's Kin", "trinket": false },
+      { "idW": 461, "nazwa": "Parasitoid", "trinket": false },
+      { "idW": 280, "nazwa": "Sissy Longlegs", "trinket": false },
+      { "idW": null, "nazwa": "Sticky Bombs | r", "trinket": false }
+    ],
+    "ikona": "/tboi/transformacje/spider-baby.png"
+  },
+  {
+    "nazwa": "Stompy",
+    "opis": "Taking damage has a chance to spawn rock waves. Isaac can break obstacles by walking over them.",
+    "wymog": null,
+    "itemy": [
+      { "idW": 302, "nazwa": "Leo", "trinket": false },
+      { "idW": 12, "nazwa": "Magic Mushroom", "trinket": false }
+    ],
+    "ikona": "/tboi/transformacje/stompy.png"
+  },
+  {
+    "nazwa": "Super Bum",
+    "opis": "Replaces Bum Friend, Dark Bum, and Key Bum with Super Bum. This bum collects any of the other beggars' pickups, and offers twice the rewards.",
+    "wymog": null,
+    "itemy": [
+      { "idW": 144, "nazwa": "Bum Friend", "trinket": false },
+      { "idW": 278, "nazwa": "Dark Bum", "trinket": false },
+      { "idW": 388, "nazwa": "Key Bum", "trinket": false }
+    ],
+    "ikona": "/tboi/transformacje/super-bum.png"
+  }
+]
