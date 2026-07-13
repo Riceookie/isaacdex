@@ -12,8 +12,11 @@ export type NavItem = {
 export const NAV: NavItem[] = [
   { href: '/', label: 'Pulpit', icon: 'dadsnote', accent: '#e5544b' },
   { href: '/profil', label: 'Profil', icon: 'isaacHead' },
-  { href: '/kolekcja', label: 'Kolekcja', icon: 'book', accent: '#e0b64c' },
-  { href: '/doradca', label: 'Doradca', icon: 'foundsoul' },
+  // Strona pokazuje achievementy Steam, więc „Osiągnięcia" (dawniej myląca „Kolekcja").
+  { href: '/kolekcja', label: 'Osiągnięcia', icon: 'trophy', accent: '#e0b64c' },
+  // Encyklopedia zastąpiła Doradcę — ten jest teraz jej sekcją „Przedmioty".
+  { href: '/encyklopedia', label: 'Encyklopedia', icon: 'book' },
+  { href: '/kalkulator', label: 'Kalkulator', icon: 'stats' },
   { href: '/statystyki', label: 'Statystyki', icon: 'kidsdrawing' },
   { href: '/znajomi', label: 'Znajomi', icon: 'friendfinder', accent: '#5bbf6a' },
   { href: '/czat', label: 'Czat', icon: 'friends', accent: '#e5544b' },

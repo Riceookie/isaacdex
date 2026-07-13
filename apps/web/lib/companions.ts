@@ -79,7 +79,7 @@ const ACHIEVEMENTS = [
   'Dead God sam się nie odblokuje.',
 ]
 
-const DORADCA = [
+const ENCYKLOPEDIA = [
   'Kliknij item — powiem, brać czy zostawić.',
   'Brać czy zostawić? Pytaj śmiało.',
   'Ten item? Weź. Zaufaj mi.',
@@ -141,8 +141,9 @@ export function kwestie(pathname: string, steamConnected = true): string[] {
   else if (pathname.startsWith('/kim-jestem')) page = PROFILE
   else if (pathname.startsWith('/profil')) page = PROFILE
   else if (pathname.startsWith('/kolekcja')) page = ACHIEVEMENTS
-  else if (pathname.startsWith('/doradca')) page = DORADCA
+  else if (pathname.startsWith('/encyklopedia')) page = ENCYKLOPEDIA
   else if (pathname.startsWith('/statystyki')) page = STATYSTYKI
+  else if (pathname.startsWith('/kalkulator')) page = STATYSTYKI
   else if (pathname.startsWith('/znajomi')) page = ZNAJOMI
   else if (pathname.startsWith('/czat')) page = CHAT
   else if (pathname.startsWith('/ustawienia')) page = USTAWIENIA

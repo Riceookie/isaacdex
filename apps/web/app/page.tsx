@@ -116,7 +116,7 @@ export default async function Home() {
           </div>
         )}
 
-        <Link className="btn full" href="/doradca">
+        <Link className="btn full" href="/encyklopedia/przedmioty">
           <Sprite name="foundsoul" size={20} /> Doradca itemów
         </Link>
       </aside>

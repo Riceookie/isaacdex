@@ -205,7 +205,7 @@ export default async function ProfilPage() {
           <div className="note">
             <div className="paper-head">
               <h3>Ulubione itemy</h3>
-              <Link className="paper-more" href="/doradca">
+              <Link className="paper-more" href="/encyklopedia/przedmioty">
                 Zmień →
               </Link>
             </div>

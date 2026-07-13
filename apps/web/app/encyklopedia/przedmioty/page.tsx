@@ -3,7 +3,8 @@ import DoradcaWidok from '@/components/DoradcaWidok'
 
 export const dynamic = 'force-dynamic'
 
-export default async function DoradcaPage() {
+/** Sekcja Encyklopedii „Przedmioty" — dawna strona /doradca (przeglądarka itemów + rekomendacja). */
+export default async function PrzedmiotyPage() {
   const items = await getItemyZOcena()
   return <DoradcaWidok items={items} />
 }
