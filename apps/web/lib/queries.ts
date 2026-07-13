@@ -10,6 +10,8 @@ export async function getItemyZOcena() {
     nazwa: i.nazwa,
     jakosc: i.jakosc,
     typ: i.typ,
+    tagi: i.tagi,
+    opis: i.opis,
     ...ocenItem({ nazwa: i.nazwa, jakosc: i.jakosc as Jakosc, tagi: i.tagi }),
   }))
 }
@@ -156,6 +158,17 @@ export async function getProfil() {
     showcase,
     recent,
   }
+}
+
+/** Nazwy odblokowanych achievementów Steam — np. do oznaczenia itemów w Encyklopedii. */
+export async function getOdblokowaneAchievementy(): Promise<Set<string>> {
+  const profil = await prisma.profil.findFirst()
+  if (!profil) return new Set()
+  const a = await prisma.steamAchievement.findMany({
+    where: { profilId: profil.id, odblokowany: true },
+    select: { nazwa: true },
+  })
+  return new Set(a.map((x) => x.nazwa))
 }
 
 export async function getProfilSetup() {
