@@ -184,3 +184,67 @@ export function klasaRzadkosci(globalnyProcent: number | null | undefined): Klas
   if (globalnyProcent < 20) return 'RZADKI'
   return 'POSPOLITY'
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Kalkulator statystyk
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Siedem statystyk gracza (te, które gra pokazuje na ekranie postaci). */
+export type Stat = 'damage' | 'tears' | 'speed' | 'range' | 'shotSpeed' | 'luck'
+
+export type StatyBazowe = {
+  damage: number
+  /** Mnożnik obrażeń postaci (np. Judas ×1.35) — nakładany PO dodatkach z itemów. */
+  damageMult: number
+  tears: number
+  speed: number
+  range: number
+  shotSpeed: number
+  luck: number
+}
+
+/** Wpływ itemu na statystyki: płaskie dodatki i mnożniki. */
+export type ModyfikatorStatow = {
+  plaskie?: Partial<Record<Stat, number>>
+  mnozniki?: Partial<Record<Stat, number>>
+}
+
+export type WynikStatow = Record<Stat, number>
+
+/** Limity gry — bez nich item „+50 speed" dałby bzdurę. */
+const LIMITY: Record<Stat, { min: number; max: number }> = {
+  damage: { min: 0, max: 999 },
+  tears: { min: 0.35, max: 25 },
+  speed: { min: 0.1, max: 2 },
+  range: { min: 1, max: 30 },
+  shotSpeed: { min: 0.6, max: 5 },
+  luck: { min: -20, max: 40 },
+}
+
+const STATY: Stat[] = ['damage', 'tears', 'speed', 'range', 'shotSpeed', 'luck']
+
+/**
+ * Statystyki po wzięciu itemów. Kolejność jak w grze: najpierw sumujemy płaskie dodatki,
+ * potem nakładamy mnożniki (itemów i postaci), na końcu przycinamy do limitów gry.
+ */
+export function policzStaty(baza: StatyBazowe, itemy: ModyfikatorStatow[]): WynikStatow {
+  const wynik = {} as WynikStatow
+
+  for (const stat of STATY) {
+    const plaskie = itemy.reduce((s, i) => s + (i.plaskie?.[stat] ?? 0), 0)
+    const mnoznik = itemy.reduce((m, i) => m * (i.mnozniki?.[stat] ?? 1), 1)
+    // Mnożnik obrażeń postaci (Judas, ???) działa tak samo jak mnożnik z itemu.
+    const mnoznikPostaci = stat === 'damage' ? baza.damageMult : 1
+
+    const surowy = (baza[stat] + plaskie) * mnoznik * mnoznikPostaci
+    const { min, max } = LIMITY[stat]
+    wynik[stat] = Math.round(Math.min(max, Math.max(min, surowy)) * 100) / 100
+  }
+
+  return wynik
+}
+
+/** Staty samej postaci (bez itemów) — do kolumny „Baza". */
+export function statyBazowe(baza: StatyBazowe): WynikStatow {
+  return policzStaty(baza, [])
+}

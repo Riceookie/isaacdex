@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
+  policzStaty,
+  type StatyBazowe,
   ocenItem,
   sprawdzReguleHard,
   procentUkonczenia,
@@ -145,5 +147,45 @@ describe('klasaRzadkosci — klasyfikacja achievementów', () => {
   })
   it('brak danych (null) → POSPOLITY', () => {
     expect(klasaRzadkosci(null)).toBe('POSPOLITY')
+  })
+})
+
+describe('policzStaty', () => {
+  const isaac: StatyBazowe = {
+    damage: 3.5,
+    damageMult: 1,
+    tears: 2.73,
+    speed: 1,
+    range: 6.5,
+    shotSpeed: 1,
+    luck: 0,
+  }
+
+  it('bez itemów zwraca staty postaci (z jej mnożnikiem obrażeń)', () => {
+    expect(policzStaty(isaac, []).damage).toBe(3.5)
+    // Judas: ×1.35 do obrażeń
+    expect(policzStaty({ ...isaac, damageMult: 1.35 }, []).damage).toBe(4.73)
+  })
+
+  it('sumuje płaskie dodatki', () => {
+    const sadOnion = { plaskie: { tears: 0.7 } }
+    expect(policzStaty(isaac, [sadOnion, sadOnion]).tears).toBe(4.13)
+  })
+
+  it('nakłada mnożniki PO dodatkach', () => {
+    // Cricket's Head: +0.5 damage, ×1.5 → (3.5 + 0.5) × 1.5 = 6
+    const cricket = { plaskie: { damage: 0.5 }, mnozniki: { damage: 1.5 } }
+    expect(policzStaty(isaac, [cricket]).damage).toBe(6)
+  })
+
+  it('mnożnik postaci łączy się z mnożnikiem itemu', () => {
+    const cricket = { plaskie: { damage: 0.5 }, mnozniki: { damage: 1.5 } }
+    // Judas: (3.5 + 0.5) × 1.5 × 1.35 = 8.1
+    expect(policzStaty({ ...isaac, damageMult: 1.35 }, [cricket]).damage).toBe(8.1)
+  })
+
+  it('przycina do limitów gry (speed maks. 2.0)', () => {
+    expect(policzStaty(isaac, [{ plaskie: { speed: 50 } }]).speed).toBe(2)
+    expect(policzStaty(isaac, [{ plaskie: { speed: -50 } }]).speed).toBe(0.1)
   })
 })
