@@ -144,3 +144,67 @@ enum BossKoncowy {
   MOTHER
   BEAST
 }
+
+// ── Społeczność: gracze, obserwowanie, feed ───────────────────────────────────
+// Apka nie ma jeszcze logowania, więc „ja" to gracz z flagą `ja` (profil właściciela).
+// Pozostali gracze są zasiani (demo), ale relacje i wpisy są PRAWDZIWE — trzymane w bazie,
+// nie w stanie komponentu.
+
+model Gracz {
+  id     Int     @id @default(autoincrement())
+  nick   String  @unique
+  kolor  String? // kolor nicku w feedzie (jak role-color na Discordzie)
+  opis   String?
+  avatar String? // ikona postaci TBOI (np. „Isaac")
+  ja     Boolean @default(false) // konto właściciela apki
+
+  wpisy       Wpis[]
+  lajki       Lajk[]
+  obserwuje   Obserwacja[] @relation("obserwujacy")
+  obserwowany Obserwacja[] @relation("obserwowany")
+}
+
+model Obserwacja {
+  obserwujacy   Gracz @relation("obserwujacy", fields: [obserwujacyId], references: [id], onDelete: Cascade)
+  obserwujacyId Int
+  obserwowany   Gracz @relation("obserwowany", fields: [obserwowanyId], references: [id], onDelete: Cascade)
+  obserwowanyId Int
+
+  createdAt DateTime @default(now())
+
+  @@id([obserwujacyId, obserwowanyId])
+  @@index([obserwowanyId])
+}
+
+model Wpis {
+  id       Int     @id @default(autoincrement())
+  autor    Gracz   @relation(fields: [autorId], references: [id], onDelete: Cascade)
+  autorId  Int
+  typ      TypWpisu
+  tresc    String // np. nazwa achievementu, bossa albo opis runu
+  postac   String? // którą postacią
+  ikonaUrl String? // ikona achievementu ze Steama (prawdziwa)
+  itemy    String[] // itemy z runu (nazwy)
+
+  createdAt DateTime @default(now())
+  lajki     Lajk[]
+
+  @@index([createdAt])
+  @@index([autorId])
+}
+
+model Lajk {
+  wpis    Wpis  @relation(fields: [wpisId], references: [id], onDelete: Cascade)
+  wpisId  Int
+  gracz   Gracz @relation(fields: [graczId], references: [id], onDelete: Cascade)
+  graczId Int
+
+  @@id([wpisId, graczId])
+}
+
+enum TypWpisu {
+  UNLOCK // odblokowany achievement
+  BOSS // pokonany boss
+  RUN // zakończony run
+  TEKST // zwykły wpis
+}
