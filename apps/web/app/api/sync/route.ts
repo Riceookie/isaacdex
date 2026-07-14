@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma, BossKoncowy, TrybGry } from '@isaacdex/db'
 import mapaMarek from '@/lib/marki-mapa.json'
+import { mojGracz } from '@/lib/konto'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -18,11 +19,19 @@ async function jget<T>(url: string): Promise<T> {
 }
 
 // POST /api/sync — zassij achievementy TBOI ze Steam Web API do bazy.
+// Synchronizujemy WYŁĄCZNIE Steam zalogowanego gracza: inaczej dowolny gość mógłby
+// odświeżać cudze osiągnięcia (a przy okazji zużywać nasz limit Web API).
 export async function POST() {
   const key = process.env.STEAM_API_KEY
   if (!key) return NextResponse.json({ error: 'Brak STEAM_API_KEY na serwerze.' }, { status: 500 })
 
-  const profil = await prisma.profil.findFirst()
+  const ja = await mojGracz()
+  if (!ja) return NextResponse.json({ error: 'Zaloguj się, żeby synchronizować.' }, { status: 401 })
+  if (!ja.profilId) {
+    return NextResponse.json({ error: 'Najpierw podłącz konto Steam.' }, { status: 400 })
+  }
+
+  const profil = await prisma.profil.findUnique({ where: { id: ja.profilId } })
   if (!profil) return NextResponse.json({ error: 'Brak profilu.' }, { status: 400 })
   const sid = profil.steamId64
 

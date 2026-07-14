@@ -26,6 +26,8 @@ model Profil {
 
   achievementy    SteamAchievement[]
   completionMarks CompletionMark[]
+  /// Gracz, który podpiął ten Steam (strona odwrotna do Gracz.profil).
+  gracz           Gracz?
 }
 
 // ── Achievementy Steam (zsynchronizowane z Web API) ────────────────────────────
@@ -146,9 +148,14 @@ enum BossKoncowy {
 }
 
 // ── Społeczność: gracze, obserwowanie, feed ───────────────────────────────────
-// Apka nie ma jeszcze logowania, więc „ja" to gracz z flagą `ja` (profil właściciela).
-// Pozostali gracze są zasiani (demo), ale relacje i wpisy są PRAWDZIWE — trzymane w bazie,
-// nie w stanie komponentu.
+// Gracz to profil społecznościowy. Może być:
+//  - PRAWDZIWY  — spięty z kontem Supabase Auth przez `userId`,
+//  - DEMO       — zasiany, bez konta (żeby feed i czat nie były puste),
+//  - WŁAŚCICIEL — `ja = true`: gracz pokazywany gościom, którzy nie są zalogowani.
+//    Dzięki temu apka ma co pokazać bez logowania, a konto tylko PRZEJMUJE tę tożsamość.
+//
+// Steam podpina się osobno (`profil`): dopiero on daje achievementy i % ukończenia,
+// więc można mieć konto bez Steama i Steam bez konta (dane zsyncowane wcześniej).
 
 model Gracz {
   id     Int     @id @default(autoincrement())
@@ -156,7 +163,14 @@ model Gracz {
   kolor  String? // kolor nicku w feedzie (jak role-color na Discordzie)
   opis   String?
   avatar String? // ikona postaci TBOI (np. „Isaac")
-  ja     Boolean @default(false) // konto właściciela apki
+  ja     Boolean @default(false) // gracz pokazywany niezalogowanym gościom
+
+  /// id użytkownika z Supabase Auth (auth.users.id). Null = gracz demo, bez konta.
+  userId String? @unique
+
+  /// Podpięte konto Steam (achievementy, completion marks). Null = Steam niepodpięty.
+  profil   Profil? @relation(fields: [profilId], references: [id])
+  profilId Int?    @unique
 
   wpisy       Wpis[]
   lajki       Lajk[]

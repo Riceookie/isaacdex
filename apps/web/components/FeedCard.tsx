@@ -1,7 +1,9 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useOptimistic, useTransition } from 'react'
 import Sprite from '@/components/Sprite'
+import { useZalogowany } from '@/components/KontoProvider'
 import ItemSprite from '@/components/ItemSprite'
 import DecorMark from '@/components/DecorMark'
 import { przelaczLajk } from '@/app/actions/social'
@@ -33,6 +35,8 @@ const pelnaData = (iso: string) =>
  * Typ wpisu koloruje lewą krawędź i ikonę, żeby feed dało się skanować wzrokiem.
  */
 export default function FeedCard({ w }: { w: FeedWpis }) {
+  const router = useRouter()
+  const zalogowany = useZalogowany()
   const [czekam, start] = useTransition()
   const [stan, przelacz] = useOptimistic(
     { lajki: w.lajki, polubione: w.polubione },
@@ -42,11 +46,15 @@ export default function FeedCard({ w }: { w: FeedWpis }) {
     }),
   )
 
-  const lajkuj = () =>
+  // Gość może lajkować dopiero po założeniu konta — klik prowadzi go tam, zamiast udawać,
+  // że policzył głos (serwer i tak by go odrzucił).
+  const lajkuj = () => {
+    if (!zalogowany) return router.push('/logowanie')
     start(async () => {
       przelacz(undefined)
       await przelaczLajk(w.id)
     })
+  }
 
   const etykieta = ETYKIETA[w.typ]
   const wlasny = wlasnyAvatar(w.autor.avatar)

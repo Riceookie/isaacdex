@@ -6827,3 +6827,117 @@ body::after {
 .cz-pokoj-nazwa {
   line-height: 1.5;
 }
+
+/* ── Logowanie / rejestracja ─────────────────────────────────────────────────── */
+
+.log-strona {
+  display: grid;
+  place-items: center;
+  min-height: calc(100dvh - 160px);
+}
+
+.log-karta {
+  width: min(420px, 100%);
+  padding: 22px;
+}
+
+.log-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.log-head h1 {
+  font-family: var(--dsp);
+  font-size: 1.5rem;
+  margin: 0 0 2px;
+}
+
+.log-taby {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.log-form {
+  display: grid;
+  gap: 12px;
+}
+
+.log-pole {
+  display: grid;
+  gap: 5px;
+}
+
+.log-pole > span {
+  font-size: 0.82rem;
+  opacity: 0.8;
+}
+
+.log-pole .input {
+  width: 100%;
+}
+
+/* Błąd i potwierdzenie: te same ramki co reszta apki, tylko czerwone/zielone akcenty. */
+.log-blad,
+.log-info {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 0.86rem;
+  border: 1px solid;
+}
+
+.log-blad {
+  color: #e5544b;
+  border-color: color-mix(in srgb, #e5544b 45%, transparent);
+  background: color-mix(in srgb, #e5544b 12%, transparent);
+}
+
+.log-info {
+  color: #5bbf6a;
+  border-color: color-mix(in srgb, #5bbf6a 45%, transparent);
+  background: color-mix(in srgb, #5bbf6a 12%, transparent);
+}
+
+.log-stopka {
+  margin: 14px 0 0;
+  text-align: center;
+}
+
+/* ── Podpięcie Steama (kim-jestem) ───────────────────────────────────────────── */
+
+.steam-karta {
+  padding: 16px 18px;
+  margin-bottom: 14px;
+}
+
+.steam-karta h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--dsp);
+  font-size: 1.1rem;
+  margin: 0 0 8px;
+}
+
+.steam-karta .btn {
+  margin-top: 10px;
+}
+
+.steam-komunikat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+}
+
+.steam-komunikat.zle {
+  color: #e5544b;
+}

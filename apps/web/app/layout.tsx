@@ -9,6 +9,8 @@ import Sprite from '@/components/Sprite'
 import SideNav from '@/components/SideNav'
 import TopBar from '@/components/TopBar'
 import { getCompanionInfo } from '@/lib/queries'
+import { mojGracz } from '@/lib/konto'
+import { KontoProvider } from '@/components/KontoProvider'
 
 // Upheaval TT (BRK) — font menu The Binding of Isaac (Brian Kent / aenigma, freeware).
 const display = localFont({
@@ -34,7 +36,10 @@ export const metadata = {
 }
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
-  const { steamConnected } = await getCompanionInfo().catch(() => ({ steamConnected: true }))
+  const [{ steamConnected }, ja] = await Promise.all([
+    getCompanionInfo().catch(() => ({ steamConnected: true })),
+    mojGracz().catch(() => null),
+  ])
   return (
     <html
       lang="pl"
@@ -47,19 +52,21 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       <body>
         <ThemeApplier />
         <Ambience />
-        <div className="app">
-          <aside className="sidebar">
-            <Link href="/" className="side-brand">
-              <Sprite name="godhead" size={30} />
-              <span>IsaacDex</span>
-            </Link>
-            <SideNav />
-          </aside>
-          <div className="main-wrap">
-            <TopBar steamConnected={steamConnected} />
-            <main className="container">{children}</main>
+        <KontoProvider zalogowany={ja !== null}>
+          <div className="app">
+            <aside className="sidebar">
+              <Link href="/" className="side-brand">
+                <Sprite name="godhead" size={30} />
+                <span>IsaacDex</span>
+              </Link>
+              <SideNav />
+            </aside>
+            <div className="main-wrap">
+              <TopBar steamConnected={steamConnected} nick={ja?.nick ?? null} />
+              <main className="container">{children}</main>
+            </div>
           </div>
-        </div>
+        </KontoProvider>
       </body>
     </html>
   )

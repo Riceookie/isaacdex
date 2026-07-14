@@ -1,15 +1,17 @@
 import { prisma } from '@isaacdex/db'
+import { jaGracz } from '@/lib/konto'
 
 /**
  * Społeczność: feed, obserwowanie, lajki. Wszystko leży w bazie (Gracz, Obserwacja, Wpis, Lajk),
  * więc obserwowanie i polubienia są TRWAŁE — nie są stanem komponentu jak w poprzedniej wersji.
  *
- * Apka nie ma jeszcze logowania, więc „ja" = gracz z flagą `ja` (profil właściciela).
+ * Kim jest „ja” (zalogowany, a dla gościa — właściciel apki) rozstrzyga lib/konto.
  * Moje wpisy są generowane z prawdziwych achievementów Steam (nazwa, ikona, data).
  *
  * ZNAJOMY = obserwacja w OBIE strony (jak na Steamie). Samo obserwowanie kogoś to jeszcze
  * nie znajomość — stąd trzy różne zbiory: znajomi, obserwowani (jednostronnie) i obserwujący.
  */
+export { jaGracz }
 
 export type FeedWpis = {
   id: number
@@ -26,11 +28,6 @@ export type FeedWpis = {
 
 /** Zakres feedu: wszyscy gracze albo tylko znajomi (obserwacja odwzajemniona) + Ty. */
 export type ZakresFeedu = 'global' | 'znajomi'
-
-/** Gracz-właściciel apki. */
-export async function jaGracz() {
-  return prisma.gracz.findFirst({ where: { ja: true } })
-}
 
 /** Kogo obserwujesz i kto obserwuje Ciebie — baza dla znajomych i przycisków. */
 async function relacje(jaId: number) {

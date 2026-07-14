@@ -1,7 +1,9 @@
 'use client'
 
+import Link from 'next/link'
 import { useOptimistic, useTransition } from 'react'
 import { przelaczObserwowanie } from '@/app/actions/social'
+import { useZalogowany } from '@/components/KontoProvider'
 
 /**
  * Obserwuj / Odwzajemnij / Znajomi / Obserwujesz — zapisuje się w bazie, UI reaguje od razu
@@ -25,8 +27,19 @@ export default function PrzyciskObserwuj({
   /** Na całą szerokość — karty w „Odkryj graczy". */
   pelna?: boolean
 }) {
+  const zalogowany = useZalogowany()
   const [czekam, start] = useTransition()
   const [stan, przelacz] = useOptimistic(obserwowany, (s: boolean) => !s)
+
+  // Gość nie ma czym obserwować. Zamiast przycisku, który nic nie robi (a tak było, gdy
+  // zapis szedł na konto właściciela) — jawne zaproszenie do logowania.
+  if (!zalogowany) {
+    return (
+      <Link href="/logowanie" className={'obs-btn' + (pelna ? ' pelna' : '')}>
+        <span className="obs-txt">Zaloguj się</span>
+      </Link>
+    )
+  }
 
   const znajomy = stan && obserwujeMnie
   const etykieta = znajomy

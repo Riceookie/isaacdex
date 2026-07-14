@@ -6,9 +6,21 @@ import Sprite from '@/components/Sprite'
 import CompanionMascot from '@/components/Companion'
 import NotificationsBell from '@/components/NotificationsBell'
 import { tytulSekcji } from '@/lib/nav'
+import { wyloguj } from '@/app/actions/auth'
 
-/** Górny pasek: papierowa „zakładka" z tytułem sekcji + companion + ikony narzędziowe. */
-export default function TopBar({ steamConnected }: { steamConnected: boolean }) {
+/**
+ * Górny pasek: papierowa „zakładka" z tytułem sekcji + companion + ikony narzędziowe.
+ *
+ * `nick` mówi, kto jest zalogowany (null = gość). Gość widzi apkę, ale zamiast swojego
+ * profilu ma zaproszenie do logowania — bez tego klikałby w „Obserwuj" i nic by się nie działo.
+ */
+export default function TopBar({
+  steamConnected,
+  nick,
+}: {
+  steamConnected: boolean
+  nick: string | null
+}) {
   const pathname = usePathname()
   const tytul = tytulSekcji(pathname)
 
@@ -37,10 +49,36 @@ export default function TopBar({ steamConnected }: { steamConnected: boolean }) 
         </Link>
         <NotificationsBell />
 
-        <Link href="/profil" className="avatar-chip">
-          <Sprite name="isaacHead" size={24} />
-          <span>Profil</span>
-        </Link>
+        {nick ? (
+          <>
+            <Link href="/profil" className="avatar-chip">
+              <Sprite name="isaacHead" size={24} />
+              <span>{nick}</span>
+            </Link>
+            <form action={wyloguj}>
+              <button className="util-icon" type="submit" aria-label="Wyloguj" title="Wyloguj">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.9"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M10 5H6a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h4" />
+                  <path d="M15 12H10M18 12l-3-3M18 12l-3 3" />
+                </svg>
+              </button>
+            </form>
+          </>
+        ) : (
+          <Link href="/logowanie" className="avatar-chip">
+            <Sprite name="isaacHead" size={24} />
+            <span>Zaloguj się</span>
+          </Link>
+        )}
       </div>
     </div>
   )
