@@ -21,3 +21,20 @@ export function ikonaPostaci(nazwa: string): string {
   }
   return `/tboi/chars/${slugPostaci(nazwa)}.webp`
 }
+
+/**
+ * Avatar gracza. Pole `Gracz.avatar` trzyma albo nazwę postaci („Isaac"), albo — od teraz —
+ * gotową ścieżkę do własnego obrazka („/pfp/spike.png"). Ścieżkę przepuszczamy bez zmian,
+ * resztę mapujemy na głowę postaci jak dotąd.
+ */
+export function avatarGracza(avatar: string | null | undefined, fallback = 'Isaac'): string {
+  const a = avatar?.trim()
+  if (!a) return ikonaPostaci(fallback)
+  return a.startsWith('/') || a.startsWith('http') ? a : ikonaPostaci(a)
+}
+
+/** Czy avatar to własny obrazek (a nie pixelowa głowa) — własne trzeba kadrować i wygładzać. */
+export function wlasnyAvatar(avatar: string | null | undefined): boolean {
+  const a = avatar?.trim() ?? ''
+  return a.startsWith('/') || a.startsWith('http')
+}

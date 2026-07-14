@@ -416,20 +416,14 @@ a:hover {
   color: var(--text);
   border-color: var(--accent);
 }
-/* Stonowany, cienki pasek scrolla dla obszarów fit-to-viewport. */
-.item-grid,
-.ach-grid,
-.char-bars,
-.runs-list {
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
+/* Paski scrolla są NIEWIDOCZNE w całej apce (strona, siatki, modale) — przewijanie działa
+   normalnie, znika tylko sam pasek, żeby nie ciął ciemnego UI. */
+* {
+  scrollbar-width: none;
 }
-:is(.item-grid, .ach-grid, .char-bars, .runs-list)::-webkit-scrollbar {
-  width: 8px;
-}
-:is(.item-grid, .ach-grid, .char-bars, .runs-list)::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--border) 80%, transparent);
-  border-radius: 8px;
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 .feed-item {
   display: flex;
@@ -653,11 +647,6 @@ a:hover {
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 0.5rem;
   margin-top: 1rem;
-  /* Fit-to-viewport: katalog itemów scrolluje się wewnątrz, nie rozpycha strony. */
-  max-height: 56vh;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  padding-right: 4px;
 }
 .item-card {
   display: flex;
@@ -754,11 +743,6 @@ a:hover {
   grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
   gap: 6px;
   margin-top: 1rem;
-  /* Fit-to-viewport: siatka achievementów scrolluje się wewnątrz, nie rozpycha strony. */
-  max-height: 56vh;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  padding-right: 4px;
 }
 .ach {
   aspect-ratio: 1;
@@ -798,6 +782,10 @@ a:hover {
   padding: 1rem;
   background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(3px);
+  /* Wysokie modale przewijamy w całości (bez okienka scrolla w środku); `auto` na osi Y
+     plus wyrównanie do góry, gdy treść nie mieści się w ekranie. */
+  overflow-y: auto;
+  align-items: safe center;
 }
 .modal {
   max-width: 360px;
@@ -818,14 +806,12 @@ a:hover {
 }
 
 /* ── Encyklopedia: szczegóły wpisu (układ jak na wiki Isaaca) ──
-   Modal jest szerszy niż domyślny (.modal 360px) i wyrównany do lewej, bo to czytanka,
-   a nie potwierdzenie. Scrolluje się w środku, żeby długie opisy nie rozpychały ekranu. */
+   Modal jest szerszy niż domyślny (.modal 360px) i wyrównany do lewej, bo to czytanka.
+   NIE scrolluje się w środku — długie opisy przewija całe tło modala (patrz .modal-bg),
+   tak jak przewija się strona. */
 .modal.enc-detal {
   max-width: 560px;
   text-align: left;
-  max-height: 85vh;
-  overflow-y: auto;
-  overscroll-behavior: contain;
 }
 /* Hero detalu: ikona w ramce (jak pedestał w grze) + nazwa + cytat + znaczniki. */
 .ed-hero {
@@ -860,24 +846,60 @@ a:hover {
   gap: 0.3rem;
   margin-top: 0.4rem;
 }
-.ed-close {
-  position: absolute;
-  top: 0.6rem;
-  right: 0.7rem;
-  width: 30px;
-  height: 30px;
+/* X zamknięcia — sprite z gry, ten sam w KAŻDYM modalu (żadnych przycisków „Zamknij" na dole).
+   `sticky` + `float`, a nie `absolute`: modal scrolluje się w środku, więc X przyklejony do
+   jego góry zostaje widoczny przy przewijaniu długich opisów (wcześniej uciekał w górę). */
+.modal-x {
+  position: sticky;
+  top: 0;
+  float: right;
+  margin: -0.4rem -0.4rem 0 0;
+  z-index: 3;
   display: grid;
   place-items: center;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface-2);
-  color: var(--muted);
+  padding: 0.25rem;
+  border: 0;
+  background: none;
   cursor: inherit;
-  font-size: 0.8rem;
+  line-height: 0;
 }
-.ed-close:hover {
-  color: var(--text);
-  border-color: var(--accent);
+.modal-x img {
+  image-rendering: pixelated;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
+  transition: transform 0.12s ease;
+}
+.modal-x:hover img {
+  transform: scale(1.18);
+}
+
+/* Loader: płacząca buźka miga między dwiema klatkami + „Loading…". */
+.ladowanie {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 3rem 0;
+}
+/* Sprite'y to czarny rysunek na przezroczystym tle — na ciemnej kartce trzeba je odwrócić,
+   na jasnej (skin „normalne") zostają czarne. */
+.ladowanie img {
+  image-rendering: pixelated;
+  opacity: 0.9;
+  filter: invert(1);
+}
+[data-cards='normal'] .ladowanie img {
+  filter: none;
+}
+.ladowanie p {
+  margin: 0;
+  font-family: var(--dsp);
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+/* Zablokowany achievement w detalu — ikona wyszarzona, jak na siatce. */
+.enc-detal.zablokowany .ed-ramka img {
+  filter: grayscale(1) brightness(0.55);
 }
 .modal.enc-detal {
   position: relative;
@@ -1005,6 +1027,47 @@ a:hover {
 .ed-warunek {
   color: var(--text);
 }
+/* Pasek powrotu z podsekcji do rozdroża Encyklopedii. */
+.enc-powrot {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.7rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--border);
+}
+.enc-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition:
+    transform 0.12s ease,
+    border-color 0.12s ease;
+}
+.enc-back:hover {
+  border-color: var(--accent);
+  transform: translateX(-2px);
+}
+.enc-tytul {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--dsp);
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.enc-tytul .sprite {
+  image-rendering: pixelated;
+}
+
 /* ── Encyklopedia: lista (szukajka, filtry, karty, szkielet ładowania) ── */
 .enc-szukajka {
   position: relative;
@@ -4410,11 +4473,6 @@ body::after {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-  /* Fit-to-viewport: lista runów scrolluje się wewnątrz karty. */
-  max-height: 32vh;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  padding-right: 4px;
 }
 .run-row {
   display: grid;
@@ -5231,4 +5289,1541 @@ body::after {
   align-items: center;
   gap: 0.35rem;
   font-size: 0.85rem;
+}
+
+/* ── Kalkulator statystyk ── */
+.kalk-naglowek {
+  margin: 1.2rem 0 0.5rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Wybór postaci — portrety jak kafelki, aktywna z akcentem. */
+.kalk-grupy {
+  margin-bottom: 0.5rem;
+}
+.kalk-postacie {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(122px, 1fr));
+  gap: 0.4rem;
+}
+.kalk-postac {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  cursor: inherit;
+  text-align: left;
+  font-size: 0.82rem;
+  transition:
+    transform 0.12s ease,
+    border-color 0.12s ease;
+}
+.kalk-postac img {
+  image-rendering: pixelated;
+  flex: none;
+}
+.kalk-postac:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+.kalk-postac.on {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+/* Tabela statów: nazwa | baza | po itemach (z paskiem i deltą). */
+.kalk-tabela {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.kalk-wiersz {
+  display: grid;
+  grid-template-columns: 150px 70px 1fr;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.6rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.kalk-glowka {
+  background: none;
+  border: 0;
+  padding-bottom: 0;
+  color: var(--muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.kalk-nazwa {
+  font-size: 0.88rem;
+}
+.kalk-baza {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.kalk-teraz {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-variant-numeric: tabular-nums;
+}
+.kalk-teraz em {
+  font-style: normal;
+  font-size: 0.78rem;
+  padding: 0.05rem 0.35rem;
+  border-radius: 6px;
+}
+.kalk-teraz em.w-gore {
+  color: #4ec98a;
+  background: color-mix(in srgb, #4ec98a 15%, transparent);
+}
+.kalk-teraz em.w-dol {
+  color: #e5544b;
+  background: color-mix(in srgb, #e5544b 15%, transparent);
+}
+.kalk-pasek {
+  flex: 1;
+  min-width: 40px;
+  height: 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--border) 60%, transparent);
+  overflow: hidden;
+}
+.kalk-pasek > span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.18s ease;
+}
+
+/* Wybrane itemy — klik zdejmuje. */
+.kalk-wybrane {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.kalk-wybrany {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.5rem 0.25rem 0.3rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text);
+  cursor: inherit;
+  font-size: 0.8rem;
+}
+.kalk-wybrany:hover {
+  border-color: #e5544b;
+}
+.kalk-x {
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+.kalk-wybrany:hover .kalk-x {
+  color: #e5544b;
+}
+
+/* Telefon: tabela zwija się do dwóch kolumn, portrety do dwóch w rzędzie. */
+@media (max-width: 640px) {
+  .kalk-wiersz {
+    grid-template-columns: 1fr auto;
+    row-gap: 0.35rem;
+  }
+  .kalk-glowka {
+    display: none;
+  }
+  .kalk-teraz {
+    grid-column: 1 / -1;
+  }
+  .kalk-postacie {
+    grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kalk-pasek > span,
+  .kalk-postac {
+    transition: none;
+  }
+}
+
+/* ── Społeczność: feed, obserwowanie, lista graczy ── */
+/* Nowa kartka feedu jest KOLUMNOWA (nagłówek → treść → itemy → akcje). Stary układ
+   (avatar | treść | akcje w wierszu) rozjeżdżałby ten markup. */
+.feed-item {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.2rem;
+}
+.feed-zakres {
+  margin-bottom: 0.6rem;
+}
+.feed-head {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+.feed-ava {
+  image-rendering: pixelated;
+  border-radius: 8px;
+  background: var(--surface-2);
+  padding: 2px;
+}
+.feed-user {
+  font-weight: 700;
+}
+.feed-ty {
+  padding: 0.05rem 0.35rem;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--accent) 25%, transparent);
+  color: var(--text);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.feed-czas {
+  margin-left: auto;
+}
+/* Treść wpisu = ikona (achievement/boss/run) + tytuł — jak karta osiągnięcia. */
+.feed-tresc {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.feed-ikona {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.06), transparent 70%), var(--surface-2);
+}
+.feed-ikona img,
+.feed-ikona .sprite {
+  image-rendering: pixelated;
+}
+.feed-akcje {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.55rem;
+}
+.feed-like {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--muted);
+  cursor: inherit;
+  font-size: 0.8rem;
+}
+.feed-like:hover {
+  border-color: #e5544b;
+  color: var(--text);
+}
+.feed-like.on {
+  color: #e5544b;
+  border-color: #e5544b;
+}
+.feed-like:disabled {
+  opacity: 0.6;
+}
+
+/* Lista graczy (Znajomi) */
+.znajomi-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.soc-liczniki {
+  display: flex;
+  gap: 1.1rem;
+  flex-wrap: wrap;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.soc-liczniki b {
+  color: var(--text);
+  font-size: 1.05rem;
+  margin-right: 0.2rem;
+}
+.soc-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.soc-wiersz {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.5rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.soc-ava {
+  image-rendering: pixelated;
+  flex: none;
+}
+.soc-kto {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+.soc-kto .small {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.obs-btn {
+  flex: none;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  cursor: inherit;
+  font-size: 0.8rem;
+  transition:
+    transform 0.12s ease,
+    background 0.12s ease;
+}
+.obs-btn:hover {
+  transform: translateY(-1px);
+}
+.obs-btn.on {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
+}
+.obs-btn.on:hover {
+  border-color: #e5544b;
+  color: #e5544b;
+}
+.obs-btn:disabled {
+  opacity: 0.6;
+}
+
+/* ============================================================================
+   PUSTY STAN — martwy Isaac (2 klatki, ~0.8 s każda). Rysunek wchodzi jako maska,
+   więc kolor bierze się z `color` i sam dopasowuje się do motywu (dark/light).
+   ============================================================================ */
+.pusto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 2.4rem 1rem;
+  text-align: center;
+  color: var(--muted);
+}
+.pusto-maly {
+  padding: 1.4rem 0.75rem;
+  gap: 0.6rem;
+}
+.pusto-anim {
+  position: relative;
+  width: 116px;
+  height: 122px;
+}
+.pusto-maly .pusto-anim {
+  width: 76px;
+  height: 80px;
+}
+.pusto-klatka {
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  opacity: 0;
+  -webkit-mask: center / contain no-repeat;
+  mask: center / contain no-repeat;
+  animation: pusto-migaj 1.6s steps(1, end) infinite;
+}
+.pusto-k1 {
+  -webkit-mask-image: url('/tboi/ui/dead1.png');
+  mask-image: url('/tboi/ui/dead1.png');
+}
+.pusto-k2 {
+  -webkit-mask-image: url('/tboi/ui/dead2.png');
+  mask-image: url('/tboi/ui/dead2.png');
+  animation-delay: 0.8s;
+}
+@keyframes pusto-migaj {
+  0%,
+  49.99% {
+    opacity: 0.75;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.pusto-tekst {
+  margin: 0;
+  max-width: 34ch;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+.pusto-tekst b {
+  color: var(--text);
+}
+.pusto-akcja {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+/* Bez ruchu: zostaje pierwsza klatka (rysunek nadal niesie komunikat). */
+@media (prefers-reduced-motion: reduce) {
+  .pusto-klatka {
+    animation: none;
+  }
+  .pusto-k1 {
+    opacity: 0.75;
+  }
+  .pusto-k2 {
+    opacity: 0;
+  }
+}
+
+/* ============================================================================
+   FEED v2 — kartka czytana wzrokiem: typ wpisu koloruje krawędź i ikonę,
+   nagłówek trzyma się jednej linii, flavor text siedzi obok lajka.
+   ============================================================================ */
+.feed-item {
+  --typ: var(--border);
+  position: relative;
+  gap: 0.35rem;
+  border-left: 3px solid var(--typ);
+  transition:
+    border-color 0.15s ease,
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.feed-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+}
+.feed-unlock {
+  --typ: var(--gold);
+}
+.feed-boss {
+  --typ: var(--accent);
+}
+.feed-run {
+  --typ: var(--ok);
+}
+.feed-tekst {
+  --typ: #5fb4d8;
+}
+
+.feed-kto {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+.feed-co {
+  white-space: nowrap;
+}
+.feed-czas {
+  margin-left: auto;
+  white-space: nowrap;
+  cursor: help;
+}
+
+/* Ikona wpisu dostaje poświatę w kolorze typu — UNLOCK świeci na złoto itd. */
+.feed-ikona {
+  border-color: color-mix(in srgb, var(--typ) 45%, var(--border));
+  box-shadow: inset 0 0 12px color-mix(in srgb, var(--typ) 14%, transparent);
+}
+.feed-line {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+.feed-line strong {
+  font-family: var(--dsp);
+  letter-spacing: 0.01em;
+}
+.feed-postac {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.feed-postac img {
+  image-rendering: pixelated;
+}
+
+.feed-akcje {
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px dashed var(--line);
+  padding-top: 0.45rem;
+}
+.feed-flavor {
+  font-style: italic;
+  opacity: 0.75;
+}
+.feed-like {
+  transition:
+    transform 0.12s ease,
+    color 0.12s ease,
+    border-color 0.12s ease;
+}
+.feed-like:active {
+  transform: scale(0.92);
+}
+.feed-like.on .sprite {
+  animation: lajk-pop 0.32s ease;
+}
+@keyframes lajk-pop {
+  40% {
+    transform: scale(1.45) rotate(-8deg);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .feed-item,
+  .feed-like {
+    transition: none;
+  }
+  .feed-item:hover {
+    transform: none;
+  }
+  .feed-like.on .sprite {
+    animation: none;
+  }
+}
+
+/* ============================================================================
+   ZNAJOMI v2 — szukajka, karty graczy („Odkryj"), znaczki relacji, przycisk obserwuj.
+   ============================================================================ */
+.znajomi-naglowek {
+  margin-bottom: 0.9rem;
+}
+.znajomi-naglowek h1 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.15rem;
+}
+.znajomi-naglowek p {
+  margin: 0;
+}
+
+/* Szukajka */
+.szukaj {
+  margin-bottom: 1rem;
+}
+.szukaj-pole {
+  position: relative;
+  display: flex;
+}
+.szukaj-pole .input {
+  width: 100%;
+  padding: 0.6rem 2.2rem 0.6rem 0.85rem;
+  font-size: 0.95rem;
+}
+.szukaj-pole .input::-webkit-search-cancel-button {
+  display: none;
+}
+.szukaj-x {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: inherit;
+}
+.szukaj-x:hover {
+  color: var(--accent);
+}
+.szukaj-wyniki {
+  margin-top: 0.8rem;
+  transition: opacity 0.15s ease;
+}
+/* Podczas dociągania wyników przygaszamy poprzednie zamiast je chować — bez skoku layoutu. */
+.szukaj-wyniki.czeka {
+  opacity: 0.55;
+}
+.szukaj-ile {
+  margin: 0 0 0.5rem;
+}
+
+/* Siatka kart graczy (Odkryj + wyniki szukania) */
+.gracze-siatka {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(232px, 1fr));
+  gap: 0.7rem;
+}
+.gracz-karta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.gracz-karta:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+}
+/* Dead God = złota obwódka, jak najrzadsze achievementy w Kolekcji. */
+.gracz-karta.deadgod {
+  border-color: color-mix(in srgb, var(--gold) 45%, var(--border));
+}
+.gracz-karta.deadgod:hover {
+  border-color: var(--gold);
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--gold) 18%, rgba(0, 0, 0, 0.3));
+}
+.gk-head {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.gk-ava {
+  image-rendering: pixelated;
+  flex: none;
+  padding: 3px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.gk-id {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+  flex: 1;
+}
+.gk-nick {
+  font-family: var(--dsp);
+  font-size: 1.05rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.gk-dg {
+  flex: none;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--gold) 55%, transparent));
+}
+.gk-opis {
+  margin: 0;
+  min-height: 2.4em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.gk-postep {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.gk-postep .bar {
+  flex: 1;
+}
+.gk-pct {
+  font-family: var(--dsp);
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.gk-staty {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem 0.5rem;
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+.gk-staty li {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.gk-staty .sprite,
+.gk-staty img {
+  flex: none;
+  image-rendering: pixelated;
+}
+
+/* Znaczki relacji */
+.rel-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.22rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.rel-badge.friend {
+  color: var(--ok);
+  border-color: color-mix(in srgb, var(--ok) 45%, transparent);
+  background: color-mix(in srgb, var(--ok) 12%, transparent);
+}
+.rel-badge.back {
+  color: var(--gold);
+  border-color: color-mix(in srgb, var(--gold) 45%, transparent);
+  background: color-mix(in srgb, var(--gold) 12%, transparent);
+}
+.rel-badge.ja {
+  color: var(--text);
+  border-color: var(--border);
+  background: var(--surface-2);
+}
+
+/* Wiersz gracza: nick + znaczek w jednej linii */
+.soc-nick {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+}
+.soc-nick b {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.note-cta {
+  border-color: color-mix(in srgb, var(--gold) 40%, var(--border));
+}
+
+/* Przycisk obserwowania: dwie etykiety w jednej komórce — hover podmienia tekst
+   bez zmiany szerokości (żeby lista nie „skakała" pod kursorem). */
+.obs-btn {
+  display: grid;
+  place-items: center;
+  font-family: var(--dsp);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.obs-btn > span {
+  grid-area: 1 / 1;
+  transition: opacity 0.12s ease;
+}
+.obs-txt-hover {
+  opacity: 0;
+}
+.obs-btn.on:hover .obs-txt {
+  opacity: 0;
+}
+.obs-btn.on:hover .obs-txt-hover {
+  opacity: 1;
+}
+.obs-btn.on:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+/* Znajomy = stan docelowy: zielony, spokojny. */
+.obs-btn.znajomy {
+  border-color: color-mix(in srgb, var(--ok) 55%, var(--border));
+  color: var(--ok);
+  background: color-mix(in srgb, var(--ok) 10%, transparent);
+}
+/* „Odwzajemnij" ma być najbardziej kuszącym przyciskiem na stronie — świeci na złoto. */
+.obs-btn.odwzajemnij {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #1b1508;
+  font-weight: 700;
+  animation: obs-puls 2.4s ease-in-out infinite;
+}
+.obs-btn.odwzajemnij:hover {
+  filter: brightness(1.08);
+}
+@keyframes obs-puls {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--gold) 45%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 5px transparent;
+  }
+}
+.obs-btn.pelna {
+  width: 100%;
+  margin-top: auto;
+  padding: 0.45rem 0.7rem;
+}
+
+/* Odkryj graczy */
+.odkryj {
+  margin-top: 1.2rem;
+}
+.odkryj .feed-head {
+  justify-content: space-between;
+}
+.odkryj .feed-head h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gracz-karta,
+  .obs-btn > span {
+    transition: none;
+  }
+  .gracz-karta:hover {
+    transform: none;
+  }
+  .obs-btn.odwzajemnij {
+    animation: none;
+  }
+}
+
+/* Poprawki po testach na żywo: znaczek relacji nie może wypychać nicku (flex-shrink),
+   a przycisk w wąskim panelu musi zostawić miejsce na opis gracza. */
+.rel-badge {
+  flex: none;
+}
+.soc-nick {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.soc-wiersz .obs-btn {
+  padding: 0.28rem 0.55rem;
+  font-size: 0.72rem;
+}
+.gk-id .rel-badge {
+  align-self: flex-start;
+}
+
+/* Skrót do sieci na Pulpicie */
+.me-siec {
+  display: flex;
+  gap: 0.9rem;
+  margin: 0.5rem 0 0.35rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.me-siec a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px dashed transparent;
+}
+.me-siec a:hover {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+}
+.me-siec b {
+  color: var(--text);
+  margin-right: 0.15rem;
+}
+
+/* ============================================================================
+   AVATARY GRACZY — własne pfp (pliki) + dekoracja pfp na małych avatarach.
+   Sprite'y postaci zostają pixelowe; własne zdjęcia kadrujemy i wygładzamy,
+   bo to fotki/memy, a nie pixel-art.
+   ============================================================================ */
+.soc-ava-box,
+.gk-ava-box,
+.feed-ava-box {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  /* Dekoracja wystaje poza kadr avatara — nic jej tu nie może przyciąć. */
+  overflow: visible;
+}
+.soc-ava-box {
+  width: 34px;
+  height: 34px;
+}
+.gk-ava-box {
+  width: 48px;
+  height: 48px;
+}
+.feed-ava-box {
+  width: 32px;
+  height: 32px;
+}
+.soc-ava-box > img,
+.gk-ava-box > img,
+.feed-ava-box > img {
+  width: 100%;
+  height: 100%;
+}
+.foto {
+  object-fit: cover;
+  image-rendering: auto;
+  border-radius: 8px;
+}
+
+/* Nakładka dekoracji jest kalibrowana pod polaroid profilu (obrócona ramka 92×104).
+   Na kwadratowym mini-avatarze prostujemy ją i zmniejszamy, żeby tylko „wystawała" zza kadru. */
+.soc-ava-box .pfp-overlay,
+.gk-ava-box .pfp-overlay,
+.feed-ava-box .pfp-overlay {
+  width: 165%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
+}
+
+/* Dekoracja wystaje poza kadr, więc avatar, który ją ma, dostaje własny margines —
+   inaczej nakładka wchodziłaby na nick sąsiadujący z avatarem. */
+.z-decor {
+  margin-right: 0.6rem;
+}
+.soc-ava-box .pfp-overlay,
+.gk-ava-box .pfp-overlay,
+.feed-ava-box .pfp-overlay {
+  width: 148%;
+}
+
+/* ============================================================================
+   CZAT PIWNICY — nie „serwer z kanałami", tylko pokoje na piętrze.
+   Lewa: minimapa pokojów (aktywny = ten, w którym stoisz; secret room na kłódkę).
+   Środek: dymki-łzy + familiar komentujący. Prawa: kto jeszcze żyje.
+   ============================================================================ */
+.cz {
+  display: grid;
+  grid-template-columns: minmax(0, 220px) minmax(0, 1fr) minmax(0, 240px);
+  gap: 0.9rem;
+  align-items: start;
+  height: calc(100vh - 8.5rem);
+  min-height: 520px;
+}
+@media (max-width: 1100px) {
+  .cz {
+    grid-template-columns: minmax(0, 190px) minmax(0, 1fr);
+    height: auto;
+  }
+  .cz-online {
+    display: none;
+  }
+}
+@media (max-width: 760px) {
+  .cz {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Wspólna „ściana piwnicy": ciemniej niż reszta apki, z winietą i ziarnem. */
+.cz-mapa,
+.cz-pokoj-widok,
+.cz-online {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(ellipse 120% 90% at 50% 0%, rgba(0, 0, 0, 0.35), transparent 70%),
+    color-mix(in srgb, var(--bg) 88%, #000);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+}
+
+/* ── MINIMAPA ── */
+.cz-mapa-head,
+.cz-online-head {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 0.7rem;
+  font-family: var(--dsp);
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, #000 25%, transparent);
+}
+.cz-pokoje {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  overflow-y: auto;
+  flex: 1;
+}
+/* Kafel pokoju = komórka minimapy: kwadratowa ikona + nazwa. */
+.cz-pokoj {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.45rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--dsp);
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  cursor: inherit;
+  text-align: left;
+  transition:
+    background 0.14s ease,
+    color 0.14s ease,
+    border-color 0.14s ease;
+}
+.cz-pokoj-ic {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: color-mix(in srgb, #000 35%, var(--surface));
+}
+.cz-pokoj-ic .sprite {
+  image-rendering: pixelated;
+}
+.cz-pokoj-nazwa {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cz-pokoj:hover:not(.zamek) {
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+/* Pokój, w którym stoisz — jak podświetlona sala na minimapie. */
+.cz-pokoj.tu {
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+.cz-pokoj.tu .cz-pokoj-ic {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.cz-tu-kropka {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  animation: cz-puls 1.8s ease-in-out infinite;
+}
+@keyframes cz-puls {
+  50% {
+    opacity: 0.35;
+  }
+}
+/* Zamknięty pokój: wyszarzony, ikona przygaszona, kłódka zamiast kropki. */
+.cz-pokoj.zamek {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.cz-pokoj.zamek .cz-pokoj-ic {
+  filter: grayscale(1) brightness(0.7);
+}
+.cz-klodka {
+  flex: none;
+  font-size: 0.75rem;
+  filter: grayscale(1);
+}
+/* Dobijanie się do zamkniętych drzwi — kafel szarpie, ale nie ustępuje. */
+.cz-pokoj.odbity {
+  animation: cz-szarp 0.4s ease;
+}
+@keyframes cz-szarp {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-4px);
+  }
+  40% {
+    transform: translateX(4px);
+  }
+  60% {
+    transform: translateX(-2px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+}
+
+/* Offline = „zginęli". Ten sam martwy Isaac co w pustych stanach. */
+.cz-zgineli {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.7rem;
+  border-top: 1px solid var(--line);
+  background: color-mix(in srgb, #000 25%, transparent);
+}
+.cz-trup {
+  flex: none;
+  width: 22px;
+  height: 24px;
+  background: currentColor;
+  color: var(--muted);
+  opacity: 0.7;
+  -webkit-mask: url('/tboi/ui/dead1.png') center / contain no-repeat;
+  mask: url('/tboi/ui/dead1.png') center / contain no-repeat;
+  animation: cz-trup-migaj 1.6s steps(1, end) infinite;
+}
+@keyframes cz-trup-migaj {
+  50% {
+    -webkit-mask-image: url('/tboi/ui/dead2.png');
+    mask-image: url('/tboi/ui/dead2.png');
+  }
+}
+
+/* ── NAGŁÓWEK POKOJU: kartka przybita do ściany + familiar ── */
+.cz-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, #000 30%, transparent);
+}
+.cz-head-kartka {
+  position: relative;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background:
+    linear-gradient(
+      color-mix(in srgb, #000 55%, transparent),
+      color-mix(in srgb, #000 55%, transparent)
+    ),
+    var(--paper-img) center / cover;
+  transform: rotate(-0.6deg);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.45);
+}
+.cz-head-kartka h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  font-size: 1.05rem;
+}
+.cz-head-kartka p {
+  margin: 0.1rem 0 0;
+}
+/* Pinezka */
+.cz-head-kartka::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ff8b7f, var(--accent) 60%, #6d201a);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+/* Familiar komentujący */
+.cz-fam {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.cz-fam-img {
+  flex: none;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+}
+.cz-fam-img.gada {
+  animation: cz-fam-buja 0.6s ease-in-out infinite;
+}
+@keyframes cz-fam-buja {
+  50% {
+    transform: translateY(-3px) rotate(-3deg);
+  }
+}
+.cz-fam-dymek {
+  max-width: 30ch;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.35;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+.cz-fam-dymek.on {
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+}
+
+/* ── WIADOMOŚCI: dymki-łzy ── */
+.cz-msgs {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.9rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  position: relative;
+  z-index: 1;
+}
+/* Krew na podłodze pokoju: osobna warstwa POD treścią i poza scrollem, żeby nie przebijała
+   między dymkami (jako background-image listy wjeżdżała na wiadomości przy przewijaniu). */
+.cz-pokoj-widok::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('/tboi/blood-splatter.svg') center 45% / 62% no-repeat;
+  opacity: 0.06;
+  pointer-events: none;
+  z-index: 0;
+}
+.cz-head,
+.cz-pisz {
+  position: relative;
+  z-index: 1;
+}
+.cz-msg {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+.cz-ava-box {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+}
+.cz-ava-box.maly {
+  width: 28px;
+  height: 28px;
+}
+.cz-ava {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  border-radius: 8px;
+  background: var(--surface-2);
+  padding: 2px;
+}
+.cz-ava.foto {
+  object-fit: cover;
+  image-rendering: auto;
+  padding: 0;
+}
+
+/* Dymek z ogonkiem w kształcie łzy (kropla po lewej stronie). */
+.cz-bak {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface) 92%, #000);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+.cz-bak::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 12px;
+  width: 12px;
+  height: 12px;
+  background: inherit;
+  border-left: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  /* Kropla: okrągła z trzech stron, spiczasta w stronę autora. */
+  border-radius: 50% 0 50% 50%;
+  transform: rotate(45deg);
+}
+.cz-msg-top {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.15rem;
+}
+.cz-autor {
+  font-family: var(--dsp);
+  font-size: 0.9rem;
+}
+.cz-czas {
+  margin-left: auto;
+}
+.cz-linia {
+  margin: 0;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.cz-bot,
+.cz-ty {
+  padding: 0.03rem 0.35rem;
+  border-radius: 5px;
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.cz-bot {
+  background: var(--accent);
+  color: #fff;
+}
+.cz-ty {
+  background: color-mix(in srgb, var(--gold) 28%, transparent);
+  color: var(--text);
+}
+/* Dogma mówi „z bossa" — krwawa ramka i poświata. */
+.cz-msg.bot .cz-bak {
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--border));
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  box-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.35),
+    inset 0 0 22px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+.cz-msg.bot .cz-bak::before {
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--border));
+}
+.cz-msg.moja .cz-bak {
+  border-color: color-mix(in srgb, var(--gold) 40%, var(--border));
+}
+
+/* Reakcje = pickupy. Szybkie wyjeżdżają dopiero po najechaniu na wiadomość. */
+.cz-reakcje {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.35rem;
+  min-height: 20px;
+}
+.cz-reakcja {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.22rem;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 0.72rem;
+  cursor: inherit;
+  transition:
+    transform 0.1s ease,
+    border-color 0.12s ease,
+    color 0.12s ease;
+}
+.cz-reakcja:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+.cz-reakcja:active {
+  transform: scale(0.9);
+}
+.cz-reakcja.on {
+  color: var(--text);
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface-2));
+}
+.cz-szybkie {
+  display: inline-flex;
+  gap: 0.25rem;
+  opacity: 0;
+  transition: opacity 0.14s ease;
+}
+.cz-msg:hover .cz-szybkie,
+.cz-msg:focus-within .cz-szybkie {
+  opacity: 1;
+}
+.cz-reakcja.pusta {
+  background: transparent;
+}
+
+/* ── PISANIE ── */
+.cz-pisz {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.8rem;
+  border-top: 1px solid var(--line);
+  background: color-mix(in srgb, #000 30%, transparent);
+}
+.cz-pole {
+  flex: 1;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in srgb, #000 35%, var(--surface));
+  color: var(--text);
+  font-family: var(--bdy);
+}
+.cz-pole:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+.cz-wyslij {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  cursor: inherit;
+  transition:
+    transform 0.12s ease,
+    background 0.12s ease;
+}
+.cz-wyslij:hover:not(:disabled) {
+  background: var(--accent);
+  transform: scale(1.06);
+}
+.cz-wyslij:disabled {
+  opacity: 0.4;
+}
+
+/* ── KTO JEST W PIWNICY ── */
+.cz-online-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  overflow-y: auto;
+  flex: 1;
+}
+.cz-online-lista li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.35rem;
+  border-radius: var(--radius-sm);
+}
+.cz-online-lista li:hover {
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+.cz-on-kto {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+.cz-on-kto b,
+.cz-on-kto .small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Zamiast zielonej kropki Discorda — bijące serce (żywy = ma serducho). */
+.cz-on-serce {
+  flex: none;
+  animation: cz-bicie 1.9s ease-in-out infinite;
+}
+@keyframes cz-bicie {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.25);
+  }
+  30% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.15);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cz-tu-kropka,
+  .cz-trup,
+  .cz-fam-img.gada,
+  .cz-on-serce,
+  .cz-pokoj.odbity {
+    animation: none;
+  }
+}
+
+/* Poprawki czatu po obejrzeniu na żywo:
+   1) kartka nagłówka ma być papierem, nie ciemną plamą,
+   2) dekoracja pfp nie może wchodzić na nick w liście online. */
+.cz-head-kartka {
+  background:
+    linear-gradient(
+      color-mix(in srgb, #000 32%, transparent),
+      color-mix(in srgb, #000 32%, transparent)
+    ),
+    var(--paper-img) center / cover;
+}
+.cz-online-lista .cz-ava-box {
+  margin-right: 0.45rem;
+}
+.cz-ava-box .pfp-overlay {
+  width: 140%;
+}
+
+/* Font display (upheaval) ma wysokie diakrytyki — przy ciasnej interlinii ucinało kreskę
+   nad „Ź" w nazwach pokojów (#spowiedź). Trochę powietrza nad tekstem to naprawia. */
+.cz-head-kartka h2 {
+  line-height: 1.4;
+  padding-top: 0.1rem;
+}
+.cz-pokoj-nazwa {
+  line-height: 1.5;
 }

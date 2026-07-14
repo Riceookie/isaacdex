@@ -1,18 +1,29 @@
 import Link from 'next/link'
-import { getProfil, getFeedIkony } from '@/lib/queries'
+import { getProfil } from '@/lib/queries'
+import { getFeed, getLicznikiSpoleczne } from '@/lib/social'
 import { ikonaPostaci } from '@/lib/chars'
+import { PUSTKA } from '@/lib/klimat'
 import Sprite from '@/components/Sprite'
 import ProfileAvatar from '@/components/ProfileAvatar'
 import FeedCard from '@/components/FeedCard'
 import FeedMore from '@/components/FeedMore'
 import BasementRadio from '@/components/BasementRadio'
-import { FEED } from '@/lib/feed'
+import FeedZakres from '@/components/FeedZakres'
+import PustyStan from '@/components/PustyStan'
 
 export const dynamic = 'force-dynamic'
 
-export default async function Home() {
-  const wpisyUnlock = FEED.slice(0, 6).filter((w) => w.typ === 'unlock').length
-  const [p, ikony] = await Promise.all([getProfil(), getFeedIkony(wpisyUnlock)])
+export default async function Home({
+  searchParams,
+}: {
+  searchParams?: Promise<{ feed?: string }>
+}) {
+  const zakres = (await searchParams)?.feed === 'znajomi' ? 'znajomi' : 'global'
+  const [p, feed, liczniki] = await Promise.all([
+    getProfil(),
+    getFeed(zakres),
+    getLicznikiSpoleczne(),
+  ])
 
   if (!p) {
     return (
@@ -25,13 +36,12 @@ export default async function Home() {
     )
   }
 
-  let ui = 0
-  // Feed liczony raz (ikony achievementów z licznika `ui`), potem dzielony na
-  // widoczne od razu + zwijane, żeby Pulpit mieścił się w oknie bez scrolla strony.
-  const feedNodes = FEED.slice(0, 6).map((w, i) => {
-    const ach = w.typ === 'unlock' ? ikony[ui++ % Math.max(1, ikony.length)] : undefined
-    return <FeedCard key={i} w={w} ach={ach} />
-  })
+  // Feed jest teraz PRAWDZIWY: wpisy leżą w bazie (Twoje = z odblokowań Steam).
+  const feedNodes = feed.slice(0, 6).map((w) => <FeedCard key={w.id} w={w} />)
+
+  // Pusty feed znajomych zwykle znaczy „nie masz jeszcze znajomych", a nie „cisza w piwnicy" —
+  // i wtedy jedyne sensowne wyjście prowadzi na Znajomych, nie do odświeżania Pulpitu.
+  const brakZnajomych = zakres === 'znajomi' && liczniki.znajomi === 0
 
   return (
     <section className="home-grid">
@@ -46,15 +56,23 @@ export default async function Home() {
           </Link>
         </div>
 
-        <p className="banner demo">
-          <Sprite name="bomb" size={16} /> DEMO — przykładowy feed. Ikony achievementów prawdziwe
-          (Steam). Konta i obserwowanie w projekcie końcowym.
-        </p>
+        <FeedZakres zakres={zakres} />
 
-        <div className="feed">
-          {feedNodes.slice(0, 3)}
-          <FeedMore count={feedNodes.length - 3}>{feedNodes.slice(3)}</FeedMore>
-        </div>
+        {feed.length === 0 ? (
+          <PustyStan
+            tekst={brakZnajomych ? PUSTKA.brakZnajomych : PUSTKA.brakAktywnosci}
+            akcja={
+              <Link className="btn" href={brakZnajomych ? '/znajomi' : '/?feed=global'}>
+                {brakZnajomych ? 'Znajdź graczy' : 'Zobacz feed globalny'}
+              </Link>
+            }
+          />
+        ) : (
+          <div className="feed">
+            {feedNodes.slice(0, 3)}
+            <FeedMore count={feedNodes.length - 3}>{feedNodes.slice(3)}</FeedMore>
+          </div>
+        )}
       </div>
 
       {/* ── PRAWA SZYNA ── */}
@@ -71,6 +89,16 @@ export default async function Home() {
                 <Sprite name="deadgod" size={16} /> Dead God
               </span>
             </div>
+          </div>
+          {/* Skrót do sieci — te same liczby co u Znajomych, żeby Pulpit i Znajomi
+              mówili jednym głosem (a nie były dwiema osobnymi apkami). */}
+          <div className="me-siec">
+            <Link href="/znajomi">
+              <b>{liczniki.znajomi}</b> znajomych
+            </Link>
+            <Link href="/znajomi">
+              <b>{liczniki.obserwujacych}</b> obserwujących
+            </Link>
           </div>
           <Link className="small" href="/profil">
             → Mój profil

@@ -1,15 +1,19 @@
 import Link from 'next/link'
 import { getProfil, getDashboard } from '@/lib/queries'
-import { ikonaPostaci } from '@/lib/chars'
+import { getAktywnosc, getGracze, getLicznikiSpoleczne } from '@/lib/social'
+import { avatarGracza, ikonaPostaci } from '@/lib/chars'
 import Sprite from '@/components/Sprite'
 import ProfileAvatar from '@/components/ProfileAvatar'
 import ItemSprite from '@/components/ItemSprite'
 import FrameDecor from '@/components/FrameDecor'
+import FeedCard from '@/components/FeedCard'
+import PustyStan from '@/components/PustyStan'
+import { PUSTKA, statyGracza } from '@/lib/klimat'
 
 export const dynamic = 'force-dynamic'
 
-// DEMO — statystyki gry (runy/wygrane/śmierci) nie są śledzone przez API Steam,
-// więc mockowane; feed/znajomi też mock. Realne w projekcie końcowym.
+// DEMO — statystyki gry (runy/wygrane/śmierci) nie są śledzone przez API Steam, więc mockowane.
+// Feed i znajomi są już PRAWDZIWI: leżą w bazie (Wpis, Obserwacja).
 const RECENT_RUNS = [
   {
     wynik: 'WYGRANA',
@@ -45,17 +49,17 @@ const RECENT_RUNS = [
   },
 ]
 
-const FRIENDS = [
-  { user: 'VoidKing', postac: 'Azazel', status: 'Online', on: true },
-  { user: 'Ananas', postac: 'Isaac', status: 'W trakcie runu', on: true },
-  { user: 'Lilith', postac: 'The Lost', status: 'Offline', on: false },
-  { user: 'Jorge', postac: 'Samson', status: 'Offline', on: false },
-]
-
 const FAV_ITEMS = ['Sacred Heart', 'Brimstone', '20/20', 'Godhead', 'Tech X']
 
 export default async function ProfilPage() {
-  const [p, dash] = await Promise.all([getProfil(), getDashboard()])
+  const [p, dash, liczniki, aktywnosc, gracze] = await Promise.all([
+    getProfil(),
+    getDashboard(),
+    getLicznikiSpoleczne(),
+    getAktywnosc(),
+    getGracze(),
+  ])
+  const znajomi = gracze.filter((g) => g.znajomy)
   if (!p) {
     return (
       <section>
@@ -95,6 +99,13 @@ export default async function ProfilPage() {
                 <span className="badge">
                   <img className="badge-ava" src={ikonaPostaci(ulubionaPostac)} alt="" />{' '}
                   {ulubionaPostac} main
+                </span>
+                {/* Liczniki są PRAWDZIWE — z tabeli Obserwacja, nie z mocka. */}
+                <span className="badge">
+                  <Sprite name="friendfinder" size={18} /> {liczniki.obserwujacych} obserwujących
+                </span>
+                <span className="badge">
+                  <Sprite name="friends" size={18} /> {liczniki.obserwuje} obserwujesz
                 </span>
               </p>
             </div>
@@ -171,6 +182,40 @@ export default async function ProfilPage() {
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Twoja aktywność społecznościowa (wpisy = prawdziwe odblokowania ze Steama).
+              Pusto = zwykle brak synchronizacji ze Steamem, więc kierujemy do Kolekcji. */}
+          <div className="note">
+            <div className="paper-head">
+              <h2>
+                <Sprite name="stats" size={24} /> Ostatnia aktywność
+              </h2>
+              <Link className="paper-more" href="/">
+                Feed →
+              </Link>
+            </div>
+            {aktywnosc.length === 0 ? (
+              <PustyStan
+                tekst={
+                  <>
+                    <b>Jeszcze nic tu nie zrobiłeś.</b> Zsynchronizuj Steam, a Twoje odblokowania
+                    same trafią do feedu.
+                  </>
+                }
+                akcja={
+                  <Link className="btn" href="/kolekcja">
+                    Przejdź do Kolekcji
+                  </Link>
+                }
+              />
+            ) : (
+              <div className="feed">
+                {aktywnosc.slice(0, 4).map((w) => (
+                  <FeedCard key={w.id} w={w} />
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
@@ -250,25 +295,39 @@ export default async function ProfilPage() {
             <p>{p.opis || 'Za dużo gram w Isaaca. Ślę pomoc.'}</p>
           </div>
 
-          {/* Friends */}
+          {/* Znajomi — PRAWDZIWI (obserwacja w obie strony), nie mock jak reszta demo. */}
           <div className="note">
             <div className="paper-head">
               <h3>
-                <Sprite name="friendfinder" size={22} /> Znajomi ({FRIENDS.length})
+                <Sprite name="friendfinder" size={22} /> Znajomi ({znajomi.length})
               </h3>
               <Link className="paper-more" href="/znajomi">
                 Wszyscy →
               </Link>
             </div>
-            <ul className="fr-list">
-              {FRIENDS.map((f) => (
-                <li key={f.user}>
-                  <img src={ikonaPostaci(f.postac)} alt="" />
-                  <span className="grow">{f.user}</span>
-                  <span className={'fr-status' + (f.on ? ' on' : '')}>{f.status}</span>
-                </li>
-              ))}
-            </ul>
+            {znajomi.length === 0 ? (
+              <PustyStan
+                maly
+                tekst={PUSTKA.brakZnajomych}
+                akcja={
+                  <Link className="btn" href="/znajomi">
+                    Znajdź graczy
+                  </Link>
+                }
+              />
+            ) : (
+              <ul className="fr-list">
+                {znajomi.slice(0, 6).map((g) => (
+                  <li key={g.id}>
+                    <img src={avatarGracza(g.avatar)} alt="" />
+                    <span className="grow" style={g.kolor ? { color: g.kolor } : undefined}>
+                      {g.nick}
+                    </span>
+                    <span className="muted small">{statyGracza(g.nick).procent}%</span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       </div>
