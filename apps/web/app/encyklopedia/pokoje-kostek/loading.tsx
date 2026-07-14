@@ -1,5 +1,11 @@
-import EncSzkielet from '@/components/EncSzkielet'
+import EncPowrot from '@/components/EncPowrot'
+import Ladowanie from '@/components/Ladowanie'
 
 export default function Loading() {
-  return <EncSzkielet />
+  return (
+    <section className="note paper-panel">
+      <EncPowrot />
+      <Ladowanie />
+    </section>
+  )
 }

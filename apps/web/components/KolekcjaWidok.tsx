@@ -1,8 +1,50 @@
 'use client'
 
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useRouter } from 'next/navigation'
 import Sprite from '@/components/Sprite'
+import EncDetal from '@/components/EncDetal'
+import warunki from '@/lib/enc/achievementy.json'
+import type { EncWpis } from '@/lib/enc/typy'
+
+const WARUNKI = warunki as Record<string, string>
+
+/** Achievement → wpis Encyklopedii, żeby modal był ten sam co przy itemach. */
+function naWpis(a: Ach): EncWpis {
+  const warunek = WARUNKI[a.nazwa]
+  return {
+    id: a.apiName,
+    nazwa: a.nazwa,
+    ikona: a.ikonaUrl ?? undefined,
+    klasa: a.odblokowany ? 'ach-detal' : 'ach-detal zablokowany',
+    opis: a.opis ?? '',
+    szczegoly: {
+      znaczniki: [
+        a.odblokowany ? 'odblokowane' : 'zablokowane',
+        ...(rzadka(a.globalnyProcent) ? ['rzadkie'] : []),
+      ],
+      pola: [
+        ...(a.globalnyProcent != null
+          ? [{ label: 'Ma je globalnie', wartosc: `${a.globalnyProcent}% graczy` }]
+          : []),
+        ...(a.dataOdblokowania
+          ? [
+              {
+                label: 'Zdobyte',
+                wartosc: new Date(a.dataOdblokowania).toLocaleDateString('pl-PL'),
+              },
+            ]
+          : []),
+      ],
+      pelnyOpis: a.opis ?? undefined,
+      // Warunek zdobycia bierzemy z wiki (Steam podaje go tylko dla części achievementów).
+      odblokowanie: warunek
+        ? { nazwa: 'Jak zdobyć', warunek, zdobyte: a.odblokowany }
+        : { nazwa: 'Jak zdobyć', warunek: 'Brak opisu na wiki.', zdobyte: a.odblokowany },
+    },
+  }
+}
 
 type Ach = {
   apiName: string
@@ -136,39 +178,14 @@ export default function KolekcjaWidok({
         ))}
       </div>
 
-      {sel && (
-        <div className="modal-bg" onClick={() => setSel(null)}>
-          <div className="modal note" onClick={(e) => e.stopPropagation()}>
-            {sel.ikonaUrl && (
-              <img
-                className={'ach-big ' + (sel.odblokowany ? '' : 'off')}
-                src={sel.ikonaUrl}
-                alt=""
-              />
-            )}
-            <h2>{sel.nazwa}</h2>
-            <p>{sel.opis}</p>
-            <p className="muted small">
-              {sel.odblokowany
-                ? 'Odblokowane' +
-                  (sel.dataOdblokowania
-                    ? ': ' + new Date(sel.dataOdblokowania).toLocaleDateString('pl-PL')
-                    : '')
-                : 'Nie odblokowane'}
-              {sel.globalnyProcent != null && ` · globalnie ${sel.globalnyProcent}%`}
-              {rzadka(sel.globalnyProcent) && (
-                <>
-                  {' '}
-                  <Sprite name="coin" size={18} />
-                </>
-              )}
-            </p>
-            <button className="btn" onClick={() => setSel(null)}>
-              Zamknij
-            </button>
-          </div>
-        </div>
-      )}
+      {sel &&
+        typeof document !== 'undefined' &&
+        createPortal(
+          <div className="modal-bg" onClick={() => setSel(null)}>
+            <EncDetal wpis={naWpis(sel)} onZamknij={() => setSel(null)} />
+          </div>,
+          document.body,
+        )}
     </section>
   )
 }
