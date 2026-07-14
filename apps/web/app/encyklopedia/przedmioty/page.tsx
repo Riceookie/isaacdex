@@ -75,6 +75,7 @@ export default async function PrzedmiotyPage() {
 
   return (
     <EncLista
+      sekcja="Przedmioty"
       wpisy={wpisy}
       filtry={FILTRY}
       sortWaga="Jakość"

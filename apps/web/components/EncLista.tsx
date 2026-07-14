@@ -3,7 +3,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import EncDetal from '@/components/EncDetal'
+import EncPowrot from '@/components/EncPowrot'
 import ItemSprite from '@/components/ItemSprite'
+import PustyStan from '@/components/PustyStan'
 import type { EncFiltr, EncWpis } from '@/lib/enc/typy'
 
 type Props = {
@@ -15,6 +17,8 @@ type Props = {
   wstep?: string
   /** Etykieta sortowania po `waga` (np. „Jakość", „Postęp”). Bez niej zostaje tylko A–Z. */
   sortWaga?: string
+  /** Nazwa sekcji — pokazywana w pasku powrotu do rozdroża Encyklopedii. */
+  sekcja?: string
 }
 
 type Sort = 'domyslna' | 'nazwa' | 'waga'
@@ -29,6 +33,7 @@ export default function EncLista({
   placeholder = 'Szukaj…',
   wstep,
   sortWaga,
+  sekcja,
 }: Props) {
   const [q, setQ] = useState('')
   const [grupa, setGrupa] = useState<string | null>(null)
@@ -88,6 +93,7 @@ export default function EncLista({
 
   return (
     <section className="note paper-panel">
+      <EncPowrot tytul={sekcja} />
       {wstep && <p className="muted small">{wstep}</p>}
 
       <div className="kol-tools">
@@ -161,9 +167,13 @@ export default function EncLista({
       </div>
 
       {widoczne.length === 0 ? (
-        <p className="muted enc-pusto">
-          Nic nie pasuje do „{q}". Spróbuj innej nazwy albo słowa z opisu.
-        </p>
+        <PustyStan
+          tekst={
+            <>
+              <b>Brak wyników dla „{q}".</b> Spróbuj innej nazwy albo słowa z opisu.
+            </>
+          }
+        />
       ) : (
         <div className="item-grid">
           {widoczne.map((w) => (

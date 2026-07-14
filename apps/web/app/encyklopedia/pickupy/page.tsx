@@ -13,9 +13,10 @@ export default function PickupyPage() {
     id: `${p.rodzina}-${p.nazwa}`,
     nazwa: p.nazwa,
     ikona: p.ikona ?? undefined,
-    odznaka: p.wartosc ?? undefined,
+    // Bez odznaki: wartości pickupów to całe frazy („1 czerwone serce"), więc rozwalały
+    // narożnik karty. Idą w opis, gdzie jest na nie miejsce.
     klasa: 'pickup',
-    opis: p.wartosc ? `${p.rodzina} · ${p.wartosc}` : p.rodzina,
+    opis: p.wartosc ?? p.rodzina,
     grupy: [slugRodziny(p.rodzina)],
     szczegoly: {
       znaczniki: [p.rodzina, ...(p.odblokowanie ? ['do odblokowania'] : [])],
@@ -31,6 +32,7 @@ export default function PickupyPage() {
 
   return (
     <EncLista
+      sekcja="Pickupy"
       wpisy={wpisy}
       filtry={FILTRY}
       placeholder="Szukaj znajdźki (nazwa lub efekt)…"

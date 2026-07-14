@@ -4,7 +4,8 @@ import type { EncWpis } from '@/lib/enc/typy'
 
 type Boss = {
   nazwa: string
-  ikona?: string | null
+  ikona?: string | null // portret (z plików gry)
+  ingame?: string | null // sprite bossa tak, jak wygląda w pokoju (z wiki)
   hp?: number | null
   obrazenia?: number | null
   opis?: string | null
@@ -31,13 +32,20 @@ export default function BossowiePage() {
         ...(b.hp ? [{ label: 'Zdrowie', wartosc: `${b.hp} HP` }] : []),
         ...(b.obrazenia ? [{ label: 'Obrażenia od dotknięcia', wartosc: `${b.obrazenia}` }] : []),
       ],
-      podglad: b.ikona ? { postac: b.ikona, podpis: 'Portret bossa' } : undefined,
+      // „Wygląd": portret obok sprite'a z gry — widać i kartę bossa, i to, co spotkasz w pokoju.
+      podglad: {
+        postac: b.ikona ?? undefined,
+        podpis: 'Portret bossa',
+        gra: b.ingame ?? undefined,
+        podpisGra: 'W grze',
+      },
       pelnyOpis: b.opis ?? undefined,
     },
   }))
 
   return (
     <EncLista
+      sekcja="Bossowie"
       wpisy={wpisy}
       sortWaga="Zdrowie"
       placeholder="Szukaj bossa…"

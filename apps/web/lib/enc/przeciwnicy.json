@@ -4,7 +4,7 @@
     "ikona": "/tboi/przeciwnicy/frowning-gaper.png",
     "hp": 10,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Frowning Gapers walk slowly toward Isaac (though faster than Gapers) and deal contact damage. They start out with their eyes closed, and when they have line of sight with Isaac, they will open their eyes and gain extra permanent speed. Upon death, they will usually transform into a Pacer or Gusher."
   },
   {
     "nazwa": "Gaper",
@@ -18,112 +18,112 @@
     "ikona": "/tboi/przeciwnicy/flaming-gaper.png",
     "hp": 9,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Flaming Gapers walk slowly toward Isaac (slightly faster than Gapers) and deal contact damage. Upon death, they will usually transform into a Pacer or Gusher."
   },
   {
     "nazwa": "Rotten Gaper",
     "ikona": "/tboi/przeciwnicy/rotten-gaper.png",
     "hp": 24,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Rotten Gapers chase Isaac but have different behaviors depending on their appearance, and each has a different subtype (10.3.x). {| class=\"wikitable mw-collapsible mw-collapsed striped\""
   },
   {
     "nazwa": "Gurgle",
     "ikona": "/tboi/przeciwnicy/gurgle.png",
     "hp": 40,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Gurgles walk towards Isaac (significantly faster than Gapers), dealing contact damage and periodically firing Ipecac shots at him. These shots can kill other enemies caught in their blast radius, but Gurgles themselves are immune to their own shots as well as Ipecac shots, bombs, and fireballs from other monsters. They can turn into a Splasher upon death."
   },
   {
     "nazwa": "Crackle",
     "ikona": "/tboi/przeciwnicy/crackle.png",
     "hp": 40,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Crackles walk towards Isaac at the same speed as a Gurgle, dealing contact damage and periodically shooting a fireball which releases 4 lines of fire in the cardinal directions when it touches the ground. These lines of fire span the length and height of a normal sized room. Like the Gurgle, they are immune to fireballs, Ipecac shots, and bombs from other monsters."
   },
   {
     "nazwa": "Nulls",
     "ikona": "/tboi/przeciwnicy/nulls.png",
     "hp": 30,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Nulls walk slowly toward Isaac (similarly to Frowning Gapers) and deal contact damage. They start out with their eyes closed, and when they have line of sight with Isaac, they will open their eyes, though without a speed increase. They periodically fade into and out of visibility."
   },
   {
     "nazwa": "Cyclopia",
     "ikona": "/tboi/przeciwnicy/cyclopia.png",
     "hp": 10,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Cyclopias walk toward Isaac (slightly slower than Gapers), dealing contact damage and leaving behind a short-lasting trail of damaging Red Creep. Occasionally shoots a blood shot towards Isaac."
   },
   {
     "nazwa": "Blue Gaper",
     "ikona": "/tboi/przeciwnicy/blue-gaper.png",
     "hp": 16,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Blue Gapers walk towards Isaac slightly faster than Gapers, and deal contact damage. They are mainly spawned by Hush."
   },
   {
     "nazwa": "Greed Gaper",
     "ikona": "/tboi/przeciwnicy/greed-gaper.png",
     "hp": 9,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Greed Gapers walk toward Isaac, dealing contact damage. They are mainly spawned during the Ultra Greed boss fight. If they deal contact damage to Isaac, they will force Isaac to drop or lose some coins, similar to Keepers."
   },
   {
     "nazwa": "Wraith",
     "ikona": "/tboi/przeciwnicy/wraith.png",
     "hp": 10,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Wraiths walk towards Isaac slightly faster than Gapers, dealing contact damage. They are invisible and can only be seen through the reflection they cast in the water, or the ripples they make as they walk. The occasional lightning strikes in Downpour will also make them briefly visible."
   },
   {
     "nazwa": "Deep Gaper",
     "ikona": "/tboi/przeciwnicy/deep-gaper.png",
     "hp": 10,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Deep Gapers are initially hidden and emerge from the floor once all initial enemies in the room have been killed. Deep Gapers walk towards Isaac slightly faster than Gapers after emerging and deal contact damage."
   },
   {
     "nazwa": "Blurb",
     "ikona": "/tboi/przeciwnicy/blurb.png",
     "hp": 16,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Blurbs walk slowly towards Isaac, dealing contact damage. After taking some damage or getting close to Isaac, they fire a chaotic burst of tears at him and chases Isaac at the speed of Frowning Gapers, attempting to deal contact damage. They have a high chance to turn into Pacers or Gushers upon death."
   },
   {
     "nazwa": "Level 2 Gaper",
     "ikona": "/tboi/przeciwnicy/level-2-gaper.png",
     "hp": 40,
     "obrazenia": 2,
-    "opis": null
+    "opis": "Level 2 Gapers walk toward Isaac (faster than Gapers but slower than Frowning Gapers), dealing a full Heart of contact damage. They split into a Level 2 Horf and Level 2 Gusher upon death."
   },
   {
     "nazwa": "Level 2 Horf",
     "ikona": "/tboi/przeciwnicy/level-2-horf.png",
     "hp": 20,
     "obrazenia": 2,
-    "opis": null
+    "opis": "Level 2 Horfs are a variant of Horfs found in Corpse. They look like Horfs in a decaying state. Level 2 Horfs act quite similarly to regular Horfs; however, they spit Small Maggots at Isaac instead of blood shots. Although they appear to float, they cannot get past gaps in the floor and are affected by creep."
   },
   {
     "nazwa": "Level 2 Gusher",
     "ikona": "/tboi/przeciwnicy/level-2-gusher.png",
     "hp": 20,
     "obrazenia": 2,
-    "opis": null
+    "opis": "Level 2 Gushers run around a room blindly, occasionally spitting up Small Maggots."
   },
   {
     "nazwa": "Twitchy",
     "ikona": "/tboi/przeciwnicy/twitchy.png",
     "hp": 40,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Twitchies are a Gaper/Trite hybrid that alternate between chasing Isaac and rapidly leaping at him, dealing contact damage. They leap at Isaac 1-3 times before returning to chasing him on foot, and their leaps can target him from almost across an entire normal-sized room."
   },
   {
     "nazwa": "Dead Isaac",
     "ikona": "/tboi/przeciwnicy/dead-isaac.png",
     "hp": 40,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Dead Isaacs are enemies exclusively spawned by Mother as part of one of her attacks. They are summoned from the bottom of the arena and will walk directly upward (ignoring Isaac completely), dealing contact damage. Once they reach Mother, she swipes at them, killing them, releasing a burst of blood shots, and launching their corpses towards Isaac."
   },
   {
     "nazwa": "Faceless",
@@ -137,7 +137,7 @@
     "ikona": "/tboi/przeciwnicy/tainted-faceless.png",
     "hp": 100,
     "obrazenia": 2,
-    "opis": null
+    "opis": "The Tainted Faceless appears to be a Fatty version of the Faceless, with its lower jaw including teeth still intact. The Tainted Faceless walks towards Isaac while rapidly releasing volleys of 6 blood shots in a hexagonal shape. It essentially behaves like the Faceless with higher health and faster attack rate."
   },
   {
     "nazwa": "Exorcist",
@@ -151,7 +151,7 @@
     "ikona": "/tboi/przeciwnicy/fanatic.png",
     "hp": 35,
     "obrazenia": 1,
-    "opis": null
+    "opis": "The Fanatic is a variant of Exorcists, encountered only at the start of the fight with The Heretic. At the beginning a group of 5 Exorcists are seen on the edges of a large purple pentagram on the floor, chanting and kneeling towards the center as The Heretic emerges."
   },
   {
     "nazwa": "Candler",
@@ -172,14 +172,14 @@
     "ikona": "/tboi/przeciwnicy/dump-head.png",
     "hp": 10,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Dump Head refers to the head of Dump once its body takes enough damage, although it can also spawn naturally in rooms. It slides towards Isaac and leaves a trail of slippery brown creep. If split as a result of depleting the Dump’s health, it bounces off walls then chases Isaac."
   },
   {
     "nazwa": "Gusher",
     "ikona": "/tboi/przeciwnicy/gusher.png",
     "hp": 10,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Gushers wander around a room aimlessly, similar to Pacers, but will occasionally shoot a short ranged slow-moving, blood shot in whichever direction they happen to be moving in. They can be spawned from all the same sources as the Pacer with the addition of Lepers which will always spawn a grey-colored Gusher upon death."
   },
   {
     "nazwa": "Pacer",
@@ -193,14 +193,14 @@
     "ikona": "/tboi/przeciwnicy/splasher.png",
     "hp": 10,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Splashers wander around a room and randomly shoot Ipecac shots. They can be spawned when a Gurgle is killed."
   },
   {
     "nazwa": "Black Globin's Body",
     "ikona": "/tboi/przeciwnicy/black-globin-s-body.png",
     "hp": 10,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Black Globin's Bodies walk around aimlessly, occasionally spawning a Spider. They can be spawned alongside a Black Globin's Head when a Black Globin is killed."
   },
   {
     "nazwa": "Horf",
@@ -214,28 +214,28 @@
     "ikona": "/tboi/przeciwnicy/psychic-horf.png",
     "hp": 10,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Psychic Horfs behave similar to Horfs, but they shoot homing shots instead of blood shots. Unlike a Psychic Maw, it does not possess an Eternal Fly."
   },
   {
     "nazwa": "Sub Horf",
     "ikona": "/tboi/przeciwnicy/sub-horf.png",
     "hp": 14,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Sub Horfs are a variant of Horfs found in Downpour and rarely replace Horfs in other floors. Sub Horfs look like Horfs but tinted blue. Sub Horfs will only shoot if hit first. If they are shot at, they will rotate and periodically shoot in the direction they are facing while rotating. They will also shoot upon receiving any knockback. They release 1 water shot upon death."
   },
   {
     "nazwa": "Tainted Sub Horf",
     "ikona": "/tboi/przeciwnicy/tainted-sub-horf.png",
     "hp": 50,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Tainted Sub Horfs are a stronger version of the Sub Horf that behave like a Sub Horf, but fire much faster, have bigger projectiles, and slowly move towards Isaac while facing him."
   },
   {
     "nazwa": "Necro",
     "ikona": "/tboi/przeciwnicy/necro.png",
     "hp": 22,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Necroes are a variant of Horfs resembling ghostly Bony. They will summon bones in a radius around them, sending them at Isaac. They can target Isaac from anywhere in the room."
   },
   {
     "nazwa": "Fly",
@@ -249,63 +249,63 @@
     "ikona": "/tboi/przeciwnicy/attack-fly.png",
     "hp": 0,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Attack Flies are red and black flashing flies that will chase Isaac, dealing contact damage. Weirdly, while they can easily hit Isaac from the left or right, they have great difficulty hitting him from the top or bottom."
   },
   {
     "nazwa": "Moter",
     "ikona": "/tboi/przeciwnicy/moter.png",
     "hp": 10,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Moters appear as two conjoined Attack Flies. They behave similarly to regular Attack Flies, but split into two Attack Flies upon being killed. The directions the Attack Flies will split off is perpendicular to Isaac (vertical if Isaac is to either side, and horizontal if he is above or below)."
   },
   {
     "nazwa": "Eternal Fly",
     "ikona": "/tboi/przeciwnicy/eternal-fly.png",
     "hp": 300,
     "obrazenia": 1,
-    "opis": null
+    "opis": "The Eternal Fly is a white-colored fly that can be found on any floor in the game. They usually circle Corny Poop or enemies like Holy Leeches and Hangers, and will not stop circling them until their hosts are destroyed. Before that, they will deal damage to Isaac if he touches them, and they are completely immune to all forms of damage."
   },
   {
     "nazwa": "Ring Fly",
     "ikona": "/tboi/przeciwnicy/ring-fly.png",
     "hp": 5,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Ring Flies are a new addition to Rebirth. They are pink flies that, upon entering the room, will cluster together into a circular formation and orbit rapidly while moving towards Isaac. They will hold formation even as flies are destroyed. The maximum amount of flies per formation is 10."
   },
   {
     "nazwa": "Dart Fly",
     "ikona": "/tboi/przeciwnicy/dart-fly.png",
     "hp": 5,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Dart Flies are similar to regular Attack Flies, but attempt to predict Isaac's movements and cut him off."
   },
   {
     "nazwa": "Swarm",
     "ikona": "/tboi/przeciwnicy/swarm.png",
     "hp": 5,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Swarms are similar to regular Attack Flies, but appear in tightly-packed clusters."
   },
   {
     "nazwa": "Hush Fly",
     "ikona": "/tboi/przeciwnicy/hush-fly.png",
     "hp": 10,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Hush Flies are mainly spawned by Hush and behave somewhat similar to Ring Flies, but do not fly towards Isaac and remain in a fixed path. Unlike Ring Flies, Hush Flies can form other shapes such as polygons. When spawned by Hush they can also orbit it, form a pattern and travel in a straight path, or form a pattern and chase after Isaac."
   },
   {
     "nazwa": "Willo",
     "ikona": "/tboi/przeciwnicy/willo.png",
     "hp": 6,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Willos circle a set distance around Isaac, moving with him perfectly, and firing shots inwards towards him; only one can fire at a time, and the one about to fire telegraphs this by flashing rapidly just beforehand. They circle quickly at even intervals, and can be hard to hit."
   },
   {
     "nazwa": "Army Fly",
     "ikona": "/tboi/przeciwnicy/army-fly.png",
     "hp": 5,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Army Flies chase Isaac, moving in the cardinal directions as they do so. If there are other Army Flies in the room, they will form a single-file line while chasing Isaac. If there are multiple lines of them in one room, the lines will conjoin into one line."
   },
   {
     "nazwa": "Ultra Famine Fly",
@@ -319,7 +319,7 @@
     "ikona": "/tboi/przeciwnicy/ultra-pestilence-fly.png",
     "hp": 10,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Ultra Pestilence Flies are flies spawned by Ultra Pestilence that swarm around him, blocking shots and dealing contact damage. They also can be spawned by the Ultra Pestilence Fly Ball in Ultra Pestilence's 2nd phase. They come in 3 sizes- small, medium and large."
   },
   {
     "nazwa": "Fly Bomb",
@@ -333,7 +333,7 @@
     "ikona": "/tboi/przeciwnicy/eternal-fly-bomb.png",
     "hp": 7,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Eternal Fly Bombs are enemies and variants to the original Fly Bombs added in The Binding of Isaac: Repentance. They spawn in a group of 3 and orbit Boom Fly spawned by The Horny Boys. Similar to Eternal Fly, they are immune to all damage until their respective Boom Fly dies. Then, they turn into tiny Bombs that explode shortly after."
   },
   {
     "nazwa": "Sucker",
@@ -347,43 +347,49 @@
     "ikona": "/tboi/przeciwnicy/spit.png",
     "hp": 10,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Spits fly slowly towards Isaac and, upon death, fire an explosive Ipecac shot toward him."
   },
-  { "nazwa": "Ink", "ikona": "/tboi/przeciwnicy/ink.png", "hp": 10, "obrazenia": 1, "opis": null },
+  {
+    "nazwa": "Ink",
+    "ikona": "/tboi/przeciwnicy/ink.png",
+    "hp": 10,
+    "obrazenia": 1,
+    "opis": "Inks fly slowly towards Isaac and, upon death, fire four projectiles in the ordinal directions and spawn a puddle of Black Creep."
+  },
   {
     "nazwa": "Soul Sucker",
     "ikona": "/tboi/przeciwnicy/soul-sucker.png",
     "hp": 18,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Soul Suckers float towards Isaac and, upon death, spawn a swirling red vortex, which then fires four Brimstone beams in the cardinal directions after a short delay."
   },
   {
     "nazwa": "Mama Fly",
     "ikona": "/tboi/przeciwnicy/mama-fly.png",
     "hp": 44,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Mama Flies float away from Isaac and occasionally stop to plant down a Pustule. They spawn Small Maggots upon death."
   },
   {
     "nazwa": "Bulb",
     "ikona": "/tboi/przeciwnicy/bulb.png",
     "hp": 10,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Bulbs fly in erratic, right-angled motions. If Isaac has an active item with any amount of charges (this includes timed recharge items), they fly towards him and drain up to 2 charges upon contact, but do not deal damage. If Isaac does not have an active item, or if his item has no charges, they simply fly around randomly and are completely harmless."
   },
   {
     "nazwa": "Bloodfly",
     "ikona": "/tboi/przeciwnicy/bloodfly.png",
     "hp": 6,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Bloodflies are exclusively encountered in Corpse after a Pustule bursts. They behave very similarly to Bulbs in movement, but unlike Bulbs, don't drain charges and deal contact damage. After dying, they shoot 4 shots in the cardinal directions."
   },
   {
     "nazwa": "Tainted Sucker",
     "ikona": "/tboi/przeciwnicy/tainted-sucker.png",
     "hp": 14,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Tainted Suckers float towards Isaac and, upon death, shoot 6 projectiles in all directions that bounce off of walls and obstacles, splitting into 6 smaller projectiles each. They are exclusive to the Ascent to Home."
   },
   {
     "nazwa": "Pooter",
@@ -397,14 +403,14 @@
     "ikona": "/tboi/przeciwnicy/super-pooter.png",
     "hp": 8,
     "obrazenia": 0,
-    "opis": null
+    "opis": "The Super Pooter behaves like the Pooter, except that it shoots two bullets in a V-shaped pattern. Just like the Pooter, it also does not shoot Isaac with Skatole."
   },
   {
     "nazwa": "Tainted Pooter",
     "ikona": "/tboi/przeciwnicy/tainted-pooter.png",
     "hp": 75,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Tainted Pooters are corrupt and much tankier versions of Pooters. They move the same as Pooters, slowly drifting towards Isaac, however instead of firing just one blood shot at him, they shoot 4 big shots that become 2 smaller ones when in contact with a wall or obstacle."
   },
   {
     "nazwa": "Clotty",
@@ -418,28 +424,28 @@
     "ikona": "/tboi/przeciwnicy/clot.png",
     "hp": 15,
     "obrazenia": 1,
-    "opis": null
+    "opis": "A Clot is an alternate version of a Clotty that shoots four tar shots in the diagonal directions. They appear similar to Gish, who also spawns them. As they do not shoot tar shots in the cardinal directions, they are considerably easier to defeat than Clotties."
   },
   {
     "nazwa": "I.Blob",
     "ikona": "/tboi/przeciwnicy/i-blob.png",
     "hp": 15,
     "obrazenia": 1,
-    "opis": null
+    "opis": "The I.Blob is an even rarer alternate version of the Clotty. It is an Isaac-like blob that shoots 8 blood shots in all directions, combining the attacks of both the Clotty and the Clot."
   },
   {
     "nazwa": "Grilled Clotty",
     "ikona": "/tboi/przeciwnicy/grilled-clotty.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "The Grilled Clotty is an enemy that behaves exactly like a Clotty; however, it moves much quicker, and their shots are ever-so slightly off-kilter. Clotties transform into Grilled Clotties when set on fire."
   },
   {
     "nazwa": "Cloggy",
     "ikona": "/tboi/przeciwnicy/cloggy.png",
     "hp": 15,
     "obrazenia": 1,
-    "opis": null
+    "opis": "The Cloggy is an enemy that behaves similarly to a Clotty; however, its shots are brown and curved rather than straight. Its bullets alternate clockwise and counterclockwise with each shot."
   },
   {
     "nazwa": "Mulligan",
@@ -453,91 +459,91 @@
     "ikona": "/tboi/przeciwnicy/mulligoon.png",
     "hp": 13,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Mulligoons behave like Mulligans and will run away from Isaac, don’t deal contact damage, and can self-detonate. They release 4 projectiles in ordinal directions and drop a Troll bomb on death. If they self-detonate, they release 8 projectiles in the cardinal and ordinal directions in addition to dropping a Troll bomb."
   },
   {
     "nazwa": "Mulliboom",
     "ikona": "/tboi/przeciwnicy/mulliboom.png",
     "hp": 13,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Mullibooms, unlike Mulligans, will chase Isaac at a very fast pace and explode on contact, dealing half a heart of damage. They also explode immediately if they are killed."
   },
   {
     "nazwa": "Hive",
     "ikona": "/tboi/przeciwnicy/hive.png",
     "hp": 20,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Hives behave similarly to Mulligans, evading Isaac and spawning Fly, Attack Fly, and Pooters upon death. However, they also occasionally spit Attack Fly while running away from Isaac, and unlike Mulligans and Mulligoons, they can't self-detonate."
   },
   {
     "nazwa": "Drowned Hive",
     "ikona": "/tboi/przeciwnicy/drowned-hive.png",
     "hp": 18,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Drowned Hives behave similarly to Hives but spit out Drowned Chargers instead of Attack Flies. Upon death, they spawn 1-2 Drowned Chargers. Drowned Chargers spawned by Drowned Hives have half their usual health (11 HP)."
   },
   {
     "nazwa": "Holy Mulligan",
     "ikona": "/tboi/przeciwnicy/holy-mulligan.png",
     "hp": 40,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Holy Mulligans behave similarly to Nests and Hives; avoiding Isaac and spawning Angelic Baby (Small) when chased. When killed, they leave behind 1-2 Embryos."
   },
   {
     "nazwa": "Tainted Mulligan",
     "ikona": "/tboi/przeciwnicy/tainted-mulligan.png",
     "hp": 100,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Tainted Mulligans are stronger versions of Mulligans that behave similarly to Hives. They walk away from Isaac and will spit several Ring Fly at him if he is near. Upon death, they spawn a plethora of fly enemies including: Fly, Attack Fly, Suckers, Spits, Inks, Boom Fly, and Red Boom Fly."
   },
   {
     "nazwa": "Nest",
     "ikona": "/tboi/przeciwnicy/nest.png",
     "hp": 20,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Nests behave similarly to Hives, but they spit out Spiders instead of Attack Fly when being chased. They spawn a Trite or a Big Spider upon death."
   },
   {
     "nazwa": "Leper",
     "ikona": "/tboi/przeciwnicy/leper.png",
     "hp": 60,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Lepers are a Mulligan variant that alternate between walking towards and running away from Isaac. For every 15 damage they take, a chunk of their head, known as a Leper Flesh, will detach and start erratically chasing Isaac. Lepers deal contact damage if they are in this state or below. Lepers can naturally be found with some head chunks missing."
   },
   {
     "nazwa": "Leper Flesh",
     "ikona": "/tboi/przeciwnicy/leper-flesh.png",
     "hp": 5,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Leper Fleshes are head chunks from Lepers that erratically chase Isaac and are spawned from Lepers for every 15 damage they take. Upon death, they fire a projectile at Isaac that predicts his movements. They will die if Isaac walks into them, though he will still take contact damage."
   },
   {
     "nazwa": "Prey",
     "ikona": "/tboi/przeciwnicy/prey.png",
     "hp": 14,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Preys behave similarly to Nests and Hives; avoiding Isaac and spawning Small Leeches when chased. Upon death, they spawn 2-3 Small Leeches."
   },
   {
     "nazwa": "Mullighoul",
     "ikona": "/tboi/przeciwnicy/mullighoul.png",
     "hp": 14,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Mullighouls behave similarly to Nests and Hives; avoiding Isaac and occasionally spawning a Willo when chased. Upon death its spawn 1-2 Willos. This variant can fly over pits."
   },
   {
     "nazwa": "Bouncer",
     "ikona": "/tboi/przeciwnicy/bouncer.png",
     "hp": 30,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Bouncers behave like regular Mulligans and avoid Isaac with the exception that they can still deal contact damage to Isaac in their normal state. However, after some time or when close to death, their head inflates and they start chasing Isaac."
   },
   {
     "nazwa": "Gas Dwarf",
     "ikona": "/tboi/przeciwnicy/gas-dwarf.png",
     "hp": 13,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Gas Dwarves act similar to Mullibooms, but hock up explosive gas as they chase Isaac. Upon death, they release an explosive Ipecac shot that blows up any gas clouds it hits. If it manages to reach Isaac, however, it will explode, damaging Isaac and detonating nearby gas clouds."
   },
   {
     "nazwa": "Danny",
@@ -551,7 +557,7 @@
     "ikona": "/tboi/przeciwnicy/coal-boy.png",
     "hp": 40,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Coal Boys appear in the Mines and Ashpit. They walk towards Isaac, periodically spitting four hot coals towards him, one of which may be a Coal Spider. Hot coals linger and can hurt Isaac, but disappear after ~15 seconds, and disappear faster if they take damage. Coal Boys cannot summon coal spiders if the one it spawned is still alive."
   },
   {
     "nazwa": "Blaster",
@@ -586,21 +592,21 @@
     "ikona": "/tboi/przeciwnicy/drowned-charger.png",
     "hp": 22,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Drowned Chargers is a drowned variant added in The Binding of Isaac: Afterbirth DLC. They possess the same behavior of regular Chargers, but have 10% more health. They shoot four diagonal blood shots upon death. They can be spawned by Drowned Boom Fly upon death, as well as (at reduced health) by Drowned Hives."
   },
   {
     "nazwa": "Dank Charger",
     "ikona": "/tboi/przeciwnicy/dank-charger.png",
     "hp": 26,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Dank Chargers are the dank variants added in Booster Pack #5 of The Binding of Isaac: Afterbirth † DLC. They behave similarly to regular Chargers, but have a much faster dash, bounce off of walls while dashing, and leave a trail of slowing Black Creep while dashing. When their charge ends, they have a short cooldown period before they start moving again."
   },
   {
     "nazwa": "Carrion Princess",
     "ikona": "/tboi/przeciwnicy/carrion-princess.png",
     "hp": 26,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Carrion Princess is a Carrion Queen-like variation of a Charger added in The Binding of Isaac: Repentance. They appear exclusively in Ashpit. They charge diagonally, similar to Carrion Queen. Much like the Carrion Queen, they can only be damaged by hitting their pink tail segments."
   },
   {
     "nazwa": "Small Leech",
@@ -614,21 +620,21 @@
     "ikona": "/tboi/przeciwnicy/small-maggot.png",
     "hp": 10,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Small Maggots are a type of Maggots added in The Binding of Isaac: Repentance DLC. They can be exclusively found in Corpse. They are quite similar to regular Maggots but are variants that are very small in size. Shortly after spawning, they very slowly crawl towards Isaac. They are primarily spawned by Pustules, Level 2 Horfs , and Corpse's bosses."
   },
   {
     "nazwa": "Level 2 Charger",
     "ikona": "/tboi/przeciwnicy/level-2-charger.png",
     "hp": 40,
     "obrazenia": 2,
-    "opis": null
+    "opis": "Level 2 Chargers are stronger variants of Chargers added in The Binding of Isaac: Repentance DLC. They are found in Corpse and the ascent to Home. Upon lining up with Isaac cardinally, Level 2 Chargers will initially charge cardinally towards him but will curve their trajectory towards Isaac's position if attempting to move out of the way."
   },
   {
     "nazwa": "Elleech",
     "ikona": "/tboi/przeciwnicy/elleech.png",
     "hp": 60,
     "obrazenia": 2,
-    "opis": null
+    "opis": "Elleeches are enemies added in The Binding of Isaac: Repentance DLC. Their behavior is a cross between a Level 2 Charger and Small Leech, moving aimlessly until Isaac lines up with them cardinally. They then will charge indefinitely at Isaac, not stopping at objects."
   },
   {
     "nazwa": "Blood Puppy",
@@ -649,14 +655,14 @@
     "ikona": "/tboi/przeciwnicy/tainted-spitty.png",
     "hp": 60,
     "obrazenia": 2,
-    "opis": null
+    "opis": "Tainted Spitties are exclusive to the Ascent to Home. They are much larger and tankier versions of regular Spitties that also move and spit faster. They shoot blood shots out of their backs and occasionally spit out a line full of shots. Upon death, they shoot out a ring of blood shots."
   },
   {
     "nazwa": "Conjoined Spitty",
     "ikona": "/tboi/przeciwnicy/conjoined-spitty.png",
     "hp": 18,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Conjoined Spitties are very similar to Spitties, but they have 80% more health and have 2 heads, 1 added on the back of its body, so they shoot forward and backward simultaneously."
   },
   {
     "nazwa": "Globin",
@@ -670,35 +676,35 @@
     "ikona": "/tboi/przeciwnicy/gazing-globin.png",
     "hp": 33,
     "obrazenia": 2,
-    "opis": null
+    "opis": "Gazing Globins are an alternate version of the Globin which can sometimes replace regular Globins. Gazing Globins run towards Isaac with increased speed and slide away when they collapse into goo, but otherwise function identically to regular Globins."
   },
   {
     "nazwa": "Dank Globin",
     "ikona": "/tboi/przeciwnicy/dank-globin.png",
     "hp": 33,
     "obrazenia": 2,
-    "opis": null
+    "opis": "Dank Globins behave identically to regular Globins. Each time they collapse, they leave behind a puddle of slowing Black Creep and spawn a Spider. They spawn another puddle of Black Creep when finished off."
   },
   {
     "nazwa": "Cursed Globin",
     "ikona": "/tboi/przeciwnicy/cursed-globin.png",
     "hp": 33,
     "obrazenia": 2,
-    "opis": null
+    "opis": "Cursed Globins are a variant of Globin that chase Isaac at a pace similar to a Gazing Globin. However, they will split into two piles of goo instead of one, and unless killed in this goo form, they will regenerate quickly into two Cursed Globins."
   },
   {
     "nazwa": "Black Globin",
     "ikona": "/tboi/przeciwnicy/black-globin.png",
     "hp": 33,
     "obrazenia": 2,
-    "opis": null
+    "opis": "Black Globins walk towards Isaac, launching Spiders towards Isaac every time it takes damage. Upon death, they spawn another spider and split into a Black Globin's Head and a Black Globin's Body. This makes them the only Globin variant that doesn't have a goo form."
   },
   {
     "nazwa": "Clickety Clack",
     "ikona": "/tboi/przeciwnicy/clickety-clack.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Clickety Clacks are a bony version of Globins that alternate between chasing Isaac and wandering around the room. They turn into a pile of bones that can block Isaac's tears when killed, and will eventually regenerate if any other Clickety Clacks in the room are still alive. Only when all Clickety Clacks in the room are dead will the piles of bone disappear."
   },
   {
     "nazwa": "Gasbag",
@@ -726,49 +732,49 @@
     "ikona": "/tboi/przeciwnicy/red-boom-fly.png",
     "hp": 8,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Red Boom Flies fly across the room in straight diagonal lines, dealing contact damage and releasing 6 blood shots in all directions upon death."
   },
   {
     "nazwa": "Drowned Boom Fly",
     "ikona": "/tboi/przeciwnicy/drowned-boom-fly.png",
     "hp": 8,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Drowned Boom Flies fly across the room in straight diagonal lines, dealing contact damage. Upon death, they explode and release 4 blood shots in the cardinal directions, and sometimes also spawns a Drowned Charger. If a Drowned Boom Fly dies while over an obstacle or pit, the Drowned Charger will not be spawned."
   },
   {
     "nazwa": "Dragon Fly",
     "ikona": "/tboi/przeciwnicy/dragon-fly.png",
     "hp": 8,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Dragon Flies fly across the room in straight diagonal lines, dealing contact damage. Upon death, creates four lines of fire in the cardinal directions; the fire nearly spans the length of an entire normal-sized room."
   },
   {
     "nazwa": "Dragon Fly X",
     "ikona": "/tboi/przeciwnicy/dragon-fly-x.png",
     "hp": 8,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Dragon Fly X is identical to the Dragon Fly in behavior, but upon death, creates four lines of fire in the ordinal directions; the fire nearly spans the length of an entire normal-sized room."
   },
   {
     "nazwa": "Bone Fly",
     "ikona": "/tboi/przeciwnicy/bone-fly.png",
     "hp": 8,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Bone Flies fly across the room in straight diagonal lines, dealing contact damage and firing bones at Isaac if he lines up with one in a cardinal direction. Upon death, they shoot 3 evenly spaced bones (one of them aligned towards the closest cardinal direction to Isaac)."
   },
   {
     "nazwa": "Sick Boom Fly",
     "ikona": "/tboi/przeciwnicy/sick-boom-fly.png",
     "hp": 8,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Sick Boom Flies fly across the room in straight diagonal lines, dealing contact damage and trailing poisonous gas. Upon death, they explode into eight clouds of gas and release 6 green shots in all directions. The poison gas left behind upon death persists for much longer, but will dissipate when the room is cleared."
   },
   {
     "nazwa": "Tainted Boom Fly",
     "ikona": "/tboi/przeciwnicy/tainted-boom-fly.png",
     "hp": 20,
     "obrazenia": 2,
-    "opis": null
+    "opis": "Tainted Boom Flies fly across the room in straight diagonal lines, dealing contact damage. Upon death, they will emit a cross-shaped glow for a brief period, after which they will explode. This explosion sends 4 lines of further explosions in the cardinal directions, which span the length of the room."
   },
   {
     "nazwa": "Maw",
@@ -782,14 +788,14 @@
     "ikona": "/tboi/przeciwnicy/red-maw.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Red Maws float towards Isaac considerably faster than the Maw but do not fire any projectiles. Instead it will fire 4 blood shots in cardinal directions upon death, similar to Suckers. They resemble other types of Maw, but with pink skin and a their mouth stitched shut, as if to prevent blood shots from being fired."
   },
   {
     "nazwa": "Psychic Maw",
     "ikona": "/tboi/przeciwnicy/psychic-maw.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Psychic Maws behave identically to Maws but fire purple homing shots that deal a whole heart of damage. Similar to the Hanger, the Psychic Maw will always spawn with an Eternal Fly circling it. The Psychic Maw resembles a pale floating head with its eyes and mouth stitched shut and a third eye opened in its forehead dripping blood. The third eye emits a small purple fire."
   },
   {
     "nazwa": "Host",
@@ -803,37 +809,43 @@
     "ikona": "/tboi/przeciwnicy/red-host.png",
     "hp": 15,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Red Hosts can replace regular Hosts in any area. Their skull is replaced by a vulnerable red fleshlike material. Unlike normal Hosts, they can still take damage when lowered down, but they will fire 5 blood shots instead of 3."
   },
   {
     "nazwa": "Hard Host",
     "ikona": "/tboi/przeciwnicy/hard-host.png",
     "hp": 15,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Hard Hosts behave similarly to regular Hosts, however instead of firing any shots when they lift their skull, they slam down and fire a tremor towards Isaac. They also deal damage on contact. If Isaac is too close to a Hard Host when it slams down he will be knocked back."
   },
   {
     "nazwa": "Mobile Host",
     "ikona": "/tboi/przeciwnicy/mobile-host.png",
     "hp": 14,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Mobile Hosts function the same as the original hosts but now do contact damage and slowly approach Isaac. They also have a more random delay between the times they open up, unlike the immobile Host which opens up instantly if it has a line of sight to Isaac and has been closed for a set amount of time without being shot."
   },
   {
     "nazwa": "Flesh Mobile Host",
     "ikona": "/tboi/przeciwnicy/flesh-mobile-host.png",
     "hp": 27,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Flesh Mobile Hosts are like Mobile Hosts, but can be damaged at any time and will fire 5 blood shots instead of 3."
   },
   {
     "nazwa": "Floast",
     "ikona": "/tboi/przeciwnicy/floast.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Floasts bounce around diagonally, occasionally opening up to shoot a triple shot like regular Hosts. Unlike regular Hosts, they deal contact damage and resemble Mobile Hosts more in that sense."
   },
-  { "nazwa": "Mushroom", "ikona": null, "hp": 23, "obrazenia": 1, "opis": null },
+  {
+    "nazwa": "Mushroom",
+    "ikona": null,
+    "hp": 23,
+    "obrazenia": 1,
+    "opis": "1up!, passively grants an extra life. Blue Cap, passively grants increased health and tears, while decreasing shot speed. Magic Mushroom, passively grants increases to several attributes. Mini Mush, passively grants increased speed and shot height, while decreasing range and character size."
+  },
   {
     "nazwa": "Hopper",
     "ikona": "/tboi/przeciwnicy/hopper.png",
@@ -846,35 +858,35 @@
     "ikona": "/tboi/przeciwnicy/eggy.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Eggies behave similarly to Hopper jumping around the room and chasing Isaac, spawning white creep wherever it jumps. When it takes enough damage, it spawns a group of Swarm Spiders. After dying its body remains for a few seconds where it can delay the room from being completed."
   },
   {
     "nazwa": "Tainted Hopper",
     "ikona": "/tboi/przeciwnicy/tainted-hopper.png",
     "hp": 80,
     "obrazenia": 2,
-    "opis": null
+    "opis": "Tainted Hoppers are much stronger versions of Hoppers. They jump and twirl consecutively around the room, shooting 4 rings of projectiles, each increasing in size compared to the last. The first ring has 4 projectiles, the second has 6, the third has 8, and the last has 12."
   },
   {
     "nazwa": "Leaper",
     "ikona": "/tboi/przeciwnicy/leaper.png",
     "hp": 25,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Leapers behave similarly to Hoppers, hopping around the room and chasing Isaac when he gets close but can also jump into the air and land on Isaac's position, firing four blood projectiles in the cardinal directions upon landing."
   },
   {
     "nazwa": "Sticky Leaper",
     "ikona": "/tboi/przeciwnicy/sticky-leaper.png",
     "hp": 28,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Sticky Leapers behave like normal Leapers but spawn a pool of Black Creep and spew several tar shots around themselves upon landing."
   },
   {
     "nazwa": "Flaming Hopper",
     "ikona": "/tboi/przeciwnicy/flaming-hopper.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Flaming Hoppers behave similarly to normal Hoppers in that they will randomly hop around the room, following Isaac only when within a certain range. Unlike normal Hoppers, Flaming Hoppers have a larger range of detection and can hop both further and faster."
   },
   {
     "nazwa": "Trite",
@@ -888,9 +900,15 @@
     "ikona": "/tboi/przeciwnicy/ragling.png",
     "hp": 13,
     "obrazenia": 1,
-    "opis": null
+    "opis": "The Ragling is a variant to the normal Trite. They do not leap as often as the Trite and rarely move directly towards Isaac but gains the ability to occasionally shoot 2 magenta-colored orbiting shots."
   },
-  { "nazwa": "Rag man's Ragling", "ikona": null, "hp": 30, "obrazenia": 1, "opis": null },
+  {
+    "nazwa": "Rag man's Ragling",
+    "ikona": null,
+    "hp": 30,
+    "obrazenia": 1,
+    "opis": "Rag Man's Ragling is an alternate version of the Ragling that behave like normal Raglings but have more health. They can be spawned by Rag Man and Rag Mega and used as apart of their attacks. If they were spawned by Rag Man or by Rag Mega, they will leave a pile of Rags upon death, from which Rag Man and Rag Mega can revive them."
+  },
   {
     "nazwa": "Blister",
     "ikona": "/tboi/przeciwnicy/blister.png",
@@ -905,55 +923,61 @@
     "obrazenia": 0,
     "opis": "Boils start as small red spheres that slowly grow to full size. When at their full size, they can spurt out a cluster of blood shots at Isaac, similar to one of Monstro's attacks. Boils decrease in size when hit, but will regenerate to their full size until fully destroyed."
   },
-  { "nazwa": "Gut", "ikona": "/tboi/przeciwnicy/gut.png", "hp": 20, "obrazenia": 0, "opis": null },
+  {
+    "nazwa": "Gut",
+    "ikona": "/tboi/przeciwnicy/gut.png",
+    "hp": 20,
+    "obrazenia": 0,
+    "opis": "Guts can replace Boils or Sacks. Instead of firing disorganized blood shots, Guts fire Ipecac shots at Isaac that do not damage them."
+  },
   {
     "nazwa": "Sack",
     "ikona": "/tboi/przeciwnicy/sack.png",
     "hp": 20,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Sack, a monster that spawns spiders. Walking Sack, a mobile version of the Sack. Fat Sack, a variant of the Fatty. Half Sack, a variant of the Fatty. Bursting Sack, a passive item that makes most spiders passive. Juicy Sack, a passive item that spawns friendly Blue Spiders and leaves a trail of slowing white creep."
   },
   {
     "nazwa": "Blue Boil",
     "ikona": "/tboi/przeciwnicy/blue-boil.png",
     "hp": 20,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Blue Boils are mainly spawned during the Hush fight. They spawn fully swollen and don't need to charge up like regular Boils. Instead of spraying clusters of blood shots, they fire either one blood shot, or three blood shots in a spread towards Isaac. They also regain their health 10x faster than regular Boils if they are damaged but not killed."
   },
   {
     "nazwa": "Gush",
     "ikona": "/tboi/przeciwnicy/gush.png",
     "hp": 20,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Gushes are stationary, being unable to do any form of damage. Instead, they continuously create slowing Black Creep around them that slowly expands infinitely in radius and can cover the entire room if left alive for long enough. Unlike other Boil variants, they do not shrink or regenerate."
   },
   {
     "nazwa": "Pustule",
     "ikona": "/tboi/przeciwnicy/pustule.png",
     "hp": 19,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Pustules are stationary enemies that appear to grow out of the ground, unlike Boils they do not shrink when damaged and instead continuously swell in size. When destroyed at the smallest stages, they explode into a tiny puddle of Red Creep and don't spawn anything."
   },
   {
     "nazwa": "Walking Boil",
     "ikona": "/tboi/przeciwnicy/walking-boil.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Walking Boils act like Boils, but randomly wander around the room, can deal half a heart of contact damage, and don't shrink or regenerate."
   },
   {
     "nazwa": "Walking Gut",
     "ikona": "/tboi/przeciwnicy/walking-gut.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Walking Guts act like Guts, but randomly wander around the room, can deal half a heart of contact damage, and don't shrink and regenerate."
   },
   {
     "nazwa": "Walking Sack",
     "ikona": "/tboi/przeciwnicy/walking-sack.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Walking Sacks act like Sacks, but randomly wander around the room, can deal half a heart of contact damage, and don't shrink or regenerate."
   },
   {
     "nazwa": "Brain",
@@ -967,23 +991,29 @@
     "ikona": "/tboi/przeciwnicy/black-globin-s-head.png",
     "hp": 20,
     "obrazenia": 2,
-    "opis": null
+    "opis": "Black Globin's Heads behave like Brains, but they target Isaac directly, chasing him."
   },
   {
     "nazwa": "Festering Guts",
     "ikona": "/tboi/przeciwnicy/festering-guts.png",
     "hp": 22,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Festering Guts are spawned exclusively by Gutted Fatty. They travel around the room randomly in cardinal directions and occasionally spawn a Charger."
   },
   {
     "nazwa": "Poison Mind",
     "ikona": "/tboi/przeciwnicy/poison-mind.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Poison Minds behave like regular Brains, but they slide diagonally and leave a trail of Green Creep. Poison Minds float, passing over obstacles, and explode when killed."
   },
-  { "nazwa": "Pon", "ikona": "/tboi/przeciwnicy/pon.png", "hp": 20, "obrazenia": 1, "opis": null },
+  {
+    "nazwa": "Pon",
+    "ikona": "/tboi/przeciwnicy/pon.png",
+    "hp": 20,
+    "obrazenia": 1,
+    "opis": "Pons hop around erratically leaving Red Creep wherever they land. If close to Isaac then they will hop towards Isaac chasing him similarly to Hoppers. They can spawn with a paired Brainless Knight in which killing them is required to kill their corresponding Brainless Knight. A Pon and a Brainless Knight pair will always spawn when Loose Knight is killed."
+  },
   {
     "nazwa": "Gyro",
     "ikona": "/tboi/przeciwnicy/gyro.png",
@@ -996,7 +1026,7 @@
     "ikona": "/tboi/przeciwnicy/grilled-gyro.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Grilled Gyros function relatively the same to normal Gyros, but they move at a faster pace and leave some damaging flames in its trail, but only when chasing Isaac."
   },
   {
     "nazwa": "Mr. Maw",
@@ -1010,21 +1040,21 @@
     "ikona": "/tboi/przeciwnicy/mr-red-maw.png",
     "hp": 25,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Mr. Red Maw behaves similarly to Mr. Maw, but moves quicker and has a Red Maw as its head instead of a regular Maw. If the Red Maw segment is killed first, it will release four shots in the cardinal directions like a regular Red Maw. It can also occasionally separate at will."
   },
   {
     "nazwa": "Swinger",
     "ikona": "/tboi/przeciwnicy/swinger.png",
     "hp": 38,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Swingers behave differently to its variants as rather than firing its head, the Swinger's head is constantly detached and spins around its base clockwise in a fixed radius, while slowly sliding towards Isaac. The cord connecting the head and body of a Swinger isn't solid and does not deal damage."
   },
   {
     "nazwa": "Mr. Mine",
     "ikona": "/tboi/przeciwnicy/mr-mine.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Mr. Mines are chained to pits and will attempt to launch themselves at Isaac if he comes near. They will occasionally burrow and pop up in another pit, often near Isaac. Upon death, they fire six shots in all directions. (Is Immune to poison? Toxic shock has no effect)"
   },
   {
     "nazwa": "Baby",
@@ -1038,7 +1068,7 @@
     "ikona": "/tboi/przeciwnicy/angelic-baby.png",
     "hp": 25,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Angelic Babies are variants of Babies that fire 3 projectiles at Isaac in a spread instead of 1. They also teleport more often, usually near Isaac."
   },
   {
     "nazwa": "Angelic Baby (small)",
@@ -1052,22 +1082,28 @@
     "ikona": "/tboi/przeciwnicy/wrinkly-baby.png",
     "hp": 25,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Wrinkly Babies slowly move towards Isaac similar to regular Babies, but while approaching him, they may dash towards him at high speed until they hit either a wall or Isaac and then subsequently fire three projectiles in his direction once they stop dashing."
   },
-  { "nazwa": "Imp", "ikona": "/tboi/przeciwnicy/imp.png", "hp": 25, "obrazenia": 1, "opis": null },
+  {
+    "nazwa": "Imp",
+    "ikona": "/tboi/przeciwnicy/imp.png",
+    "hp": 25,
+    "obrazenia": 1,
+    "opis": "Imps slowly float towards Isaac, occasionally firing 5 projectiles at Isaac in quick succession and can also occasionally randomly teleport around the room. They move slightly to try to avoid Isaac's tears."
+  },
   {
     "nazwa": "Unborn",
     "ikona": "/tboi/przeciwnicy/unborn.png",
     "hp": 32,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Unborn fly towards Isaac in a circular pattern, and will periodically teleport near Isaac on another side of him."
   },
   {
     "nazwa": "Baby Begotten",
     "ikona": "/tboi/przeciwnicy/baby-begotten.png",
     "hp": 18,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Baby Begottens float toward Isaac, attempting to avoid Isaac's shots as it approaches. After getting close to him, it lines itself up with him in the closest cardinal direction and fires a thin short-range Brimstone laser at him, propelling itself in the opposite direction."
   },
   {
     "nazwa": "Vis",
@@ -1081,35 +1117,35 @@
     "ikona": "/tboi/przeciwnicy/double-vis.png",
     "hp": 25,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Added in the Wrath of the Lamb DLC for the original Binding of Isaac, the Double Vis appears similar to the normal Vis but has blood around its openings and a vertical gash in its back. They function identically to regular Vis, but they also fire a Brimstone beam from behind."
   },
   {
     "nazwa": "Chubber",
     "ikona": "/tboi/przeciwnicy/chubber.png",
     "hp": 25,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Chubbers, like Double Vis, were added in the Wrath of the Lamb DLC for the original The Binding of Isaac. They look identical to a Vis but have a maggot as their head. Instead of shooting the Brimstone beam that regular Vis and Double Vis have, the Chubber shoots a Charger, similar to the Little Chubby Familiar, which can go through rocks."
   },
   {
     "nazwa": "Scarred Double Vis",
     "ikona": "/tboi/przeciwnicy/scarred-double-vis.png",
     "hp": 22,
     "obrazenia": 1,
-    "opis": null
+    "opis": "The Scarred Double Vis behaves identically to the normal Vis but fires four Brimstone beams in the cardinal directions."
   },
   {
     "nazwa": "Vis Versa",
     "ikona": "/tboi/przeciwnicy/vis-versa.png",
     "hp": 25,
     "obrazenia": 1,
-    "opis": null
+    "opis": "The Vis Versa behaves identically to Vis, but fires a purple homing Brimstone at Isaac instead. In Gehenna, their appearance becomes black instead of white, and their Brimstone becomes red."
   },
   {
     "nazwa": "Evis",
     "ikona": "/tboi/przeciwnicy/evis.png",
     "hp": 40,
     "obrazenia": 1,
-    "opis": null
+    "opis": "The Evis behaves similarly in movement to Vis and its variants, but launches a string of guts at Isaac instead of Brimstone. If Isaac is hit, he doesn't immediately take damage, but is instead held by the whip and can't get any further away from the Evis while the cord gradually shrinks as Isaac is pulled in."
   },
   {
     "nazwa": "Guts",
@@ -1123,21 +1159,21 @@
     "ikona": "/tboi/przeciwnicy/scarred-guts.png",
     "hp": 28,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Scarred Guts are paler versions of the regular Guts. They have a chance of replacing normal Guts in the Scarred Womb. They behave identically to regular Guts but leave behind a trail of damaging Red Creep and move slightly faster than their regular counterparts."
   },
   {
     "nazwa": "Slog",
     "ikona": "/tboi/przeciwnicy/slog.png",
     "hp": 28,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Slogs roll around, while leaving a trail of slowing Black Creep. However, when Isaac is in their line of sight, they charge at him. While Guts and Scarred Guts rotate counter-clockwise, Slogs rotate clockwise.clear"
   },
   {
     "nazwa": "Cyst",
     "ikona": "/tboi/przeciwnicy/cyst.png",
     "hp": 25,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Cysts behave like normal Guts but they will occasionally shoot 1 blood shot towards Isaac if he is close enough. Two of them will be spawned if a Dead Meat is killed."
   },
   {
     "nazwa": "Knight",
@@ -1151,42 +1187,42 @@
     "ikona": "/tboi/przeciwnicy/selfless-knight.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Selfless Knights are considerably faster than regular Knights but otherwise function the same. Rather than an exposed brain, they have Isaac's face on the backs of their heads."
   },
   {
     "nazwa": "Loose Knight",
     "ikona": "/tboi/przeciwnicy/loose-knight.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Loose Knights are similar to ordinary Knights, but move slower and separates into a Brainless Knight and Pon when killed."
   },
   {
     "nazwa": "Brainless Knight",
     "ikona": "/tboi/przeciwnicy/brainless-knight.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Brainless Knights are a variant of Knight created when a Loose Knight dies. They alternate between running around the room along the cardinal directions and aimlessly walking in circles, charging at Isaac when he gets in line of sight. It dies when its corresponding Pon dies; otherwise, they are invincible."
   },
   {
     "nazwa": "Black Knight",
     "ikona": "/tboi/przeciwnicy/black-knight.png",
     "hp": 30,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Black Knights are a variant of Knight that have slightly higher health and will walk erratically around the room, charging at Isaac if he is within line of sight. When charging, they accelerate rapidly, sending waves of fire in the cardinal directions and becoming stunned momentarily after colliding with a wall or obstacle."
   },
   {
     "nazwa": "Floating Knight",
     "ikona": "/tboi/przeciwnicy/floating-knight.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Floating Knights are similar to ordinary Knights but are slightly slower and can fly over obstacles."
   },
   {
     "nazwa": "Bone Knight",
     "ikona": "/tboi/przeciwnicy/bone-knight.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Bone Knights are similar to ordinary Knights but leaves behind a short-lasting trail of damaging Red Creep. They charge faster than an ordinary Knight, but not as fast as the Selfless Knight. Bone Knights are the only variant of Knights that are susceptible to knockback both from the front and from the back."
   },
   {
     "nazwa": "Whipper",
@@ -1200,14 +1236,14 @@
     "ikona": "/tboi/przeciwnicy/snapper.png",
     "hp": 35,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Snappers are much more dangerous versions of the Whipper. They possess a much longer, fleshy whip that can extend across the room, at the minor cost of decreased attack width."
   },
   {
     "nazwa": "Flagellant",
     "ikona": "/tboi/przeciwnicy/flagellant.png",
     "hp": 42,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Flagellants are even more mutilated versions of the Whipper. They wander around the room in straight lines, charging at Isaac relentlessly if he lines up with them. However, they constantly swipe their whips back and forth as they charge, damaging Isaac if he gets caught and deflecting tears much more frequently than regular Whippers."
   },
   {
     "nazwa": "Dople",
@@ -1221,7 +1257,7 @@
     "ikona": "/tboi/przeciwnicy/evil-twin.png",
     "hp": 20,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Evil Twins shoot three spread blood shots instead of one but have a reduced fire rate. Also, due to the fact that they have flight, they cannot be hurt by spikes."
   },
   {
     "nazwa": "Leech",
@@ -1235,21 +1271,21 @@
     "ikona": "/tboi/przeciwnicy/kamikaze-leech.png",
     "hp": 25,
     "obrazenia": 2,
-    "opis": null
+    "opis": "Kamikaze Leeches are a unique type of Leech with an eye in their mouth. They are introduced in the vanilla content of The Binding of Isaac: Rebirth and commonly found in Sheol but can appear elsewhere such as Necropolis and Dark Room."
   },
   {
     "nazwa": "Holy Leech",
     "ikona": "/tboi/przeciwnicy/holy-leech.png",
     "hp": 25,
     "obrazenia": 2,
-    "opis": null
+    "opis": "Holy Leeches are white-colored variants of the Kamikaze Leech commonly found in the Cathedral, but can occasionally appear in Utero. These behave similarly to Kamikaze Leeches, but have an Eternal Fly circling them. Because the Holy Leech explodes upon death, the Eternal Fly will die instantly and only serves to block projectiles."
   },
   {
     "nazwa": "Adult Leech",
     "ikona": "/tboi/przeciwnicy/adult-leech.png",
     "hp": 90,
     "obrazenia": 2,
-    "opis": null
+    "opis": "Adult Leeches are bigger and stronger versions of the Leech added in The Binding of Isaac: Repentance DLC. They are characterized by their large size and much higher amount of health in comparison to typical Leeches. They behave like Leeches but will only charge horizontally and release a ring of 12 blood shots in all directions upon colliding with a wall."
   },
   {
     "nazwa": "Lump",
@@ -1263,7 +1299,7 @@
     "ikona": "/tboi/przeciwnicy/tar-boy.png",
     "hp": 55,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Tar Boys occasionally fire a short-ranged spray of shots towards Isaac that leaves behind slowing Black Creep. It can also burrow underground and resurface in a different part of the room, much like the Lump. However, it is only able to resurface in areas that have Black Creep and it will prefer to resurface close to Isaac."
   },
   {
     "nazwa": "MemBrain",
@@ -1277,28 +1313,28 @@
     "ikona": "/tboi/przeciwnicy/mama-guts.png",
     "hp": 62,
     "obrazenia": 2,
-    "opis": null
+    "opis": "Mama Guts are large versions of the regular Guts. They slowly move around the room, occasionally hopping and firing 8 large blood shots in all directions. Upon death, it splits into 2 Guts."
   },
   {
     "nazwa": "Dead Meat",
     "ikona": "/tboi/przeciwnicy/dead-meat.png",
     "hp": 62,
     "obrazenia": 2,
-    "opis": null
+    "opis": "Dead Meats are bigger versions of the Cysts that move around the room slowly, occasionally hopping which fires 8 large blood shots in all directions that bounce off the walls like Rubber Cement. Upon death, they split into 2 Cysts."
   },
   {
     "nazwa": "Dinga",
     "ikona": "/tboi/przeciwnicy/dinga.png",
     "hp": 62,
     "obrazenia": 2,
-    "opis": null
+    "opis": "Dingas are large Dips that behave similarly to MemBrains. Dingas slide around the room aimlessly and occasionally hop, spawning Dips or shooting poop shots in 8 directions. Splits into two Squirts when killed."
   },
   {
     "nazwa": "Mega Clotty",
     "ikona": "/tboi/przeciwnicy/mega-clotty.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Mega Clotties slowly move around the room, occasionally hopping. When one hops, it will usually fire six blood shots around itself, but it can also alternatively leave a puddle of Red Creep near itself. Even more rarely, the hop may spawn a Clotty or a collapsed Globin. Upon death, it’ll split into two Clotty."
   },
   {
     "nazwa": "Para-Bite",
@@ -1312,7 +1348,7 @@
     "ikona": "/tboi/przeciwnicy/scarred-para-bite.png",
     "hp": 35,
     "obrazenia": 2,
-    "opis": null
+    "opis": "Scarred Para-Bites are a variant of Para-Bites added in The Binding of Isaac: Afterbirth DLC. They behave similarly to regular Para-Bites and occasionally fire a short-ranged blood shot towards Isaac."
   },
   {
     "nazwa": "Fred",
@@ -1340,7 +1376,7 @@
     "ikona": "/tboi/przeciwnicy/holy-eye.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Holy Eyes are a unique variety of eye added in The Binding of Isaac: Repentance. They are only encountered on Cathedral. The Holy Eye is a stationary enemy, much like other Eyes. Every few seconds, it summons four beams of light (similar to the beams summoned by Crack the Sky) near Isaac's position, with shadows telegraphing where the beams will strike."
   },
   {
     "nazwa": "Embryo",
@@ -1361,14 +1397,14 @@
     "ikona": "/tboi/przeciwnicy/big-spider.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Big Spiders look like regular Spiders, but with a large black abdomen attached. They behave in the same way as the regular Spiders, having the same movement speed and erratic behavior. However, they have over triple the health of regular Spiders, and upon death, they will split into two regular Spiders. They will not split if they are killed by an explosion."
   },
   {
     "nazwa": "Strider",
     "ikona": "/tboi/przeciwnicy/strider.png",
     "hp": 6,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Striders are a type of spider that can only spawn in Downpour and special rooms in Dross. They glide on the water towards Isaac in short bursts and can swim across flooded gaps. Striders replace all Spider spawns in the Downpour and Dross stages."
   },
   {
     "nazwa": "Rock Spider",
@@ -1382,21 +1418,21 @@
     "ikona": "/tboi/przeciwnicy/tinted-rock-spider.png",
     "hp": 22,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Tinted Rock Spiders are similar to Rock Spiders, however they have nearly twice as much health and move much faster. When killed, instead of transforming into a regular Spider, they drop 1 Soul Heart upon death. They are characterized by the \"X\" on their rock, which is similar to Tinted Rocks."
   },
   {
     "nazwa": "Coal Spider",
     "ikona": "/tboi/przeciwnicy/coal-spider.png",
     "hp": 15,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Coal Spiders behave very closely to Rock Spiders, but they skitter at a faster speed due to being on fire. Upon death, it leaves a hot rock on the ground that despawns after several seconds. They can be shot to make them despawn faster."
   },
   {
     "nazwa": "Swarm Spider",
     "ikona": "/tboi/przeciwnicy/swarm-spider.png",
     "hp": 4,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Swarm Spiders act much like normal Spiders but are much smaller and tend to come in much larger groups. They also hop and flash a bright yellow. They are spawned by Eggy in large number when one dies. Swarm Spiders cannot be damaged by Fire Places."
   },
   {
     "nazwa": "Keeper",
@@ -1417,7 +1453,7 @@
     "ikona": "/tboi/przeciwnicy/butt-slicker.png",
     "hp": 16,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Butt Slickers when encountered individually, act identically to Buttlickers, but unlike their counterparts they can group together and stick to other Butt Slickers. When grouped together they begin to drag themselves towards Isaac."
   },
   {
     "nazwa": "Hanger",
@@ -1440,7 +1476,13 @@
     "obrazenia": null,
     "opis": "The Mask + Heart is an enemy commonly found in Necropolis, uncommonly in Womb/Utero, and rarely in Catacombs. Hearts may be found on their own in The Womb/Utero as well."
   },
-  { "nazwa": "Mask II + 1/2 Heart", "ikona": null, "hp": null, "obrazenia": null, "opis": null },
+  {
+    "nazwa": "Mask II + 1/2 Heart",
+    "ikona": null,
+    "hp": null,
+    "obrazenia": null,
+    "opis": "The Mask II + 1/2 Heart is a more advanced variation of Mask + Heart that was introduced in The Binding of Isaac: Repentance. While Mask II behaves very similarly to the default Mask most of the time, the 1/2 Heart that accompanies it behaves drastically different. As the name implies, the heart is split into 2 individual halves."
+  },
   {
     "nazwa": "Baby Long Legs",
     "ikona": "/tboi/przeciwnicy/baby-long-legs.png",
@@ -1453,7 +1495,7 @@
     "ikona": "/tboi/przeciwnicy/small-baby-long-legs.png",
     "hp": 12,
     "obrazenia": 1,
-    "opis": null
+    "opis": "The Small Baby Long Legs is a tiny variant of Baby Long Legs that simultaneously spawns Sacks along with a small puddle of slowing White Creep. The Sacks it spawns start at around half health and take a while to regenerate fully."
   },
   {
     "nazwa": "Crazy Long Legs",
@@ -1467,7 +1509,7 @@
     "ikona": "/tboi/przeciwnicy/small-crazy-long-legs.png",
     "hp": 12,
     "obrazenia": 1,
-    "opis": null
+    "opis": "The Small Crazy Long Legs is a tiny variant of the Crazy Long Legs. It runs slightly slower towards Isaac and stops to spit medium range 4 blood shots in the diagonal directions. Category:Spider Monsters"
   },
   {
     "nazwa": "Fatty",
@@ -1481,91 +1523,91 @@
     "ikona": "/tboi/przeciwnicy/pale-fatty.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Pale Fatties behave like Fatties, but will also spit out 6 blood shots in all directions when farting. When killed, they have a chance to become a Blubber."
   },
   {
     "nazwa": "Flaming Fatty",
     "ikona": "/tboi/przeciwnicy/flaming-fatty.png",
     "hp": 18,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Flaming Fatties behave identically to regular Fatties but have a chance to leave behind a damaging flame upon death. They can also spawn a damaging flame by farting. Unlike other flaming enemies, they are not immune to damage from fire sources, and regular Fatties will not turn into Flaming Fatties upon contact with any source of fire."
   },
   {
     "nazwa": "Fat Sack",
     "ikona": "/tboi/przeciwnicy/fat-sack.png",
     "hp": 16,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Fat Sacks walk slowly towards Isaac and can leap offscreen and attempt to land on Isaac, shooting 6 bullets in all directions and leaving a puddle of Red Creep behind when it lands. Like Pale Fatties, they have a chance to turn into a Blubber when killed. These monsters behave very similar to Leapers."
   },
   {
     "nazwa": "Blubber",
     "ikona": "/tboi/przeciwnicy/blubber.png",
     "hp": 16,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Blubbers walk aimlessly around the room, randomly spewing a cluster of blood shots in all directions. When killed, there is a chance for it to become a Half Sack."
   },
   {
     "nazwa": "Half Sack",
     "ikona": "/tboi/przeciwnicy/half-sack.png",
     "hp": 10,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Half Sacks walk aimlessly around the room and leave behind a trail of Red Creep."
   },
   {
     "nazwa": "Conjoined Fatty",
     "ikona": "/tboi/przeciwnicy/conjoined-fatty.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Conjoined Fatties slowly walk towards Isaac and occasionally pause to fart out a line of damaging Green Creep. There is a chance that upon death, it will turn into a regular Fatty. If killed while farting, the Creep line won't grow to its full length. It will instead stop spreading the instant the Conjoined Fatty is killed."
   },
   {
     "nazwa": "Blue Conjoined Fatty",
     "ikona": "/tboi/przeciwnicy/blue-conjoined-fatty.png",
     "hp": 60,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Blue Conjoined Fatties slowly walk towards Isaac and occasionally fart out a homing Ipecac shot at Isaac. Unlike normal Conjoined Fatties, they won't turn into any kind of Fatty upon death."
   },
   {
     "nazwa": "Stoney",
     "ikona": "/tboi/przeciwnicy/stoney.png",
     "hp": 50,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Stoneys walk towards Isaac while blocking his shots. They stop and catch their breath after chasing Isaac for a few seconds. They do not do contact damage but will often push Isaac around. They are invincible, but die when the room is cleared, similar to the Death's Head enemies. Stoneys are unlocked by defeating The Lamb for the first time."
   },
   {
     "nazwa": "Cross Stoney",
     "ikona": "/tboi/przeciwnicy/cross-stoney.png",
     "hp": 50,
     "obrazenia": 0,
-    "opis": null
+    "opis": "A Cross Stoney is a type of Stoney added in Booster Pack #5. These new enemies act like a hybridization of a Stoney and a Cross Stone Shooter; they constantly chase the player like a Stoney but will shoot 4 shots outwards vertically and diagonally like a Cross Grimace."
   },
   {
     "nazwa": "Bubbles",
     "ikona": "/tboi/przeciwnicy/bubbles.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Bubbles slowly walk towards Isaac like regular Fatties and will occasionally fart, sending out a burst of short range projectiles in all directions. Hitting a Bubbles will cause it to shoot a projectile in a random direction. Upon death, they will burst into a geyser of projectiles that rain down in a large radius."
   },
   {
     "nazwa": "Quakey",
     "ikona": "/tboi/przeciwnicy/quakey.png",
     "hp": 45,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Quakeys walk slowly towards Isaac and occasionally attempt to jump on Isaac, shooting out 8 rock shots when they hit the ground and causing rocks to fall from the ceiling. Isaac will take knockback if he is standing too close to a Quakey's zone of impact."
   },
   {
     "nazwa": "Big Bony",
     "ikona": "/tboi/przeciwnicy/big-bony.png",
     "hp": 50,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Big Bonies walk towards towards Isaac, and occasionally fire a large bone projectile that bounces off of objects and can be destroyed."
   },
   {
     "nazwa": "Gutted Fatty",
     "ikona": "/tboi/przeciwnicy/gutted-fatty.png",
     "hp": 80,
     "obrazenia": 2,
-    "opis": null
+    "opis": "Gutted Fatties lumber around the room aimlessly and occasionally shoot out a pile of Festering Guts downwards leaving a trail of Red Creep. They can spawn a maximum of 3. Every time a third of the Gutted Fatty's health is depleted, it spawns a Gutted Fatty Eye. These eyes normally float around the Gutted Fatty they emerged from and block shots."
   },
   {
     "nazwa": "Gutted Fatty Eye",
@@ -1579,7 +1621,7 @@
     "ikona": "/tboi/przeciwnicy/peeping-fatty.png",
     "hp": 60,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Peeping Fatties slowly walk towards Isaac and occasionally fart out 6 blood shots in all directions. They are unique in that they have two indestructible Peeping Fatty Eyes that float around them that are out of their sockets and attached by muscles."
   },
   {
     "nazwa": "Peeping Fatty Eye",
@@ -1593,28 +1635,28 @@
     "ikona": "/tboi/przeciwnicy/bloaty.png",
     "hp": 26,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Bloaties, unlike other Fatties, seem to be blind and do not chase Isaac nor target him. They lumber in random directions and periodically spit out a line of Green Creep and arcing projectiles in the direction they are facing or to its either side, horizontally or diagonally. The initial creep shot can hit Isaac even if he has flight."
   },
   {
     "nazwa": "Vis Fatty",
     "ikona": "/tboi/przeciwnicy/vis-fatty.png",
     "hp": 40,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Vis Fatties spawn with a Fetal Demon attached to their slit abdomens. The Fatty will slowly walk towards the player while the Fetal Demon occasionally lunges towards Isaac if he gets too close. As it is tethered, the Demon has a limited range of movement."
   },
   {
     "nazwa": "Fetal Demon",
     "ikona": "/tboi/przeciwnicy/fetal-demon.png",
     "hp": 40,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Fetal Demons usually spawn tethered to a Vis Fatty's slit abdomen and occasionally makes short lunges towards Isaac if he gets close. They can also be propelled a longer distance when the Vis Fatty farts. If the Vis Fatty is killed, they will chase Isaac, similarly to Gemini Suture."
   },
   {
     "nazwa": "Shady",
     "ikona": "/tboi/przeciwnicy/shady.png",
     "hp": 80,
     "obrazenia": 2,
-    "opis": null
+    "opis": "Shadies follow Isaac at a faster pace than regular Fatties and have two attacks which they perform: They can shoot a large black and red projectile towards Isaac which releases accelerating shots perpendicular to itself while traveling. Upon colliding with a wall, the large projectile creates a ring of shots that spread outward."
   },
   {
     "nazwa": "Death's Head",
@@ -1628,42 +1670,42 @@
     "ikona": "/tboi/przeciwnicy/dank-death-s-head.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Dank Death's Heads behave the same as regular Death's Heads, but are vulnerable and must be killed to clear a room."
   },
   {
     "nazwa": "Cursed Death's Head",
     "ikona": "/tboi/przeciwnicy/cursed-death-s-head.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Cursed Death's Heads behave the same as regular Death's Heads but have a purple aura around them. If Isaac enters the aura, he will be inflicted with the fear status effect for around two seconds, unable to fire tears for the duration of the effect."
   },
   {
     "nazwa": "Brimstone Death's Head",
     "ikona": "/tboi/przeciwnicy/brimstone-death-s-head.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Brimstone Death's Heads behave the same as regular Death's Heads in terms of movement. When Isaac comes into their line of sight, they will pause for a moment with a faint laser as a slight warning of where they are about to fire, and proceed to blast a beam of Brimstone."
   },
   {
     "nazwa": "Redskull",
     "ikona": "/tboi/przeciwnicy/redskull.png",
     "hp": 80,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Redskulls act similar to Death's Heads except that they can release out a ring of fire that damages Isaac and can also ignite certain enemies like the Rock Spider. And much like the Flesh Death's Heads, they can be killed before clearing the room."
   },
   {
     "nazwa": "Flesh Death's Head",
     "ikona": "/tboi/przeciwnicy/flesh-death-s-head.png",
     "hp": 30,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Flesh Death's Heads are vulnerable, but do not need to be killed to clear a room. They release six blood shots upon death or upon clearing the room."
   },
   {
     "nazwa": "Dusty Death's Head",
     "ikona": "/tboi/przeciwnicy/dusty-death-s-head.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Dusty Death's Heads behave uniquely to other Death's Heads- they continuously travel across the screen oscillating up and down, going off-screen and reentering on the opposite side. They are invulnerable and are destroyed once the room is cleared."
   },
   {
     "nazwa": "Ultra Death Head",
@@ -1684,7 +1726,7 @@
     "ikona": "/tboi/przeciwnicy/mom-s-dead-hand.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Mom's Dead Hands behave similarly to regular Mom's Hands. When they land, they send out 3-4 lines of rock waves in the cardinal directions that can curve slightly and will destroy most obstacles and damage most monsters in its path. Upon death, they spawn 2-3 Spiders. Unlike normal Mom's Hands, they can't grab and teleport Isaac."
   },
   {
     "nazwa": "Level 2 Fly",
@@ -1698,14 +1740,14 @@
     "ikona": "/tboi/przeciwnicy/full-fly.png",
     "hp": 10,
     "obrazenia": 1,
-    "opis": null
+    "opis": "The Full Fly behaves similarly to the Level 2 Fly and Red Boom Fly combined: it chases Isaac and shoots 6 blood shots in all directions upon death. Full Flies do not actively run into Isaac, but will orbit around him closely until he moves, which may end up causing him to run into the fly."
   },
   {
     "nazwa": "Level 2 Willo",
     "ikona": "/tboi/przeciwnicy/level-2-willo.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Level 2 Willos are stronger versions of the Willo that orbit enemies rather than Isaac; however, when there are no enemies left, they will chase Isaac and, upon catching up, attempt to orbit in a tight ring around him and maintain that distance from him while shooting at him, just like their weaker counterparts."
   },
   {
     "nazwa": "Level 2 Spider",
@@ -1719,14 +1761,14 @@
     "ikona": "/tboi/przeciwnicy/ticking-spider.png",
     "hp": 13,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Ticking Spiders act like Level 2 Spiders, but explode upon death."
   },
   {
     "nazwa": "Migraine",
     "ikona": "/tboi/przeciwnicy/migraine.png",
     "hp": 16,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Migraines act like Level 2 Spiders, but move with slower speed and burst into 3 Troll bombs."
   },
   {
     "nazwa": "Dip",
@@ -1735,22 +1777,34 @@
     "obrazenia": 1,
     "opis": "Dips move by making small dashes in random directions and are commonly found on most floors. They can also be spawned by some bosses, like Dingle and Mega Fatty, as well as enemies like Squirts and Dingas."
   },
-  { "nazwa": "Corn", "ikona": "/tboi/przeciwnicy/corn.png", "hp": 3, "obrazenia": 1, "opis": null },
+  {
+    "nazwa": "Corn",
+    "ikona": "/tboi/przeciwnicy/corn.png",
+    "hp": 3,
+    "obrazenia": 1,
+    "opis": "Like Dips, Corns dash in random directions. Their dashes are faster and longer, but they have less health."
+  },
   {
     "nazwa": "Brownie Corn",
     "ikona": "/tboi/przeciwnicy/brownie-corn.png",
     "hp": 3,
     "obrazenia": 1,
-    "opis": null
+    "opis": "A Brownie Corn is an alternate version of the Corn mainly spawned by the Turdlings, Dangle and Brownie, though they can also rarely be found in some rooms. Despite the different appearance, they behave exactly like normal Corns."
   },
   {
     "nazwa": "Big Corn",
     "ikona": "/tboi/przeciwnicy/big-corn.png",
     "hp": 6,
     "obrazenia": 1,
-    "opis": null
+    "opis": "A Big Corn is an alternate version of the Dip with twice as much HP that can also travel over flooded pits. When it dies, it launches the corn lodged in its head toward Isaac, predicting his movements and aiming for where he is moving."
   },
-  { "nazwa": "Drip", "ikona": "/tboi/przeciwnicy/drip.png", "hp": 3, "obrazenia": 1, "opis": null },
+  {
+    "nazwa": "Drip",
+    "ikona": "/tboi/przeciwnicy/drip.png",
+    "hp": 3,
+    "obrazenia": 1,
+    "opis": "A Drip is an alternate version of the Dip that rolls around in diagonal directions and can travel over flooded pits. They are also spawned by Splurts upon death and by Clog during battle."
+  },
   {
     "nazwa": "Wizoob",
     "ikona": "/tboi/przeciwnicy/wizoob.png",
@@ -1763,7 +1817,7 @@
     "ikona": "/tboi/przeciwnicy/red-ghost.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Red Ghosts behave the same as Wizoobs, but fire a Brimstone beam instead of spectral shots. context clearclear"
   },
   {
     "nazwa": "Squirt",
@@ -1777,21 +1831,21 @@
     "ikona": "/tboi/przeciwnicy/dank-squirt.png",
     "hp": 15,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Dank Squirts dash towards Isaac, leaving a trail of slowing Black Creep. Upon death, they spawn two Clots."
   },
   {
     "nazwa": "Hardy",
     "ikona": "/tboi/przeciwnicy/hardy.png",
     "hp": 42,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Hardies are a rocky variant of Squirts. They charge at Isaac, and if they run into an obstacle/wall, a piece of them breaks off and rock projectiles are fired outwards. A Hardy will destroy most breakable obstacles on collision and is also able to reveal secret rooms if it hits the entrance of one. After running into rocks/walls three times, a Hardy will die."
   },
   {
     "nazwa": "Splurt",
     "ikona": "/tboi/przeciwnicy/splurt.png",
     "hp": 15,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Splurts are a variant of Squirts that dash twice towards Isaac rather than just once and can travel over flooded pits. Upon death, they spawn two Drips."
   },
   {
     "nazwa": "Cod Worm",
@@ -1812,7 +1866,7 @@
     "ikona": "/tboi/przeciwnicy/black-maw.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Black Maws behave like Oob but spawns Leeches instead. If Isaac lines up horizontal to it, it very quickly charges in his direction and then doubles back, charging back to its original position. It explodes upon death."
   },
   {
     "nazwa": "Skinny",
@@ -1826,14 +1880,14 @@
     "ikona": "/tboi/przeciwnicy/rotty.png",
     "hp": 16,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Rotties are paler versions of Skinnies that can turn into a Bony or several Attack Fly after being killed."
   },
   {
     "nazwa": "Crispy",
     "ikona": "/tboi/przeciwnicy/crispy.png",
     "hp": 12,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Crispies are burned Skinny variants. They initially start slow but will turn darker in color until it becomes black and begin to chase Isaac at a much faster pace as they take damage. They also take damage regardless of Isaac every few moments."
   },
   {
     "nazwa": "Bony",
@@ -1847,35 +1901,35 @@
     "ikona": "/tboi/przeciwnicy/holy-bony.png",
     "hp": 60,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Holy Bonies are larger and tougher versions of Bonies that were introduced in The Binding of Isaac: Repentance. Its bone projectiles travel in an arc and create a blue flame at its landing spot that blocks shots, deals contact damage, and despawns after some time."
   },
   {
     "nazwa": "Black Bony",
     "ikona": "/tboi/przeciwnicy/black-bony.png",
     "hp": 8,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Black Bonies are harder versions of Bonies that behave identically to regular Bonies, but fire three bones in a row and explode upon death. The first bone will be fired when Isaac lines up, but the second and third one may be fired at an angle towards him."
   },
   {
     "nazwa": "Revenant",
     "ikona": "/tboi/przeciwnicy/revenant.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Revenants are variants of Bonies that appear in the Mausoleum and Gehenna. Revenants wander around the room randomly, occasionally stopping to shoot a stream of flames at Isaac. These flames have limited range, and are blocked by obstacles."
   },
   {
     "nazwa": "Quad Revenant",
     "ikona": "/tboi/przeciwnicy/quad-revenant.png",
     "hp": 35,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Quad Revenants act similarly to normal Revenants, but they shoot a 4-way flamethrower that rotates slowly."
   },
   {
     "nazwa": "Maze Roamer",
     "ikona": "/tboi/przeciwnicy/maze-roamer.png",
     "hp": 12,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Maze Roamers are Gehenna-exclusive variants of Bonies that shoot eyeballs at Isaac when lined up. They always spawn in pairs, with their movements and attacks being mirrored between each other. When one dies, the other becomes angry and begins directly pursuing Isaac. The opposite Maze Roamer can be determined by its blood stained rags and mirrored eye socket."
   },
   {
     "nazwa": "Homunculus",
@@ -1889,7 +1943,7 @@
     "ikona": "/tboi/przeciwnicy/begotten.png",
     "hp": 60,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Begottens behave like Homunculi but do not spawn any Red Creep. When it detaches from the wall or Obstacle, it fires 6 blood shots in all directions, turns the room dark and becomes invisible. Attacking it causes it to temporarily become visible."
   },
   {
     "nazwa": "Tumor",
@@ -1903,28 +1957,28 @@
     "ikona": "/tboi/przeciwnicy/planetoid.png",
     "hp": 28,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Planetoids are a variant of Tumor that move faster than their variants and fire blood shots that orbit them, similar to effect of Tiny Planet. When they take damage, they fire shots more frequently and have a chance to fart, releasing their orbiting projectiles out of orbit and let them fly off while starting a new ring."
   },
   {
     "nazwa": "Camillo Jr.",
     "ikona": "/tboi/przeciwnicy/camillo-jr.png",
     "hp": 32,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Camillo Jr. behave exactly like Tumors, but fire Technology lasers at Isaac. Their lasers may also hit enemies for 8 damage."
   },
   {
     "nazwa": "Psy Tumor",
     "ikona": "/tboi/przeciwnicy/psy-tumor.png",
     "hp": 40,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Psy Tumors behave exactly like regular Tumors, but fire homing shots instead of blood shots."
   },
   {
     "nazwa": "Poofer",
     "ikona": "/tboi/przeciwnicy/poofer.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Poofers, unlike other Tumors, slowly float towards Isaac. However, if Isaac is shooting, they will target a position in front of where he is facing instead of targeting him directly, to try and intercept his projectiles. Each time they take damage, they swell up and fire 6 blood shots in a fixed, radial spread."
   },
   {
     "nazwa": "Nerve Ending",
@@ -1938,7 +1992,7 @@
     "ikona": "/tboi/przeciwnicy/nerve-ending-2.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Nerve Ending 2s are stationary enemies which will swipe at Isaac if he gets too close. This attack can only connect if Isaac is horizontal with it, but will deal contact damage in any case if Isaac walks into them. Otherwise, they have no means of attacking and are generally harmless."
   },
   {
     "nazwa": "Bishop",
@@ -1959,7 +2013,7 @@
     "ikona": "/tboi/przeciwnicy/fat-bat.png",
     "hp": 35,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Fat Bats move slower than a One Tooth but have more health. Fat Bats try to align themselves diagonally to Isaac, giving them a tendency to avoid his shots. They will try to shoot at Isaac once they are diagonally aligned."
   },
   {
     "nazwa": "Gurgling",
@@ -1980,7 +2034,7 @@
     "ikona": "/tboi/przeciwnicy/black-goat.png",
     "hp": 24,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Black Goats act the same as Goats, but shoot three blood shots in a spread followed by four blood shots in a spread in succession, identical to Krampus. Additionally, they also gain the ability to shoot thin Brimstone lasers in the cardinal directions."
   },
   {
     "nazwa": "Cultist",
@@ -1994,7 +2048,7 @@
     "ikona": "/tboi/przeciwnicy/blood-cultist.png",
     "hp": 24,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Blood Cultists are a variant of Cultists, but are similar only in appearance and their mobility. They wander erratically around the room and, if Isaac aligns with them horizontally, they will fire a horizontal wave of red creep and blood shots with unlimited range."
   },
   {
     "nazwa": "Grub",
@@ -2015,35 +2069,35 @@
     "ikona": "/tboi/przeciwnicy/soy-creep.png",
     "hp": 13,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Soy Creeps will try to line up with Isaac and fire a continuous stream of shots that are seemingly affected by Soy Milk. Their range is quite impressive, rendering them able to hit Isaac when he cannot see them. In dark areas, the rooms are illuminated by their eyes."
   },
   {
     "nazwa": "Tainted Soy Creep",
     "ikona": "/tboi/przeciwnicy/tainted-soy-creep.png",
     "hp": 50,
     "obrazenia": 2,
-    "opis": null
+    "opis": "The Tainted Soy Creeps appear in the Ascent path and will fire continuous streams of tears, similar to the Soy Creep. These streams are shot diagonally in four directions."
   },
   {
     "nazwa": "Rage Creep",
     "ikona": "/tboi/przeciwnicy/rage-creep.png",
     "hp": 10,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Rage Creeps will try to line up with Isaac and fire a Brimstone laser. They are much slower than other Creeps and also take more time to charge up their attacks, but they have infinite range and their laser instantly travels across the room, forcing Isaac to be careful when dealing with them, especially when there are many Rage Creeps in the same room."
   },
   {
     "nazwa": "Blind Creep",
     "ikona": "/tboi/przeciwnicy/blind-creep.png",
     "hp": 10,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Blind Creeps will crawl along walls randomly and shoot 3 spreading blood shots, like The Inner Eye. They are slower than Wall Creeps, fire less frequently and do not directly target Isaac, but their shots are less predictable."
   },
   {
     "nazwa": "The Thing",
     "ikona": "/tboi/przeciwnicy/the-thing.png",
     "hp": 15,
     "obrazenia": 1,
-    "opis": null
+    "opis": "The Thing will try to line up with Isaac and spit a line of damaging Red Creep. The creep has a fairly long range, spanning about half of the width of a normal-sized room. During this attack, a tongue will protrude from its mouth which can deal contact damage."
   },
   {
     "nazwa": "Round Worm",
@@ -2057,49 +2111,49 @@
     "ikona": "/tboi/przeciwnicy/tube-worm.png",
     "hp": 20,
     "obrazenia": 1,
-    "opis": null
+    "opis": "The Tube Worm is a unique variant of the Round Worm found in Chapter 1.5 and the Flooded Caves of Chapter 2. They are added in the Booster Pack #4 for The Binding of Isaac: Afterbirth † DLC. Like the Round Worm, the Tube Worm will burrow into the ground and appear somewhere else."
   },
   {
     "nazwa": "Tainted Round Worm",
     "ikona": "/tboi/przeciwnicy/tainted-round-worm.png",
     "hp": 100,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Tainted Round Worms are much stronger and tankier versions of Round Worms. They are added in The Binding of Isaac: Repentance DLC. Like Round Worms, they will pop out of random locations in the floor, but the Tainted Round Worm does so alongside multiple tail ends."
   },
   {
     "nazwa": "Tainted Tube Worm",
     "ikona": "/tboi/przeciwnicy/tainted-tube-worm.png",
     "hp": 100,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Tainted Tube Worms are a stronger variant of Tube Worms only found in Downpour during the Ascent. They are added to The Binding of Isaac: Repentance DLC. After popping up in a random location, they spit 4 spread-out Ipecac shots in the direction of Isaac."
   },
   {
     "nazwa": "Night Crawler",
     "ikona": "/tboi/przeciwnicy/night-crawler.png",
     "hp": 35,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Like the Round Worm, the Night Crawler will burrow into the ground and appear somewhere else. When Isaac is within their line of sight, they will fire four short-range projectiles that spiral outwards."
   },
   {
     "nazwa": "Roundy",
     "ikona": "/tboi/przeciwnicy/roundy.png",
     "hp": 10,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Roundy is a type of Round Worm added in The Binding of Isaac: Afterbirth DLC. Like the Round Worm, a Roundy will burrow into the ground and appear somewhere else. When it surfaces, it releases a small rock wave around it and fires an Ipecac shot towards Isaac."
   },
   {
     "nazwa": "Ulcer",
     "ikona": "/tboi/przeciwnicy/ulcer.png",
     "hp": 10,
     "obrazenia": 1,
-    "opis": null
+    "opis": "The Ulcer is an enemy added in The Binding of Isaac: Afterbirth DLC. Like the Round Worm, the Ulcer will burrow into the ground and appear somewhere else. When it surfaces, if Isaac is within its line of sight, it will spawn a Dart Fly, but if there are 6 of them in the current room, it will start firing a blood shot instead."
   },
   {
     "nazwa": "Fire Worm",
     "ikona": "/tboi/przeciwnicy/fire-worm.png",
     "hp": 10,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Fire Worms were introduced in The Binding of Isaac: Repentance. Like the Round Worm, the Fire Worm will burrow into the ground and appear somewhere else. If Isaac is in their line of sight, they will fire a single flame at him. They can only appear in lava-filled gaps."
   },
   {
     "nazwa": "Mole",
@@ -2113,7 +2167,7 @@
     "ikona": "/tboi/przeciwnicy/tainted-mole.png",
     "hp": 80,
     "obrazenia": 2,
-    "opis": null
+    "opis": "The Tainted Mole is a stronger, distorted version of the regular mole. It burrows through the ground, creating rockwaves in the direction it moves in. When it gets near Isaac, it pokes out of the ground, creating a ring of rock waves (similar to the Roundy) and fires 3 blood shots at him 4 times. It will then jump to a nearby tile leaving a Poop where it jumped. clear"
   },
   {
     "nazwa": "Lil' Haunt",
@@ -2134,7 +2188,7 @@
     "ikona": "/tboi/przeciwnicy/kineti.png",
     "hp": 45,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Kineti is the Mausoleum variant of a Polty and behave similarly to their counterpart, with the exception that they use telekinesis to bring obstacles toward them rather than moving towards them and picking them up manually. The obstacles can damage Isaac while being pulled towards the Kineti."
   },
   {
     "nazwa": "Dust",
@@ -2218,7 +2272,7 @@
     "ikona": "/tboi/przeciwnicy/pasty.png",
     "hp": 10,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Pasties are skeletal variants and behave exactly like the Needles. However, when emerging off the ground, they will shoot 4 blood shots on the ordinal directions. The appearance of Pasty is similar to The Frail's in its second phase."
   },
   {
     "nazwa": "Fissure",
@@ -2260,70 +2314,70 @@
     "ikona": "/tboi/przeciwnicy/vomit-grimace.png",
     "hp": 20,
     "obrazenia": 0,
-    "opis": null
+    "opis": "The Vomit Grimace fires an explosive Ipecac-like shot. Like Stone Grimaces, Vomit Grimaces will stop firing at Isaac when the room is cleared."
   },
   {
     "nazwa": "Triple Grimace",
     "ikona": "/tboi/przeciwnicy/triple-grimace.png",
     "hp": 20,
     "obrazenia": 0,
-    "opis": null
+    "opis": "The Triple Grimace fires a triple shot. Like Stone Grimaces, Triple Grimaces will stop firing at Isaac when the room is cleared."
   },
   {
     "nazwa": "Stone Eye",
     "ikona": "/tboi/przeciwnicy/stone-eye.png",
     "hp": 1,
     "obrazenia": 0,
-    "opis": null
+    "opis": "The Stone Eye resembles the Bloodshot Eye. It constantly rotates in a clockwise circle and shoots a flickering Technology laser. It stops firing after the room is cleared. Unlike any other Stone Grimace variants, the Stone Eye appears to despawn when the room is cleared, exited, and then re-entered."
   },
   {
     "nazwa": "Constant Stone Shooter",
     "ikona": "/tboi/przeciwnicy/constant-stone-shooter.png",
     "hp": 1,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Constant Stone Shooters, sometimes referred to as Turret Grimaces, constantly fire bullets in a fixed direction, and do not stop firing even after the room is cleared. The exceptions are rooms with Pressure Plates, which deactivate them once they are all pressed."
   },
   {
     "nazwa": "Cross Stone Shooter",
     "ikona": "/tboi/przeciwnicy/cross-stone-shooter.png",
     "hp": 1,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Cross Stone Shooters were added in Booster Pack #4. The Cross Stone Shooter, sometimes referred to as Cross Grimace, constantly fires bullets in four directions, alternating between cardinal and diagonal directions."
   },
   {
     "nazwa": "Brimstone Head",
     "ikona": "/tboi/przeciwnicy/brimstone-head.png",
     "hp": 1,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Found in Gehenna and Sheol, the Brimstone Head, sometimes referred to as Brimstone Grimace, periodically shoots Brimstone lasers and does not stop firing even after the room is cleared. The exception is pressing all Pressure Plates, which deactivates them."
   },
   {
     "nazwa": "Gaping Maw",
     "ikona": "/tboi/przeciwnicy/gaping-maw.png",
     "hp": 100,
     "obrazenia": 0,
-    "opis": null
+    "opis": "The Gaping Maw sucks Isaac towards it, along with warping Isaac's and any enemies' bullet paths. It does not fire any shots and simply functions as an obstacle, and is often surrounded by spikes. They can, however, be deactivated by Pressure Plates."
   },
   {
     "nazwa": "Broken Gaping Maw",
     "ikona": "/tboi/przeciwnicy/broken-gaping-maw.png",
     "hp": 100,
     "obrazenia": 0,
-    "opis": null
+    "opis": "A broken variant of the Gaping Maw. It alternates between active and inactive every four seconds, but it has a much stronger attraction power. Just like regular Gaping Maws, they can be deactivated by Pressure Plates. Prior to Afterbirth+ Booster Pack 5, only one room in the game contained Broken Gaping Maws."
   },
   {
     "nazwa": "Quake Grimace",
     "ikona": "/tboi/przeciwnicy/quake-grimace.png",
     "hp": 20,
     "obrazenia": 0,
-    "opis": null
+    "opis": "The Quake Grimace fires a line of rocks in one direction upon landing every 3 seconds. In most cases, even after the room is cleared of vulnerable enemies, they will continue this behavior. However, they can be deactivated from Pressure Plates."
   },
   {
     "nazwa": "Bomb Grimace",
     "ikona": "/tboi/przeciwnicy/bomb-grimace.png",
     "hp": 20,
     "obrazenia": 0,
-    "opis": null
+    "opis": "The Bomb Grimace is a unique Stone Grimace in that its only purpose is to keep a single throwable bomb spawned. A few seconds after Isaac takes the bomb, it will spawn another. If it is destroyed with an instant-death attack such as Euthanasia or Little Horn, it spawns 10 throwable bombs."
   },
   {
     "nazwa": "Peep Eye",
@@ -2344,7 +2398,7 @@
     "ikona": "/tboi/przeciwnicy/mockulus.png",
     "hp": 40,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Mockuli start off stationary, but start rapidly floating around the room diagonally when Isaac starts shooting. They stop moving when Isaac stops shooting. There is a minimum time that they move for before stopping. Unlike other Peep Eye variants they do not spawn with a correlating Monster and will be destroyed once the room they spawn in is cleared."
   },
   {
     "nazwa": "Poky",
@@ -2358,21 +2412,21 @@
     "ikona": "/tboi/przeciwnicy/slide.png",
     "hp": 100,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Slides will remain stationary in their positions and have their spikes drawn out, dealing contact damage. Should Isaac get in their sight in a cardinal direction, Slides will move towards Isaac's direction, then move back to their previous position after hitting a wall or obstacle. They have a short cooldown after charging towards Isaac before being able to move again."
   },
   {
     "nazwa": "Wall Hugger",
     "ikona": "/tboi/przeciwnicy/wall-hugger.png",
     "hp": 100,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Wall Huggers move around walls and obstacles endlessly. A couple of seconds after Isaac enters a room with them, their spikes will be drawn out, dealing contact damage. They cannot be shut down, even if enemies are cleared from the room. They can, however, be deactivated by Pressure Plates, retracting its spikes, meaning that it'll no longer move and do contact damage."
   },
   {
     "nazwa": "Grudge",
     "ikona": "/tboi/przeciwnicy/grudge.png",
     "hp": 100,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Grudges are exclusive to Mausoleum and Gehenna and are characterized by the eye in the center and two spikes on each side instead of three. Very briefly after Isaac enters a room, their spikes will be drawn out."
   },
   {
     "nazwa": "Ball and Chain",
@@ -2386,7 +2440,7 @@
     "ikona": "/tboi/przeciwnicy/spikeball.png",
     "hp": 100,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Spikeballs fly back and forth in a line either horizontally or vertically, bouncing off walls and obstacles. They will be destroyed once the room is cleared. However, if the room doesn't need clearing, they will remain permanently."
   },
   {
     "nazwa": "Singe's Ball",
@@ -2407,14 +2461,14 @@
     "ikona": "/tboi/przeciwnicy/suction-pitfall.png",
     "hp": 0,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Suction Pitfalls act as regular pitfalls, but suck Isaac in like a Gaping Maw. They are typically found in rooms with Pressure Plates, which when pressed will make any Suction Pitfalls in the room disappear."
   },
   {
     "nazwa": "Teleport Pitfall",
     "ikona": "/tboi/przeciwnicy/teleport-pitfall.png",
     "hp": 0,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Teleport Pitfalls act as regular pitfalls, but pop Isaac out at a random location after damaging him. Little Horn spawns these and pushes them outward in some of his attacks."
   },
   {
     "nazwa": "Death Scythe",
@@ -2463,7 +2517,7 @@
     "ikona": "/tboi/przeciwnicy/purple-ball.png",
     "hp": 10,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Purple Balls behave similarly to regular Dark Balls, but are immune to all damage. 3 of them will always spawn orbiting Rag Mega and detach to chase Isaac as the boss's HP drops. Cultists spawn a variant of Purple Balls that are indestructible but slowly transform into vulnerable Dark Balls."
   },
   {
     "nazwa": "Visage Plasma",
@@ -2477,35 +2531,35 @@
     "ikona": "/tboi/przeciwnicy/ultra-pestilence-fly-ball.png",
     "hp": 200,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Ultra Pestilence Fly Balls behave like regular Dark Balls and float towards Isaac dealing contact damage. They are, as the name suggests, spawned by Ultra Pestilence. Each time they take enough damage they spawn an Ultra Pestilence Fly. They can spawn multiple at once if they take a large amount of damage in one hit. Upon death they leave behind another Ultra Pestilence Fly."
   },
   {
     "nazwa": "Ultra Greed Coin (Spinner)",
     "ikona": "/tboi/przeciwnicy/ultra-greed-coin-spinner.png",
     "hp": 50,
     "obrazenia": 1,
-    "opis": null
+    "opis": "Spinner Coins will spin around the room. Unlike the other coins, these deal contact damage, but won't do anything if they are not destroyed in time. They also last longer."
   },
   {
     "nazwa": "Ultra Greed Coin (Key)",
     "ikona": "/tboi/przeciwnicy/ultra-greed-coin-key.png",
     "hp": 60,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Key Coins open the golden doors around Ultra Greed's boss room if not destroyed, which spawn hordes of Greed Gapers."
   },
   {
     "nazwa": "Ultra Greed Coin (Bomb)",
     "ikona": "/tboi/przeciwnicy/ultra-greed-coin-bomb.png",
     "hp": 50,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Bomb Coins explode with a large radius if not destroyed, but a single explosion can deal 40 damage to Ultra Greed. Bomb Coins spawned by Ultra Greedier can drop Coins."
   },
   {
     "nazwa": "Ultra Greed Coin (Heart)",
     "ikona": "/tboi/przeciwnicy/ultra-greed-coin-heart.png",
     "hp": 40,
     "obrazenia": 0,
-    "opis": null
+    "opis": "Heart Coins heal Ultra Greed for 13.125 HP each if not destroyed."
   },
   {
     "nazwa": "Dummy",

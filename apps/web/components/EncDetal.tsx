@@ -1,5 +1,6 @@
 import ItemSprite from '@/components/ItemSprite'
 import Sprite, { type SpriteName } from '@/components/Sprite'
+import Zamknij from '@/components/Zamknij'
 import type { EncWpis } from '@/lib/enc/typy'
 
 /**
@@ -12,15 +13,13 @@ export default function EncDetal({ wpis, onZamknij }: { wpis: EncWpis; onZamknij
 
   return (
     <div
-      className="modal paper enc-detal"
+      className={'modal paper enc-detal' + (wpis.klasa ? ' ' + wpis.klasa : '')}
       role="dialog"
       aria-modal="true"
       aria-label={wpis.nazwa}
       onClick={(e) => e.stopPropagation()}
     >
-      <button className="ed-close" onClick={onZamknij} aria-label="Zamknij">
-        ✕
-      </button>
+      <Zamknij onClick={onZamknij} />
 
       <header className="ed-hero">
         <span className="ed-ramka">
@@ -97,7 +96,7 @@ export default function EncDetal({ wpis, onZamknij }: { wpis: EncWpis; onZamknij
         </Sekcja>
       )}
 
-      {(s.podglad?.postac || s.podglad?.lzy) && (
+      {(s.podglad?.postac || s.podglad?.gra || s.podglad?.lzy) && (
         <Sekcja tytul="Wygląd" icon="isaacHead">
           <div className="ed-podglad">
             {s.podglad.postac && (
@@ -106,6 +105,12 @@ export default function EncDetal({ wpis, onZamknij }: { wpis: EncWpis; onZamknij
                 <figcaption className="muted small">
                   {s.podglad.podpis ?? 'Isaac z tym itemem'}
                 </figcaption>
+              </figure>
+            )}
+            {s.podglad.gra && (
+              <figure>
+                <img src={s.podglad.gra} alt={`${wpis.nazwa} w grze`} />
+                <figcaption className="muted small">{s.podglad.podpisGra ?? 'W grze'}</figcaption>
               </figure>
             )}
             {s.podglad.lzy && (

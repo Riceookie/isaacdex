@@ -57,6 +57,7 @@ export default function TransformacjePage() {
 
   return (
     <EncLista
+      sekcja="Transformacje"
       wpisy={wpisy}
       sortWaga="Liczba itemów"
       placeholder="Szukaj transformacji lub efektu…"

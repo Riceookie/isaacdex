@@ -30,6 +30,7 @@ export default function PokojeKostekPage() {
 
   return (
     <EncLista
+      sekcja="Pokoje kostek"
       wpisy={wpisy}
       sortWaga="Oczka"
       placeholder="Szukaj efektu kostki…"

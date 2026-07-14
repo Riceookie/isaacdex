@@ -87,6 +87,7 @@ export default async function PostaciePage() {
 
   return (
     <EncLista
+      sekcja="Postacie"
       wpisy={wpisy}
       filtry={FILTRY}
       sortWaga="Postęp"

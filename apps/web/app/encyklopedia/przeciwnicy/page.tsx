@@ -50,6 +50,7 @@ export default function PrzeciwnicyPage() {
 
   return (
     <EncLista
+      sekcja="Przeciwnicy"
       wpisy={wpisy}
       filtry={FILTRY}
       sortWaga="Zdrowie"

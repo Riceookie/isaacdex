@@ -16,8 +16,14 @@ export type EncSzczegoly = {
   // `typ: 'TRINKET'` jest konieczne — id trinketów kolidują z id itemów.
   itemy?: { idW: number; nazwa: string; typ?: string }[]
   itemyTytul?: string // nagłówek tej sekcji (domyślnie „Itemy startowe")
-  // „Wygląd" — obrazek postaci (Isaac w kostiumie / po transformacji) i/lub efekt łez.
-  podglad?: { postac?: string; lzy?: string; podpis?: string }
+  // „Wygląd" — do trzech podglądów: postać/portret, sprite z gry i efekt łez.
+  podglad?: {
+    postac?: string
+    podpis?: string
+    gra?: string // sprite tak, jak byt wygląda w grze (bossowie)
+    podpisGra?: string
+    lzy?: string
+  }
   pelnyOpis?: string // opis efektu
   odblokowanie?: {
     nazwa: string // achievement odblokowujący

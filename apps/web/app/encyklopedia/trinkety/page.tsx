@@ -48,6 +48,7 @@ export default async function TrinketyPage() {
 
   return (
     <EncLista
+      sekcja="Trinkety"
       wpisy={wpisy}
       filtry={FILTRY}
       sortWaga="Odblokowane"
