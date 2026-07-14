@@ -18,6 +18,15 @@ export type StanAuth = { blad?: string; info?: string }
 
 const MIN_HASLO = 8
 
+/**
+ * Bez kluczy Supabase klient rzuciłby wyjątkiem i użytkownik zobaczyłby 500 zamiast powodu.
+ * Apka ma działać (jako podgląd) także wtedy, gdy logowanie nie jest jeszcze wpięte na serwerze.
+ */
+const NIESKONFIGUROWANE: StanAuth = {
+  blad: 'Logowanie nie jest jeszcze skonfigurowane na tym serwerze.',
+}
+const brakKluczy = () => !process.env.NEXT_PUBLIC_SUPABASE_URL
+
 /** Puste pola i za krótkie hasło wyłapujemy sami — komunikat Supabase byłby po angielsku. */
 function sprawdz(email: string, haslo: string): string | null {
   if (!email.includes('@')) return 'To nie wygląda na adres e-mail.'
@@ -26,6 +35,7 @@ function sprawdz(email: string, haslo: string): string | null {
 }
 
 export async function zarejestruj(_stan: StanAuth, dane: FormData): Promise<StanAuth> {
+  if (brakKluczy()) return NIESKONFIGUROWANE
   const email = String(dane.get('email') ?? '').trim()
   const haslo = String(dane.get('haslo') ?? '')
   const nick = String(dane.get('nick') ?? '').trim()
@@ -60,6 +70,7 @@ export async function zarejestruj(_stan: StanAuth, dane: FormData): Promise<Stan
 }
 
 export async function zaloguj(_stan: StanAuth, dane: FormData): Promise<StanAuth> {
+  if (brakKluczy()) return NIESKONFIGUROWANE
   const email = String(dane.get('email') ?? '').trim()
   const haslo = String(dane.get('haslo') ?? '')
 
@@ -79,6 +90,7 @@ export async function zaloguj(_stan: StanAuth, dane: FormData): Promise<StanAuth
 }
 
 export async function wyloguj() {
+  if (brakKluczy()) return
   const supabase = await supabaseSerwer()
   await supabase.auth.signOut()
   revalidatePath('/', 'layout')
