@@ -1,19 +1,18 @@
 'use client'
 
-import { useState } from 'react'
-import { useFormState, useFormStatus } from 'react-dom'
+import Link from 'next/link'
+import { useFormStatus } from 'react-dom'
 import Sprite from '@/components/Sprite'
-import { zaloguj, zarejestruj, type StanAuth } from '@/app/actions/auth'
+import { zaloguj, zarejestruj } from '@/app/actions/auth'
 
 /**
  * Logowanie i rejestracja w jednym — dwie zakładki zamiast dwóch stron, bo to ta sama
  * decyzja („wejdź do piwnicy"), tylko raz pierwszy, a raz kolejny.
  *
- * Stan (błąd / komunikat) wraca z server action, więc walidacja hasła i zajętego nicku
- * dzieje się na serwerze — przeglądarka nie jest tu źródłem prawdy.
+ * Zakładka siedzi w ADRESIE (?tryb=rejestracja), nie w stanie komponentu: po akcji Supabase
+ * zapisuje ciasteczka, Next odświeża drzewo i komponent montuje się od nowa — stan zniknąłby
+ * razem z komunikatem błędu, a użytkownik zobaczyłby pusty formularz bez wyjaśnienia.
  */
-
-const PUSTY: StanAuth = {}
 
 function Wyslij({ etykieta }: { etykieta: string }) {
   const { pending } = useFormStatus()
@@ -24,15 +23,15 @@ function Wyslij({ etykieta }: { etykieta: string }) {
   )
 }
 
-export default function LogowanieForm() {
-  const [tryb, setTryb] = useState<'logowanie' | 'rejestracja'>('logowanie')
-
-  const [stanLog, akcjaLog] = useFormState(zaloguj, PUSTY)
-  const [stanRej, akcjaRej] = useFormState(zarejestruj, PUSTY)
-
-  const rejestracja = tryb === 'rejestracja'
-  const stan = rejestracja ? stanRej : stanLog
-
+export default function LogowanieForm({
+  rejestracja,
+  blad,
+  info,
+}: {
+  rejestracja: boolean
+  blad?: string
+  info?: string
+}) {
   return (
     <div className="log-box">
       <header className="log-head">
@@ -48,24 +47,18 @@ export default function LogowanieForm() {
       </header>
 
       <div className="log-taby">
-        <button
-          className={'pill-tab' + (!rejestracja ? ' on' : '')}
-          onClick={() => setTryb('logowanie')}
-          type="button"
-        >
+        <Link className={'pill-tab' + (!rejestracja ? ' on' : '')} href="/logowanie">
           Logowanie
-        </button>
-        <button
+        </Link>
+        <Link
           className={'pill-tab' + (rejestracja ? ' on' : '')}
-          onClick={() => setTryb('rejestracja')}
-          type="button"
+          href="/logowanie?tryb=rejestracja"
         >
           Rejestracja
-        </button>
+        </Link>
       </div>
 
-      {/* Dwa osobne formularze (a nie jeden z przełącznikiem), żeby każdy miał własny stan błędu. */}
-      <form className="log-form" action={rejestracja ? akcjaRej : akcjaLog} key={tryb}>
+      <form className="log-form" action={rejestracja ? zarejestruj : zaloguj}>
         {rejestracja && (
           <label className="log-pole">
             <span>Nick</span>
@@ -106,14 +99,14 @@ export default function LogowanieForm() {
           />
         </label>
 
-        {stan.blad && (
+        {blad && (
           <p className="log-blad" role="alert">
-            <Sprite name="skull" size={14} /> {stan.blad}
+            <Sprite name="skull" size={14} /> {blad}
           </p>
         )}
-        {stan.info && (
+        {info && (
           <p className="log-info" role="status">
-            <Sprite name="heart" size={14} /> {stan.info}
+            <Sprite name="heart" size={14} /> {info}
           </p>
         )}
 
