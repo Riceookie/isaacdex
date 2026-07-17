@@ -118,7 +118,7 @@ export default async function ZnajomiPage({
             tytul="Znajomi"
             ikona="friends"
             gracze={znajomi}
-            pusto={<PustyStan maly tekst={PUSTKA.brakZnajomych} />}
+            pusto={<PustyStan maly tekst={PUSTKA.brakZnajomychLista} />}
           />
 
           <Lista

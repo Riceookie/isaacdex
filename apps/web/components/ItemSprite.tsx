@@ -14,6 +14,10 @@ type Props = {
 /**
  * Ikona itemu z The Binding of Isaac (public/tboi/items). Dobiera sprite po idW
  * (najpewniej), a gdy brak — po nazwie. Dekoracyjna (nazwa jest obok jako tekst).
+ *
+ * `loading="lazy"`, bo Encyklopedia stawia na stronie ponad 700 takich ikon naraz: bez tego
+ * przeglądarka ściągała komplet (~4 MB) przy wejściu, choć w kadrze mieści się kilkadziesiąt.
+ * `content-visibility` w CSS wstrzymuje RENDER, ale pobierania nie — to dwie różne rzeczy.
  */
 export default function ItemSprite({ nazwa, idW, typ, size = 32, className, style }: Props) {
   const src = itemSpritePathById(idW, typ) ?? itemSpritePath(nazwa)
@@ -23,6 +27,8 @@ export default function ItemSprite({ nazwa, idW, typ, size = 32, className, styl
       alt=""
       width={size}
       height={size}
+      loading="lazy"
+      decoding="async"
       className={'sprite item-sprite' + (className ? ' ' + className : '')}
       style={style}
       aria-hidden

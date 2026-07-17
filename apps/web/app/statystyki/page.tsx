@@ -143,13 +143,13 @@ export default async function StatystykiPage() {
           <PustyStan
             tekst={
               <>
-                <b>Jeszcze zero łez do policzenia.</b> Podłącz Steam w Kolekcji, a Twoje statystyki
-                same się tu pojawią.
+                <b>Jeszcze zero łez do policzenia.</b> Podłącz Steam w Osiągnięciach, a Twoje
+                statystyki same się tu pojawią.
               </>
             }
             akcja={
               <Link className="btn" href="/kolekcja">
-                <Sprite name="book" size={18} /> Przejdź do Kolekcji
+                <Sprite name="book" size={18} /> Przejdź do Osiągnięć
               </Link>
             }
           />

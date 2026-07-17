@@ -25,11 +25,15 @@ export function zListy<T>(lista: T[], ziarno: string): T {
 
 export type TypWpisu = FeedWpis['typ']
 
+/**
+ * Formy BEZOSOBOWE („odblokowano"), a nie „odblokował(a)". Płci gracza nie znamy i nigdy
+ * o nią nie pytamy, a nawias z końcówką czyta się jak formularz urzędowy, nie jak feed.
+ */
 export const ETYKIETA: Record<TypWpisu, { czasownik: string; ikona: SpriteName }> = {
-  UNLOCK: { czasownik: 'odblokował(a) achievement', ikona: 'trophy' },
-  BOSS: { czasownik: 'pokonał(a) bossa', ikona: 'deadgod' },
-  RUN: { czasownik: 'skończył(a) run', ikona: 'stats' },
-  TEKST: { czasownik: 'napisał(a)', ikona: 'book' },
+  UNLOCK: { czasownik: '— odblokowano achievement', ikona: 'trophy' },
+  BOSS: { czasownik: '— pokonano bossa', ikona: 'deadgod' },
+  RUN: { czasownik: '— zakończono run', ikona: 'stats' },
+  TEKST: { czasownik: '— wpis', ikona: 'book' },
 }
 
 // ── Flavor text: krótki komentarz pod wpisem, jak opisy itemów w grze ───────────
@@ -69,10 +73,20 @@ export function komentarz(w: Pick<FeedWpis, 'id' | 'typ'>): string {
 // ── Nagłówki pustych stanów ────────────────────────────────────────────────────
 
 export const PUSTKA = {
+  /** Do FEEDU — tłumaczy, czemu nie ma wpisów. */
   brakZnajomych: (
     <>
       <b>Sam jak Isaac w piwnicy.</b> Znajdź graczy i zaobserwuj ich — gdy odwzajemnią, ich
       aktywność wyląduje tutaj.
+    </>
+  ),
+  /**
+   * Do LISTY znajomych. Osobny tekst, bo na Znajomych lista i feed stoją obok siebie —
+   * ten sam komunikat dwa razy na jednym ekranie wyglądał jak usterka, a nie jak pustka.
+   */
+  brakZnajomychLista: (
+    <>
+      <b>Nikt jeszcze nie odwzajemnił.</b> Znajomy = obserwujecie się nawzajem.
     </>
   ),
   brakWynikow: (

@@ -217,6 +217,9 @@ function Ikona({ wpis, size }: { wpis: EncWpis; size: number }) {
         alt=""
         width={size}
         height={size}
+        // Lista bossów to ~130 portretów naraz — pobieramy je dopiero przy dojeżdżaniu.
+        loading="lazy"
+        decoding="async"
         className="sprite item-sprite"
         aria-hidden
         draggable={false}

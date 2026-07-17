@@ -8,7 +8,10 @@ export default function EncyklopediaPage() {
     <section className="note paper-panel">
       <div className="paper-head">
         <h2>Encyklopedia</h2>
-        <span className="muted small">{SEKCJE_W_BUDOWIE} sekcji w budowie</span>
+        {/* Gdy wszystko gotowe, „0 sekcji w budowie" to informacja o niczym — znika. */}
+        {SEKCJE_W_BUDOWIE > 0 && (
+          <span className="muted small">{SEKCJE_W_BUDOWIE} sekcji w budowie</span>
+        )}
       </div>
       <p className="muted">Wszystko o Isaacu w jednym miejscu — wybierz dział.</p>
 
