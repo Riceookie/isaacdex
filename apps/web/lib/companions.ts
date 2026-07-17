@@ -1,3 +1,5 @@
+import type { Nastroj } from '@/lib/companionGlos'
+
 // Companion = pływający familiar-maskotka. Wita po nicku, podpowiada, prowadzi do Doradcy.
 export type Companion = {
   id: string
@@ -58,6 +60,17 @@ const STEAM_OFF = [
   'Najpierw Steam, potem chwała.',
 ]
 
+// Gość (niezalogowany) — namawiamy do założenia konta, ciepło i z humorem.
+const GOSC = [
+  'Nawet Isaac musiał gdzieś zacząć. Załóż konto.',
+  'Bez konta jestem tylko ładną maskotką.',
+  'Zaloguj się — obiecuję nie gryźć. Za bardzo.',
+  'Twój save file gdzieś tam czeka. Serio.',
+  'Piwnica ma wolne łóżko. Zaloguj się i wejdź.',
+  'Konto za darmo, trauma gratis.',
+  'Nie oglądaj cudzych achievementów. Zdobądź własne.',
+]
+
 const HOME = [
   'Świeże ploteczki z piwnicy.',
   'Ktoś dobił Dead Goda pod Twoją nieobecność.',
@@ -113,6 +126,25 @@ const USTAWIENIA = [
   'Tainted rządzi.',
 ]
 
+const KALKULATOR = [
+  'Dorzuć item — pokażę, co zrobi ze statami.',
+  'Damage czy szybkostrzelność? Klasyk.',
+  'Uważaj na ujemny zasięg łez.',
+  'Speed ma limit. Damage prawie nie.',
+  'Polyphemus + wysoki damage = poezja.',
+]
+
+// Porady „z życia piwnicy" — wpadają od czasu do czasu na każdej stronie.
+const TIPS = [
+  'Tip: łzy w górę? To pewnie Curse of the Blind.',
+  'Tip: Sklep zawsze warto sprawdzić przed bossem.',
+  'Tip: Devil Room lubi Twoje serduszka.',
+  'Tip: nie każdy quality 4 pasuje do Twojego buildu.',
+  'Tip: Bomby otwierają więcej niż drzwi.',
+  'Tip: The D6 to najlepszy przyjaciel Isaaca.',
+  'Tip: czerwone serca kontra soul hearts — wybieraj mądrze.',
+]
+
 const FUNNY = [
   'Ed zapomniał mnie znerfić.',
   'Butter Bean jest niedoceniany.',
@@ -132,9 +164,11 @@ const FUNNY = [
 ]
 
 /** Pula kwestii companiona zależna od strony (reaguje na sekcję). Osobne teksty per zakładka. */
-export function kwestie(pathname: string, steamConnected = true): string[] {
-  // Brak podłączonego Steama ma pierwszeństwo — najpierw namów do synchronizacji.
-  if (!steamConnected) return [...STEAM_OFF, ...GENERAL]
+export function kwestie(pathname: string, steamConnected = true, zalogowany = true): string[] {
+  // Gość ma pierwszeństwo: zamiast namawiać na Steam, namawiamy na konto (+ trochę żartów).
+  if (!zalogowany) return [...GOSC, ...FUNNY]
+  // Zalogowany bez Steama — najpierw popchnij do synchronizacji.
+  if (!steamConnected) return [...STEAM_OFF, ...GENERAL, ...TIPS]
 
   let page: string[]
   if (pathname === '/') page = [...HOME, ...OPENING]
@@ -143,11 +177,57 @@ export function kwestie(pathname: string, steamConnected = true): string[] {
   else if (pathname.startsWith('/kolekcja')) page = ACHIEVEMENTS
   else if (pathname.startsWith('/encyklopedia')) page = ENCYKLOPEDIA
   else if (pathname.startsWith('/statystyki')) page = STATYSTYKI
-  else if (pathname.startsWith('/kalkulator')) page = STATYSTYKI
+  else if (pathname.startsWith('/kalkulator')) page = KALKULATOR
   else if (pathname.startsWith('/znajomi')) page = ZNAJOMI
   else if (pathname.startsWith('/czat')) page = CHAT
   else if (pathname.startsWith('/ustawienia')) page = USTAWIENIA
   else page = GENERAL
 
-  return [...page, ...GENERAL, ...FUNNY]
+  // TIPS wpadają wszędzie od czasu do czasu — „porady, które zmieniają się co jakiś czas".
+  return [...page, ...GENERAL, ...FUNNY, ...TIPS]
+}
+
+/**
+ * Domyślna mina maskotki dla danej sekcji, gdy gada „sama z siebie" (idle).
+ * Pulpit/znajomi = radośnie, kalkulator/encyklopedia = w zamyśleniu, gość = smutno-proszący.
+ * Reakcje na akcje (unlock, klik, dodanie itemu) nadają własną minę przez `powiedz`.
+ */
+export function nastrojStrony(pathname: string, zalogowany = true): Nastroj {
+  if (!zalogowany) return 'sad'
+  if (pathname === '/' || pathname.startsWith('/znajomi')) return 'happy'
+  if (pathname.startsWith('/kalkulator') || pathname.startsWith('/encyklopedia')) return 'thinking'
+  return 'zwykly'
+}
+
+/**
+ * Jednorazowa REAKCJA na wejście w sekcję (mówiona zaraz po nawigacji, przed pętlą idle).
+ * Dzięki temu maskotka „wita" każdą stronę z odpowiednią miną — cheeruje przy osiągnięciach,
+ * myśli przy kalkulatorze, zaprasza gościa do logowania.
+ */
+export function wejscie(
+  pathname: string,
+  steamConnected = true,
+  zalogowany = true,
+): { tekst: string; nastroj: Nastroj } {
+  if (!zalogowany)
+    return { tekst: 'Rozejrzyj się. A potem załóż konto — będzie lepiej.', nastroj: 'sad' }
+  if (!steamConnected) return { tekst: 'Podłącz Steam, a ożyję na dobre.', nastroj: 'thinking' }
+  if (pathname === '/') return { tekst: 'Świeże ploteczki z piwnicy!', nastroj: 'excited' }
+  if (pathname.startsWith('/kolekcja'))
+    return { tekst: 'Obejrzyjmy te trofea!', nastroj: 'excited' }
+  if (pathname.startsWith('/statystyki'))
+    return { tekst: 'Czas na liczby. Śmierci pomijamy.', nastroj: 'happy' }
+  if (pathname.startsWith('/kalkulator'))
+    return { tekst: 'Pobawmy się statami. Dorzuć item.', nastroj: 'thinking' }
+  if (pathname.startsWith('/encyklopedia'))
+    return { tekst: 'Kliknij item — powiem, brać czy zostawić.', nastroj: 'thinking' }
+  if (pathname.startsWith('/znajomi'))
+    return { tekst: 'Zobaczmy, co ubili znajomi!', nastroj: 'happy' }
+  if (pathname.startsWith('/czat'))
+    return { tekst: 'Bądź miły. Albo chociaż zabawny.', nastroj: 'zwykly' }
+  if (pathname.startsWith('/ustawienia'))
+    return { tekst: 'Możesz mnie tu wymienić na innego kumpla.', nastroj: 'happy' }
+  if (pathname.startsWith('/profil') || pathname.startsWith('/kim-jestem'))
+    return { tekst: 'Twój kąt piwnicy. Nieźle wygląda.', nastroj: 'happy' }
+  return { tekst: 'Kolejny dzień w piwnicy.', nastroj: 'zwykly' }
 }
