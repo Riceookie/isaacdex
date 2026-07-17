@@ -1,12 +1,10 @@
 import './globals.css'
-import Link from 'next/link'
 import type { ReactNode } from 'react'
 import localFont from 'next/font/local'
 import { Inter, Pixelify_Sans } from 'next/font/google'
 import ThemeApplier from '@/components/ThemeApplier'
 import Ambience from '@/components/Ambience'
-import Sprite from '@/components/Sprite'
-import SideNav from '@/components/SideNav'
+import Sidebar from '@/components/Sidebar'
 import TopBar from '@/components/TopBar'
 import { getCompanionInfo } from '@/lib/queries'
 import { mojGracz } from '@/lib/konto'
@@ -54,13 +52,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         <Ambience />
         <KontoProvider zalogowany={ja !== null}>
           <div className="app">
-            <aside className="sidebar">
-              <Link href="/" className="side-brand">
-                <Sprite name="godhead" size={30} />
-                <span>IsaacDex</span>
-              </Link>
-              <SideNav />
-            </aside>
+            <Sidebar />
             <div className="main-wrap">
               <TopBar steamConnected={steamConnected} nick={ja?.nick ?? null} />
               <main className="container">{children}</main>
