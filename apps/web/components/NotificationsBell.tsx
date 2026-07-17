@@ -3,60 +3,40 @@
 import { useEffect, useRef, useState, type AnimationEvent } from 'react'
 import Link from 'next/link'
 import Sprite, { type SpriteName } from '@/components/Sprite'
-import { ikonaPostaci } from '@/lib/chars'
 import { useZalogowany } from '@/components/KontoProvider'
 import LinkGracza from '@/components/LinkGracza'
 
-type Typ = 'follow' | 'sync' | 'comment'
+type Typ = 'follow' | 'wiadomosc'
 
 type Notif = {
-  id: number
+  id: string
   typ: Typ
-  /** Kto to zrobił — osobno od treści, żeby dało się podlinkować profil.
-      `null` = powiadomienie systemowe (np. sync), które nie ma sprawcy. */
-  autor: string | null
+  /** Kto to zrobił — osobno od treści, żeby dało się podlinkować profil. */
+  autor: string
   /** Co zrobił — bez nicku na początku (ten dokleja LinkGracza). */
   tekst: string
+  /** ISO z serwera; „ile temu" liczymy w przeglądarce (patrz `ileTemu`). */
   czas: string
-  postac?: string
-  nowe?: boolean
 }
 
 // Sprite z gry na każdy typ powiadomienia — jedno źródło prawdy zamiast ifów w JSX.
 const IKONA: Record<Typ, SpriteName> = {
   follow: 'friendfinder', // Friend Finder — ktoś Cię obserwuje
-  sync: 'trophy', // Challenge Trophy — nowe achievementy
-  comment: 'friends', // BFFS! — komentarz
+  wiadomosc: 'friends', // BFFS! — wiadomość prywatna
 }
 
-// DEMO — przykładowe powiadomienia (realne dojdą z backendem social w projekcie końcowym).
-const NOTIFS: Notif[] = [
-  {
-    id: 1,
-    typ: 'follow',
-    autor: 'VoidKing',
-    tekst: 'zaczął Cię obserwować',
-    czas: '5 min temu',
-    postac: 'Azazel',
-    nowe: true,
-  },
-  {
-    id: 2,
-    typ: 'sync',
-    autor: null,
-    tekst: 'Zsynchronizowano 3 nowe achievementy',
-    czas: '1 godz temu',
-    nowe: true,
-  },
-  {
-    id: 3,
-    typ: 'comment',
-    autor: 'VoidKing',
-    tekst: 'skomentował Twój run',
-    czas: '2 godz temu',
-    postac: 'Azazel',
-  },
-]
+/** Kiedy ostatnio otwierałeś dzwonek — to preferencja tej przeglądarki, nie dane konta. */
+const KLUCZ_WIDZIANE = 'idx_powiadomienia_widziane'
+
+function ileTemu(iso: string): string {
+  const minuty = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 60000))
+  if (minuty < 1) return 'przed chwilą'
+  if (minuty < 60) return `${minuty} min temu`
+  const godziny = Math.round(minuty / 60)
+  if (godziny < 24) return `${godziny} godz temu`
+  const dni = Math.round(godziny / 24)
+  return dni === 1 ? 'wczoraj' : `${dni} dni temu`
+}
 
 /**
  * Dzwonek z licznikiem nieprzeczytanych + rozwijana kartka powiadomień.
@@ -65,14 +45,25 @@ const NOTIFS: Notif[] = [
  */
 export default function NotificationsBell() {
   const zalogowany = useZalogowany()
-  // Gość nie ma powiadomień — pusty dzwonek bez licznika, z zaproszeniem do logowania.
-  const notyfikacje = zalogowany ? NOTIFS : []
+  const [notyfikacje, setNotyfikacje] = useState<Notif[]>([])
   const [open, setOpen] = useState(false)
   const [zamyka, setZamyka] = useState(false)
-  const [przeczytane, setPrzeczytane] = useState(false)
+  const [widziane, setWidziane] = useState<number>(0)
   const ref = useRef<HTMLDivElement>(null)
 
-  const unread = przeczytane ? 0 : notyfikacje.filter((n) => n.nowe).length
+  // Gość nie ma powiadomień — pusty dzwonek z zaproszeniem do logowania.
+  useEffect(() => {
+    if (!zalogowany) return
+    setWidziane(Number(localStorage.getItem(KLUCZ_WIDZIANE) ?? 0))
+    fetch('/api/powiadomienia', { cache: 'no-store' })
+      .then((r) => (r.ok ? r.json() : { powiadomienia: [] }))
+      .then((d) => setNotyfikacje(d.powiadomienia ?? []))
+      .catch(() => setNotyfikacje([]))
+  }, [zalogowany])
+
+  // Nowe = zaszły po ostatnim otwarciu dzwonka w tej przeglądarce.
+  const czyNowe = (n: Notif) => new Date(n.czas).getTime() > widziane
+  const unread = notyfikacje.filter(czyNowe).length
 
   function otworz() {
     setZamyka(false)
@@ -108,7 +99,9 @@ export default function NotificationsBell() {
     if (e.target !== e.currentTarget || !zamyka) return
     setZamyka(false)
     setOpen(false)
-    setPrzeczytane(true)
+    const teraz = Date.now()
+    localStorage.setItem(KLUCZ_WIDZIANE, String(teraz))
+    setWidziane(teraz)
   }
 
   return (
@@ -159,49 +152,27 @@ export default function NotificationsBell() {
                 {notyfikacje.map((n) => (
                   <li
                     key={n.id}
-                    className={'notif-item' + (n.nowe && !przeczytane ? ' notif-item--nowe' : '')}
+                    className={'notif-item' + (czyNowe(n) ? ' notif-item--nowe' : '')}
                     role="menuitem"
                   >
                     <LinkGracza nick={n.autor} className="notif-ic-link">
                       <span className={'notif-ic notif-ic--' + n.typ}>
-                        {n.postac ? (
-                          <>
-                            <img src={ikonaPostaci(n.postac)} alt="" />
-                            {/* Typ jako mały znaczek w rogu portretu — portret mówi KTO,
-                                znaczek mówi CO zrobił. */}
-                            <span className="notif-typ">
-                              <Sprite name={IKONA[n.typ]} size={13} />
-                            </span>
-                          </>
-                        ) : (
-                          <Sprite name={IKONA[n.typ]} size={22} />
-                        )}
+                        <Sprite name={IKONA[n.typ]} size={22} />
                       </span>
                     </LinkGracza>
                     <span className="notif-body">
                       <span className="notif-tekst">
-                        {n.autor && (
-                          <>
-                            <LinkGracza nick={n.autor}>
-                              <b className="notif-autor">{n.autor}</b>
-                            </LinkGracza>{' '}
-                          </>
-                        )}
+                        <LinkGracza nick={n.autor}>
+                          <b className="notif-autor">{n.autor}</b>
+                        </LinkGracza>{' '}
                         {n.tekst}
                       </span>
-                      <span className="notif-czas">{n.czas}</span>
+                      <span className="notif-czas">{ileTemu(n.czas)}</span>
                     </span>
-                    {n.nowe && !przeczytane && <span className="notif-kropka" aria-label="nowe" />}
+                    {czyNowe(n) && <span className="notif-kropka" aria-label="nowe" />}
                   </li>
                 ))}
               </ul>
-              {/* DEMO jako pieczątka odbita na kartce, nie jako stopka-doklejka. */}
-              <div className="notif-pop-foot">
-                <span className="notif-stempel">Demo</span>
-                <span className="notif-stempel-opis">
-                  realne powiadomienia w projekcie końcowym
-                </span>
-              </div>
             </>
           )}
         </div>

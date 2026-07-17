@@ -41,7 +41,6 @@ export type SeedDnia = {
   seed: string
   postac: string
   trudnosc: 'Normal' | 'Hard'
-  finishers: number
 }
 
 export function seedDnia(data: Date): SeedDnia {
@@ -51,6 +50,5 @@ export function seedDnia(data: Date): SeedDnia {
   for (let i = 0; i < 8; i++) kod += ALFABET[Math.floor(rnd() * ALFABET.length)]
   const postac = POSTACIE[Math.floor(rnd() * POSTACIE.length)]
   const trudnosc = rnd() < 0.5 ? 'Normal' : 'Hard'
-  const finishers = 120 + Math.floor(rnd() * 600)
-  return { seed: `${kod.slice(0, 4)} ${kod.slice(4)}`, postac, trudnosc, finishers }
+  return { seed: `${kod.slice(0, 4)} ${kod.slice(4)}`, postac, trudnosc }
 }

@@ -3,6 +3,7 @@
 import { prisma, BossKoncowy, TrybGry } from '@isaacdex/db'
 import { procentUkonczenia, ocenItem, type Jakosc } from '@isaacdex/core'
 import { mojGracz } from '@/lib/konto'
+import type { DecorId } from '@/lib/pfpDecor'
 
 /**
  * Profil, którego dane właśnie oglądamy: WYŁĄCZNIE zalogowanego gracza.
@@ -15,26 +16,6 @@ export async function profilWidoku() {
   const ja = await mojGracz()
   if (!ja?.profilId) return null
   return prisma.profil.findUnique({ where: { id: ja.profilId } })
-}
-
-/**
- * Katalog achievementów gry (nazwa + ikona), BEZ stanu odblokowania.
- *
- * Steam zwraca pełną listę achievementów przy każdej synchronizacji, więc wiersze dowolnego
- * profilu są zarazem katalogiem gry — bierzemy pierwszy z brzegu. Potrzebne do profili graczy
- * bez Steama: nazwy i ikony mają być PRAWDZIWE, dorabiamy tylko to, kto co odblokował.
- */
-export async function getKatalogAchievementow(): Promise<
-  { nazwa: string; ikonaUrl: string | null }[]
-> {
-  const jakisProfil = await prisma.profil.findFirst({ select: { id: true } })
-  if (!jakisProfil) return []
-  const ach = await prisma.steamAchievement.findMany({
-    where: { profilId: jakisProfil.id, ikonaUrl: { not: null } },
-    select: { nazwa: true, ikonaUrl: true },
-    orderBy: { nazwa: 'asc' },
-  })
-  return ach
 }
 
 /** Itemy do wybieraczki w gablocie: tylko to, czym rysujemy sprite i sortujemy. */
@@ -249,9 +230,10 @@ export async function getOdblokowaneAchievementy(): Promise<Set<string>> {
 }
 
 export async function getProfilSetup() {
-  const [profil, postacie] = await Promise.all([
+  const [profil, postacie, ja] = await Promise.all([
     profilWidoku(),
     prisma.postac.findMany({ orderBy: { kolejnosc: 'asc' } }),
+    mojGracz(),
   ])
   // Nazwy (displayName) odblokowanych achievementów — do bramkowania zablokowanych dekoracji.
   const odblokowane = profil
@@ -263,13 +245,18 @@ export async function getProfilSetup() {
       ).map((a) => a.nazwa)
     : []
   return {
-    nick: profil?.nick ?? '',
-    opis: profil?.opis ?? '',
+    // Bez Steama nick i opis i tak istnieją — na koncie gracza.
+    nick: profil?.nick ?? ja?.nick ?? '',
+    opis: profil?.opis ?? ja?.opis ?? '',
     ulubionaPostac: profil?.ulubionaPostac ?? '',
     steamId: profil?.steamId64 ?? '',
     zsynchronizowano: profil?.ostatniSync != null,
     postacie: postacie.map((p) => p.nazwa),
     odblokowane,
+    // Avatar i ozdoba są w bazie (widzą je inni), nie w localStorage.
+    avatar: ja?.avatar ?? null,
+    dekoracja: (ja?.dekoracja ?? 'none') as DecorId,
+    gablota: ja?.gablota ?? [],
   }
 }
 
@@ -318,17 +305,58 @@ export async function getStatystyki() {
 }
 
 /**
- * Kilka realnych achievementów ze Steama (z ikonami z CDN) do demo-feedu znajomych.
- * Bierzemy odblokowane z ikoną; jak mało, dobieramy dowolne z ikoną.
+ * Prawdziwe dane ze Steama DOWOLNEGO gracza (nie tylko własne).
+ *
+ * Kiedyś cudze profile dostawały statystyki wyliczone z hasza nicku — wyglądały bogato,
+ * ale nic nie znaczyły. Teraz albo gracz ma podpięty Steam i widać jego rzeczywisty postęp,
+ * albo nie ma i sekcje z gry po prostu nie istnieją (`null`).
  */
-export async function getFeedIkony(ile = 6) {
-  const profil = await profilWidoku()
-  if (!profil) return []
-  const ach = await prisma.steamAchievement.findMany({
-    where: { profilId: profil.id, ikonaUrl: { not: null } },
-    orderBy: [{ odblokowany: 'desc' }, { dataOdblokowania: 'desc' }],
-    take: ile,
-    select: { nazwa: true, ikonaUrl: true },
-  })
-  return ach.map((a) => ({ nazwa: a.nazwa, ikonaUrl: a.ikonaUrl as string }))
+export async function getSteamGracza(profilId: number | null) {
+  if (profilId == null) return null
+
+  const [ach, markGroups, postacie] = await Promise.all([
+    prisma.steamAchievement.findMany({ where: { profilId } }),
+    prisma.completionMark.groupBy({
+      by: ['postacId'],
+      where: { profilId, zaliczone: true },
+      _count: { _all: true },
+    }),
+    prisma.postac.findMany({ orderBy: { kolejnosc: 'asc' } }),
+  ])
+  if (ach.length === 0) return null // Steam podpięty, ale jeszcze nigdy nie zsynchronizowany
+
+  const unlocked = ach.filter((a) => a.odblokowany)
+  const perPostac = new Map(markGroups.map((g) => [g.postacId, g._count._all]))
+
+  const postacMap = new Map(postacie.map((p) => [p.id, p.nazwa]))
+  let fav: string | null = null
+  let najwiecej = 0
+  for (const g of markGroups) {
+    if (g._count._all > najwiecej) {
+      najwiecej = g._count._all
+      fav = postacMap.get(g.postacId) ?? null
+    }
+  }
+
+  return {
+    achUnlocked: unlocked.length,
+    achTotal: ach.length,
+    achProcent: ach.length ? Math.round((unlocked.length / ach.length) * 100) : 0,
+    fav,
+    recent: unlocked
+      .filter((a) => a.dataOdblokowania)
+      .sort((x, y) => y.dataOdblokowania!.getTime() - x.dataOdblokowania!.getTime())
+      .slice(0, 6)
+      .map((a) => ({
+        nazwa: a.nazwa,
+        ikonaUrl: a.ikonaUrl,
+        data: a.dataOdblokowania!.toISOString(),
+      })),
+    postacie: postacie
+      .map((p) => ({
+        nazwa: p.nazwa,
+        procent: procentUkonczenia(perPostac.get(p.id) ?? 0, MARK_NA_POSTAC),
+      }))
+      .sort((a, b) => b.procent - a.procent || a.nazwa.localeCompare(b.nazwa)),
+  }
 }

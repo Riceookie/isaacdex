@@ -5,7 +5,7 @@ import Sprite from '@/components/Sprite'
 import { ikonaPostaci } from '@/lib/chars'
 import { seedDnia } from '@/lib/dailySeed'
 
-/** „Basement Radio" — seed dnia + polecana postać/trudność + ilu graczy ukończyło.
+/** „Basement Radio" — seed dnia + polecana postać i trudność (nasze wyzwanie, liczone z daty).
  *  Kliknięcie „gra" radio: krótki jingle (Web Audio, bez pliku) + animacja „ON AIR". */
 export default function BasementRadio() {
   const s = seedDnia(new Date())
@@ -94,9 +94,8 @@ export default function BasementRadio() {
         </span>
       </div>
 
-      <p className="muted small radio-finishers">
-        <Sprite name="trophy" size={16} /> {s.finishers} osób ukończyło dziś
-      </p>
+      {/* Bez „X osób ukończyło dziś" — ta liczba była losowana z daty. Nie zliczamy runów,
+          więc nie mamy skąd wiedzieć, ilu graczy zamknęło wyzwanie. */}
     </div>
   )
 }

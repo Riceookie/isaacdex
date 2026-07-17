@@ -1,5 +1,6 @@
 import { prisma } from '@isaacdex/db'
 import { mojGracz } from '@/lib/konto'
+import type { DecorId } from '@/lib/pfpDecor'
 
 /**
  * Społeczność: feed, obserwowanie, lajki. Wszystko leży w bazie (Gracz, Obserwacja, Wpis, Lajk),
@@ -21,7 +22,14 @@ export type FeedWpis = {
   ikonaUrl: string | null
   itemy: string[]
   czas: string
-  autor: { id: number; nick: string; kolor: string | null; avatar: string | null; ja: boolean }
+  autor: {
+    id: number
+    nick: string
+    kolor: string | null
+    avatar: string | null
+    dekoracja: DecorId
+    ja: boolean
+  }
   lajki: number
   polubione: boolean
 }
@@ -57,7 +65,14 @@ type WpisZBazy = {
   ikonaUrl: string | null
   itemy: string[]
   createdAt: Date
-  autor: { id: number; nick: string; kolor: string | null; avatar: string | null; ja: boolean }
+  autor: {
+    id: number
+    nick: string
+    kolor: string | null
+    avatar: string | null
+    dekoracja: string | null
+    ja: boolean
+  }
   lajki: { graczId: number }[]
 }
 
@@ -74,6 +89,7 @@ const doWpisu = (w: WpisZBazy, jaId?: number): FeedWpis => ({
     nick: w.autor.nick,
     kolor: w.autor.kolor,
     avatar: w.autor.avatar,
+    dekoracja: (w.autor.dekoracja ?? 'none') as DecorId,
     // „To ja" = gracz zalogowanego użytkownika, a NIE kolumna `Gracz.ja` (ta oznacza na
     // sztywno jedno konto właściciela). Gość nie ma tożsamości, więc dla niego zawsze false
     // — inaczej klik w tamto konto odsyłał go na własny, pusty /profil.
@@ -113,6 +129,13 @@ export type GraczKarta = {
   kolor: string | null
   avatar: string | null
   opis: string | null
+  /** Ozdoba przy avatarze — z bazy, więc widzą ją wszyscy tak samo. */
+  dekoracja: DecorId
+  /** Gablota „Top 3" — nazwy itemów. */
+  gablota: string[]
+  /** Podpięty Steam (null = brak) — decyduje, czy profil ma sekcje z gry. */
+  profilId: number | null
+  dolaczyl: Date
   ja: boolean
   /** Ty obserwujesz jego. */
   obserwowany: boolean
@@ -122,6 +145,12 @@ export type GraczKarta = {
   znajomy: boolean
   obserwujacych: number
   wpisy: number
+  /**
+   * Postęp osiągnięć — liczony z bazy. Null = gracz nie ma podpiętego Steama.
+   * Kiedyś w tym miejscu był procent wyliczony z hasza nicku: każda karta pokazywała
+   * konkretną liczbę, która nic nie znaczyła.
+   */
+  procent: number | null
 }
 
 type GraczZBazy = {
@@ -130,6 +159,10 @@ type GraczZBazy = {
   kolor: string | null
   avatar: string | null
   opis: string | null
+  dekoracja: string | null
+  gablota: string[]
+  profilId: number | null
+  dolaczyl: Date
   ja: boolean
   _count: { obserwowany: number; wpisy: number }
 }
@@ -139,19 +172,57 @@ const doKarty = (
   obs: Set<number>,
   obsMnie: Set<number>,
   jaId?: number,
+  procenty?: Map<number, number>,
 ): GraczKarta => ({
   id: g.id,
   nick: g.nick,
   kolor: g.kolor,
   avatar: g.avatar,
   opis: g.opis,
+  dekoracja: (g.dekoracja ?? 'none') as DecorId,
+  gablota: g.gablota,
+  profilId: g.profilId,
+  dolaczyl: g.dolaczyl,
   ja: jaId != null && g.id === jaId,
   obserwowany: obs.has(g.id),
   obserwujeMnie: obsMnie.has(g.id),
   znajomy: obs.has(g.id) && obsMnie.has(g.id),
   obserwujacych: g._count.obserwowany,
   wpisy: g._count.wpisy,
+  procent: g.profilId != null ? (procenty?.get(g.profilId) ?? null) : null,
 })
+
+/**
+ * Procent osiągnięć graczy, którzy mają podpięty Steam — dwa zapytania zbiorcze zamiast
+ * jednego na kartę. Gracze bez Steama po prostu nie trafiają do mapy.
+ */
+async function procentyGraczy(profilIds: number[]): Promise<Map<number, number>> {
+  const ids = profilIds.filter((x): x is number => x != null)
+  if (ids.length === 0) return new Map()
+
+  const [wszystkie, odblokowane] = await Promise.all([
+    prisma.steamAchievement.groupBy({
+      by: ['profilId'],
+      where: { profilId: { in: ids } },
+      _count: { _all: true },
+    }),
+    prisma.steamAchievement.groupBy({
+      by: ['profilId'],
+      where: { profilId: { in: ids }, odblokowany: true },
+      _count: { _all: true },
+    }),
+  ])
+
+  const suma = new Map(wszystkie.map((r) => [r.profilId, r._count._all]))
+  const mapa = new Map<number, number>()
+  for (const r of odblokowane) {
+    const total = suma.get(r.profilId) ?? 0
+    if (total > 0) mapa.set(r.profilId, Math.round((r._count._all / total) * 100))
+  }
+  // Steam podpięty, ale nigdy nie zsynchronizowany = 0 z 0; wtedy zostaje 0%.
+  for (const r of wszystkie) if (!mapa.has(r.profilId)) mapa.set(r.profilId, 0)
+  return mapa
+}
 
 const LICZNIKI = { _count: { select: { obserwowany: true, wpisy: true } } } as const
 
@@ -162,7 +233,8 @@ export async function getGracze(): Promise<GraczKarta[]> {
     prisma.gracz.findMany({ orderBy: { nick: 'asc' }, include: LICZNIKI }),
     ja ? relacje(ja.id) : PUSTE_RELACJE,
   ])
-  return gracze.map((g) => doKarty(g, rel.obserwuje, rel.obserwujaMnie, ja?.id))
+  const procenty = await procentyGraczy(gracze.map((g) => g.profilId).filter((x) => x != null))
+  return gracze.map((g) => doKarty(g, rel.obserwuje, rel.obserwujaMnie, ja?.id, procenty))
 }
 
 /**

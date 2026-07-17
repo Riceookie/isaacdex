@@ -6,7 +6,6 @@ import Sprite from '@/components/Sprite'
 import LinkGracza from '@/components/LinkGracza'
 import DecorMark from '@/components/DecorMark'
 import { avatarGracza, wlasnyAvatar } from '@/lib/chars'
-import { dekoracjaGracza, statyGracza } from '@/lib/klimat'
 import type { GraczKarta } from '@/lib/social'
 
 type Zakladka = 'obserwujacych' | 'obserwuje'
@@ -23,11 +22,7 @@ function Lista({ gracze, pusto }: { gracze: GraczKarta[]; pusto: string }) {
             {/* Bez dymka: wiersz listy JEST już wizytówką, więc drugi dymek nad nim
                 to tylko zasłanianie tego, co użytkownik właśnie czyta. */}
             <LinkGracza nick={g.nick} ja={g.ja} dymek={false} className="obs-wiersz">
-              <span
-                className={
-                  'obs-ava-box' + (dekoracjaGracza(g.nick, wlasny) === 'none' ? '' : ' z-decor')
-                }
-              >
+              <span className={'obs-ava-box' + (g.dekoracja === 'none' ? '' : ' z-decor')}>
                 <img
                   className={'obs-ava' + (wlasny ? ' foto' : '')}
                   src={avatarGracza(g.avatar)}
@@ -35,14 +30,13 @@ function Lista({ gracze, pusto }: { gracze: GraczKarta[]; pusto: string }) {
                   width={32}
                   height={32}
                 />
-                <DecorMark id={dekoracjaGracza(g.nick, wlasny)} />
+                <DecorMark id={g.dekoracja} />
               </span>
               <span className="obs-kto">
                 <b style={g.kolor ? { color: g.kolor } : undefined}>{g.nick}</b>
                 <span className="muted small">{g.opis ?? 'Bez opisu.'}</span>
               </span>
             </LinkGracza>
-            <span className="obs-pct muted small">{statyGracza(g.nick).procent}%</span>
           </li>
         )
       })}

@@ -1,11 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ikonaPostaci } from '@/lib/chars'
 import Sprite from '@/components/Sprite'
 import AvatarUpload from '@/components/AvatarUpload'
-import { DECORATIONS, DEFAULT_DECOR, decorOdblokowana, type DecorId } from '@/lib/pfpDecor'
+import { DECORATIONS, decorOdblokowana, type DecorId } from '@/lib/pfpDecor'
 
 type Props = {
   nick: string
@@ -15,6 +15,9 @@ type Props = {
   zsynchronizowano: boolean
   postacie: string[]
   odblokowane: string[]
+  /** Avatar i ozdoba z BAZY — widzą je inni gracze, więc nie mogą siedzieć w localStorage. */
+  avatar: string | null
+  dekoracja: DecorId
 }
 
 // Losowe imiona w klimacie TBOI.
@@ -38,19 +41,14 @@ export default function KimJestemForm(p: Props) {
   const [nick, setNick] = useState(p.nick)
   const [opis, setOpis] = useState(p.opis)
   const [ulubiona, setUlubiona] = useState(p.ulubionaPostac)
-  // Avatar i dekoracja pfp = preferencje lokalne. Trzymamy je ROBOCZO w stanie i
-  // utrwalamy (localStorage + event) dopiero przy „Zapisz", żeby zmiana nie „przeciekała"
-  // na resztę apki po samym wybraniu i przejściu na inną zakładkę bez zapisu.
-  const [avatar, setAvatar] = useState<string | null>(null)
-  const [decor, setDecor] = useState<DecorId>(DEFAULT_DECOR)
+  // Avatar i ozdoba idą DO BAZY (widzą je inni), ale trzymamy je roboczo w stanie
+  // i zapisujemy dopiero przy „Zapisz" — żeby wybór nie przeciekał na resztę apki
+  // po samym kliknięciu i przejściu na inną zakładkę.
+  const [avatar, setAvatar] = useState<string | null>(p.avatar)
+  const [decor, setDecor] = useState<DecorId>(p.dekoracja)
   const [busy, setBusy] = useState(false)
   const [msg, setMsg] = useState<string | null>(null)
   const odblokSet = new Set(p.odblokowane)
-
-  useEffect(() => {
-    setAvatar(localStorage.getItem('idx_avatar'))
-    setDecor((localStorage.getItem('idx_pfp_decor') as DecorId) || DEFAULT_DECOR)
-  }, [])
 
   function losujImie() {
     const i = Math.floor((Date.now() / 7) % IMIONA.length)
@@ -64,19 +62,13 @@ export default function KimJestemForm(p: Props) {
       const r = await fetch('/api/profil', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ nick, opis, ulubionaPostac: ulubiona }),
+        body: JSON.stringify({ nick, opis, ulubionaPostac: ulubiona, avatar, dekoracja: decor }),
       })
       if (!r.ok) {
         const d = await r.json()
         setMsg(d.error || 'Nie udało się zapisać.')
         return
       }
-      // Utrwal preferencje lokalne dopiero teraz i powiadom resztę apki.
-      if (avatar) localStorage.setItem('idx_avatar', avatar)
-      else localStorage.removeItem('idx_avatar')
-      localStorage.setItem('idx_pfp_decor', decor)
-      window.dispatchEvent(new Event('idx-avatar'))
-      window.dispatchEvent(new Event('idx-decor'))
       router.push('/profil')
       router.refresh()
     } finally {

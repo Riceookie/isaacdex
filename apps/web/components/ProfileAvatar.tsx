@@ -1,42 +1,35 @@
-'use client'
-
-import { useEffect, useState } from 'react'
 import DecorMark from '@/components/DecorMark'
-import { DEFAULT_DECOR, type DecorId } from '@/lib/pfpDecor'
+import { type DecorId } from '@/lib/pfpDecor'
 
 /**
- * Avatar profilu = własny obraz z pliku (localStorage) albo fallback (głowa postaci),
- * z opcjonalną dekoracją pfp (mucha/pająk/krew…) przypiętą w rogu. Dekoracja pojawia
- * się wszędzie, gdzie renderowany jest avatar. Kontener musi być position:relative.
+ * Avatar profilu = wgrany obraz albo fallback (głowa postaci), z opcjonalną ozdobą
+ * (mucha/pająk/krew…) przypiętą w rogu. Kontener musi być position:relative.
+ *
+ * Avatar i ozdoba przychodzą z BAZY, jako propsy. Kiedyś komponent czytał je sam
+ * z localStorage — przez co Twój profil wyglądał inaczej u Ciebie niż u wszystkich innych
+ * (a jeszcze inaczej po zalogowaniu na innym komputerze). Skoro dane są w bazie,
+ * nie ma już czego nasłuchiwać i komponent może być zwykły, serwerowy.
  */
 export default function ProfileAvatar({
   fallbackSrc,
+  avatar,
+  dekoracja = 'none',
   className = 'avatar-img',
 }: {
   fallbackSrc: string
+  /** Wgrany obraz albo null (wtedy leci fallback). */
+  avatar?: string | null
+  dekoracja?: DecorId
   className?: string
 }) {
-  const [custom, setCustom] = useState<string | null>(null)
-  const [decor, setDecor] = useState<DecorId>(DEFAULT_DECOR)
-
-  useEffect(() => {
-    const odswiez = () => {
-      setCustom(localStorage.getItem('idx_avatar'))
-      setDecor((localStorage.getItem('idx_pfp_decor') as DecorId) || DEFAULT_DECOR)
-    }
-    odswiez()
-    window.addEventListener('idx-avatar', odswiez)
-    window.addEventListener('idx-decor', odswiez)
-    return () => {
-      window.removeEventListener('idx-avatar', odswiez)
-      window.removeEventListener('idx-decor', odswiez)
-    }
-  }, [])
+  // Avatar bywa NAZWĄ POSTACI („Azazel"), a nie adresem — wtedy obrazek daje fallback
+  // (ikonę tej postaci), policzony już przez wołającego.
+  const src = avatar && (avatar.startsWith('/') || avatar.startsWith('http')) ? avatar : fallbackSrc
 
   return (
     <>
-      <img className={className} src={custom || fallbackSrc} alt="" draggable={false} />
-      <DecorMark id={decor} />
+      <img className={className} src={src} alt="" draggable={false} />
+      <DecorMark id={dekoracja} />
     </>
   )
 }

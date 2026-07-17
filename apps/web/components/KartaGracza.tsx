@@ -1,16 +1,14 @@
 import Sprite from '@/components/Sprite'
-import ItemSprite from '@/components/ItemSprite'
 import PrzyciskObserwuj from '@/components/PrzyciskObserwuj'
 import DecorMark from '@/components/DecorMark'
 import LinkGracza from '@/components/LinkGracza'
 import { avatarGracza, wlasnyAvatar } from '@/lib/chars'
-import { dekoracjaGracza, statyGracza } from '@/lib/klimat'
 import type { GraczKarta } from '@/lib/social'
 
 /** Avatar gracza + jego dekoracja pfp. Własne zdjęcia kadrujemy (object-fit), sprite'y zostają ostre. */
 function Awatar({ g, rozmiar, klasa }: { g: GraczKarta; rozmiar: number; klasa: string }) {
   const wlasny = wlasnyAvatar(g.avatar)
-  const decor = dekoracjaGracza(g.nick, wlasny)
+  const decor = g.dekoracja
   return (
     <LinkGracza nick={g.nick} ja={g.ja} className="ava-link">
       <span className={klasa + '-box' + (decor === 'none' ? '' : ' z-decor')}>
@@ -77,10 +75,10 @@ export function WierszGracza({ g }: { g: GraczKarta }) {
 }
 
 export function KartaGracza({ g }: { g: GraczKarta }) {
-  const s = statyGracza(g.nick)
+  const deadGod = g.procent === 100
 
   return (
-    <article className={'gracz-karta' + (s.deadGod ? ' deadgod' : '')}>
+    <article className={'gracz-karta' + (deadGod ? ' deadgod' : '')}>
       <header className="gk-head">
         <Awatar g={g} rozmiar={48} klasa="gk-ava" />
         <div className="gk-id">
@@ -91,7 +89,7 @@ export function KartaGracza({ g }: { g: GraczKarta }) {
           </LinkGracza>
           <Relacja g={g} />
         </div>
-        {s.deadGod && (
+        {deadGod && (
           <span className="gk-dg" title="Dead God — 100% osiągnięć">
             <Sprite name="deadgod" size={22} />
           </span>
@@ -100,20 +98,21 @@ export function KartaGracza({ g }: { g: GraczKarta }) {
 
       <p className="gk-opis muted small">{g.opis ?? 'Bez opisu.'}</p>
 
-      <div className="gk-postep">
-        <div className="bar">
-          <div className="bar-fill" style={{ width: `${s.procent}%` }} />
+      {/* Postęp tylko dla graczy z podpiętym Steamem. „Godziny w grze" i „ulubiony item"
+          zniknęły stąd na dobre: Steam Web API ich nie daje, więc jedyne, co dało się
+          pokazać, to liczby wymyślone z nicku. */}
+      {g.procent !== null ? (
+        <div className="gk-postep">
+          <div className="bar">
+            <div className="bar-fill" style={{ width: `${g.procent}%` }} />
+          </div>
+          <b className="gk-pct">{g.procent}%</b>
         </div>
-        <b className="gk-pct">{s.procent}%</b>
-      </div>
+      ) : (
+        <p className="gk-bez-steama muted small">Bez podpiętego Steama</p>
+      )}
 
       <ul className="gk-staty">
-        <li title="Ulubiony item">
-          <ItemSprite nazwa={s.ulubiony} size={18} /> {s.ulubiony}
-        </li>
-        <li title="Godziny w grze">
-          <Sprite name="clock" size={15} /> {s.godziny} h
-        </li>
         <li title="Obserwujący">
           <Sprite name="friendfinder" size={15} /> {g.obserwujacych}
         </li>

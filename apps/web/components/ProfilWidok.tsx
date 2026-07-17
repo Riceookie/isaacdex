@@ -1,23 +1,23 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 import Sprite from '@/components/Sprite'
-import ItemSprite from '@/components/ItemSprite'
 import FeedCard from '@/components/FeedCard'
 import ProfileAvatar from '@/components/ProfileAvatar'
-import DecorMark from '@/components/DecorMark'
 import LinkGracza from '@/components/LinkGracza'
 import PustyStan from '@/components/PustyStan'
 import Gablota, { type ItemDoWyboru } from '@/components/Gablota'
 import LicznikiObserwacji from '@/components/LicznikiObserwacji'
 import { avatarGracza, ikonaPostaci, pelnaPostaci } from '@/lib/chars'
-import { PUSTKA, statyGracza } from '@/lib/klimat'
+import { PUSTKA } from '@/lib/klimat'
 import type { DecorId } from '@/lib/pfpDecor'
-import type { DemoAch, DemoRun } from '@/lib/demoProfil'
 import type { FeedWpis, GraczKarta } from '@/lib/social'
+
+/** Odblokowany achievement ze Steama — nazwa, ikona i data zdobycia (wszystko prawdziwe). */
+export type Odblokowanie = { nazwa: string; ikonaUrl: string | null; data: string }
 
 /**
  * Znormalizowany profil — jeden kształt danych dla MOJEGO profilu (dane ze Steama)
- * i profilu CUDZEGO (dane z bazy + dorobione demo). Dzięki temu layout niżej jest
+ * i profilu CUDZEGO (też z bazy i ze Steama). Dzięki temu layout niżej jest
  * jeden, a nie dwa rozjeżdżające się z czasem.
  */
 export type DaneProfilu = {
@@ -28,9 +28,8 @@ export type DaneProfilu = {
   achProcent: number
   achUnlocked: number
   achTotal: number
-  recent: DemoAch[]
+  recent: Odblokowanie[]
   postacie: { nazwa: string; procent: number }[]
-  runy: DemoRun[]
   obserwujacych: number
   obserwuje: number
   /** Listy pod klikalne liczniki — PRAWDZIWE (tabela Obserwacja). */
@@ -43,34 +42,29 @@ export type DaneProfilu = {
   /** Avatar cudzego gracza (mój leci przez ProfileAvatar → localStorage). */
   avatar?: string | null
   decor?: DecorId
-  /** Czy sekcje Steamowe są dorobione — wtedy dostają znaczek DEMO. */
-  steamDemo: boolean
   /**
    * Czy Steam jest podpięty. Gdy nie, profil dalej pokazuje TOŻSAMOŚĆ (avatar, nick, bio,
    * ulubioną postać, znajomych) — bo to dane, które użytkownik już podał — a chowa tylko
    * sekcje, które bez Steama nie mają z czego powstać (postęp, achievementy, runy).
    */
   steamPodlaczony: boolean
-  /** Gablota cudzego gracza (moja siedzi w localStorage, więc czyta ją sam komponent). */
+  /** Gablota cudzego gracza (moja jest edytowalna, więc czyta ją sam komponent). */
   gablota?: (string | null)[]
   /** Katalog itemów do wybieraczki — tylko na własnym profilu. */
   itemyDoWyboru?: ItemDoWyboru[]
 }
 
-/** Nagłówek sekcji: tytuł + (opcjonalnie) link „więcej" albo znaczek DEMO. */
+/** Nagłówek sekcji: tytuł + (opcjonalnie) link „więcej". */
 function GlowaSekcji({
   children,
   wiecej,
-  demo,
 }: {
   children: ReactNode
   wiecej?: { href: string; tekst: string } | null
-  demo?: boolean
 }) {
   return (
     <div className="paper-head">
       {children}
-      {demo && <span className="muted small">DEMO</span>}
       {wiecej && (
         <Link className="paper-more" href={wiecej.href}>
           {wiecej.tekst}
@@ -109,16 +103,14 @@ export default function ProfilWidok({
               potwory na jednym nagłówku to nie klimat, tylko bałagan. */}
           <div className="profil-hero pf-hero pin-synced">
             <div className="pf-photo">
-              {wlasny ? (
-                <ProfileAvatar fallbackSrc={ikonaPostaci(d.ulubionaPostac)} />
-              ) : (
-                <>
-                  {/* ProfileAvatar czyta localStorage, więc pokazałby MOJE zdjęcie na
-                      cudzym profilu — obcy avatar leci wprost z bazy. */}
-                  <img src={avatarGracza(d.avatar, d.ulubionaPostac)} alt="" draggable={false} />
-                  <DecorMark id={d.decor ?? 'none'} />
-                </>
-              )}
+              {/* Ten sam komponent dla własnego i cudzego profilu — wszystko leci z bazy,
+                  więc nie ma już ryzyka, że pokaże MOJE zdjęcie na cudzym profilu. */}
+              <ProfileAvatar
+                fallbackSrc={avatarGracza(d.avatar, d.ulubionaPostac)}
+                avatar={d.avatar}
+                dekoracja={d.decor ?? 'none'}
+                className=""
+              />
             </div>
             <div className="pf-id">
               <h1 style={d.kolor ? { color: d.kolor } : undefined}>
@@ -189,11 +181,7 @@ export default function ProfilWidok({
             </div>
 
             {/* Top 3: 3 pedestały z itemami. Na własnym profilu klikalne („+"). */}
-            <Gablota
-              itemy={wlasny ? undefined : (d.gablota ?? [])}
-              edycja={wlasny}
-              doWyboru={d.itemyDoWyboru ?? []}
-            />
+            <Gablota itemy={d.gablota ?? []} edycja={wlasny} doWyboru={d.itemyDoWyboru ?? []} />
           </div>
 
           {/* Aktywność — wpisy są PRAWDZIWE (baza), u mnie i u innych. */}
@@ -235,43 +223,9 @@ export default function ProfilWidok({
             )}
           </div>
 
-          {/* Recent Runs — zmyślone na podstawie nicku, więc bez Steama nie ma dla nich
-              żadnej podstawy; pokazujemy je dopiero, gdy profil w ogóle ma dane z gry. */}
-          {d.steamPodlaczony && (
-            <div className="note recent-runs">
-              <GlowaSekcji demo>
-                <h2>
-                  <Sprite name="stopwatch" size={24} /> Ostatnie runy
-                </h2>
-              </GlowaSekcji>
-              <p className="sekcja-opis muted small">
-                Ostatnie podejścia: wynik, czas, piętro i seed. Steam nie udostępnia historii runów
-                przez API — te są zmyślone, dopóki nie zbierzemy ich z zapisu gry.
-              </p>
-              <div className="runs-list">
-                {d.runy.map((r, i) => (
-                  <div key={i} className="run-row">
-                    <span className={'run-result ' + (r.wynik === 'WYGRANA' ? 'win' : 'loss')}>
-                      {r.wynik}
-                      <span className="muted small">
-                        {r.wynik === 'WYGRANA' ? 'vs' : 'do'} {r.boss}
-                      </span>
-                    </span>
-                    <span className="run-time">{r.czas}</span>
-                    <span className="run-seed">
-                      <span className="muted small">{r.piętro}</span>
-                      <code>{r.seed}</code>
-                    </span>
-                    <span className="run-items">
-                      {r.itemy.map((it) => (
-                        <ItemSprite key={it} nazwa={it} size={26} />
-                      ))}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+          {/* Sekcji „Ostatnie runy" tu nie ma i nie będzie, dopóki nie zaczniemy czytać zapisu
+              gry: Steam Web API nie udostępnia historii runów, więc jedyne, co dało się tu
+              pokazać, to wyniki zmyślone z nicku. Lepiej nie pokazywać nic. */}
         </div>
 
         {/* ── PRAWA KOLUMNA ── */}
@@ -324,10 +278,7 @@ export default function ProfilWidok({
           {/* Recent Achievements */}
           {d.recent.length > 0 && (
             <div className="note">
-              <GlowaSekcji
-                demo={d.steamDemo}
-                wiecej={wlasny ? { href: '/kolekcja', tekst: 'Wszystkie →' } : null}
-              >
+              <GlowaSekcji wiecej={wlasny ? { href: '/kolekcja', tekst: 'Wszystkie →' } : null}>
                 <h3>
                   <Sprite name="trophy" size={22} /> Ostatnie achievementy
                 </h3>
@@ -351,10 +302,7 @@ export default function ProfilWidok({
               Bez Steama cała siatka to same zera — nie pokazujemy jej wcale. */}
           {d.steamPodlaczony && (
             <div className="note">
-              <GlowaSekcji
-                demo={d.steamDemo}
-                wiecej={wlasny ? { href: '/statystyki', tekst: 'Statystyki →' } : null}
-              >
+              <GlowaSekcji wiecej={wlasny ? { href: '/statystyki', tekst: 'Statystyki →' } : null}>
                 <h3>
                   <Sprite name="chad" size={22} /> Postępy postaci
                 </h3>
@@ -414,7 +362,9 @@ export default function ProfilWidok({
                         {g.nick}
                       </span>
                     </LinkGracza>
-                    <span className="muted small">{statyGracza(g.nick).procent}%</span>
+                    {/* Bez „X%" postępu: cudzy procent znaliśmy tylko dlatego, że był
+                        wyliczany z hasza nicku. Liczba wpisów jest prawdziwa. */}
+                    <span className="muted small">{g.wpisy} wpisów</span>
                   </li>
                 ))}
               </ul>

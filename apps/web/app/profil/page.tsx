@@ -9,8 +9,8 @@ import {
 import ProfilWidok, { type DaneProfilu } from '@/components/ProfilWidok'
 import ZalogujStan from '@/components/ZalogujStan'
 import { czyZalogowany, mojGracz } from '@/lib/konto'
-import { demoRuny } from '@/lib/demoProfil'
 import { wlasnyAvatar } from '@/lib/chars'
+import type { DecorId } from '@/lib/pfpDecor'
 
 export const dynamic = 'force-dynamic'
 
@@ -70,8 +70,6 @@ export default async function ProfilPage() {
     ? new Intl.DateTimeFormat('pl-PL', { month: 'short', year: 'numeric' }).format(ja.dolaczyl)
     : '—'
 
-  // Runy są nadal DEMO (Steam ich nie udostępnia) — ale generowane z nicku, więc mój
-  // profil nie pokazuje tych samych czterech runów co cudze.
   const dane: DaneProfilu = {
     nick: p?.nick ?? ja?.nick ?? 'Gracz',
     opis: p?.opis ?? ja?.opis ?? '',
@@ -81,7 +79,6 @@ export default async function ProfilPage() {
     achTotal: p?.achTotal ?? 0,
     recent: p?.recent ?? [],
     postacie: dash.postacie,
-    runy: p ? demoRuny(p.nick) : [],
     obserwujacych: liczniki.obserwujacych,
     obserwuje: liczniki.obserwuje,
     listaObserwujacych,
@@ -96,10 +93,10 @@ export default async function ProfilPage() {
         wartosc: steamPodlaczony ? `${p!.achUnlocked}/${p!.achTotal}` : 'bez Steama',
       },
     ],
-    // Mój profil ma prawdziwego Steama — achievementy i postacie NIE są dorobione.
-    steamDemo: false,
     steamPodlaczony,
-    // Moja gablota siedzi w localStorage — Gablota czyta ją sama (jak ProfileAvatar).
+    avatar: ja?.avatar,
+    decor: (ja?.dekoracja ?? 'none') as DecorId,
+    gablota: ja?.gablota ?? [],
     itemyDoWyboru,
   }
 

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { prisma, BossKoncowy, TrybGry } from '@isaacdex/db'
+import { prisma, BossKoncowy, TrybGry, TypWpisu } from '@isaacdex/db'
 import mapaMarek from '@/lib/marki-mapa.json'
 import { mojGracz } from '@/lib/konto'
 
@@ -116,6 +116,49 @@ export async function POST() {
     prisma.completionMark.createMany({ data: markRows, skipDuplicates: true }),
   ])
 
+  /**
+   * FEED z prawdziwych odblokowań.
+   *
+   * Wpisy w feedzie brały się kiedyś z zasianych kont-botów. Teraz robi je Steam: każde
+   * odblokowanie z datą to jeden wpis, z prawdziwą ikoną i prawdziwym czasem zdobycia.
+   *
+   * Dokładamy tylko NOWE (po nazwie), więc kolejny sync nie duplikuje feedu, a wpisy, które
+   * ktoś zdążył polubić, zostają na miejscu. Bierzemy wyłącznie odblokowania ze znaną datą —
+   * bez niej wpis wylądowałby „dzisiaj", czyli skłamałby o tym, kiedy to się stało.
+   */
+  const gracz = await prisma.gracz.findFirst({ where: { profilId: profil.id } })
+  let nowychWpisow = 0
+  if (gracz) {
+    const juzWFeedzie = new Set(
+      (
+        await prisma.wpis.findMany({
+          where: { autorId: gracz.id, typ: TypWpisu.UNLOCK },
+          select: { tresc: true },
+        })
+      ).map((w) => norm(w.tresc)),
+    )
+    const doDodania = rows
+      .filter((r) => r.odblokowany && r.dataOdblokowania && !juzWFeedzie.has(norm(r.nazwa)))
+      .map((r) => ({
+        autorId: gracz.id,
+        typ: TypWpisu.UNLOCK,
+        tresc: r.nazwa,
+        ikonaUrl: r.ikonaUrl,
+        itemy: [],
+        createdAt: r.dataOdblokowania!,
+      }))
+    if (doDodania.length > 0) {
+      const { count } = await prisma.wpis.createMany({ data: doDodania })
+      nowychWpisow = count
+    }
+  }
+
   const unlocked = rows.filter((r) => r.odblokowany).length
-  return NextResponse.json({ ok: true, total: rows.length, unlocked, marek: markRows.length })
+  return NextResponse.json({
+    ok: true,
+    total: rows.length,
+    unlocked,
+    marek: markRows.length,
+    wpisow: nowychWpisow,
+  })
 }

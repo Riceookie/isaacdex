@@ -30,6 +30,7 @@ export default async function CzatPage() {
     nick: g.nick,
     kolor: g.kolor,
     avatar: g.avatar,
+    dekoracja: g.dekoracja,
     // Gość nie jest nikim z listy — nie oznaczamy właściciela apki jako „to Ty".
     ja: gosc ? false : g.ja,
     znajomy: gosc ? false : g.znajomy,

@@ -1,8 +1,9 @@
 import Link from 'next/link'
 import { getProfil } from '@/lib/queries'
 import { getFeed, getLicznikiSpoleczne } from '@/lib/social'
-import { czyZalogowany } from '@/lib/konto'
+import { czyZalogowany, mojGracz } from '@/lib/konto'
 import { ikonaPostaci } from '@/lib/chars'
+import type { DecorId } from '@/lib/pfpDecor'
 import { PUSTKA } from '@/lib/klimat'
 import Sprite from '@/components/Sprite'
 import ProfileAvatar from '@/components/ProfileAvatar'
@@ -21,11 +22,12 @@ export default async function Home({
   searchParams?: Promise<{ feed?: string }>
 }) {
   const zakres = (await searchParams)?.feed === 'znajomi' ? 'znajomi' : 'global'
-  const [zalogowany, p, feed, liczniki] = await Promise.all([
+  const [zalogowany, p, feed, liczniki, ja] = await Promise.all([
     czyZalogowany(),
     getProfil(),
     getFeed(zakres),
     getLicznikiSpoleczne(),
+    mojGracz(),
   ])
   const gosc = !zalogowany
 
@@ -79,7 +81,11 @@ export default async function Home({
             <div className="note me-card pin-synced">
               <div className="me-head">
                 <div className="avatar sm pfp-frame">
-                  <ProfileAvatar fallbackSrc={ikonaPostaci(p.ulubiona || 'Isaac')} />
+                  <ProfileAvatar
+                    fallbackSrc={ikonaPostaci(p.ulubiona || ja?.avatar || 'Isaac')}
+                    avatar={ja?.avatar}
+                    dekoracja={(ja?.dekoracja ?? 'none') as DecorId}
+                  />
                 </div>
                 <div className="me-id">
                   <h3>{p.nick}</h3>

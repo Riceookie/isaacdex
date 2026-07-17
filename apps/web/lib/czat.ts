@@ -1,16 +1,17 @@
 import type { SpriteName } from '@/components/Sprite'
 
 /**
- * Czat piwnicy. Dwa kanały publiczne (globalny i ogłoszenia) plus prywatne rozmowy
- * ze znajomymi — zamiast tematycznych „pokojów", które tylko rozpraszały.
+ * Czat piwnicy: kanał globalny plus prywatne rozmowy ze znajomymi.
  *
- * Wiadomości są PRAWDZIWE: leżą w tabeli `Wiadomosc`, przeżywają odświeżenie i dolatują
- * do wszystkich w kanale przez Supabase Realtime (patrz components/CzatWidok.tsx).
- * Wyjątkiem są ogłoszenia — to kanał bota (Dogma), czyli treść redakcyjna, a nie rozmowa;
- * dlatego jako jedyny jest wpisany w kod i tylko do odczytu.
+ * Wszystkie wiadomości są PRAWDZIWE — leżą w tabeli `Wiadomosc`, przeżywają odświeżenie
+ * i dolatują do wszystkich w kanale przez Supabase Realtime (patrz components/CzatWidok.tsx).
+ *
+ * Był tu jeszcze kanał „ogłoszenia" z botem Dogmą: trzy zdania wpisane w kod, udające
+ * komunikaty systemu. Nikt ich nie pisał i nic za nimi nie stało, więc kanał zniknął —
+ * wróci, gdy będzie miał co ogłaszać i skąd to brać.
  */
 
-export type TypKanalu = 'global' | 'ogloszenia' | 'dm'
+export type TypKanalu = 'global' | 'dm'
 
 export type Kanal = {
   slug: string
@@ -19,8 +20,6 @@ export type Kanal = {
   /** Zdanie pod nazwą — klimat, nie instrukcja obsługi. */
   opis: string
   typ: TypKanalu
-  /** Ogłoszenia czyta się, nie pisze — mówi tu tylko Dogma. */
-  tylkoOdczyt?: boolean
 }
 
 export const KANALY: Kanal[] = [
@@ -30,14 +29,6 @@ export const KANALY: Kanal[] = [
     ikona: 'fly',
     opis: 'Czat globalny. Krew, łzy i skill issue.',
     typ: 'global',
-  },
-  {
-    slug: 'ogloszenia',
-    nazwa: 'ogłoszenia',
-    ikona: 'dadsnote',
-    opis: 'Tu mówi tylko Dogma. Ty słuchasz.',
-    typ: 'ogloszenia',
-    tylkoOdczyt: true,
   },
 ]
 
@@ -60,9 +51,8 @@ export type Wiad = {
   /** Godzina jako gotowy tekst („14:32") — patrz `godzina()`. */
   czas: string
   tekst: string[]
-  /** Wpis Dogmy — krwawa, „bossowa" ramka zamiast zwykłego dymka. */
-  bot?: boolean
-  reakcje?: { ikona: SpriteName; ile: number }[]
+  /** Reakcje z bazy: ikona, ile osób i czy jestem wśród nich. */
+  reakcje?: { ikona: SpriteName; ile: number; moja: boolean }[]
   /** Załącznik obrazkowy. */
   obraz?: string
 }
@@ -88,63 +78,8 @@ export const LIMIT_WIADOMOSCI = 60
 /** Najdłuższa wiadomość — tyle samo, ile przyjmuje pole w UI. */
 export const MAX_DLUGOSC = 280
 
-// ── Ogłoszenia: kanał bota, nie rozmowa ──────────────────────────────────────
-
-export const OGLOSZENIA: Wiad[] = [
-  {
-    id: 'g1',
-    autor: 'Dogma',
-    czas: '09:00',
-    bot: true,
-    tekst: ['Czat piwnicy działa. Wiadomości zostają na zawsze. Uważaj, co piszesz.'],
-  },
-  {
-    id: 'g2',
-    autor: 'Dogma',
-    czas: '11:20',
-    bot: true,
-    tekst: ['Nowe achievementy w Encyklopedii. Nadal ich nie masz.'],
-  },
-  {
-    id: 'g3',
-    autor: 'Dogma',
-    czas: '12:45',
-    bot: true,
-    tekst: ['Przypomnienie: secret room istnieje. Nie znajdziesz go tutaj.'],
-  },
-]
-
 /** Reakcje pod wiadomością — pickupy zamiast emoji. */
 export const REAKCJE: SpriteName[] = ['heart', 'coin', 'skull', 'trophy']
-
-// ── Kto jest w piwnicy: status + jego ikona ───────────────────────────────────
-
-const hash = (s: string): number => {
-  let h = 0
-  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0
-  return h
-}
-
-const STATUSY: { tekst: string; ikona: SpriteName }[] = [
-  { tekst: 'krwawi na Sheol', ikona: 'skull' },
-  { tekst: 'ucieka przed Mamą', ikona: 'bomb' },
-  { tekst: 'kupuje w sklepie', ikona: 'coin' },
-  { tekst: 'grinduje Dead Goda', ikona: 'deadgod' },
-  { tekst: 'resetuje seed', ikona: 'd6' },
-  { tekst: 'płacze w Basement I', ikona: 'heart' },
-  { tekst: 'walczy z Delirium', ikona: 'godhead' },
-  { tekst: 'przegląda itemy', ikona: 'book' },
-  { tekst: 'szuka secret roomu', ikona: 'membercard' },
-]
-
-export function statusGracza(nick: string): { tekst: string; ikona: SpriteName } {
-  return STATUSY[hash('status-' + nick) % STATUSY.length]
-}
-
-/** Online = mniej więcej dwie trzecie graczy; reszta „zginęła" (offline). */
-export function czyOnline(nick: string): boolean {
-  return hash('online-' + nick) % 3 !== 0
-}
 
 // ── Kwestie dla familiara z górnego paska (jednego, tego z TopBara) ───────────
 
@@ -158,7 +93,6 @@ const PO_WYSLANIU = [
 
 const W_KANALE: Record<string, string> = {
   piwnica: 'Cała piwnica cię słyszy.',
-  ogloszenia: 'Dogma mówi. Ty słuchasz.',
 }
 
 /**

@@ -4,8 +4,8 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Sprite from '@/components/Sprite'
 import DecorMark from '@/components/DecorMark'
+import type { DecorId } from '@/lib/pfpDecor'
 import { avatarGracza, wlasnyAvatar } from '@/lib/chars'
-import { dekoracjaGracza } from '@/lib/klimat'
 
 export type WizytowkaGracza = {
   znaleziony: true
@@ -19,9 +19,9 @@ export type WizytowkaGracza = {
   obserwujeMnie: boolean
   obserwujacych: number
   wpisy: number
-  procent: number
-  godziny: number
-  deadGod: boolean
+  dekoracja: DecorId
+  /** Postęp osiągnięć — null, gdy gracz nie ma podpiętego Steama (nie zgadujemy). */
+  procent: number | null
 }
 
 /**
@@ -143,11 +143,7 @@ export default function KartaHover({
       ) : (
         <>
           <div className="hov-glowa">
-            <span
-              className={
-                'hov-ava-box' + (dekoracjaGracza(dane.nick, wlasny) === 'none' ? '' : ' z-decor')
-              }
-            >
+            <span className={'hov-ava-box' + (dane.dekoracja === 'none' ? '' : ' z-decor')}>
               <img
                 className={'hov-ava' + (wlasny ? ' foto' : '')}
                 src={avatarGracza(dane.avatar)}
@@ -155,13 +151,13 @@ export default function KartaHover({
                 width={44}
                 height={44}
               />
-              <DecorMark id={dekoracjaGracza(dane.nick, wlasny)} />
+              <DecorMark id={dane.dekoracja} />
             </span>
             <span className="hov-kto">
               <b style={dane.kolor ? { color: dane.kolor } : undefined}>{dane.nick}</b>
               <Relacja d={dane} />
             </span>
-            {dane.deadGod && (
+            {dane.procent === 100 && (
               <span className="hov-dg" title="Dead God — 100% osiągnięć">
                 <Sprite name="deadgod" size={20} />
               </span>
@@ -170,17 +166,18 @@ export default function KartaHover({
 
           <p className="hov-opis">{dane.opis ?? 'Bez opisu.'}</p>
 
-          <div className="hov-pasek" title={`${dane.procent}% osiągnięć`}>
-            <div className="bar">
-              <div className="bar-fill" style={{ width: `${dane.procent}%` }} />
+          {/* Pasek postępu tylko dla graczy z podpiętym Steamem — reszcie nie mamy co
+              narysować, a kreska „0%" wyglądałaby jak ocena, nie jak brak danych. */}
+          {dane.procent !== null && (
+            <div className="hov-pasek" title={`${dane.procent}% osiągnięć`}>
+              <div className="bar">
+                <div className="bar-fill" style={{ width: `${dane.procent}%` }} />
+              </div>
+              <b>{dane.procent}%</b>
             </div>
-            <b>{dane.procent}%</b>
-          </div>
+          )}
 
           <ul className="hov-staty">
-            <li title="Godziny w grze">
-              <Sprite name="clock" size={13} /> {dane.godziny} h
-            </li>
             <li title="Obserwujący">
               <Sprite name="friendfinder" size={13} /> {dane.obserwujacych}
             </li>

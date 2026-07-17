@@ -1,15 +1,8 @@
 import 'server-only'
 import { prisma } from '@isaacdex/db'
 import { mojGracz } from '@/lib/konto'
-import {
-  godzina,
-  KANALY,
-  kanalDm,
-  LIMIT_WIADOMOSCI,
-  nickZDm,
-  OGLOSZENIA,
-  type Wiad,
-} from '@/lib/czat'
+import { godzina, KANALY, kanalDm, LIMIT_WIADOMOSCI, nickZDm, type Wiad } from '@/lib/czat'
+import type { SpriteName } from '@/components/Sprite'
 
 /**
  * Odczyt i zapis wiadomości czatu.
@@ -41,29 +34,48 @@ export async function kanalDlaSlugu(slug: string): Promise<string | null> {
   return KANALY.some((k) => k.slug === slug) ? slug : null
 }
 
-const doWiad = (w: {
-  id: number
-  tresc: string
-  obrazekUrl: string | null
-  utworzono: Date
-  autor: { nick: string }
-}): Wiad => ({
-  id: String(w.id),
-  autor: w.autor.nick,
-  czas: godzina(w.utworzono),
-  // Enter w polu daje wielolinijkową wiadomość; w bazie to jeden tekst, w UI — akapity.
-  tekst: w.tresc ? w.tresc.split('\n') : [],
-  obraz: w.obrazekUrl ?? undefined,
-})
+const doWiad = (
+  w: {
+    id: number
+    tresc: string
+    obrazekUrl: string | null
+    utworzono: Date
+    autor: { nick: string }
+    reakcje: { ikona: string; graczId: number }[]
+  },
+  jaId?: number,
+): Wiad => {
+  // Reakcje zliczamy tu, a nie w bazie: wierszy pod jedną wiadomością są jednostki,
+  // więc grupowanie w pamięci jest tańsze niż osobne zapytanie z GROUP BY.
+  const licznik = new Map<string, number>()
+  const moje = new Set<string>()
+  for (const r of w.reakcje) {
+    licznik.set(r.ikona, (licznik.get(r.ikona) ?? 0) + 1)
+    if (jaId != null && r.graczId === jaId) moje.add(r.ikona)
+  }
 
-/** Wiadomości kanału, od najstarszej. Ogłoszenia są treścią bota, nie tabelą. */
+  return {
+    id: String(w.id),
+    autor: w.autor.nick,
+    czas: godzina(w.utworzono),
+    // Enter w polu daje wielolinijkową wiadomość; w bazie to jeden tekst, w UI — akapity.
+    tekst: w.tresc ? w.tresc.split('\n') : [],
+    obraz: w.obrazekUrl ?? undefined,
+    reakcje: [...licznik.entries()].map(([ikona, ile]) => ({
+      ikona: ikona as SpriteName,
+      ile,
+      moja: moje.has(ikona),
+    })),
+  }
+}
+
+/** Wiadomości kanału, od najstarszej. */
 export async function getWiadomosci(slug: string): Promise<StanKanalu> {
-  if (slug === 'ogloszenia') return { kanalDb: 'ogloszenia', wiadomosci: OGLOSZENIA }
-
   const kanalDb = await kanalDlaSlugu(slug)
   if (!kanalDb) return { kanalDb: null, wiadomosci: [] }
 
   // Bierzemy OSTATNIE `LIMIT` (desc + take), a pokazujemy od najstarszej — stąd reverse.
+  const ja = await mojGracz()
   const wiersze = await prisma.wiadomosc.findMany({
     where: { kanal: kanalDb },
     orderBy: { utworzono: 'desc' },
@@ -74,8 +86,21 @@ export async function getWiadomosci(slug: string): Promise<StanKanalu> {
       obrazekUrl: true,
       utworzono: true,
       autor: { select: { nick: true } },
+      reakcje: { select: { ikona: true, graczId: true } },
     },
   })
 
-  return { kanalDb, wiadomosci: wiersze.reverse().map(doWiad) }
+  return { kanalDb, wiadomosci: wiersze.reverse().map((w) => doWiad(w, ja?.id)) }
+}
+
+/**
+ * Czy ten kanał (nazwa Z BAZY) należy do gracza — publiczny należy do wszystkich,
+ * a prywatny tylko do dwóch osób, których ID są w jego nazwie („dm:3-17").
+ * Używane przy reakcjach: wiadomość znamy po ID, więc kanał trzeba sprawdzić wprost.
+ */
+export async function czyMojKanal(kanal: string, graczId: number): Promise<boolean> {
+  if (KANALY.some((k) => k.slug === kanal)) return true
+  const m = kanal.match(/^dm:(\d+)-(\d+)$/)
+  if (!m) return false
+  return Number(m[1]) === graczId || Number(m[2]) === graczId
 }

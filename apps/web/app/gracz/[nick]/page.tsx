@@ -6,16 +6,8 @@ import {
   getObserwujacych,
   getZnajomychGracza,
 } from '@/lib/social'
-import { getKatalogAchievementow, getPostacie } from '@/lib/queries'
+import { getSteamGracza } from '@/lib/queries'
 import { wlasnyAvatar } from '@/lib/chars'
-import { dekoracjaGracza, statyGracza } from '@/lib/klimat'
-import {
-  demoPostacie,
-  demoRecent,
-  demoRuny,
-  demoUlubionaPostac,
-  demoUlubioneItemy,
-} from '@/lib/demoProfil'
 import ProfilWidok, { type DaneProfilu } from '@/components/ProfilWidok'
 import PrzyciskObserwuj from '@/components/PrzyciskObserwuj'
 import Sprite from '@/components/Sprite'
@@ -28,13 +20,14 @@ export async function generateMetadata({ params }: { params: { nick: string } })
 }
 
 /**
- * Profil INNEGO gracza — ten sam bogaty układ co /profil (wspólny ProfilWidok), tylko bez
- * rzeczy, których nie da się zrobić cudzemu profilowi (edycja, podmiana avatara).
- * Własny nick przekierowuje na /profil, gdzie jest edycja i prawdziwy Steam.
+ * Profil INNEGO gracza — ten sam układ co /profil (wspólny ProfilWidok), bez rzeczy, których
+ * nie da się zrobić cudzemu profilowi (edycja, podmiana avatara). Własny nick przekierowuje
+ * na /profil.
  *
- * Skąd dane: nick, opis, avatar, relacja, liczniki i wpisy są PRAWDZIWE (baza).
- * Steama ma podpiętego tylko właściciel apki, więc achievementy, postępy postaci, runy
- * i ulubione itemy są dorabiane z nicku (lib/demoProfil) i oznaczone w UI jako DEMO.
+ * Wszystko tu jest PRAWDZIWE. Kiedyś achievementy, postępy postaci, godziny i runy były
+ * wyliczane z hasza nicku i oznaczane znaczkiem DEMO — profil obcego wyglądał przez to
+ * bogaciej niż własny, a żadna z tych liczb nic nie znaczyła. Teraz: ma podpiętego Steama —
+ * widać jego rzeczywisty postęp; nie ma — sekcji z gry po prostu nie ma.
  */
 export default async function ProfilGracza({ params }: { params: { nick: string } }) {
   const nick = decodeURIComponent(params.nick)
@@ -44,35 +37,35 @@ export default async function ProfilGracza({ params }: { params: { nick: string 
   const { gracz: g, wpisy } = dane
   if (g.ja) redirect('/profil')
 
-  const [znajomi, katalog, postacie, listaObserwujacych, listaObserwowanych] = await Promise.all([
+  const [znajomi, listaObserwujacych, listaObserwowanych, steam] = await Promise.all([
     getZnajomychGracza(g.id),
-    getKatalogAchievementow(),
-    getPostacie(),
     getObserwujacych(g.id),
     getObserwowanych(g.id),
+    getSteamGracza(g.profilId),
   ])
 
-  const staty = statyGracza(g.nick)
-  // Avatar to zwykle ikona postaci z gry („Azazel") — wtedy jest zarazem „mainem".
-  // Gracz z własnym zdjęciem nie mówi nam nic o postaci, więc main losujemy z nicku.
+  // Avatar to zwykle ikona postaci z gry („Azazel") — wtedy jest zarazem „mainem". Gracz
+  // z własnym zdjęciem nie mówi nam nic o postaci, więc pytamy Steam o najczęściej ogrywaną;
+  // bez Steama zostaje pusto (cokół bez postaci), zamiast zgadywać.
   const ulubionaPostac = wlasnyAvatar(g.avatar)
-    ? demoUlubionaPostac(g.nick, postacie)
-    : (g.avatar ?? demoUlubionaPostac(g.nick, postacie))
+    ? (steam?.fav ?? '')
+    : (g.avatar ?? steam?.fav ?? '')
+
+  const dolaczyl = new Intl.DateTimeFormat('pl-PL', { month: 'short', year: 'numeric' }).format(
+    g.dolaczyl,
+  )
 
   const d: DaneProfilu = {
-    // Cudzy profil ma komplet sekcji: te bez danych ze Steama dorabiamy z nicku
-    // (i oznaczamy znaczkiem DEMO), więc nie ma tu czego chować.
-    steamPodlaczony: true,
+    steamPodlaczony: steam !== null,
     nick: g.nick,
     kolor: g.kolor,
     opis: g.opis ?? '',
     ulubionaPostac,
-    achProcent: staty.procent,
-    achUnlocked: Math.round((staty.procent / 100) * katalog.length),
-    achTotal: katalog.length,
-    recent: demoRecent(g.nick, katalog),
-    postacie: demoPostacie(g.nick, postacie, staty.procent),
-    runy: demoRuny(g.nick),
+    achProcent: steam?.achProcent ?? 0,
+    achUnlocked: steam?.achUnlocked ?? 0,
+    achTotal: steam?.achTotal ?? 0,
+    recent: steam?.recent ?? [],
+    postacie: steam?.postacie ?? [],
     obserwujacych: g.obserwujacych,
     // Ilu on obserwuje — z prawdziwej listy, a nie z liczby znajomych (to co innego:
     // znajomy = obserwacja odwzajemniona, więc licznik zaniżał się przy jednostronnych).
@@ -82,17 +75,16 @@ export default async function ProfilGracza({ params }: { params: { nick: string 
     wpisy,
     znajomi,
     avatar: g.avatar,
-    decor: dekoracjaGracza(g.nick, wlasnyAvatar(g.avatar)),
+    decor: g.dekoracja,
     meta: [
-      { etykieta: 'GODZINY', wartosc: `${staty.godziny} h` },
+      { etykieta: 'CZŁONEK OD', wartosc: dolaczyl },
       { etykieta: 'WPISY', wartosc: String(g.wpisy) },
-      { etykieta: 'DEAD GOD', wartosc: staty.deadGod ? 'TAK' : 'JESZCZE NIE' },
+      {
+        etykieta: 'ACHIEVEMENTY',
+        wartosc: steam ? `${steam.achUnlocked}/${steam.achTotal}` : 'bez Steama',
+      },
     ],
-    // Ten gracz nie ma podpiętego Steama — sekcje Steamowe są dorobione.
-    steamDemo: true,
-    // Cudzej gabloty nie mamy gdzie trzymać (localStorage jest MOJE), więc pierwsze
-    // trzy z jego dorobionych ulubionych itemów — spójnie z sekcją „Ulubione itemy".
-    gablota: demoUlubioneItemy(g.nick).slice(0, 3),
+    gablota: g.gablota,
   }
 
   return (

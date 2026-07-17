@@ -9,26 +9,6 @@ export type ItemDoWyboru = { nazwa: string; idW: number | null; typ: string; jak
 
 /** Ile pedestałów stoi w gablocie. Trzy — jak w pokoju z wyborem itemu (Angel/Devil). */
 export const MIEJSC = 3
-const KLUCZ = 'idx_showcase'
-
-/** Odczyt gabloty z localStorage — zawsze 3 pola, puste jako null. */
-export function wczytajGablote(): (string | null)[] {
-  if (typeof window === 'undefined') return Array(MIEJSC).fill(null)
-  try {
-    const raw = JSON.parse(localStorage.getItem(KLUCZ) ?? '[]')
-    const lista = Array.isArray(raw) ? raw : []
-    return Array.from({ length: MIEJSC }, (_, i) =>
-      typeof lista[i] === 'string' ? lista[i] : null,
-    )
-  } catch {
-    return Array(MIEJSC).fill(null)
-  }
-}
-
-export function zapiszGablote(itemy: (string | null)[]) {
-  localStorage.setItem(KLUCZ, JSON.stringify(itemy.slice(0, MIEJSC)))
-  window.dispatchEvent(new Event('idx-showcase'))
-}
 
 /** Wybór itemu: szukajka + siatka sprite'ów z gry. W portalu, żeby nie rozpychał karty. */
 function Wybieraczka({
@@ -115,45 +95,44 @@ function Wybieraczka({
  * „Top 3 ulubione przedmioty": trzy pedestały (prawdziwa skała z gry), obok „Ulubionej postaci".
  *
  * `edycja` = to Twój profil: puste pedestały dostają „+", zajęte — „×" do zdjęcia.
- * Na cudzym profilu gablota jest tylko do oglądania (i tak nie mamy gdzie zapisać).
+ * Na cudzym profilu gablota jest tylko do oglądania.
  *
- * Zapis leci do localStorage — tak samo jak avatar, dekoracja pfp i ulubiony item
- * (patrz ProfileAvatar / FavItemBadge). W bazie trzymamy tylko nick/opis/avatar.
+ * Zawartość idzie DO BAZY (kolumna `Gracz.gablota`). Kiedyś siedziała w localStorage,
+ * przez co widziałeś ją tylko Ty — na cudzych profilach pedestały albo świeciły pustkami,
+ * albo dostawały itemy zmyślone z nicku.
  */
 export default function Gablota({
-  itemy,
+  itemy = [],
   edycja = false,
   doWyboru = [],
 }: {
-  /** Nazwy itemów (null = pusty pedestał). Dla cudzych profili podane z zewnątrz. */
+  /** Nazwy itemów (null = pusty pedestał) — z bazy, tak samo dla własnego i cudzego profilu. */
   itemy?: (string | null)[]
   edycja?: boolean
   /** Katalog do wybieraczki — potrzebny tylko w trybie edycji. */
   doWyboru?: ItemDoWyboru[]
 }) {
-  // Własna gablota żyje w localStorage, więc czyta się ją po zamontowaniu.
-  const [moje, setMoje] = useState<(string | null)[]>(() => Array(MIEJSC).fill(null))
   const [gniazdo, setGniazdo] = useState<number | null>(null)
-  const wlasna = itemy === undefined
+  // Stan lokalny tylko po to, żeby klik był natychmiastowy — źródłem prawdy jest baza.
+  const [moje, setMoje] = useState<(string | null)[]>(() =>
+    Array.from({ length: MIEJSC }, (_, i) => itemy[i] ?? null),
+  )
 
-  useEffect(() => {
-    if (!wlasna) return
-    const odswiez = () => setMoje(wczytajGablote())
-    odswiez()
-    window.addEventListener('idx-showcase', odswiez)
-    return () => window.removeEventListener('idx-showcase', odswiez)
-  }, [wlasna])
-
-  const lista = wlasna ? moje : Array.from({ length: MIEJSC }, (_, i) => itemy?.[i] ?? null)
+  const lista = edycja ? moje : Array.from({ length: MIEJSC }, (_, i) => itemy[i] ?? null)
 
   const mapaItemow = useMemo(() => new Map(doWyboru.map((i) => [i.nazwa, i])), [doWyboru])
 
-  function ustaw(i: number, nazwa: string | null) {
+  async function ustaw(i: number, nazwa: string | null) {
     const next = [...lista]
     next[i] = nazwa
     setMoje(next)
-    zapiszGablote(next)
     setGniazdo(null)
+    // Baza trzyma same nazwy, bez dziur — puste pedestały to po prostu krótsza lista.
+    await fetch('/api/profil', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ gablota: next.filter((x): x is string => x != null) }),
+    })
   }
 
   return (

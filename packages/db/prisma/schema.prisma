@@ -176,11 +176,21 @@ model Gracz {
   /// wpisana w kod na sztywno; gracze sprzed tej kolumny dostali datę migracji.
   dolaczyl DateTime @default(now())
 
+  /// Ozdoba przy avatarze (id z lib/pfpDecor). Null/„none" = bez ozdoby.
+  /// Siedziała w localStorage, więc widział ją tylko właściciel — cudzą apka ZGADYWAŁA
+  /// z nicku. Teraz jest w bazie, czyli Twój profil wygląda tak samo dla wszystkich.
+  dekoracja String?
+
+  /// Gablota „Top 3 ulubione przedmioty" — nazwy itemów, w kolejności pedestałów.
+  /// Też przeniesiona z localStorage: inaczej u obcych gablota była zawsze pusta albo zmyślona.
+  gablota String[]
+
   wpisy       Wpis[]
   lajki       Lajk[]
   wiadomosci  Wiadomosc[]
-  obserwuje   Obserwacja[] @relation("obserwujacy")
-  obserwowany Obserwacja[] @relation("obserwowany")
+  reakcje     ReakcjaWiadomosci[]
+  obserwuje   Obserwacja[]        @relation("obserwujacy")
+  obserwowany Obserwacja[]        @relation("obserwowany")
 }
 
 model Obserwacja {
@@ -250,6 +260,23 @@ model Wiadomosc {
 
   utworzono DateTime @default(now())
 
+  reakcje ReakcjaWiadomosci[]
+
   @@index([kanal, utworzono])
   @@index([autorId])
+}
+
+/// Reakcja pod wiadomością (pickup z gry zamiast emoji). Jeden gracz — jedna sztuka danej
+/// ikony pod daną wiadomością, stąd klucz złożony: ponowne kliknięcie ją zdejmuje.
+/// Wcześniej reakcje żyły w stanie komponentu i znikały po odświeżeniu.
+model ReakcjaWiadomosci {
+  wiadomosc   Wiadomosc @relation(fields: [wiadomoscId], references: [id], onDelete: Cascade)
+  wiadomoscId Int
+  gracz       Gracz     @relation(fields: [graczId], references: [id], onDelete: Cascade)
+  graczId     Int
+  /// Nazwa sprite'a z components/Sprite (np. „heart", „coin").
+  ikona       String
+
+  @@id([wiadomoscId, graczId, ikona])
+  @@index([wiadomoscId])
 }

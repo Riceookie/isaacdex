@@ -2,8 +2,8 @@
 
 import { prisma } from '@isaacdex/db'
 import { mojGracz } from '@/lib/konto'
-import { kanalDlaSlugu } from '@/lib/wiadomosci'
-import { KANALY, MAX_DLUGOSC } from '@/lib/czat'
+import { czyMojKanal, kanalDlaSlugu } from '@/lib/wiadomosci'
+import { MAX_DLUGOSC } from '@/lib/czat'
 
 /**
  * Wysłanie wiadomości.
@@ -28,14 +28,44 @@ export async function wyslijWiadomosc(
   const kanal = await kanalDlaSlugu(slug)
   if (!kanal) return { ok: false, powod: 'Nie ma takiego kanału.' }
 
-  // Ogłoszenia wygłasza Dogma. Blokadę trzyma serwer, nie tylko schowany input.
-  if (KANALY.some((k) => k.slug === kanal && k.tylkoOdczyt)) {
-    return { ok: false, powod: 'W tym kanale mówi tylko Dogma.' }
-  }
-
   await prisma.wiadomosc.create({
     data: { kanal, autorId: ja.id, tresc: czysta, obrazekUrl: obrazekUrl ?? null },
   })
 
   return { ok: true }
+}
+
+/**
+ * Reakcja pod wiadomością — kliknięcie dodaje, ponowne zdejmuje.
+ *
+ * Reakcje żyły dotąd w stanie komponentu: znikały po odświeżeniu i nikt poza Tobą ich nie
+ * widział. Teraz są wierszem w bazie, a klucz (wiadomość, gracz, ikona) sam pilnuje, żeby
+ * jeden gracz nie dołożył tej samej ikony dwa razy.
+ */
+export async function przelaczReakcje(
+  wiadomoscId: number,
+  ikona: string,
+): Promise<{ ok: true; dodana: boolean } | { ok: false; powod: string }> {
+  const ja = await mojGracz()
+  if (!ja) return { ok: false, powod: 'Zaloguj się, aby reagować.' }
+  if (!/^[a-zA-Z]{1,24}$/.test(ikona)) return { ok: false, powod: 'Nieznana reakcja.' }
+
+  // Reagować można tylko tam, gdzie w ogóle wolno Ci czytać — kanał wiadomości musi być
+  // jednym z Twoich (publiczny albo Twój DM).
+  const wiad = await prisma.wiadomosc.findUnique({
+    where: { id: wiadomoscId },
+    select: { kanal: true },
+  })
+  if (!wiad) return { ok: false, powod: 'Nie ma takiej wiadomości.' }
+  if (!(await czyMojKanal(wiad.kanal, ja.id))) return { ok: false, powod: 'Nie Twój kanał.' }
+
+  const klucz = { wiadomoscId_graczId_ikona: { wiadomoscId, graczId: ja.id, ikona } }
+  const istnieje = await prisma.reakcjaWiadomosci.findUnique({ where: klucz })
+
+  if (istnieje) {
+    await prisma.reakcjaWiadomosci.delete({ where: klucz })
+    return { ok: true, dodana: false }
+  }
+  await prisma.reakcjaWiadomosci.create({ data: { wiadomoscId, graczId: ja.id, ikona } })
+  return { ok: true, dodana: true }
 }

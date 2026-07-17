@@ -10,7 +10,7 @@ import LinkGracza from '@/components/LinkGracza'
 import { przelaczLajk } from '@/app/actions/social'
 import { powiedz } from '@/lib/companionGlos'
 import { avatarGracza, ikonaPostaci, wlasnyAvatar } from '@/lib/chars'
-import { dekoracjaGracza, ETYKIETA, komentarz } from '@/lib/klimat'
+import { ETYKIETA, komentarz } from '@/lib/klimat'
 import type { FeedWpis } from '@/lib/social'
 
 /** „2 godz. temu" — jedna funkcja zamiast biblioteki. */
@@ -62,7 +62,7 @@ export default function FeedCard({ w }: { w: FeedWpis }) {
 
   const etykieta = ETYKIETA[w.typ]
   const wlasny = wlasnyAvatar(w.autor.avatar)
-  const decor = dekoracjaGracza(w.autor.nick, wlasny)
+  const decor = w.autor.dekoracja
 
   return (
     <article className={'feed-item feed-' + w.typ.toLowerCase()}>

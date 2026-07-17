@@ -7,13 +7,11 @@ import DecorMark from '@/components/DecorMark'
 import LinkGracza from '@/components/LinkGracza'
 import WybieraczkaReakcji from '@/components/WybieraczkaReakcji'
 import { avatarGracza, wlasnyAvatar } from '@/lib/chars'
-import { dekoracjaGracza } from '@/lib/klimat'
 import { powiedz } from '@/lib/companionGlos'
 import { supabasePrzegladarka } from '@/lib/supabase/przegladarka'
 import { MAX_OBRAZEK, wgrajObrazek } from '@/lib/zalaczniki'
-import { wyslijWiadomosc } from '@/app/actions/czat'
+import { przelaczReakcje, wyslijWiadomosc } from '@/app/actions/czat'
 import {
-  czyOnline,
   dmSlug,
   DOMYSLNY_KANAL,
   KANALY,
@@ -21,10 +19,10 @@ import {
   MAX_DLUGOSC,
   nickZDm,
   REAKCJE,
-  statusGracza,
   type Wiad,
 } from '@/lib/czat'
 import type { SpriteName } from '@/components/Sprite'
+import type { DecorId } from '@/lib/pfpDecor'
 
 /**
  * Zamienia tokeny `:nazwa:` na sprite'y z gry, resztę zostawia tekstem.
@@ -46,6 +44,7 @@ export type Rozmowca = {
   nick: string
   kolor: string | null
   avatar: string | null
+  dekoracja: DecorId
   ja: boolean
   znajomy: boolean
 }
@@ -77,17 +76,13 @@ export default function CzatWidok({
   startowyKanalDb: string | null
 }) {
   // Gość widzi tylko kanały publiczne (globalny + ogłoszenia); znajomych i DM chowamy.
-  const kanaly = useMemo(
-    () => (gosc ? KANALY.filter((k) => k.typ === 'global' || k.typ === 'ogloszenia') : KANALY),
-    [gosc],
-  )
+  const kanaly = useMemo(() => (gosc ? KANALY.filter((k) => k.typ === 'global') : KANALY), [gosc])
   const [kanal, setKanal] = useState(DOMYSLNY_KANAL)
   const [kanalDb, setKanalDb] = useState<string | null>(startowyKanalDb)
   const [lista, setLista] = useState<Wiad[]>(startowe)
   const [ladowanie, setLadowanie] = useState(false)
   const [blad, setBlad] = useState<string | null>(null)
   const [wysylanie, setWysylanie] = useState(false)
-  const [reakcje, setReakcje] = useState<Record<string, Record<string, number>>>({})
   const [tekst, setTekst] = useState('')
   // Usunięte wiadomości: zostaje po nich ślad („Wiadomość usunięta"), jak na Discordzie.
   const [usuniete, setUsuniete] = useState<string[]>([])
@@ -105,13 +100,14 @@ export default function CzatWidok({
 
   const znajomi = useMemo(() => gracze.filter((g) => g.znajomy), [gracze])
   const wgNicku = useMemo(() => new Map(gracze.map((g) => [g.nick, g])), [gracze])
-  const online = useMemo(() => gracze.filter((g) => g.ja || czyOnline(g.nick)), [gracze])
-  const zginelo = gracze.length - online.length
+  // Kto NAPRAWDĘ siedzi teraz na czacie (Realtime presence) — patrz useEffect niżej.
+  const [obecni, setObecni] = useState<string[]>([])
+  const online = useMemo(() => gracze.filter((g) => obecni.includes(g.nick)), [gracze, obecni])
 
   const rozmowca = nickZDm(kanal)
   const definicja = KANALY.find((k) => k.slug === kanal)
-  // Gość nie pisze nigdzie — wszystkie kanały są dla niego tylko do czytania.
-  const tylkoOdczyt = gosc || !!definicja?.tylkoOdczyt
+  // Gość czyta, ale nie pisze — jedyny powód, dla którego kanał bywa tylko do odczytu.
+  const tylkoOdczyt = gosc
 
   /** Dociąga wiadomości kanału (razem z autorami) i nazwę kanału w bazie dla Realtime. */
   const odswiez = useCallback(async (slug: string) => {
@@ -149,10 +145,9 @@ export default function CzatWidok({
    * do listy — pytamy o kanał jeszcze raz. Jedno zapytanie po indeksie (kanal, utworzono)
    * jest tańsze niż dociąganie autora osobno i nie potrafi się rozjechać z bazą.
    *
-   * Ogłoszenia pomijamy: to treść w kodzie, nie tabela — nie ma tam czego słuchać.
    */
   useEffect(() => {
-    if (!kanalDb || kanalDb === 'ogloszenia') return
+    if (!kanalDb) return
     const supabase = supabasePrzegladarka()
     const kanalRt = supabase
       .channel(`czat:${kanalDb}`)
@@ -164,6 +159,15 @@ export default function CzatWidok({
           table: 'Wiadomosc',
           filter: `kanal=eq.${kanalDb}`,
         },
+        () => {
+          odswiez(kanal)
+        },
+      )
+      // Reakcje też mają pojawiać się od razu. Bez filtra po kanale — reakcja go nie zna,
+      // a wierszy jest na tyle mało, że dociągnięcie listy jest tańsze niż kolejne złączenie.
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'isaacdex', table: 'ReakcjaWiadomosci' },
         () => {
           odswiez(kanal)
         },
@@ -181,6 +185,42 @@ export default function CzatWidok({
       supabase.removeChannel(kanalRt)
     }
   }, [kanalDb, kanal, mojNick, odswiez])
+
+  /**
+   * Kto jest w piwnicy — Realtime presence.
+   *
+   * Wcześniej „online" wychodziło z hasza nicku: lista zawsze pokazywała tych samych ludzi
+   * jako obecnych, niezależnie od tego, czy ktokolwiek tam był. Teraz każdy zalogowany
+   * melduje się w kanale obecności i znika z listy, gdy zamknie stronę — więc lista bywa
+   * krótka, ale mówi prawdę.
+   *
+   * Osobny kanał od wiadomości: obecność dotyczy CAŁEGO czatu, a nie tego, w którym
+   * pokoju akurat jesteś.
+   */
+  useEffect(() => {
+    if (gosc) return // gość nie melduje obecności — nie ma tożsamości
+    const supabase = supabasePrzegladarka()
+    const kanalObecnych = supabase.channel('piwnica:obecni', {
+      config: { presence: { key: mojNick } },
+    })
+
+    const przelicz = () => {
+      const stan = kanalObecnych.presenceState()
+      setObecni(Object.keys(stan))
+    }
+
+    kanalObecnych
+      .on('presence', { event: 'sync' }, przelicz)
+      .on('presence', { event: 'join' }, przelicz)
+      .on('presence', { event: 'leave' }, przelicz)
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') kanalObecnych.track({ nick: mojNick })
+      })
+
+    return () => {
+      supabase.removeChannel(kanalObecnych)
+    }
+  }, [gosc, mojNick])
 
   /**
    * Zjeżdżamy na dół LISTY, ustawiając jej `scrollTop` — a nie `scrollIntoView` na kotwicy.
@@ -206,7 +246,7 @@ export default function CzatWidok({
    */
   const ostatnieStuknij = useRef(0)
   const stuknij = () => {
-    if (tylkoOdczyt || !kanalDb || kanalDb === 'ogloszenia') return
+    if (tylkoOdczyt || !kanalDb) return
     const teraz = Date.now()
     if (teraz - ostatnieStuknij.current < 1500) return
     ostatnieStuknij.current = teraz
@@ -288,12 +328,20 @@ export default function CzatWidok({
 
   const usun = (id: string) => setUsuniete((u) => [...u, id])
 
-  const zareaguj = (idWiad: string, ikona: SpriteName) =>
-    setReakcje((r) => {
-      const dla = { ...(r[idWiad] ?? {}) }
-      dla[ikona] = (dla[ikona] ?? 0) === 0 ? 1 : 0 // toggle mojego głosu
-      return { ...r, [idWiad]: dla }
-    })
+  /**
+   * Reakcja leci do bazy i wraca odświeżeniem listy — tak samo jak wiadomość. Bez
+   * dopisywania „na oko" do stanu: liczniki mają pokazywać to, co naprawdę stoi w bazie,
+   * a nie to, co przed chwilą kliknąłeś.
+   */
+  const zareaguj = async (idWiad: string, ikona: SpriteName) => {
+    if (gosc) return
+    const wynik = await przelaczReakcje(Number(idWiad), ikona)
+    if (!wynik.ok) {
+      setBlad(wynik.powod)
+      return
+    }
+    await odswiez(kanal)
+  }
 
   const naglowek = rozmowca
     ? { nazwa: rozmowca, ikona: null, opis: 'Rozmowa prywatna. Nikt inny tego nie widzi.' }
@@ -361,7 +409,7 @@ export default function CzatWidok({
                           height={24}
                           aria-hidden
                         />
-                        <DecorMark id={dekoracjaGracza(g.nick, wlasny)} />
+                        <DecorMark id={g.dekoracja} />
                       </span>
                       <span
                         className="cz-kanal-nazwa"
@@ -369,7 +417,7 @@ export default function CzatWidok({
                       >
                         {g.nick}
                       </span>
-                      {czyOnline(g.nick) && <span className="cz-zyje" aria-label="online" />}
+                      {obecni.includes(g.nick) && <span className="cz-zyje" aria-label="online" />}
                     </button>
                   </li>
                 )
@@ -378,11 +426,13 @@ export default function CzatWidok({
           )}
         </div>
 
-        {/* Offline w klimacie apki: nie „offline", tylko martwi. */}
+        {/* Offline w klimacie apki: nie „offline", tylko martwi. Liczba jest prawdziwa —
+            tylu zarejestrowanych graczy nie ma teraz na czacie. */}
         <div className="cz-zgineli">
           <span className="cz-trup" aria-hidden />
           <span className="muted small">
-            <b>{zginelo}</b> {zginelo === 1 ? 'zginął' : 'zginęło'} — offline
+            <b>{gracze.length - online.length}</b>{' '}
+            {gracze.length - online.length === 1 ? 'zginął' : 'zginęło'} — offline
           </span>
         </div>
       </aside>
@@ -419,48 +469,34 @@ export default function CzatWidok({
             const g = wgNicku.get(w.autor)
             const wlasny = wlasnyAvatar(g?.avatar)
             const moja = w.autor === mojNick
-            const moje = reakcje[w.id] ?? {}
             const skasowana = usuniete.includes(w.id)
 
             return (
               <article
                 key={w.id}
-                className={
-                  'cz-msg' +
-                  (w.bot ? ' bot' : '') +
-                  (moja ? ' moja' : '') +
-                  (skasowana ? ' skasowana' : '')
-                }
+                className={'cz-msg' + (moja ? ' moja' : '') + (skasowana ? ' skasowana' : '')}
               >
-                <LinkGracza nick={w.autor} ja={moja} brak={w.bot || !g} className="cz-ava-link">
+                <LinkGracza nick={w.autor} ja={moja} brak={!g} className="cz-ava-link">
                   <span className="cz-ava-box">
-                    {w.bot ? (
-                      // Ogłoszenia wygłasza Dogma — jej własny sprite, nie ikonka Dead God.
-                      <Sprite name="dogma" size={34} className="cz-dogma" />
-                    ) : (
-                      <>
-                        <img
-                          className={'cz-ava' + (wlasny ? ' foto' : '')}
-                          src={avatarGracza(g?.avatar, 'Isaac')}
-                          alt=""
-                          width={34}
-                          height={34}
-                          aria-hidden
-                        />
-                        <DecorMark id={dekoracjaGracza(w.autor, wlasny)} />
-                      </>
-                    )}
+                    <img
+                      className={'cz-ava' + (wlasny ? ' foto' : '')}
+                      src={avatarGracza(g?.avatar, 'Isaac')}
+                      alt=""
+                      width={34}
+                      height={34}
+                      aria-hidden
+                    />
+                    <DecorMark id={g?.dekoracja ?? 'none'} />
                   </span>
                 </LinkGracza>
 
                 <div className="cz-bak">
                   <div className="cz-msg-top">
-                    <LinkGracza nick={w.autor} ja={moja} brak={w.bot || !g}>
+                    <LinkGracza nick={w.autor} ja={moja} brak={!g}>
                       <span className="cz-autor" style={g?.kolor ? { color: g.kolor } : undefined}>
                         {w.autor}
                       </span>
                     </LinkGracza>
-                    {w.bot && <span className="cz-bot">DOGMA</span>}
                     {moja && <span className="cz-ty">Ty</span>}
                     <span className="cz-czas muted small">{w.czas}</span>
                   </div>
@@ -479,35 +515,24 @@ export default function CzatWidok({
                   )}
 
                   {/* Skasowana wiadomość nie ma czego zbierać — ani reakcji, ani akcji. */}
-                  {!skasowana && (
+                  {!skasowana && (w.reakcje?.length ?? 0) > 0 && (
                     <div className="cz-reakcje">
-                      {/* Doklejone reakcje (te z licznikiem) — również te dodane z pickera. */}
-                      {[
-                        ...(w.reakcje ?? []),
-                        ...Object.keys(moje)
-                          .filter(
-                            (i) =>
-                              (moje[i] ?? 0) > 0 && !(w.reakcje ?? []).some((r) => r.ikona === i),
-                          )
-                          .map((i) => ({ ikona: i as SpriteName, ile: 0 })),
-                      ].map((r) => {
-                        const dodane = (moje[r.ikona] ?? 0) > 0
-                        return (
-                          <button
-                            key={r.ikona}
-                            className={'cz-reakcja' + (dodane ? ' on' : '')}
-                            onClick={() => zareaguj(w.id, r.ikona)}
-                            aria-pressed={dodane}
-                          >
-                            <Sprite name={r.ikona} size={14} /> {r.ile + (dodane ? 1 : 0)}
-                          </button>
-                        )
-                      })}
+                      {w.reakcje!.map((r) => (
+                        <button
+                          key={r.ikona}
+                          className={'cz-reakcja' + (r.moja ? ' on' : '')}
+                          onClick={() => zareaguj(w.id, r.ikona)}
+                          aria-pressed={r.moja}
+                          disabled={gosc}
+                        >
+                          <Sprite name={r.ikona} size={14} /> {r.ile}
+                        </button>
+                      ))}
                     </div>
                   )}
 
                   {/* Akcje wiadomości: „+" (reakcje) i kasowanie własnych. Prawy dolny róg. */}
-                  {!skasowana && (
+                  {!skasowana && !gosc && (
                     <div className="cz-msg-akcje">
                       <button
                         className="cz-akcja cz-plus"
@@ -548,7 +573,7 @@ export default function CzatWidok({
           })}
         </div>
 
-        {/* „X pisze…" — DEMO, symulowane (patrz useEffect wyżej). */}
+        {/* „X pisze…" — prawdziwe: broadcast od innych (patrz useEffect wyżej). */}
         <div className="cz-pisza" aria-live="polite">
           {piszacy.length > 0 && (
             <>
@@ -681,7 +706,6 @@ export default function CzatWidok({
         <ul className="cz-online-lista">
           {online.map((g) => {
             const wlasny = wlasnyAvatar(g.avatar)
-            const status = statusGracza(g.nick)
             return (
               <li key={g.nick}>
                 <LinkGracza nick={g.nick} ja={g.ja} className="cz-ava-link">
@@ -694,17 +718,18 @@ export default function CzatWidok({
                       height={28}
                       aria-hidden
                     />
-                    <DecorMark id={dekoracjaGracza(g.nick, wlasny)} />
+                    <DecorMark id={g.dekoracja} />
                   </span>
                 </LinkGracza>
                 <span className="cz-on-kto">
                   <LinkGracza nick={g.nick} ja={g.ja}>
                     <b style={g.kolor ? { color: g.kolor } : undefined}>{g.nick}</b>
                   </LinkGracza>
-                  {/* Mała ikona Isaaca przy statusie — widać, co ktoś robi, bez czytania. */}
+                  {/* Bez zmyślonych statusów („krwawi na Sheol") — nie wiemy, co ktoś
+                      robi w grze. Wiemy tylko, że tu jest. */}
                   <span className="cz-on-status muted small">
-                    <Sprite name={g.ja ? 'isaacHead' : status.ikona} size={13} />
-                    {g.ja ? 'to Ty' : status.tekst}
+                    <Sprite name={g.ja ? 'isaacHead' : 'fly'} size={13} />
+                    {g.ja ? 'to Ty' : 'w piwnicy'}
                   </span>
                 </span>
                 <span className="cz-on-serce" aria-hidden>
