@@ -123,10 +123,14 @@ export function ocenItem(item: ItemDoOceny, kontekst: KontekstRunu = {}): OcenaI
   return { rekomendacja: rek, powody, bazowa: baza.rek }
 }
 
-/** Procent ukończenia = odblokowane / wszystkie (0–100, zaokrąglony). */
+/**
+ * Procent ukończenia = odblokowane / wszystkie (0–100, zaokrąglony).
+ * Twardo ograniczony do [0, 100] — gdy dane mają więcej zaliczonych marek niż zakłada
+ * mianownik (np. marki NORMAL+HARD przy mianowniku „jedna na bossa"), procent nie ucieka nad 100.
+ */
 export function procentUkonczenia(odblokowane: number, wszystkie: number): number {
   if (wszystkie <= 0) return 0
-  return Math.round((odblokowane / wszystkie) * 100)
+  return Math.max(0, Math.min(100, Math.round((odblokowane / wszystkie) * 100)))
 }
 
 /**
