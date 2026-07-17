@@ -6,7 +6,9 @@ import Sprite from '@/components/Sprite'
 import { useZalogowany } from '@/components/KontoProvider'
 import ItemSprite from '@/components/ItemSprite'
 import DecorMark from '@/components/DecorMark'
+import LinkGracza from '@/components/LinkGracza'
 import { przelaczLajk } from '@/app/actions/social'
+import { powiedz } from '@/lib/companionGlos'
 import { avatarGracza, ikonaPostaci, wlasnyAvatar } from '@/lib/chars'
 import { dekoracjaGracza, ETYKIETA, komentarz } from '@/lib/klimat'
 import type { FeedWpis } from '@/lib/social'
@@ -50,6 +52,8 @@ export default function FeedCard({ w }: { w: FeedWpis }) {
   // że policzył głos (serwer i tak by go odrzucił).
   const lajkuj = () => {
     if (!zalogowany) return router.push('/logowanie')
+    // Maskotka cieszy się z polubienia (tylko przy dodaniu, żeby nie gadała przy cofaniu).
+    if (!stan.polubione) powiedz('Serducho poszło!', 'happy')
     start(async () => {
       przelacz(undefined)
       await przelaczLajk(w.id)
@@ -63,21 +67,28 @@ export default function FeedCard({ w }: { w: FeedWpis }) {
   return (
     <article className={'feed-item feed-' + w.typ.toLowerCase()}>
       <header className="feed-head">
-        <span className={'feed-ava-box' + (decor === 'none' ? '' : ' z-decor')}>
-          <img
-            className={'feed-ava' + (wlasny ? ' foto' : '')}
-            src={avatarGracza(w.autor.avatar || w.postac)}
-            alt=""
-            width={32}
-            height={32}
-            aria-hidden
-          />
-          <DecorMark id={decor} />
-        </span>
-        <span className="feed-kto">
-          <span className="feed-user" style={w.autor.kolor ? { color: w.autor.kolor } : undefined}>
-            {w.autor.nick}
+        <LinkGracza nick={w.autor.nick} ja={w.autor.ja} className="feed-ava-link">
+          <span className={'feed-ava-box' + (decor === 'none' ? '' : ' z-decor')}>
+            <img
+              className={'feed-ava' + (wlasny ? ' foto' : '')}
+              src={avatarGracza(w.autor.avatar || w.postac)}
+              alt=""
+              width={32}
+              height={32}
+              aria-hidden
+            />
+            <DecorMark id={decor} />
           </span>
+        </LinkGracza>
+        <span className="feed-kto">
+          <LinkGracza nick={w.autor.nick} ja={w.autor.ja}>
+            <span
+              className="feed-user"
+              style={w.autor.kolor ? { color: w.autor.kolor } : undefined}
+            >
+              {w.autor.nick}
+            </span>
+          </LinkGracza>
           {w.autor.ja && <span className="feed-ty">Ty</span>}
           <span className="feed-co muted small">{etykieta.czasownik}</span>
         </span>

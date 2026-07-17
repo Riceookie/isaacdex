@@ -24,6 +24,8 @@ const SPRITES = {
   moon: 'ui/moon.png', // The Moon — motyw „tainted strony"
   trophy: 'ui/trophy.png', // Challenge Trophy — achievementy
   deadgod: 'achievements/deadgod-icon.png', // rysunek Dead God — dead god
+  dogma: 'bossowie/dogma.webp', // Dogma — bot ogłoszeń na czacie
+  pencil: 'items/collectibles/leadpencil.png', // Lead Pencil — edycja profilu
   membercard: 'items/collectibles/membercard.png', // Member Card — rzadkie achievementy
   heartmark: 'marks/heart-mark.png', // Heart mark — zdobyte marki
   starmark: 'marks/star-mark.png', // Star mark — completion marks
@@ -35,9 +37,14 @@ const SPRITES = {
   kidsdrawing: 'items/trinkets/kidsdrawing.png', // Kid's Drawing — Statystyki
   friendfinder: 'items/collectibles/friendfinder.png', // Friend Finder — Znajomi
   superfan: 'items/collectibles/smbsuperfan.png', // SMB Super Fan — Ustawienia
+  momsEye: 'icons/moms-eye.png', // Mom's Eye — hasło ukryte (pokaż)
+  momsContact: 'icons/moms-contact.png', // Mom's Contact — hasło widoczne (ukryj)
 } as const
 
 export type SpriteName = keyof typeof SPRITES
+
+/** Wszystkie sprity — do siatki reakcji/naklejek na czacie (potrzebna lista w runtime). */
+export const NAZWY_SPRITEOW = Object.keys(SPRITES) as SpriteName[]
 
 type Props = {
   name: SpriteName
