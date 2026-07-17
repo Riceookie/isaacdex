@@ -105,12 +105,19 @@ export default function Gablota({
   itemy = [],
   edycja = false,
   doWyboru = [],
+  metaItemow = [],
 }: {
   /** Nazwy itemów (null = pusty pedestał) — z bazy, tak samo dla własnego i cudzego profilu. */
   itemy?: (string | null)[]
   edycja?: boolean
   /** Katalog do wybieraczki — potrzebny tylko w trybie edycji. */
   doWyboru?: ItemDoWyboru[]
+  /**
+   * Metadane WYSTAWIONYCH itemów (jakość, sprite). Osobno od `doWyboru`, bo katalog leci
+   * tylko na własny profil (tryb edycji) — bez tego cudza gablota nie znała jakości i jej
+   * pedestały były bezbarwne.
+   */
+  metaItemow?: ItemDoWyboru[]
 }) {
   const [gniazdo, setGniazdo] = useState<number | null>(null)
   // Stan lokalny tylko po to, żeby klik był natychmiastowy — źródłem prawdy jest baza.
@@ -120,7 +127,11 @@ export default function Gablota({
 
   const lista = edycja ? moje : Array.from({ length: MIEJSC }, (_, i) => itemy[i] ?? null)
 
-  const mapaItemow = useMemo(() => new Map(doWyboru.map((i) => [i.nazwa, i])), [doWyboru])
+  // Katalog (edycja) + metadane wystawionych — jedno źródło dla sprite'a i jakości.
+  const mapaItemow = useMemo(
+    () => new Map([...metaItemow, ...doWyboru].map((i) => [i.nazwa, i])),
+    [metaItemow, doWyboru],
+  )
 
   async function ustaw(i: number, nazwa: string | null) {
     const next = [...lista]
@@ -144,7 +155,15 @@ export default function Gablota({
         {lista.map((nazwa, i) => {
           const meta = nazwa ? mapaItemow.get(nazwa) : undefined
           return (
-            <div key={i} className={'pedestal' + (nazwa ? ' pelny' : '')}>
+            <div
+              key={i}
+              className={
+                'pedestal' +
+                (nazwa ? ' pelny' : '') +
+                // Kolor jakości na cokole — ta sama skala co w Encyklopedii (Q0…Q4).
+                (meta ? ' jakosc-' + meta.jakosc : '')
+              }
+            >
               <div className="pedestal-item">
                 {nazwa ? (
                   <>

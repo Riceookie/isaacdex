@@ -780,21 +780,10 @@ a:hover {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.item-card.q4 {
-  border-left-color: #4ec98a;
-}
-.item-card.q3 {
-  border-left-color: #5fb4d8;
-}
-.item-card.q2 {
-  border-left-color: var(--accent);
-}
-.item-card.q1 {
-  border-left-color: #d99a3c;
-}
-.item-card.q0 {
-  border-left-color: #e5544b;
-}
+/* STARA paleta jakości (Q4 zielony, Q3 niebieski, Q2 czerwony, Q1 pomarańczowy, Q0 czerwony)
+   mieszkała TUTAJ i — stojąc niżej w pliku — bezgłośnie wygrywała z nową skalą `--q`.
+   Kolory jakości są teraz w JEDNYM miejscu: zmienne `--q0…--q4` w `:root` + `.item-card.qN`,
+   które ustawiają `--q`. Ten blok zniknął, żeby nie było drugiego źródła prawdy. */
 .q-badge {
   font-family: var(--dsp);
   font-size: 0.75rem;
@@ -4643,6 +4632,39 @@ body::before {
   text-align: center;
   color: var(--muted);
 }
+/* ── Jakość na PEDESTAŁACH gabloty („Top 3") ──
+   Ta sama skala co w Encyklopedii. Wcześniej pedestały nie miały koloru w ogóle, a cudza
+   gablota nie znała nawet jakości (katalog leciał tylko na własny profil). */
+.pedestal.jakosc-0 {
+  --q: var(--q0);
+}
+.pedestal.jakosc-1 {
+  --q: var(--q1);
+}
+.pedestal.jakosc-2 {
+  --q: var(--q2);
+}
+.pedestal.jakosc-3 {
+  --q: var(--q3);
+}
+.pedestal.jakosc-4 {
+  --q: var(--q4);
+}
+/* Poświata pod itemem + kolorowy cokół — jak światło z pokoju z itemem w grze. */
+.pedestal.pelny[class*='jakosc-'] .pedestal-item {
+  background: radial-gradient(
+    ellipse 60% 50% at 50% 70%,
+    color-mix(in srgb, var(--q) 30%, transparent),
+    transparent 70%
+  );
+}
+.pedestal.pelny[class*='jakosc-'] .pedestal-cokol {
+  box-shadow: 0 0 10px color-mix(in srgb, var(--q) 45%, transparent);
+}
+.pedestal.pelny[class*='jakosc-'] .pedestal-nazwa {
+  color: color-mix(in srgb, var(--q) 75%, var(--text));
+}
+
 /* Jakość itemu koloruje obwódkę — ta sama skala co w Encyklopedii (Q0 szary … Q4 złoty).
    Wcześniej kolory miały tylko Q4 i Q3, i to inne niż w Encyklopedii. */
 .gab-opcja.jakosc-0 {

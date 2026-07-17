@@ -52,6 +52,8 @@ export type DaneProfilu = {
   gablota?: (string | null)[]
   /** Katalog itemów do wybieraczki — tylko na własnym profilu. */
   itemyDoWyboru?: ItemDoWyboru[]
+  /** Metadane 3 wystawionych itemów (jakość, sprite) — także na cudzym profilu. */
+  gablotaMeta?: ItemDoWyboru[]
 }
 
 /** Nagłówek sekcji: tytuł + (opcjonalnie) link „więcej". */
@@ -181,7 +183,12 @@ export default function ProfilWidok({
             </div>
 
             {/* Top 3: 3 pedestały z itemami. Na własnym profilu klikalne („+"). */}
-            <Gablota itemy={d.gablota ?? []} edycja={wlasny} doWyboru={d.itemyDoWyboru ?? []} />
+            <Gablota
+              itemy={d.gablota ?? []}
+              edycja={wlasny}
+              doWyboru={d.itemyDoWyboru ?? []}
+              metaItemow={d.gablotaMeta ?? []}
+            />
           </div>
 
           {/* Aktywność — wpisy są PRAWDZIWE (baza), u mnie i u innych. */}

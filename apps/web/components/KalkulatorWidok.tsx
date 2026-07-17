@@ -152,7 +152,12 @@ export default function KalkulatorWidok() {
       </p>
       <div className="item-grid">
         {znalezione.map((i) => (
-          <button key={i.id} className="item-card" onClick={() => dodaj(i)}>
+          <button
+            key={i.id}
+            // Ta sama skala jakości co w Encyklopedii — kolor odznaki i krechy niesie `qN`.
+            className={'item-card' + (i.jakosc != null ? ' q' + i.jakosc : '')}
+            onClick={() => dodaj(i)}
+          >
             <ItemSprite nazwa={i.nazwa} idW={i.id} size={32} />
             <span className="item-txt">
               <span className="item-name">{i.nazwa}</span>

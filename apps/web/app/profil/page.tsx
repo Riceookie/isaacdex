@@ -1,4 +1,4 @@
-import { getProfil, getDashboard, getItemyDoGabloty } from '@/lib/queries'
+import { getProfil, getDashboard, getItemyDoGabloty, getItemyPoNazwach } from '@/lib/queries'
 import {
   getAktywnosc,
   getGracze,
@@ -48,6 +48,8 @@ export default async function ProfilPage() {
     ? await Promise.all([getObserwujacych(ja.id), getObserwowanych(ja.id)])
     : [[], []]
   const znajomi = gracze.filter((g) => g.znajomy)
+  // Jakość wystawionych itemów — pedestały kolorują cokół tą samą skalą co Encyklopedia.
+  const gablotaMeta = await getItemyPoNazwach(ja?.gablota ?? [])
 
   /**
    * Steam bywa niepodpięty (`p` === null) i to NIE znaczy, że nie ma czego pokazać:
@@ -97,6 +99,7 @@ export default async function ProfilPage() {
     avatar: ja?.avatar,
     decor: (ja?.dekoracja ?? 'none') as DecorId,
     gablota: ja?.gablota ?? [],
+    gablotaMeta,
     itemyDoWyboru,
   }
 

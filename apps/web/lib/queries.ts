@@ -360,3 +360,21 @@ export async function getSteamGracza(profilId: number | null) {
       .sort((a, b) => b.procent - a.procent || a.nazwa.localeCompare(b.nazwa)),
   }
 }
+
+/**
+ * Metadane itemów po nazwach — do gabloty („Top 3") na DOWOLNYM profilu.
+ *
+ * Gablota trzyma w bazie same nazwy, a pedestały potrzebują jeszcze jakości (kolor ramki)
+ * i idW (pewny sprite). Katalog ma ~900 pozycji, więc nie wysyłamy go na każdy profil —
+ * pytamy tylko o te trzy.
+ */
+export async function getItemyPoNazwach(
+  nazwy: string[],
+): Promise<{ nazwa: string; idW: number | null; typ: string; jakosc: number }[]> {
+  const czyste = nazwy.filter((n) => typeof n === 'string' && n.trim())
+  if (czyste.length === 0) return []
+  return prisma.item.findMany({
+    where: { nazwa: { in: czyste } },
+    select: { nazwa: true, idW: true, typ: true, jakosc: true },
+  })
+}

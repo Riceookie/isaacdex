@@ -6,7 +6,7 @@ import {
   getObserwujacych,
   getZnajomychGracza,
 } from '@/lib/social'
-import { getSteamGracza } from '@/lib/queries'
+import { getItemyPoNazwach, getSteamGracza } from '@/lib/queries'
 import { wlasnyAvatar } from '@/lib/chars'
 import ProfilWidok, { type DaneProfilu } from '@/components/ProfilWidok'
 import PrzyciskObserwuj from '@/components/PrzyciskObserwuj'
@@ -37,11 +37,12 @@ export default async function ProfilGracza({ params }: { params: { nick: string 
   const { gracz: g, wpisy } = dane
   if (g.ja) redirect('/profil')
 
-  const [znajomi, listaObserwujacych, listaObserwowanych, steam] = await Promise.all([
+  const [znajomi, listaObserwujacych, listaObserwowanych, steam, gablotaMeta] = await Promise.all([
     getZnajomychGracza(g.id),
     getObserwujacych(g.id),
     getObserwowanych(g.id),
     getSteamGracza(g.profilId),
+    getItemyPoNazwach(g.gablota),
   ])
 
   // Avatar to zwykle ikona postaci z gry („Azazel") — wtedy jest zarazem „mainem". Gracz
@@ -85,6 +86,7 @@ export default async function ProfilGracza({ params }: { params: { nick: string 
       },
     ],
     gablota: g.gablota,
+    gablotaMeta,
   }
 
   return (

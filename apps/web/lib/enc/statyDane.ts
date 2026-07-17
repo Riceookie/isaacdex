@@ -1,5 +1,6 @@
 import surowePostacie from './statyPostaci.json'
 import soweItemy from './statyItemow.json'
+import soweItemyKatalog from './itemy.json'
 import type { ModyfikatorStatow, Stat, StatyBazowe } from '@isaacdex/core'
 
 /**
@@ -23,11 +24,20 @@ export type PostacStaty = StatyBazowe & {
   ikona: string
   tainted: boolean
 }
-export type ItemStaty = ModyfikatorStatow & { id: number; nazwa: string }
+export type ItemStaty = ModyfikatorStatow & { id: number; nazwa: string; jakosc?: number }
 
 export const POSTACIE_STATY = surowePostacie as PostacStaty[]
+/**
+ * Jakość itemu (Q0–Q4) mieszka w katalogu Encyklopedii, a nie w tabeli statów — dopinamy ją
+ * po `id`, żeby Kalkulator kolorował itemy tą samą skalą co reszta apki (161/161 trafień).
+ */
+const JAKOSC_PO_ID = new Map(
+  (soweItemyKatalog as { id: number; jakosc?: number }[]).map((i) => [i.id, i.jakosc]),
+)
+
 export const ITEMY_STATY = (soweItemy as ItemStaty[])
   .slice()
+  .map((i) => ({ ...i, jakosc: JAKOSC_PO_ID.get(i.id) }))
   .sort((a, b) => a.nazwa.localeCompare(b.nazwa))
 
 /** Kolejność i nazwy statów w tabeli (jak na ekranie postaci w grze). */

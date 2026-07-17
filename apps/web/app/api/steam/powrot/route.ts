@@ -91,8 +91,17 @@ async function zalogujGosciaPrzezSteam(steamId64: string) {
   return zalozGracza(user.id, nick)
 }
 
-const wroc = (origin: string, stan: string) =>
-  NextResponse.redirect(new URL(`/kim-jestem?steam=${stan}`, origin))
+/**
+ * Dokąd wrócić po Steamie — a to zależy od tego, PO CO tu przyszedłeś.
+ *
+ *  - LOGOWANIE przez Steam (byłeś gościem): to jest wejście do apki, więc lądujesz na
+ *    Pulpicie. Kiedyś każdy trafiał do edytora profilu — czyli świeży użytkownik zaczynał
+ *    od formularza z pytaniem, kim jest, zamiast od apki.
+ *  - PODPINANIE Steama (byłeś już zalogowany): przyszedłeś z edytora, więc tam wracasz
+ *    razem ze statusem operacji.
+ */
+const wroc = (origin: string, stan: string, bylGosciem: boolean) =>
+  NextResponse.redirect(new URL(bylGosciem ? '/' : `/kim-jestem?steam=${stan}`, origin))
 
 export async function GET(request: NextRequest) {
   const origin = request.nextUrl.origin
@@ -100,20 +109,28 @@ export async function GET(request: NextRequest) {
   const steamId64 = await potwierdzoneSteamId(request.nextUrl.searchParams)
 
   let ja = await mojGracz()
+  // Zapamiętane PRZED zalogowaniem: niżej `ja` już istnieje i nie dałoby się tego odróżnić.
+  const bylGosciem = !ja
+
   // Gość → „Zaloguj się przez Steam". Błąd weryfikacji odsyłamy na stronę logowania.
   if (!ja) {
     if (!steamId64) return NextResponse.redirect(new URL('/logowanie?blad=steam', origin))
     ja = await zalogujGosciaPrzezSteam(steamId64)
     if (!ja) return NextResponse.redirect(new URL('/logowanie?blad=steam', origin))
   }
-  if (!steamId64) return wroc(origin, 'blad')
+  if (!steamId64) return wroc(origin, 'blad', bylGosciem)
 
   const zajety = await prisma.gracz.findFirst({
     where: { profil: { steamId64 }, NOT: { id: ja.id } },
   })
 
   // Konto Steam jest jedno. Jeśli trzyma je ktoś Z KONTEM — nie odbieramy mu go.
-  if (zajety?.userId) return wroc(origin, 'zajety')
+  // Gościowi nie ma co pokazywać edytora z błędem: wraca na logowanie, skąd przyszedł.
+  if (zajety?.userId) {
+    return bylGosciem
+      ? NextResponse.redirect(new URL('/logowanie?blad=steam', origin))
+      : wroc(origin, 'zajety', false)
+  }
 
   const profil = await prisma.profil.upsert({
     where: { steamId64 },
@@ -132,5 +149,5 @@ export async function GET(request: NextRequest) {
     await tx.gracz.update({ where: { id: ja.id }, data: { profilId: profil.id } })
   })
 
-  return wroc(origin, 'ok')
+  return wroc(origin, 'ok', bylGosciem)
 }
