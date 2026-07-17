@@ -93,10 +93,31 @@ export default function CzatWidok({
   const [naklejki, setNaklejki] = useState(false)
   const naklejkiBtn = useRef<HTMLButtonElement>(null)
   const [piszacy, setPiszacy] = useState<string[]>([])
+  /**
+   * Lista „W piwnicy" domyślnie SCHOWANA — zabierała 240 px stałej szerokości, żeby
+   * pokazać zwykle jedną osobę. Odzyskane miejsce idzie na wiadomości; kto chce, otwiera
+   * ją strzałką. Wybór pamiętamy w przeglądarce (to preferencja widoku, nie dane konta).
+   */
+  const [obecniOtwarci, setObecniOtwarci] = useState(false)
+  /**
+   * Na wąskim ekranie nie da się pokazać listy kanałów I rozmowy naraz — pokazujemy jedno
+   * albo drugie. Wejście w kanał przesuwa na rozmowę, „← Kanały" wraca.
+   * Na desktopie ta flaga nic nie znaczy (CSS pokazuje oba panele).
+   */
+  const [mobilnaRozmowa, setMobilnaRozmowa] = useState(false)
   const licznik = useRef(0)
   const msgs = useRef<HTMLDivElement>(null)
   const plik = useRef<HTMLInputElement>(null)
   const pole = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    setObecniOtwarci(localStorage.getItem('idx_czat_obecni') === '1')
+  }, [])
+  const przelaczObecnych = () =>
+    setObecniOtwarci((v) => {
+      localStorage.setItem('idx_czat_obecni', v ? '0' : '1')
+      return !v
+    })
 
   const znajomi = useMemo(() => gracze.filter((g) => g.znajomy), [gracze])
   const wgNicku = useMemo(() => new Map(gracze.map((g) => [g.nick, g])), [gracze])
@@ -237,6 +258,7 @@ export default function CzatWidok({
     setKanal(slug)
     setPiszacy([])
     setBlad(null)
+    setMobilnaRozmowa(true)
     powiedz(kwestiaCzatu('kanal', slug, ++licznik.current))
   }
 
@@ -352,7 +374,13 @@ export default function CzatWidok({
       }
 
   return (
-    <div className="cz">
+    <div
+      className={
+        'cz' +
+        (obecniOtwarci ? ' z-obecnymi' : '') +
+        (mobilnaRozmowa ? ' mob-rozmowa' : ' mob-kanaly')
+      }
+    >
       {/* ── KANAŁY + PRYWATNE ── */}
       <aside className="cz-mapa">
         <div className="cz-mapa-head">
@@ -440,6 +468,14 @@ export default function CzatWidok({
       {/* ── KANAŁ: nagłówek, wiadomości, pisanie ── */}
       <div className="cz-pokoj-widok">
         <header className="cz-head">
+          {/* Widoczny tylko na wąskim ekranie (CSS) — desktop ma listę kanałów obok. */}
+          <button
+            className="cz-wroc"
+            onClick={() => setMobilnaRozmowa(false)}
+            aria-label="Wróć do listy kanałów"
+          >
+            ‹
+          </button>
           <div className="cz-head-kartka">
             <h2>
               {naglowek.ikona ? <Sprite name={naglowek.ikona} size={20} /> : <span>@</span>}
@@ -454,6 +490,20 @@ export default function CzatWidok({
             </h2>
             <p className="muted small">{naglowek.opis}</p>
           </div>
+
+          <button
+            className={'cz-obecni-btn' + (obecniOtwarci ? ' otwarty' : '')}
+            onClick={przelaczObecnych}
+            aria-label={obecniOtwarci ? 'Schowaj listę obecnych' : 'Pokaż, kto jest w piwnicy'}
+            aria-expanded={obecniOtwarci}
+            title={obecniOtwarci ? 'Schowaj listę' : `W piwnicy: ${online.length}`}
+          >
+            <Sprite name="fly" size={16} />
+            <span className="cz-obecni-ile">{online.length}</span>
+            <span className="cz-obecni-strzalka" aria-hidden>
+              ›
+            </span>
+          </button>
         </header>
 
         <div className="cz-msgs" ref={msgs}>
@@ -700,9 +750,14 @@ export default function CzatWidok({
       </div>
 
       {/* ── W PIWNICY ── */}
-      <aside className="cz-online">
+      <aside className="cz-online" aria-hidden={!obecniOtwarci}>
         <div className="cz-online-head">
-          <Sprite name="fly" size={18} /> W piwnicy — {online.length}
+          <span>
+            <Sprite name="fly" size={18} /> W piwnicy — {online.length}
+          </span>
+          <button className="cz-online-x" onClick={przelaczObecnych} aria-label="Schowaj listę">
+            ×
+          </button>
         </div>
         <ul className="cz-online-lista">
           {online.map((g) => {

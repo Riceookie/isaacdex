@@ -434,14 +434,57 @@ a:hover {
   color: var(--text);
   border-color: var(--accent);
 }
-/* Paski scrolla są NIEWIDOCZNE w całej apce (strona, siatki, modale) — przewijanie działa
-   normalnie, znika tylko sam pasek, żeby nie ciął ciemnego UI. */
+/* ── PASKI PRZEWIJANIA ──────────────────────────────────────────────────────────
+   Były wyłączone w całej apce (`scrollbar-width:none`), bo „cięły ciemny UI". Skutek:
+   na desktopie nie było widać, że cokolwiek się przewija — ani ile tego jest.
+   Teraz pasek jest, ale ubrany: ciemna szyna i akcentowy suwak, czyli ten sam język
+   co reszta. Na DOTYKU (telefon, tablet) znika — tam pasek niczego nie mówi, bo i tak
+   przewija się gestem, a system rysuje własny.
+
+   Rozstrzyga `pointer: coarse`, a nie szerokość okna: wąskie okno na laptopie wciąż ma
+   mysz i wciąż potrzebuje paska. */
 * {
-  scrollbar-width: none;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--accent) 65%, #3a2c1e) rgba(0, 0, 0, 0.32);
 }
 *::-webkit-scrollbar {
-  width: 0;
-  height: 0;
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.32);
+  border-radius: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent) 75%, #d8cba8),
+    color-mix(in srgb, var(--accent) 60%, #2a1f16)
+  );
+  /* Przezroczysta ramka + `padding-box` = suwak jest węższy od szyny i nie dotyka krawędzi. */
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent) 90%, #fff),
+    color-mix(in srgb, var(--accent) 70%, #2a1f16)
+  );
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+@media (pointer: coarse) {
+  * {
+    scrollbar-width: none;
+  }
+  *::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
 }
 .feed-item {
   display: flex;
@@ -3355,14 +3398,33 @@ body::before {
     transform: translateY(4px) rotate(-4deg);
   }
 }
-/* Ciasno? Chowamy DYMEK, nie maskotkę.
-   Wcześniej poniżej 1150 px znikał cały familiar — bo 230-px dymek zachodził wtedy na ikony
-   narzędziowe. To leczyło objaw kosztem pacjenta: na typowym oknie laptopa (1100–1300 px)
-   apka traciła swojego jedynego zwierzaka. Sprite ma 56 px i mieści się wszędzie; problemem
-   był wyłącznie dymek, więc to on ustępuje. Maskotka dalej reaguje minami na to, co robisz. */
+/* Ciasno? Dymek SCHODZI POD maskotkę, zamiast znikać.
+   Historia tego miejsca to dwa błędne skróty: najpierw poniżej 1150 px chowaliśmy całego
+   familiara (bo 230-px dymek zachodził na ikony narzędziowe), potem sam dymek — czyli
+   maskotka była, ale nigdy się nie odzywała, a to jej JEDYNA funkcja.
+   Rozwiązanie: nad 1150 px dymek stoi obok buzi, niżej — wisi pod paskiem, nad treścią,
+   gdzie ma całą szerokość dla siebie i nie ma z czym kolidować. */
 @media (max-width: 1150px) {
   .companion-bubble {
-    display: none;
+    left: 0;
+    top: calc(100% + 8px);
+    transform: none;
+    max-width: min(70vw, 300px);
+  }
+  /* Ogonek przenosi się z lewego boku na górę — ma wskazywać buzię, a ta jest teraz NAD. */
+  .companion-bubble::before {
+    left: 14px;
+    top: -18px;
+    transform: none;
+    border-right-color: transparent;
+    border-bottom-color: #3a2c1e;
+  }
+  .companion-bubble::after {
+    left: 17px;
+    top: -12px;
+    transform: none;
+    border-right-color: transparent;
+    border-bottom-color: #f3e9cf;
   }
 }
 /* Na wąskim ekranie topbar i tak się zawija, a 56-px familiar zjadałby połowę rzędu. */
@@ -3704,6 +3766,35 @@ body::before {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+/* Opis pisze użytkownik, więc trzeba założyć najgorsze: długi ciąg bez spacji ma się
+   łamać, a całość ma się kończyć po trzech linijkach — dymek to zajawka, nie profil. */
+.hov-opis {
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.hov-opis.pusty {
+  font-style: italic;
+  color: var(--muted);
+}
+.hov-bez-steama {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0.5rem 0 0;
+}
+.hov-etykieta {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+.hov-stopka {
+  margin: 0.55rem 0 0;
+  padding-top: 0.45rem;
+  border-top: 1px solid var(--line);
+  text-align: center;
 }
 .hov-dg {
   flex: none;
@@ -6239,6 +6330,10 @@ body::after {
 .pf-id {
   position: relative;
   z-index: 5;
+  /* Bez tego kolumna „1fr" rozpycha się treścią zamiast ją łamać: długie bio (albo nick
+     bez spacji) wychodziło poza kartkę. Domyślne `min-width:auto` w gridzie/flexie to
+     najczęstsza przyczyna „tekst ucieka z ramki". */
+  min-width: 0;
 }
 .pf-id h1 {
   margin: 0 0 0.15rem;
@@ -6277,6 +6372,12 @@ body::after {
 .pf-bio {
   margin: 0.45rem 0 0.55rem;
   font-style: italic;
+  /* `anywhere`, nie `break-word`: łamie nawet ciąg bez spacji (ktoś wklei „aaaa…" albo
+     link) — bio jest polem tekstowym użytkownika, więc trzeba założyć najgorsze. */
+  overflow-wrap: anywhere;
+}
+.pf-id h1 {
+  overflow-wrap: anywhere;
 }
 /* Akcje na cudzym profilu (znaczek relacji + „Obserwuj"). Siadają POD metą, w tej samej
    trzeciej kolumnie — bez `grid-column` wskoczyłyby w nowy wiersz pod polaroid. */
@@ -8135,26 +8236,152 @@ body::after {
    Lewa: minimapa pokojów (aktywny = ten, w którym stoisz; secret room na kłódkę).
    Środek: dymki-łzy + familiar komentujący. Prawa: kto jeszcze żyje.
    ============================================================================ */
+/* Czat mieści się w EKRANIE — zawsze, na każdej szerokości.
+   Wcześniej poniżej 1100 px dostawał `height:auto` i rósł w dół: żeby napisać wiadomość,
+   trzeba było przewinąć całą stronę. `dvh` (a nie `vh`), bo na telefonie pasek adresu
+   chowa się i wraca — `vh` zostawiałby pole pod krawędzią ekranu.
+
+   Lista obecnych jest domyślnie SCHOWANA (kolumny bez niej); klasa `.z-obecnymi` na
+   korzeniu dokłada jej kolumnę. Zabierała 240 px, żeby pokazać zwykle jedną osobę. */
+/* Czat wypełnia ekran, więc dolny oddech kontenera (4rem) jest tu zbędny — a to właśnie
+   on wypychał stronę poza viewport i zmuszał do przewijania po pole wpisywania.
+   Zdejmujemy go ujemnym marginesem, zamiast zgadywać wysokość „na oko". */
+.cz-strona {
+  margin-bottom: -4rem;
+}
 .cz {
   display: grid;
-  grid-template-columns: minmax(0, 220px) minmax(0, 1fr) minmax(0, 240px);
+  grid-template-columns: minmax(0, 220px) minmax(0, 1fr);
   gap: 0.9rem;
   align-items: start;
-  height: calc(100vh - 8.5rem);
-  min-height: 520px;
+  height: calc(100dvh - 8.5rem);
+  min-height: 420px;
 }
+.cz.z-obecnymi {
+  grid-template-columns: minmax(0, 220px) minmax(0, 1fr) minmax(0, 240px);
+}
+/* Schowany panel nie ma zajmować miejsca ani łapać czytnika ekranu.
+   Selektor DZIECKA (0,2,0), bo wspólna reguła „.cz-mapa,.cz-pokoj-widok,.cz-online{display:flex}"
+   stoi niżej w pliku i przy równej specyficzności wygrywałaby kolejnością. */
+.cz > .cz-online {
+  display: none;
+}
+.cz.z-obecnymi > .cz-online {
+  display: flex;
+}
+
+/* Przełącznik listy obecnych — przyklejony do prawej krawędzi nagłówka rozmowy. */
+.cz-obecni-btn {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in srgb, #000 35%, var(--surface));
+  color: var(--text);
+  font-family: var(--dsp);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+.cz-obecni-btn:hover {
+  border-color: var(--accent);
+}
+.cz-obecni-ile {
+  min-width: 1ch;
+}
+.cz-obecni-strzalka {
+  display: inline-block;
+  transition: transform 0.2s ease;
+  opacity: 0.75;
+}
+/* Strzałka pokazuje KIERUNEK: „›" zaprasza panel z prawej, „‹" go odsyła. */
+.cz-obecni-btn.otwarty .cz-obecni-strzalka {
+  transform: rotate(180deg);
+}
+
+.cz-online-x {
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 0.2rem;
+}
+.cz-online-x:hover {
+  color: var(--accent);
+}
+
+/* Powrót do listy kanałów — tylko na wąskim ekranie (desktop ma listę obok). */
+.cz-wroc {
+  display: none;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: color-mix(in srgb, #000 35%, var(--surface));
+  color: var(--text);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.cz-wroc:hover {
+  border-color: var(--accent);
+}
+
 @media (max-width: 1100px) {
   .cz {
     grid-template-columns: minmax(0, 190px) minmax(0, 1fr);
-    height: auto;
   }
-  .cz-online {
-    display: none;
+  /* Za ciasno na trzecią kolumnę — otwarta lista obecnych wjeżdża NAD rozmowę. */
+  .cz.z-obecnymi {
+    grid-template-columns: minmax(0, 190px) minmax(0, 1fr);
+    position: relative;
+  }
+  .cz.z-obecnymi .cz-online {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 4;
+    width: min(72vw, 240px);
+    box-shadow: -10px 0 24px rgba(0, 0, 0, 0.55);
   }
 }
+
+/* WĄSKI EKRAN: jeden panel naraz — albo kanały, albo rozmowa.
+   Trzy kolumny wciśnięte w telefon dawały pasek kanałów szerokości ikony i rozmowę,
+   w której nie mieściło się zdanie. */
 @media (max-width: 760px) {
+  /* Mobilny kontener ma mniejszy dolny padding (3rem), a pasek nad czatem zawija się
+     w dwa rzędy — stąd inne wartości niż na desktopie. */
+  .cz-strona {
+    margin-bottom: -3rem;
+  }
   .cz {
     grid-template-columns: 1fr;
+    height: calc(100dvh - 10.5rem);
+    min-height: 0;
+  }
+  .cz.z-obecnymi {
+    grid-template-columns: 1fr;
+  }
+  .cz.mob-rozmowa .cz-mapa,
+  .cz.mob-kanaly .cz-pokoj-widok {
+    display: none;
+  }
+  .cz-wroc {
+    display: grid;
+    place-items: center;
+  }
+  .cz.z-obecnymi .cz-online {
+    width: min(80vw, 260px);
   }
 }
 
@@ -8181,6 +8408,8 @@ body::after {
 .cz-online-head {
   display: flex;
   align-items: center;
+  /* Tytuł po lewej, „×" po prawej. */
+  justify-content: space-between;
   gap: 0.4rem;
   padding: 0.6rem 0.7rem;
   font-family: var(--dsp);
@@ -8380,6 +8609,7 @@ body::after {
   background: color-mix(in srgb, #000 30%, transparent);
 }
 .cz-head-kartka {
+  min-width: 0;
   position: relative;
   padding: 0.45rem 0.9rem;
   border: 1px solid var(--border);

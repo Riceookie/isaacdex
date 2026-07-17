@@ -164,27 +164,41 @@ export default function KartaHover({
             )}
           </div>
 
-          <p className="hov-opis">{dane.opis ?? 'Bez opisu.'}</p>
+          <p className={'hov-opis' + (dane.opis ? '' : ' pusty')}>
+            {dane.opis?.trim() || 'Jeszcze nic o sobie nie napisał.'}
+          </p>
 
           {/* Pasek postępu tylko dla graczy z podpiętym Steamem — reszcie nie mamy co
               narysować, a kreska „0%" wyglądałaby jak ocena, nie jak brak danych. */}
-          {dane.procent !== null && (
+          {dane.procent !== null ? (
             <div className="hov-pasek" title={`${dane.procent}% osiągnięć`}>
               <div className="bar">
                 <div className="bar-fill" style={{ width: `${dane.procent}%` }} />
               </div>
               <b>{dane.procent}%</b>
             </div>
+          ) : (
+            /* Bez tego karta gracza bez Steama miała dziurę i wyglądała na niedziałającą. */
+            <p className="hov-bez-steama muted small">
+              <Sprite name="deadgod" size={13} /> Bez podpiętego Steama
+            </p>
           )}
 
           <ul className="hov-staty">
             <li title="Obserwujący">
-              <Sprite name="friendfinder" size={13} /> {dane.obserwujacych}
+              <Sprite name="friendfinder" size={13} /> {dane.obserwujacych}{' '}
+              <span className="hov-etykieta">obserwujących</span>
             </li>
             <li title="Wpisy w feedzie">
-              <Sprite name="book" size={13} /> {dane.wpisy}
+              <Sprite name="book" size={13} /> {dane.wpisy}{' '}
+              <span className="hov-etykieta">wpisów</span>
             </li>
           </ul>
+
+          {/* Karta wyskakuje z nicku, który JEST linkiem — ale po samym dymku tego nie widać. */}
+          <p className="hov-stopka muted small">
+            {dane.ja ? 'To Ty' : 'Kliknij, by wejść na profil'}
+          </p>
         </>
       )}
     </div>,
