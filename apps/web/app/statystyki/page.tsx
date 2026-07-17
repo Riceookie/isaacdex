@@ -141,16 +141,24 @@ export default async function StatystykiPage() {
       <section>
         <div className="note">
           <PustyStan
+            nastroj="zacheta"
             tekst={
               <>
-                <b>Jeszcze zero łez do policzenia.</b> Podłącz Steam w Osiągnięciach, a Twoje
-                statystyki same się tu pojawią.
+                <b>Jeszcze zero łez do policzenia.</b> Podłącz Steam, a policzymy wszystko: procent
+                Dead Goda, marki każdej postaci, najrzadsze zdobycze i to, ile razy zginąłeś na
+                Mamie.
               </>
             }
             akcja={
-              <Link className="btn" href="/kolekcja">
-                <Sprite name="book" size={18} /> Przejdź do Osiągnięć
+              <Link className="btn" href="/kim-jestem">
+                <Sprite name="trophy" size={18} /> Podłącz Steam
               </Link>
+            }
+            poza={
+              <>
+                Steam trzeba podpiąć raz. Potem wystarczy „Synchronizuj" w{' '}
+                <Link href="/kolekcja">Osiągnięciach</Link>.
+              </>
             }
           />
         </div>
@@ -163,8 +171,8 @@ export default async function StatystykiPage() {
     <section className="note paper-panel">
       {gosc && (
         <p className="banner demo" role="status">
-          <Sprite name="deadgod" size={16} /> Same zera — bo to jeszcze nie Twoje liczby. Zaloguj
-          się i zamień je na prawdziwy postęp.{' '}
+          <Sprite name="deadgod" size={16} /> To szkielet Twoich statystyk — zera zamienią się w
+          prawdziwe liczby, gdy założysz konto i podepniesz Steam.{' '}
           <Link href="/logowanie" className="banner-link">
             Załóż konto →
           </Link>

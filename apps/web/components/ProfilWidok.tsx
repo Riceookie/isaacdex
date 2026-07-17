@@ -199,15 +199,11 @@ export default function ProfilWidok({
             {d.wpisy.length === 0 ? (
               wlasny ? (
                 <PustyStan
-                  tekst={
-                    <>
-                      <b>Jeszcze nic tu nie zrobiłeś.</b> Zsynchronizuj Steam, a Twoje odblokowania
-                      same trafią do feedu.
-                    </>
-                  }
+                  nastroj="zacheta"
+                  tekst={PUSTKA.brakWpisow}
                   akcja={
                     <Link className="btn" href="/kolekcja">
-                      Przejdź do Osiągnięć
+                      Synchronizuj ze Steam
                     </Link>
                   }
                 />
@@ -259,16 +255,23 @@ export default function ProfilWidok({
                 </h3>
                 <PustyStan
                   maly
+                  nastroj="zacheta"
                   tekst={
                     <>
-                      <b>641 achievementów czeka.</b> Podłącz Steam, a postęp, marki i najrzadsze
-                      zdobycze pojawią się tutaj same.
+                      <b>641 achievementów czeka.</b> Podłącz Steam, a Dead God, marki postaci i
+                      najrzadsze zdobycze wskoczą tu same — razem z datami sprzed lat.
                     </>
                   }
                   akcja={
-                    <Link className="btn" href="/kolekcja">
+                    <Link className="btn" href="/kim-jestem">
                       Podłącz Steam
                     </Link>
+                  }
+                  poza={
+                    <>
+                      Profil, gablotę i ozdoby ustawisz już teraz — Steam nie jest do tego
+                      potrzebny.
+                    </>
                   }
                 />
               </div>

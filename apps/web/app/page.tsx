@@ -2,11 +2,13 @@ import Link from 'next/link'
 import { getProfil } from '@/lib/queries'
 import { getFeed, getLicznikiSpoleczne } from '@/lib/social'
 import { czyZalogowany, mojGracz } from '@/lib/konto'
+import { getOnboarding } from '@/lib/onboarding'
 import { ikonaPostaci } from '@/lib/chars'
 import type { DecorId } from '@/lib/pfpDecor'
 import { PUSTKA } from '@/lib/klimat'
 import Sprite from '@/components/Sprite'
 import ProfileAvatar from '@/components/ProfileAvatar'
+import PierwszeKroki from '@/components/PierwszeKroki'
 import FeedCard from '@/components/FeedCard'
 import FeedMore from '@/components/FeedMore'
 import BasementRadio from '@/components/BasementRadio'
@@ -22,12 +24,13 @@ export default async function Home({
   searchParams?: Promise<{ feed?: string }>
 }) {
   const zakres = (await searchParams)?.feed === 'znajomi' ? 'znajomi' : 'global'
-  const [zalogowany, p, feed, liczniki, ja] = await Promise.all([
+  const [zalogowany, p, feed, liczniki, ja, onboarding] = await Promise.all([
     czyZalogowany(),
     getProfil(),
     getFeed(zakres),
     getLicznikiSpoleczne(),
     mojGracz(),
+    getOnboarding(),
   ])
   const gosc = !zalogowany
 
@@ -57,12 +60,44 @@ export default async function Home({
         <FeedZakres zakres={zakres} />
 
         {feed.length === 0 ? (
+          /* Pusty feed ma trzy różne przyczyny i każda ma inne wyjście. Kiedyś wszystkie
+             prowadziły na „Zobacz feed globalny" — czyli tam, gdzie już jesteś. */
           <PustyStan
-            tekst={brakZnajomych ? PUSTKA.brakZnajomych : PUSTKA.brakAktywnosci}
+            nastroj="zacheta"
+            tekst={
+              brakZnajomych
+                ? PUSTKA.brakZnajomych
+                : gosc
+                  ? PUSTKA.brakAktywnosciGosc
+                  : PUSTKA.brakAktywnosci
+            }
             akcja={
-              <Link className="btn" href={brakZnajomych ? '/znajomi' : '/?feed=global'}>
-                {brakZnajomych ? 'Znajdź graczy' : 'Zobacz feed globalny'}
-              </Link>
+              brakZnajomych ? (
+                <Link className="btn" href="/znajomi">
+                  Znajdź graczy
+                </Link>
+              ) : gosc ? (
+                <Link className="btn" href="/logowanie">
+                  Załóż konto
+                </Link>
+              ) : (
+                <Link className="btn" href="/kolekcja">
+                  Synchronizuj ze Steam
+                </Link>
+              )
+            }
+            poza={
+              gosc ? (
+                <>
+                  A bez konta i tak możesz zwiedzić <Link href="/encyklopedia">Encyklopedię</Link>{' '}
+                  albo policzyć build w <Link href="/kalkulator">Kalkulatorze</Link>.
+                </>
+              ) : (
+                <>
+                  W międzyczasie: <Link href="/encyklopedia">Encyklopedia</Link> (717 itemów, 103
+                  bossów) i <Link href="/kalkulator">Kalkulator</Link> statystyk.
+                </>
+              )
             }
           />
         ) : (
@@ -75,6 +110,10 @@ export default async function Home({
 
       {/* ── PRAWA SZYNA ── */}
       <aside className="home-aside">
+        {/* Świeże konto dostaje listę kroków zamiast pięciu osobnych „nic tu nie ma".
+            Znika sama, gdy wszystko odhaczone. */}
+        {onboarding?.pokazuj && <PierwszeKroki stan={onboarding} />}
+
         {p ? (
           <>
             {/* Profil mini z licznikami (Obserwujący/Obserwowani/Runy) */}
@@ -123,38 +162,27 @@ export default async function Home({
               </div>
             </div>
           </>
-        ) : (
-          // Gość albo konto bez Steama: zamiast cudzego profilu — zaproszenie do logowania.
+        ) : gosc ? (
+          // Gość: zamiast cudzego profilu — zaproszenie, ale z pokazaniem, co działa bez konta.
           <div className="note me-card">
-            {gosc ? (
-              <ZalogujStan
-                maly
-                tekst={
-                  <>
-                    <b>Tu zamieszka Twój save file.</b> Zaloguj się, a pojawi się profil, postęp i
-                    Twoje najrzadsze achievementy.
-                  </>
-                }
-                cta="Załóż konto"
-              />
-            ) : (
-              <PustyStan
-                maly
-                tekst={
-                  <>
-                    <b>Pusto tu jak w Curse of the Blind.</b> Podłącz Steam, a Twój postęp wskoczy
-                    tutaj.
-                  </>
-                }
-                akcja={
-                  <Link className="btn" href="/kim-jestem">
-                    Podłącz Steam
-                  </Link>
-                }
-              />
-            )}
+            <ZalogujStan
+              maly
+              tekst={
+                <>
+                  <b>Tu zamieszka Twój save file.</b> Załóż konto, a to miejsce wypełni Twój postęp,
+                  Dead God i najrzadsze zdobycze.
+                </>
+              }
+              cta="Załóż konto"
+              poza={
+                <>
+                  Bez konta i tak zwiedzisz <Link href="/encyklopedia">Encyklopedię</Link> (717
+                  itemów) i policzysz build w <Link href="/kalkulator">Kalkulatorze</Link>.
+                </>
+              }
+            />
           </div>
-        )}
+        ) : null}
 
         {/* Wyzwanie dnia (Basement Radio) — wspólne, widać je i bez konta. */}
         <BasementRadio />

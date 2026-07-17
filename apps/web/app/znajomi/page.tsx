@@ -38,11 +38,18 @@ export default async function ZnajomiPage({
           <ZalogujStan
             tekst={
               <>
-                <b>Nawet Isaac zaczynał sam.</b> Załóż konto, żeby dodawać znajomych, obserwować
-                graczy i podglądać w feedzie, kto właśnie oberwał traumą.
+                <b>Nawet Isaac zaczynał sam.</b> Załóż konto, żeby obserwować graczy, zbierać
+                znajomych i widzieć w feedzie, kto właśnie oberwał traumą.
               </>
             }
             cta="Załóż konto"
+            poza={
+              <>
+                Bez konta też jest co robić: <Link href="/encyklopedia">Encyklopedia</Link>,{' '}
+                <Link href="/kalkulator">Kalkulator</Link> i <Link href="/czat">czat piwnicy</Link>{' '}
+                (do czytania).
+              </>
+            }
           />
         </div>
       </section>
@@ -139,6 +146,7 @@ export default async function ZnajomiPage({
 
           {feed.length === 0 ? (
             <PustyStan
+              nastroj="zacheta"
               tekst={
                 zakres === 'znajomi' && znajomi.length === 0
                   ? PUSTKA.brakZnajomych
@@ -149,7 +157,13 @@ export default async function ZnajomiPage({
                   <Link className="btn" href="/znajomi?feed=global">
                     Zobacz feed globalny
                   </Link>
-                ) : null
+                ) : (
+                  /* Feed globalny pusty = nikt (łącznie z Tobą) nic nie zsynchronizował.
+                     Jedyne sensowne wyjście prowadzi do Twojego Steama. */
+                  <Link className="btn" href="/kolekcja">
+                    Synchronizuj ze Steam
+                  </Link>
+                )
               }
             />
           ) : (
@@ -172,12 +186,31 @@ export default async function ZnajomiPage({
         </div>
 
         {doPoznania.length === 0 ? (
+          /* Dwa różne „pusto": albo naprawdę nie ma innych graczy (świeża apka), albo
+             znasz już wszystkich. Jedno zdanie na oba brzmiało absurdalnie przy jednym
+             mieszkańcu piwnicy. */
           <PustyStan
             maly
+            nastroj="zacheta"
             tekst={
-              <>
-                <b>Znasz już wszystkich.</b> Piwnica nie ma więcej mieszkańców.
-              </>
+              gracze.filter((g) => !g.ja).length === 0 ? (
+                <>
+                  <b>Jesteś tu pierwszy.</b> Piwnica świeżo otwarta — gdy dołączą inni, pojawią się
+                  w tym miejscu.
+                </>
+              ) : (
+                <>
+                  <b>Znasz już wszystkich.</b> Cała piwnica jest w Twojej sieci.
+                </>
+              )
+            }
+            poza={
+              gracze.filter((g) => !g.ja).length === 0 ? (
+                <>
+                  W międzyczasie zajrzyj do <Link href="/encyklopedia">Encyklopedii</Link> albo
+                  urządź <Link href="/kim-jestem">swój profil</Link>.
+                </>
+              ) : null
             }
           />
         ) : (

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Sprite from '@/components/Sprite'
 import PustyStan from '@/components/PustyStan'
+import ZalogujStan from '@/components/ZalogujStan'
 import { powiedz } from '@/lib/companionGlos'
 import EncDetal from '@/components/EncDetal'
 import warunki from '@/lib/enc/achievementy.json'
@@ -178,18 +179,39 @@ export default function KolekcjaWidok({
         </>
       ) : gosc ? (
         <div className="note">
-          <p>
-            <b>0 achievementów.</b> Załóż konto i podłącz Steam, a wszystkie 641 ikon TBOI wypełni
-            się Twoimi odblokowaniami.
-          </p>
+          <ZalogujStan
+            tekst={
+              <>
+                <b>641 ikon czeka na Twoje nazwisko.</b> Załóż konto i podłącz Steam, a katalog
+                zamieni się w Twoją kolekcję — z datami i rzadkością każdego odblokowania.
+              </>
+            }
+            poza={
+              <>
+                Katalog przeglądasz i bez konta — kliknij dowolną ikonę, żeby zobaczyć, jak się ją
+                zdobywa.
+              </>
+            }
+          />
         </div>
       ) : (
         <div className="note">
           <PustyStan
+            nastroj="zacheta"
             tekst={
               <>
-                <b>Pusta gablota.</b> Kliknij „Synchronizuj ze Steam" u góry, a Twoje 641 ikon
-                zacznie się wypełniać.
+                <b>Pusta gablota.</b> Zassij osiągnięcia ze Steama — 641 ikon, daty zdobycia i
+                completion marks wskoczą tu same.
+              </>
+            }
+            akcja={
+              <button className="btn" onClick={sync} disabled={busy}>
+                <Sprite name="trophy" size={18} /> {busy ? 'Ściągam…' : 'Synchronizuj ze Steam'}
+              </button>
+            }
+            poza={
+              <>
+                Steama podpina się raz — w <a href="/kim-jestem">edytorze profilu</a>.
               </>
             }
           />

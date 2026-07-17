@@ -461,8 +461,10 @@ export default function CzatWidok({
           {!ladowanie && lista.length === 0 && (
             <p className="cz-stan muted small">
               {rozmowca
-                ? `Cisza. Napisz do ${rozmowca} pierwszy.`
-                : 'Pusto jak w Sklepie o 3 w nocy. Napisz pierwszy.'}
+                ? `Cisza. Napisz do ${rozmowca} pierwszy — zobaczy to tylko on.`
+                : gosc
+                  ? 'Piwnica jeszcze milczy. Załóż konto i bądź pierwszy.'
+                  : 'Piwnica jeszcze milczy. Pierwsza wiadomość zostaje w historii na zawsze.'}
             </p>
           )}
           {lista.map((w) => {
@@ -589,16 +591,15 @@ export default function CzatWidok({
           )}
         </div>
 
+        {/* Tylko do odczytu = jesteś gościem (kanałów bez prawa głosu już nie ma).
+            Zamiast suchej blokady: powiedz, co dostaniesz po założeniu konta. */}
         {tylkoOdczyt ? (
           <div className="cz-pisz cz-zamkniete">
-            <Sprite name="deadgod" size={18} />
-            {gosc ? (
-              <span className="muted small">
-                <a href="/logowanie">Zaloguj się</a>, aby dołączyć do rozmowy.
-              </span>
-            ) : (
-              <span className="muted small">Tu mówi tylko Dogma. Ty słuchasz.</span>
-            )}
+            <Sprite name="heart" size={18} />
+            <span className="muted small">
+              Czytasz piwnicę jako gość. <a href="/logowanie">Załóż konto</a>, żeby pisać, wrzucać
+              screeny i reagować pickupami.
+            </span>
           </div>
         ) : (
           <form

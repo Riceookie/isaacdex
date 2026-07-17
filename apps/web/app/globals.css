@@ -7599,6 +7599,16 @@ body::after {
   flex-wrap: wrap;
   justify-content: center;
 }
+/* „A tymczasem możesz…" — wyjście awaryjne z pustki, ciszej niż główne CTA. */
+.pusto-poza {
+  margin: 0.1rem 0 0;
+  max-width: 40ch;
+  line-height: 1.5;
+}
+.pusto-poza a {
+  color: var(--accent);
+  white-space: nowrap;
+}
 
 /* ============================================================================
    FEED v2 — kartka czytana wzrokiem: typ wpisu koloruje krawędź i ikonę,
@@ -8972,4 +8982,89 @@ body::after {
 
 .steam-komunikat.zle {
   color: #e5544b;
+}
+
+/* ── PIERWSZE KROKI (onboarding na Pulpicie) ─────────────────────────────────
+   Świeże konto widzi apkę naprawdę pustą (bez Steama nie ma osiągnięć, bez znajomych
+   feedu), więc zamiast pięciu osobnych „nic tu nie ma" dostaje jedną listę z krokami. */
+.kroki-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.kroki-head h3 {
+  margin: 0;
+}
+.kroki-bar {
+  margin: 0.55rem 0 0.9rem;
+}
+.kroki-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+/* Ikona i tekst w rzędzie, CTA POD spodem. Kiedyś przycisk stał w trzeciej kolumnie —
+   w wąskiej szynie Pulpitu zostawiał tytułowi ~100 px i „Znajdź kogoś żywego" łamało się
+   na trzy linijki. */
+.krok {
+  position: relative;
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 0.15rem 0.6rem;
+  padding: 0.6rem 0.6rem 0.55rem;
+  border: 1px solid rgba(0, 0, 0, 0.45);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+}
+.krok-ic {
+  display: flex;
+  justify-content: center;
+  padding-top: 0.1rem;
+}
+.krok-tresc {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+  /* Miejsce na ptaszek w rogu, żeby nie wchodził w tytuł. */
+  padding-right: 1.1rem;
+}
+.krok-cta {
+  grid-column: 2;
+  justify-self: start;
+  margin-top: 0.4rem;
+}
+.krok-tytul {
+  font-family: var(--dsp);
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+}
+/* Zrobiony krok zostaje na liście — pasek ma być dowodem postępu, nie listą zarzutów. */
+.krok.zrobiony {
+  opacity: 0.55;
+}
+.krok.zrobiony .krok-tytul {
+  text-decoration: line-through;
+}
+.krok-ptaszek {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.6rem;
+  color: #5bbf6a;
+  font-weight: 700;
+}
+.kroki-stopka {
+  margin: 0.85rem 0 0;
+  line-height: 1.5;
+}
+.kroki-stopka a {
+  color: var(--accent);
+}
+/* Mały przycisk — do list i kart, gdzie pełnowymiarowy rozpycha wiersz. */
+.btn.maly {
+  padding: 0.28rem 0.6rem;
+  font-size: 0.82rem;
 }

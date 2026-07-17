@@ -75,11 +75,11 @@ export function komentarz(w: Pick<FeedWpis, 'id' | 'typ'>): string {
 // ── Nagłówki pustych stanów ────────────────────────────────────────────────────
 
 export const PUSTKA = {
-  /** Do FEEDU — tłumaczy, czemu nie ma wpisów. */
+  /** Feed ZNAJOMYCH — pusty, bo nie masz jeszcze kogo obserwować. */
   brakZnajomych: (
     <>
-      <b>Sam jak Isaac w piwnicy.</b> Znajdź graczy i zaobserwuj ich — gdy odwzajemnią, ich
-      aktywność wyląduje tutaj.
+      <b>Sam jak Isaac w piwnicy.</b> Zaobserwuj kogoś — gdy odwzajemni, jego odblokowania i ubici
+      bossowie zaczną tu spadać same.
     </>
   ),
   /**
@@ -96,9 +96,31 @@ export const PUSTKA = {
       <b>Nikogo takiego tu nie ma.</b> Nikt o tym nicku nie schodził do piwnicy. Spróbuj inaczej.
     </>
   ),
+  /**
+   * Feed GLOBALNY pusty. To pierwsza rzecz, jaką widzi świeże konto, więc nie może być
+   * samym „cisza" — musi powiedzieć, SKĄD w ogóle biorą się wpisy (z odblokowań Steama).
+   */
   brakAktywnosci: (
     <>
-      <b>Cisza jak w Sklepie o 3 w nocy…</b> Nikt teraz nic nie ubija.
+      <b>Piwnica jeszcze nie krwawi.</b> Feed sam zapisuje każde Twoje odblokowanie ze Steama — z
+      prawdziwą datą i ikoną. Zsynchronizuj i zobacz swoją historię.
+    </>
+  ),
+  /**
+   * Feed globalny pusty, ale patrzy GOŚĆ. Nie może zsynchronizować, więc nie każemy mu
+   * tego robić — tekst musi pasować do przycisku, który stoi pod nim („Załóż konto").
+   */
+  brakAktywnosciGosc: (
+    <>
+      <b>Piwnica jeszcze nie krwawi.</b> Feed zapisuje odblokowania graczy prosto ze Steama — z
+      prawdziwą datą i ikoną. Załóż konto, a Twoja historia wpadnie tu pierwsza.
+    </>
+  ),
+  /** Aktywność na WŁASNYM profilu — nie masz wpisów, bo nie było syncu. */
+  brakWpisow: (
+    <>
+      <b>Twoja karta jest jeszcze pusta.</b> Po synchronizacji wyląduje tu każde odblokowanie, które
+      kiedykolwiek zdobyłeś w grze.
     </>
   ),
 }
