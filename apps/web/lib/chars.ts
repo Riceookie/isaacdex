@@ -23,6 +23,19 @@ export function ikonaPostaci(nazwa: string): string {
 }
 
 /**
+ * Pełna sylwetka postaci (public/tboi/chars-full) — do gabloty „Ulubiona postać".
+ * `ikonaPostaci` daje samą GŁOWĘ (32×32, do list i kafli); tu chodzi o całego ludzika,
+ * więc to osobny zestaw plików, a nie ten sam obrazek w innym rozmiarze.
+ */
+export function pelnaPostaci(nazwa: string): string {
+  if (jestTainted(nazwa)) {
+    const base = nazwa.slice('Tainted '.length)
+    return `/tboi/chars-full/tainted-${slugPostaci(base)}.webp`
+  }
+  return `/tboi/chars-full/${slugPostaci(nazwa)}.webp`
+}
+
+/**
  * Avatar gracza. Pole `Gracz.avatar` trzyma albo nazwę postaci („Isaac"), albo — od teraz —
  * gotową ścieżkę do własnego obrazka („/pfp/spike.png"). Ścieżkę przepuszczamy bez zmian,
  * resztę mapujemy na głowę postaci jak dotąd.

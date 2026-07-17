@@ -1,17 +1,17 @@
 import { prisma } from '@isaacdex/db'
-import { jaGracz } from '@/lib/konto'
+import { mojGracz } from '@/lib/konto'
 
 /**
  * Społeczność: feed, obserwowanie, lajki. Wszystko leży w bazie (Gracz, Obserwacja, Wpis, Lajk),
  * więc obserwowanie i polubienia są TRWAŁE — nie są stanem komponentu jak w poprzedniej wersji.
  *
- * Kim jest „ja” (zalogowany, a dla gościa — właściciel apki) rozstrzyga lib/konto.
+ * Kim jest „ja” (zalogowany, dla gościa `null`) rozstrzyga lib/konto — gość nie ma znajomych
+ * ani wpisów, więc widzi puste liczniki i pusty feed znajomych, ale globalny feed dalej działa.
  * Moje wpisy są generowane z prawdziwych achievementów Steam (nazwa, ikona, data).
  *
  * ZNAJOMY = obserwacja w OBIE strony (jak na Steamie). Samo obserwowanie kogoś to jeszcze
  * nie znajomość — stąd trzy różne zbiory: znajomi, obserwowani (jednostronnie) i obserwujący.
  */
-export { jaGracz }
 
 export type FeedWpis = {
   id: number
@@ -74,7 +74,10 @@ const doWpisu = (w: WpisZBazy, jaId?: number): FeedWpis => ({
     nick: w.autor.nick,
     kolor: w.autor.kolor,
     avatar: w.autor.avatar,
-    ja: w.autor.ja,
+    // „To ja" = gracz zalogowanego użytkownika, a NIE kolumna `Gracz.ja` (ta oznacza na
+    // sztywno jedno konto właściciela). Gość nie ma tożsamości, więc dla niego zawsze false
+    // — inaczej klik w tamto konto odsyłał go na własny, pusty /profil.
+    ja: jaId != null && w.autor.id === jaId,
   },
   lajki: w.lajki.length,
   polubione: jaId ? w.lajki.some((l) => l.graczId === jaId) : false,
@@ -86,7 +89,7 @@ const doWpisu = (w: WpisZBazy, jaId?: number): FeedWpis => ({
  * „co u moich" i „co się w ogóle dzieje".
  */
 export async function getFeed(zakres: ZakresFeedu = 'global', ile = 30): Promise<FeedWpis[]> {
-  const ja = await jaGracz()
+  const ja = await mojGracz()
 
   let autorzy: number[] | undefined
   if (zakres === 'znajomi') {
@@ -131,13 +134,18 @@ type GraczZBazy = {
   _count: { obserwowany: number; wpisy: number }
 }
 
-const doKarty = (g: GraczZBazy, obs: Set<number>, obsMnie: Set<number>): GraczKarta => ({
+const doKarty = (
+  g: GraczZBazy,
+  obs: Set<number>,
+  obsMnie: Set<number>,
+  jaId?: number,
+): GraczKarta => ({
   id: g.id,
   nick: g.nick,
   kolor: g.kolor,
   avatar: g.avatar,
   opis: g.opis,
-  ja: g.ja,
+  ja: jaId != null && g.id === jaId,
   obserwowany: obs.has(g.id),
   obserwujeMnie: obsMnie.has(g.id),
   znajomy: obs.has(g.id) && obsMnie.has(g.id),
@@ -149,12 +157,12 @@ const LICZNIKI = { _count: { select: { obserwowany: true, wpisy: true } } } as c
 
 /** Wszyscy gracze + stan relacji z Tobą (do list znajomych, obserwowanych i sugestii). */
 export async function getGracze(): Promise<GraczKarta[]> {
-  const ja = await jaGracz()
+  const ja = await mojGracz()
   const [gracze, rel] = await Promise.all([
     prisma.gracz.findMany({ orderBy: { nick: 'asc' }, include: LICZNIKI }),
     ja ? relacje(ja.id) : PUSTE_RELACJE,
   ])
-  return gracze.map((g) => doKarty(g, rel.obserwuje, rel.obserwujaMnie))
+  return gracze.map((g) => doKarty(g, rel.obserwuje, rel.obserwujaMnie, ja?.id))
 }
 
 /**
@@ -165,7 +173,7 @@ export async function szukajGraczy(q: string, limit = 12): Promise<GraczKarta[]>
   const fraza = q.trim()
   if (!fraza) return []
 
-  const ja = await jaGracz()
+  const ja = await mojGracz()
   const [gracze, rel] = await Promise.all([
     prisma.gracz.findMany({
       where: {
@@ -180,12 +188,139 @@ export async function szukajGraczy(q: string, limit = 12): Promise<GraczKarta[]>
     }),
     ja ? relacje(ja.id) : PUSTE_RELACJE,
   ])
-  return gracze.map((g) => doKarty(g, rel.obserwuje, rel.obserwujaMnie))
+  return gracze.map((g) => doKarty(g, rel.obserwuje, rel.obserwujaMnie, ja?.id))
+}
+
+/**
+ * Jeden gracz po nicku + jego wpisy — pod stronę /gracz/[nick].
+ * Nick szukany bez rozróżniania wielkości liter, żeby /gracz/voidking też trafiał
+ * (linki z czatu i powiadomień biorą nick z tekstu, nie z bazy).
+ */
+export async function getGraczPoNicku(
+  nick: string,
+): Promise<{ gracz: GraczKarta; wpisy: FeedWpis[] } | null> {
+  const ja = await mojGracz()
+  const [g, rel] = await Promise.all([
+    prisma.gracz.findFirst({
+      where: { nick: { equals: nick, mode: 'insensitive' } },
+      include: LICZNIKI,
+    }),
+    ja ? relacje(ja.id) : PUSTE_RELACJE,
+  ])
+  if (!g) return null
+
+  const wpisy = await prisma.wpis.findMany({
+    where: { autorId: g.id },
+    orderBy: { createdAt: 'desc' },
+    take: 20,
+    include: { autor: true, lajki: { select: { graczId: true } } },
+  })
+
+  return {
+    gracz: doKarty(g, rel.obserwuje, rel.obserwujaMnie, ja?.id),
+    wpisy: wpisy.map((w) => doWpisu(w, ja?.id)),
+  }
+}
+
+/**
+ * Znajomi DANEGO gracza (obserwacja w obie strony), do panelu na jego profilu.
+ * Osobno od `getGracze()`, bo tamto liczy relacje względem CIEBIE, a tu chodzi o jego.
+ */
+export async function getZnajomychGracza(graczId: number, ile = 6): Promise<GraczKarta[]> {
+  const ja = await mojGracz()
+  const [ich, rel] = await Promise.all([relacje(graczId), ja ? relacje(ja.id) : PUSTE_RELACJE])
+  const znajomiId = [...ich.obserwuje].filter((id) => ich.obserwujaMnie.has(id))
+  if (znajomiId.length === 0) return []
+
+  const gracze = await prisma.gracz.findMany({
+    where: { id: { in: znajomiId } },
+    orderBy: { nick: 'asc' },
+    take: ile,
+    include: LICZNIKI,
+  })
+  // Relacja w karcie zostaje MOJA (żeby przycisk „Obserwuj" mówił prawdę o mnie i nim).
+  return gracze.map((g) => doKarty(g, rel.obserwuje, rel.obserwujaMnie, ja?.id))
+}
+
+/**
+ * Sama karta gracza po nicku — BEZ jego wpisów.
+ *
+ * Osobno od `getGraczPoNicku`, bo tamto dociąga jeszcze 20 wpisów razem z autorami
+ * i lajkami. Dymek na hover nic z tego nie pokazuje, a zapytanie kosztowało ~1 s —
+ * przy najeździe kursorem to wieczność.
+ */
+export async function getWizytowke(nick: string): Promise<GraczKarta | null> {
+  const ja = await mojGracz()
+  const [g, rel] = await Promise.all([
+    prisma.gracz.findFirst({
+      where: { nick: { equals: nick, mode: 'insensitive' } },
+      include: LICZNIKI,
+    }),
+    ja ? relacje(ja.id) : PUSTE_RELACJE,
+  ])
+  if (!g) return null
+  return doKarty(g, rel.obserwuje, rel.obserwujaMnie, ja?.id)
+}
+
+/**
+ * Kto obserwuje danego gracza / kogo on obserwuje — pod klikalne liczniki na profilu.
+ * Relacja w zwróconych kartach jest MOJA (żeby „Obserwuj" mówił prawdę o mnie i o nich),
+ * a nie jego — tak samo jak w `getZnajomychGracza`.
+ */
+export async function getObserwujacych(graczId: number, ile = 24): Promise<GraczKarta[]> {
+  const ja = await mojGracz()
+  const [obs, rel] = await Promise.all([
+    prisma.obserwacja.findMany({
+      where: { obserwowanyId: graczId },
+      select: { obserwujacyId: true },
+    }),
+    ja ? relacje(ja.id) : PUSTE_RELACJE,
+  ])
+  return kartyPoId(
+    obs.map((o) => o.obserwujacyId),
+    rel,
+    ja?.id,
+    ile,
+  )
+}
+
+export async function getObserwowanych(graczId: number, ile = 24): Promise<GraczKarta[]> {
+  const ja = await mojGracz()
+  const [obs, rel] = await Promise.all([
+    prisma.obserwacja.findMany({
+      where: { obserwujacyId: graczId },
+      select: { obserwowanyId: true },
+    }),
+    ja ? relacje(ja.id) : PUSTE_RELACJE,
+  ])
+  return kartyPoId(
+    obs.map((o) => o.obserwowanyId),
+    rel,
+    ja?.id,
+    ile,
+  )
+}
+
+/** Wspólny ogon obu funkcji wyżej: id → karty graczy. */
+async function kartyPoId(
+  ids: number[],
+  rel: { obserwuje: Set<number>; obserwujaMnie: Set<number> },
+  jaId: number | undefined,
+  ile: number,
+): Promise<GraczKarta[]> {
+  if (ids.length === 0) return []
+  const gracze = await prisma.gracz.findMany({
+    where: { id: { in: ids } },
+    orderBy: { nick: 'asc' },
+    take: ile,
+    include: LICZNIKI,
+  })
+  return gracze.map((g) => doKarty(g, rel.obserwuje, rel.obserwujaMnie, jaId))
 }
 
 /** Liczniki do profilu i nagłówka Znajomych. */
 export async function getLicznikiSpoleczne() {
-  const ja = await jaGracz()
+  const ja = await mojGracz()
   if (!ja) return { obserwuje: 0, obserwujacych: 0, wpisy: 0, znajomi: 0 }
   const [obserwuje, obserwujacych, wpisy, znajomi] = await Promise.all([
     prisma.obserwacja.count({ where: { obserwujacyId: ja.id } }),
@@ -198,7 +333,7 @@ export async function getLicznikiSpoleczne() {
 
 /** Ostatnia aktywność konkretnego gracza (domyślnie Twoja) — na stronę profilu. */
 export async function getAktywnosc(graczId?: number, ile = 6): Promise<FeedWpis[]> {
-  const ja = await jaGracz()
+  const ja = await mojGracz()
   const id = graczId ?? ja?.id
   if (!id) return []
   const wpisy = await prisma.wpis.findMany({

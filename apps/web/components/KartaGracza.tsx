@@ -2,6 +2,7 @@ import Sprite from '@/components/Sprite'
 import ItemSprite from '@/components/ItemSprite'
 import PrzyciskObserwuj from '@/components/PrzyciskObserwuj'
 import DecorMark from '@/components/DecorMark'
+import LinkGracza from '@/components/LinkGracza'
 import { avatarGracza, wlasnyAvatar } from '@/lib/chars'
 import { dekoracjaGracza, statyGracza } from '@/lib/klimat'
 import type { GraczKarta } from '@/lib/social'
@@ -11,17 +12,19 @@ function Awatar({ g, rozmiar, klasa }: { g: GraczKarta; rozmiar: number; klasa: 
   const wlasny = wlasnyAvatar(g.avatar)
   const decor = dekoracjaGracza(g.nick, wlasny)
   return (
-    <span className={klasa + '-box' + (decor === 'none' ? '' : ' z-decor')}>
-      <img
-        className={klasa + (wlasny ? ' foto' : '')}
-        src={avatarGracza(g.avatar)}
-        alt=""
-        width={rozmiar}
-        height={rozmiar}
-        aria-hidden
-      />
-      <DecorMark id={decor} />
-    </span>
+    <LinkGracza nick={g.nick} ja={g.ja} className="ava-link">
+      <span className={klasa + '-box' + (decor === 'none' ? '' : ' z-decor')}>
+        <img
+          className={klasa + (wlasny ? ' foto' : '')}
+          src={avatarGracza(g.avatar)}
+          alt=""
+          width={rozmiar}
+          height={rozmiar}
+          aria-hidden
+        />
+        <DecorMark id={decor} />
+      </span>
+    </LinkGracza>
   )
 }
 
@@ -55,9 +58,11 @@ export function WierszGracza({ g }: { g: GraczKarta }) {
       {/* Bez znaczka relacji: wiersze siedzą już w sekcjach „Znajomi"/„Obserwowani",
           a przycisk obok mówi to samo. Znaczek zostaje na kartach w „Odkryj graczy". */}
       <span className="soc-kto">
-        <b className="soc-nick" style={g.kolor ? { color: g.kolor } : undefined}>
-          {g.nick}
-        </b>
+        <LinkGracza nick={g.nick} ja={g.ja}>
+          <b className="soc-nick" style={g.kolor ? { color: g.kolor } : undefined}>
+            {g.nick}
+          </b>
+        </LinkGracza>
         <span className="muted small">{g.opis ?? 'Bez opisu.'}</span>
       </span>
       {!g.ja && (
@@ -79,9 +84,11 @@ export function KartaGracza({ g }: { g: GraczKarta }) {
       <header className="gk-head">
         <Awatar g={g} rozmiar={48} klasa="gk-ava" />
         <div className="gk-id">
-          <span className="gk-nick" style={g.kolor ? { color: g.kolor } : undefined}>
-            {g.nick}
-          </span>
+          <LinkGracza nick={g.nick} ja={g.ja}>
+            <span className="gk-nick" style={g.kolor ? { color: g.kolor } : undefined}>
+              {g.nick}
+            </span>
+          </LinkGracza>
           <Relacja g={g} />
         </div>
         {s.deadGod && (

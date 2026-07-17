@@ -10,14 +10,14 @@ import type { DecorId } from '@/lib/pfpDecor'
  * serwer i klient wylosowałyby inny tekst i React zgłosiłby błąd hydratacji.
  */
 
-const hash = (s: string): number => {
+export const hash = (s: string): number => {
   let h = 0
   for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0
   return h
 }
 
 // Uwaga: w .tsx `<T>(…) =>` parsuje się jak JSX, więc generyk musi być zwykłą funkcją.
-function zListy<T>(lista: T[], ziarno: string): T {
+export function zListy<T>(lista: T[], ziarno: string): T {
   return lista[hash(ziarno) % lista.length]
 }
 
@@ -71,18 +71,18 @@ export function komentarz(w: Pick<FeedWpis, 'id' | 'typ'>): string {
 export const PUSTKA = {
   brakZnajomych: (
     <>
-      <b>Nie masz jeszcze znajomych.</b> Znajdź graczy i zaobserwuj ich — gdy odwzajemnią, ich
-      aktywność pojawi się tutaj.
+      <b>Sam jak Isaac w piwnicy.</b> Znajdź graczy i zaobserwuj ich — gdy odwzajemnią, ich
+      aktywność wyląduje tutaj.
     </>
   ),
   brakWynikow: (
     <>
-      <b>Brak wyników.</b> Nikt taki nie schodził do piwnicy.
+      <b>Nikogo takiego tu nie ma.</b> Nikt o tym nicku nie schodził do piwnicy. Spróbuj inaczej.
     </>
   ),
   brakAktywnosci: (
     <>
-      <b>Cisza w piwnicy…</b> Nikt nic teraz nie robi.
+      <b>Cisza jak w Sklepie o 3 w nocy…</b> Nikt teraz nic nie ubija.
     </>
   ),
 }
