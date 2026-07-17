@@ -45,6 +45,12 @@ export type DaneProfilu = {
   decor?: DecorId
   /** Czy sekcje Steamowe są dorobione — wtedy dostają znaczek DEMO. */
   steamDemo: boolean
+  /**
+   * Czy Steam jest podpięty. Gdy nie, profil dalej pokazuje TOŻSAMOŚĆ (avatar, nick, bio,
+   * ulubioną postać, znajomych) — bo to dane, które użytkownik już podał — a chowa tylko
+   * sekcje, które bez Steama nie mają z czego powstać (postęp, achievementy, runy).
+   */
+  steamPodlaczony: boolean
   /** Gablota cudzego gracza (moja siedzi w localStorage, więc czyta ją sam komponent). */
   gablota?: (string | null)[]
   /** Katalog itemów do wybieraczki — tylko na własnym profilu. */
@@ -213,7 +219,7 @@ export default function ProfilWidok({
                   }
                   akcja={
                     <Link className="btn" href="/kolekcja">
-                      Przejdź do Kolekcji
+                      Przejdź do Osiągnięć
                     </Link>
                   }
                 />
@@ -229,60 +235,91 @@ export default function ProfilWidok({
             )}
           </div>
 
-          {/* Recent Runs */}
-          <div className="note recent-runs">
-            <GlowaSekcji demo>
-              <h2>
-                <Sprite name="stopwatch" size={24} /> Ostatnie runy
-              </h2>
-            </GlowaSekcji>
-            <p className="sekcja-opis muted small">
-              Ostatnie podejścia: wynik, czas, piętro i seed. Steam nie udostępnia historii runów
-              przez API — te są zmyślone, dopóki nie zbierzemy ich z zapisu gry.
-            </p>
-            <div className="runs-list">
-              {d.runy.map((r, i) => (
-                <div key={i} className="run-row">
-                  <span className={'run-result ' + (r.wynik === 'WYGRANA' ? 'win' : 'loss')}>
-                    {r.wynik}
-                    <span className="muted small">
-                      {r.wynik === 'WYGRANA' ? 'vs' : 'do'} {r.boss}
+          {/* Recent Runs — zmyślone na podstawie nicku, więc bez Steama nie ma dla nich
+              żadnej podstawy; pokazujemy je dopiero, gdy profil w ogóle ma dane z gry. */}
+          {d.steamPodlaczony && (
+            <div className="note recent-runs">
+              <GlowaSekcji demo>
+                <h2>
+                  <Sprite name="stopwatch" size={24} /> Ostatnie runy
+                </h2>
+              </GlowaSekcji>
+              <p className="sekcja-opis muted small">
+                Ostatnie podejścia: wynik, czas, piętro i seed. Steam nie udostępnia historii runów
+                przez API — te są zmyślone, dopóki nie zbierzemy ich z zapisu gry.
+              </p>
+              <div className="runs-list">
+                {d.runy.map((r, i) => (
+                  <div key={i} className="run-row">
+                    <span className={'run-result ' + (r.wynik === 'WYGRANA' ? 'win' : 'loss')}>
+                      {r.wynik}
+                      <span className="muted small">
+                        {r.wynik === 'WYGRANA' ? 'vs' : 'do'} {r.boss}
+                      </span>
                     </span>
-                  </span>
-                  <span className="run-time">{r.czas}</span>
-                  <span className="run-seed">
-                    <span className="muted small">{r.piętro}</span>
-                    <code>{r.seed}</code>
-                  </span>
-                  <span className="run-items">
-                    {r.itemy.map((it) => (
-                      <ItemSprite key={it} nazwa={it} size={26} />
-                    ))}
-                  </span>
-                </div>
-              ))}
+                    <span className="run-time">{r.czas}</span>
+                    <span className="run-seed">
+                      <span className="muted small">{r.piętro}</span>
+                      <code>{r.seed}</code>
+                    </span>
+                    <span className="run-items">
+                      {r.itemy.map((it) => (
+                        <ItemSprite key={it} nazwa={it} size={26} />
+                      ))}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* ── PRAWA KOLUMNA ── */}
         <div className="pf-side">
-          <div
-            className={'note dead-god-card pin-featured' + (d.achProcent >= 100 ? ' komplet' : '')}
-          >
-            <h3>
-              <Sprite name="deadgod" size={20} /> Dead God — postęp
-            </h3>
-            <div className="hero-progress">
-              <div className="bar">
-                <div className="bar-fill" style={{ width: `${d.achProcent}%` }} />
+          {/* Bez Steama nie ma czego liczyć — zamiast paska „0%", który wygląda jak porażka,
+              stoi tu zaproszenie. Reszta profilu (tożsamość, znajomi) działa i tak. */}
+          {d.steamPodlaczony ? (
+            <div
+              className={
+                'note dead-god-card pin-featured' + (d.achProcent >= 100 ? ' komplet' : '')
+              }
+            >
+              <h3>
+                <Sprite name="deadgod" size={20} /> Dead God — postęp
+              </h3>
+              <div className="hero-progress">
+                <div className="bar">
+                  <div className="bar-fill" style={{ width: `${d.achProcent}%` }} />
+                </div>
+                <span className="hero-pct">{d.achProcent}%</span>
               </div>
-              <span className="hero-pct">{d.achProcent}%</span>
+              <p className="small muted">
+                {d.achUnlocked}/{d.achTotal} achievementów
+              </p>
             </div>
-            <p className="small muted">
-              {d.achUnlocked}/{d.achTotal} achievementów
-            </p>
-          </div>
+          ) : (
+            wlasny && (
+              <div className="note dead-god-card">
+                <h3>
+                  <Sprite name="deadgod" size={20} /> Dead God — postęp
+                </h3>
+                <PustyStan
+                  maly
+                  tekst={
+                    <>
+                      <b>641 achievementów czeka.</b> Podłącz Steam, a postęp, marki i najrzadsze
+                      zdobycze pojawią się tutaj same.
+                    </>
+                  }
+                  akcja={
+                    <Link className="btn" href="/kolekcja">
+                      Podłącz Steam
+                    </Link>
+                  }
+                />
+              </div>
+            )
+          )}
 
           {/* Recent Achievements */}
           {d.recent.length > 0 && (
@@ -310,38 +347,41 @@ export default function ProfilWidok({
           )}
 
           {/* Character Completion — u obcych linki do postaci prowadziłyby na MOJE marki,
-              więc tam zostają zwykłe kafle bez linku. */}
-          <div className="note">
-            <GlowaSekcji
-              demo={d.steamDemo}
-              wiecej={wlasny ? { href: '/statystyki', tekst: 'Statystyki →' } : null}
-            >
-              <h3>
-                <Sprite name="chad" size={22} /> Postępy postaci
-              </h3>
-            </GlowaSekcji>
-            <div className="char-grid">
-              {d.postacie.slice(0, 12).map((c) =>
-                wlasny ? (
-                  <Link
-                    key={c.nazwa}
-                    href={`/profil/${encodeURIComponent(c.nazwa)}`}
-                    className="char-cell"
-                  >
-                    <img src={ikonaPostaci(c.nazwa)} alt="" />
-                    <span className="nm">{c.nazwa}</span>
-                    <span className="pct">{c.procent}%</span>
-                  </Link>
-                ) : (
-                  <span key={c.nazwa} className="char-cell">
-                    <img src={ikonaPostaci(c.nazwa)} alt="" />
-                    <span className="nm">{c.nazwa}</span>
-                    <span className="pct">{c.procent}%</span>
-                  </span>
-                ),
-              )}
+              więc tam zostają zwykłe kafle bez linku.
+              Bez Steama cała siatka to same zera — nie pokazujemy jej wcale. */}
+          {d.steamPodlaczony && (
+            <div className="note">
+              <GlowaSekcji
+                demo={d.steamDemo}
+                wiecej={wlasny ? { href: '/statystyki', tekst: 'Statystyki →' } : null}
+              >
+                <h3>
+                  <Sprite name="chad" size={22} /> Postępy postaci
+                </h3>
+              </GlowaSekcji>
+              <div className="char-grid">
+                {d.postacie.slice(0, 12).map((c) =>
+                  wlasny ? (
+                    <Link
+                      key={c.nazwa}
+                      href={`/profil/${encodeURIComponent(c.nazwa)}`}
+                      className="char-cell"
+                    >
+                      <img src={ikonaPostaci(c.nazwa)} alt="" />
+                      <span className="nm">{c.nazwa}</span>
+                      <span className="pct">{c.procent}%</span>
+                    </Link>
+                  ) : (
+                    <span key={c.nazwa} className="char-cell">
+                      <img src={ikonaPostaci(c.nazwa)} alt="" />
+                      <span className="nm">{c.nazwa}</span>
+                      <span className="pct">{c.procent}%</span>
+                    </span>
+                  ),
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Znajomi — PRAWDZIWI (obserwacja w obie strony), nie mock jak reszta demo. */}
           <div className="note">
@@ -354,7 +394,7 @@ export default function ProfilWidok({
               wlasny ? (
                 <PustyStan
                   maly
-                  tekst={PUSTKA.brakZnajomych}
+                  tekst={PUSTKA.brakZnajomychLista}
                   akcja={
                     <Link className="btn" href="/znajomi">
                       Znajdź graczy

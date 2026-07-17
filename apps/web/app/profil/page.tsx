@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { getProfil, getDashboard, getItemyDoGabloty } from '@/lib/queries'
 import {
   getAktywnosc,
@@ -8,10 +7,10 @@ import {
   getObserwujacych,
 } from '@/lib/social'
 import ProfilWidok, { type DaneProfilu } from '@/components/ProfilWidok'
-import PustyStan from '@/components/PustyStan'
 import ZalogujStan from '@/components/ZalogujStan'
 import { czyZalogowany, mojGracz } from '@/lib/konto'
 import { demoRuny } from '@/lib/demoProfil'
+import { wlasnyAvatar } from '@/lib/chars'
 
 export const dynamic = 'force-dynamic'
 
@@ -49,44 +48,40 @@ export default async function ProfilPage() {
     ? await Promise.all([getObserwujacych(ja.id), getObserwowanych(ja.id)])
     : [[], []]
   const znajomi = gracze.filter((g) => g.znajomy)
-  if (!p) {
-    return (
-      <section className="pf-page">
-        <div className="note gosc-panel">
-          <PustyStan
-            tekst={
-              <>
-                <b>Profil świeci pustkami.</b> Podłącz swojego Steama, a osiągnięcia i completion
-                marks same tu spłyną.
-              </>
-            }
-            akcja={
-              <Link className="btn" href="/kim-jestem">
-                Podłącz Steam
-              </Link>
-            }
-          />
-        </div>
-      </section>
-    )
-  }
+
+  /**
+   * Steam bywa niepodpięty (`p` === null) i to NIE znaczy, że nie ma czego pokazać:
+   * nick, opis, avatar, ulubiona postać i znajomi są w naszej bazie, odkąd założyłeś konto.
+   * Kiedyś cały profil zastępowała wtedy jedna zachęta „Podłącz Steam" — przez co własny
+   * profil był pustszy niż profil obcego gracza, któremu dane dorabiamy z nicku.
+   * Teraz tożsamość jest zawsze, a za Steamem chowa się tylko to, co z niego pochodzi.
+   */
+  const steamPodlaczony = !!p
 
   // '' = świadome „Brak" z edytora → zostaje puste. null = nigdy nie ustawiono → podpowiadamy
-  // najczęściej graną postacią ze Steama (`fav`), a w ostateczności Isaakiem.
-  const ulubionaPostac = p.ulubiona === '' ? '' : (p.ulubiona ?? p.fav?.nazwa ?? 'Isaac')
+  // postacią z avatara, potem najczęściej graną ze Steama (`fav`), a w ostateczności Isaakiem.
+  // `avatar` bywa WGRANYM ZDJĘCIEM (ścieżka/URL), a nie nazwą postaci — takiego nie da się
+  // podać do `pelnaPostaci()`, więc bierzemy go tylko wtedy, gdy jest nazwą z gry.
+  const zAvatara = wlasnyAvatar(ja?.avatar) ? null : (ja?.avatar ?? null)
+  const wybrana = p?.ulubiona ?? zAvatara
+  const ulubionaPostac = wybrana === '' ? '' : (wybrana ?? p?.fav?.nazwa ?? 'Isaac')
+
+  const dolaczyl = ja?.dolaczyl
+    ? new Intl.DateTimeFormat('pl-PL', { month: 'short', year: 'numeric' }).format(ja.dolaczyl)
+    : '—'
 
   // Runy są nadal DEMO (Steam ich nie udostępnia) — ale generowane z nicku, więc mój
   // profil nie pokazuje tych samych czterech runów co cudze.
   const dane: DaneProfilu = {
-    nick: p.nick,
-    opis: p.opis,
+    nick: p?.nick ?? ja?.nick ?? 'Gracz',
+    opis: p?.opis ?? ja?.opis ?? '',
     ulubionaPostac,
-    achProcent: p.achProcent,
-    achUnlocked: p.achUnlocked,
-    achTotal: p.achTotal,
-    recent: p.recent,
+    achProcent: p?.achProcent ?? 0,
+    achUnlocked: p?.achUnlocked ?? 0,
+    achTotal: p?.achTotal ?? 0,
+    recent: p?.recent ?? [],
     postacie: dash.postacie,
-    runy: demoRuny(p.nick),
+    runy: p ? demoRuny(p.nick) : [],
     obserwujacych: liczniki.obserwujacych,
     obserwuje: liczniki.obserwuje,
     listaObserwujacych,
@@ -94,12 +89,16 @@ export default async function ProfilPage() {
     wpisy: aktywnosc,
     znajomi,
     meta: [
-      { etykieta: 'CZŁONEK OD', wartosc: 'Sty 2023' },
+      { etykieta: 'CZŁONEK OD', wartosc: dolaczyl },
       { etykieta: 'REGION', wartosc: 'Europa' },
-      { etykieta: 'ACHIEVEMENTY', wartosc: `${p.achUnlocked}/${p.achTotal}` },
+      {
+        etykieta: 'ACHIEVEMENTY',
+        wartosc: steamPodlaczony ? `${p!.achUnlocked}/${p!.achTotal}` : 'bez Steama',
+      },
     ],
     // Mój profil ma prawdziwego Steama — achievementy i postacie NIE są dorobione.
     steamDemo: false,
+    steamPodlaczony,
     // Moja gablota siedzi w localStorage — Gablota czyta ją sama (jak ProfileAvatar).
     itemyDoWyboru,
   }

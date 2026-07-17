@@ -60,6 +60,9 @@ export default async function ProfilGracza({ params }: { params: { nick: string 
     : (g.avatar ?? demoUlubionaPostac(g.nick, postacie))
 
   const d: DaneProfilu = {
+    // Cudzy profil ma komplet sekcji: te bez danych ze Steama dorabiamy z nicku
+    // (i oznaczamy znaczkiem DEMO), więc nie ma tu czego chować.
+    steamPodlaczony: true,
     nick: g.nick,
     kolor: g.kolor,
     opis: g.opis ?? '',
