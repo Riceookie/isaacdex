@@ -169,8 +169,11 @@ function Sekcja({
 
 /** Jakość 0–4 jako gwiazdki (puste = do pełnych czterech). */
 function Gwiazdki({ n }: { n: number }) {
+  // Gwiazdki świecą KOLOREM JAKOŚCI (Q0 szary … Q4 złoty) — tą samą skalą co odznaki
+  // w Encyklopedii i obwódki w gablocie. Wcześniej były złote niezależnie od poziomu,
+  // więc Q1 wyglądał jak legenda.
   return (
-    <span className="ed-stars" aria-label={`Jakość ${n} na 4`}>
+    <span className={`ed-stars q${n}`} aria-label={`Jakość ${n} na 4`}>
       {[0, 1, 2, 3].map((i) => (
         <span key={i} className={'ed-star' + (i < n ? ' on' : '')} aria-hidden>
           ★

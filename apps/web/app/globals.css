@@ -13,6 +13,14 @@
   --text: #ece9f2;
   --muted: #988fa2;
   --gold: #e2b24c; /* podświetlenie rzadkich/legendarnych achievementów */
+
+  /* Jakość itemów (Q0–Q4) — jedna skala na całą apkę: Encyklopedia, gablota, gwiazdki.
+     Kolejność jak w RPG-owym „rarity": szary → zielony → niebieski → fioletowy → złoty. */
+  --q0: #8a8178;
+  --q1: #5bbf6a;
+  --q2: #4c8fe0;
+  --q3: #a566d6;
+  --q4: #e2b24c;
   --danger: #e5544b;
   --ok: #4ec98a;
   --accent: #d9483d; /* czerwony (jak Sheol) — jeden akcent całej apki */
@@ -738,6 +746,26 @@ a:hover {
 .item-card:hover {
   border-color: var(--accent);
 }
+/* Poziom jakości = jedna zmienna na karcie; reszta (odznaka, krecha) tylko ją czyta. */
+.item-card.q0 {
+  --q: var(--q0);
+}
+.item-card.q1 {
+  --q: var(--q1);
+}
+.item-card.q2 {
+  --q: var(--q2);
+}
+.item-card.q3 {
+  --q: var(--q3);
+}
+.item-card.q4 {
+  --q: var(--q4);
+}
+/* Krecha przy krawędzi — widać jakość jednym rzutem oka, bez czytania „Q3". */
+.item-card[class*='q'] {
+  border-left: 3px solid color-mix(in srgb, var(--q, var(--border)) 70%, var(--border));
+}
 /* Karta Encyklopedii: nazwa + jednolinijkowy opis pod nią (opis ucinamy wielokropkiem,
    żeby siatka została równa). */
 .item-card .item-txt {
@@ -774,6 +802,11 @@ a:hover {
   background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: 6px;
+  /* Kolor jakości nadaje karta (`.item-card.qN` ustawia `--q`), a odznaka tylko go nosi —
+     dzięki temu jedna reguła obsługuje wszystkie pięć poziomów. */
+  color: var(--q, var(--muted));
+  border-color: color-mix(in srgb, var(--q, var(--border)) 45%, var(--border));
+  background: color-mix(in srgb, var(--q, transparent) 12%, var(--surface-2));
   padding: 0.05rem 0.35rem;
   flex: none;
 }
@@ -1210,11 +1243,26 @@ a:hover {
 .ed-stars {
   letter-spacing: 1px;
 }
+.ed-stars.q0 {
+  --q: var(--q0);
+}
+.ed-stars.q1 {
+  --q: var(--q1);
+}
+.ed-stars.q2 {
+  --q: var(--q2);
+}
+.ed-stars.q3 {
+  --q: var(--q3);
+}
+.ed-stars.q4 {
+  --q: var(--q4);
+}
 .ed-star {
   color: var(--border);
 }
 .ed-star.on {
-  color: #e0b64c;
+  color: var(--q, #e0b64c);
 }
 .ed-sekcja {
   margin-top: 0.9rem;
@@ -2338,6 +2386,25 @@ body.bez-scrolla {
 /* Ikony narzędziowe zawsze przy prawej krawędzi. */
 .topbar .util {
   margin-left: auto;
+  flex: none;
+}
+/* Zakładka tytułu może się skurczyć — to ona i chip z nickiem zabierały dymkowi miejsce
+   na średnich ekranach (przy 900 px zostawało mu ~70 px i tekst rozłaził się na 6 linijek). */
+.page-tab {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (max-width: 1080px) {
+  /* Sam avatar zamiast avatara z nickiem — nick i tak widać na profilu, a tu odzyskuje
+     ~100 px, dzięki którym maskotka ma gdzie mówić. */
+  .avatar-chip span {
+    display: none;
+  }
+  .avatar-chip {
+    padding-right: 0.5rem;
+  }
 }
 .page-tab {
   display: inline-flex;
@@ -2758,8 +2825,13 @@ body::before {
 }
 
 /* ── Edycja profilu („WHO AM I?") na pergaminie zamiast ciemnej karty. ── */
+/* `margin-inline:auto`, bo kontener treści jest szeroki (1160 px) i wyrównany do lewej —
+   bez tego 640-px edytor przyklejał się do lewej krawędzi z hektarem pustki po prawej.
+   Trochę szerszy niż 640: formularz z avatarem, dekoracjami i postaciami wyglądał
+   w wąskiej kolumnie na ściśnięty. */
 .whoami-page {
-  max-width: 640px;
+  max-width: 760px;
+  margin-inline: auto;
 }
 .whoami {
   max-width: none;
@@ -3173,10 +3245,15 @@ body::before {
    ============================================================================ */
 /* Familiar zakotwiczony (stała szerokość) — dymek jest ABSOLUTNY, więc jego
    rozrost przy pisaniu NIE rusza maskotki. */
+/* Maskotka zajmuje CAŁE wolne miejsce między zakładką tytułu a ikonami narzędziowymi.
+   Sam sprite dalej ma 56 px (pozycjonowany w lewym rogu) — reszta to przestrzeń dla dymka.
+   To jest cała sztuczka: skoro kontener kończy się tam, gdzie zaczynają się ikony, dymek
+   z `right:0` NIE MA JAK na nie wejść. Wcześniej dymek miał sztywne 230 px i przy węższym
+   oknie wchodził na przyciski — „naprawialiśmy" to chowaniem dymka albo całej maskotki. */
 .companion-top {
   position: relative;
-  flex: none;
-  width: 56px;
+  flex: 1 1 auto;
+  min-width: 56px;
   height: 56px;
   /* Trochę bardziej w lewo (bliżej zakładki tytułu). */
   margin: 0 0 0 -0.6rem;
@@ -3184,7 +3261,11 @@ body::before {
 }
 .companion-mini {
   position: absolute;
-  inset: 0;
+  /* NIE `inset:0` — kontener jest teraz szeroki, więc sprite rozciągnąłby się na całość. */
+  left: 0;
+  top: 0;
+  width: 56px;
+  height: 56px;
   background: none;
   border: 0;
   padding: 0;
@@ -3255,11 +3336,19 @@ body::before {
   left: 66px;
   top: 50%;
   transform: translateY(-50%);
-  width: max-content;
-  /* Węższy dymek (było 340) — przy szerokości ~1000–1150 px 340 px nachodziło na ikony
-     narzędziowe po prawej. `pointer-events:none` gwarantuje, że nawet gdyby zahaczył o
-     przycisk, klik i tak przechodzi do przycisku pod spodem (dymek jest tylko ozdobą). */
-  max-width: 230px;
+  width: fit-content;
+  /* Granica liczona z SZEROKOŚCI KONTENERA, nie przez `right:0`.
+     Dlaczego nie `right`: przy `position:absolute` podanie `left` + `right` + `width` naraz
+     przeciąża box i przeglądarka po prostu IGNORUJE `right` (LTR) — czyli „twarda granica"
+     nie działała wcale, a dymek dalej wchodził na ikony przy ~900 px.
+     `calc(100% - 66px)` = od buzi do prawej krawędzi kontenera, czyli dokładnie tam, gdzie
+     zaczynają się przyciski. Nigdy dalej. */
+  max-width: min(230px, calc(100% - 66px));
+  /* Bez tego długie słowo nie da się złamać, min-content wypycha dymek poza kontener
+     i cała granica idzie na marne. */
+  overflow-wrap: anywhere;
+  /* `pointer-events:none`: nawet gdyby dymek gdzieś zahaczył, klik przechodzi do elementu
+     pod spodem — to tylko ozdoba, nie ma prawa blokować interfejsu. */
   pointer-events: none;
   white-space: normal;
   overflow-wrap: break-word;
@@ -3398,36 +3487,8 @@ body::before {
     transform: translateY(4px) rotate(-4deg);
   }
 }
-/* Ciasno? Dymek SCHODZI POD maskotkę, zamiast znikać.
-   Historia tego miejsca to dwa błędne skróty: najpierw poniżej 1150 px chowaliśmy całego
-   familiara (bo 230-px dymek zachodził na ikony narzędziowe), potem sam dymek — czyli
-   maskotka była, ale nigdy się nie odzywała, a to jej JEDYNA funkcja.
-   Rozwiązanie: nad 1150 px dymek stoi obok buzi, niżej — wisi pod paskiem, nad treścią,
-   gdzie ma całą szerokość dla siebie i nie ma z czym kolidować. */
-@media (max-width: 1150px) {
-  .companion-bubble {
-    left: 0;
-    top: calc(100% + 8px);
-    transform: none;
-    max-width: min(70vw, 300px);
-  }
-  /* Ogonek przenosi się z lewego boku na górę — ma wskazywać buzię, a ta jest teraz NAD. */
-  .companion-bubble::before {
-    left: 14px;
-    top: -18px;
-    transform: none;
-    border-right-color: transparent;
-    border-bottom-color: #3a2c1e;
-  }
-  .companion-bubble::after {
-    left: 17px;
-    top: -12px;
-    transform: none;
-    border-right-color: transparent;
-    border-bottom-color: #f3e9cf;
-  }
-}
-/* Na wąskim ekranie topbar i tak się zawija, a 56-px familiar zjadałby połowę rzędu. */
+/* Poniżej 560 px topbar i tak się zawija, a 56-px familiar zjadałby połowę rzędu.
+   Powyżej dymek radzi sobie sam — zwęża się do miejsca, które zostawiły mu ikony. */
 @media (max-width: 560px) {
   .companion-top {
     display: none;
@@ -4582,12 +4643,22 @@ body::before {
   text-align: center;
   color: var(--muted);
 }
-/* Jakość itemu koloruje obwódkę — jak w Encyklopedii. */
-.gab-opcja.jakosc-4 {
-  border-color: color-mix(in srgb, var(--gold) 55%, var(--border));
+/* Jakość itemu koloruje obwódkę — ta sama skala co w Encyklopedii (Q0 szary … Q4 złoty).
+   Wcześniej kolory miały tylko Q4 i Q3, i to inne niż w Encyklopedii. */
+.gab-opcja.jakosc-0 {
+  border-color: color-mix(in srgb, var(--q0) 45%, var(--border));
+}
+.gab-opcja.jakosc-1 {
+  border-color: color-mix(in srgb, var(--q1) 45%, var(--border));
+}
+.gab-opcja.jakosc-2 {
+  border-color: color-mix(in srgb, var(--q2) 45%, var(--border));
 }
 .gab-opcja.jakosc-3 {
-  border-color: color-mix(in srgb, var(--ok) 40%, var(--border));
+  border-color: color-mix(in srgb, var(--q3) 50%, var(--border));
+}
+.gab-opcja.jakosc-4 {
+  border-color: color-mix(in srgb, var(--q4) 55%, var(--border));
 }
 
 /* ── Upload avatara (edycja profilu) ── */
@@ -8257,8 +8328,21 @@ body::after {
   height: calc(100dvh - 8.5rem);
   min-height: 420px;
 }
-.cz.z-obecnymi {
-  grid-template-columns: minmax(0, 220px) minmax(0, 1fr) minmax(0, 240px);
+/* Otwarta lista obecnych NAKŁADA SIĘ na rozmowę, zamiast dokładać kolumnę i ściskać ją.
+   Trzecia kolumna zabierała wiadomościom ~240 px za każdym razem, gdy ktoś chciał tylko
+   zerknąć, kto jest online — a zerka się na sekundę. Stąd `position:relative` na korzeniu
+   i panel przyklejony do prawej krawędzi. */
+.cz {
+  position: relative;
+}
+.cz.z-obecnymi > .cz-online {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 4;
+  width: min(72vw, 240px);
+  box-shadow: -10px 0 26px rgba(0, 0, 0, 0.6);
 }
 /* Schowany panel nie ma zajmować miejsca ani łapać czytnika ekranu.
    Selektor DZIECKA (0,2,0), bo wspólna reguła „.cz-mapa,.cz-pokoj-widok,.cz-online{display:flex}"
@@ -8339,20 +8423,6 @@ body::after {
   .cz {
     grid-template-columns: minmax(0, 190px) minmax(0, 1fr);
   }
-  /* Za ciasno na trzecią kolumnę — otwarta lista obecnych wjeżdża NAD rozmowę. */
-  .cz.z-obecnymi {
-    grid-template-columns: minmax(0, 190px) minmax(0, 1fr);
-    position: relative;
-  }
-  .cz.z-obecnymi .cz-online {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 4;
-    width: min(72vw, 240px);
-    box-shadow: -10px 0 24px rgba(0, 0, 0, 0.55);
-  }
 }
 
 /* WĄSKI EKRAN: jeden panel naraz — albo kanały, albo rozmowa.
@@ -8369,9 +8439,6 @@ body::after {
     height: calc(100dvh - 10.5rem);
     min-height: 0;
   }
-  .cz.z-obecnymi {
-    grid-template-columns: 1fr;
-  }
   .cz.mob-rozmowa .cz-mapa,
   .cz.mob-kanaly .cz-pokoj-widok {
     display: none;
@@ -8380,7 +8447,7 @@ body::after {
     display: grid;
     place-items: center;
   }
-  .cz.z-obecnymi .cz-online {
+  .cz.z-obecnymi > .cz-online {
     width: min(80vw, 260px);
   }
 }

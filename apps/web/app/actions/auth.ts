@@ -101,7 +101,10 @@ export async function zarejestruj(dane: FormData) {
     await zalozGracza(data.user!.id, nick)
   }
   revalidatePath('/', 'layout')
-  redirect('/kim-jestem?nowe=1')
+  // Świeże konto ląduje na PULPICIE, nie w edytorze profilu: pierwsze, co ma zobaczyć,
+  // to apka i lista „Pierwsze kroki" (która i tak prowadzi do edytora), a nie formularz
+  // z pytaniem, kim jest. Parametr `?nowe=1` i tak nigdy nie był nigdzie obsługiwany.
+  redirect('/')
 }
 
 /**
