@@ -18,6 +18,7 @@ const BLEDY: Record<KodBledu, string> = {
   istnieje: 'Konto z tym e-mailem już istnieje. Zaloguj się.',
   'limit-maili':
     'Supabase nie wysłał maila potwierdzającego — wyczerpany limit wysyłki. Wyłącz „Confirm email” w ustawieniach projektu albo poczekaj godzinę.',
+  steam: 'Nie udało się zalogować przez Steam. Spróbuj jeszcze raz.',
   inny: 'Coś poszło nie tak. Spróbuj jeszcze raz.',
 }
 

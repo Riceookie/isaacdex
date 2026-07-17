@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { headers } from 'next/headers'
 import { prisma } from '@isaacdex/db'
 import { supabaseSerwer } from '@/lib/supabase/serwer'
 import { zalozGracza } from '@/lib/konto'
@@ -33,6 +34,7 @@ export type KodBledu =
   | 'niepotwierdzony'
   | 'istnieje'
   | 'limit-maili'
+  | 'steam'
   | 'inny'
 
 const brakKluczy = () => !process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -61,9 +63,11 @@ export async function zarejestruj(dane: FormData) {
   if (blad) naLogowanie(blad, 'rejestracja')
   if (nick.length < 3) naLogowanie('nick-krotki', 'rejestracja')
 
-  // Nick jest widoczny w feedzie i czacie, więc musi być wolny — sprawdzamy PRZED założeniem
-  // konta w Supabase, żeby nie zostawić konta bez gracza.
-  if (await prisma.gracz.findUnique({ where: { nick } })) naLogowanie('nick-zajety', 'rejestracja')
+  // Nick jest widoczny w feedzie i czacie. Jeśli trzyma go REALNE konto (z logowaniem) — stop.
+  // Ale „stare" konto bez logowania (userId == null: gracz-demo albo profil sprzed ery kont)
+  // można PRZEJĄĆ — to jest właśnie „ustaw hasło do starego konta".
+  const istniejacy = await prisma.gracz.findUnique({ where: { nick } })
+  if (istniejacy?.userId) naLogowanie('nick-zajety', 'rejestracja')
 
   const supabase = await supabaseSerwer()
   const { data, error } = await supabase.auth.signUp({
@@ -77,9 +81,34 @@ export async function zarejestruj(dane: FormData) {
   // Gdy potwierdzanie maila jest włączone, Supabase nie zwraca sesji — nie ma jeszcze kogo zalogować.
   if (!data.session) redirect('/logowanie?info=potwierdz')
 
-  await zalozGracza(data.user!.id, nick)
+  if (istniejacy) {
+    // Legacy claim: przypnij świeże konto Supabase do istniejącego gracza — jego profil,
+    // znajomi i wpisy zostają, dochodzi tylko logowanie (e-mail + hasło).
+    await prisma.gracz.update({ where: { id: istniejacy.id }, data: { userId: data.user!.id } })
+  } else {
+    await zalozGracza(data.user!.id, nick)
+  }
   revalidatePath('/', 'layout')
   redirect('/kim-jestem?nowe=1')
+}
+
+/**
+ * „Nie pamiętam hasła": Supabase wysyła link resetujący na maila. Nie zdradzamy, czy adres
+ * istnieje (antyenumeracja) — zawsze odpowiadamy „sprawdź skrzynkę". Link prowadzi na
+ * /logowanie/nowe-haslo, gdzie ustawia się nowe hasło.
+ */
+export async function zresetujHaslo(dane: FormData) {
+  if (brakKluczy()) redirect('/logowanie/reset?blad=nieskonfigurowane')
+  const email = String(dane.get('email') ?? '').trim()
+  if (!email.includes('@')) redirect('/logowanie/reset?blad=email')
+
+  const supabase = await supabaseSerwer()
+  const naglowki = await headers()
+  const origin = naglowki.get('origin') || `https://${naglowki.get('host')}`
+  await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${origin}/logowanie/nowe-haslo`,
+  })
+  redirect('/logowanie/reset?info=wyslano')
 }
 
 export async function zaloguj(dane: FormData) {
@@ -106,6 +135,25 @@ export async function zaloguj(dane: FormData) {
 export async function wyloguj() {
   if (brakKluczy()) return
   const supabase = await supabaseSerwer()
+  await supabase.auth.signOut()
+  revalidatePath('/', 'layout')
+  redirect('/')
+}
+
+/**
+ * Usunięcie konta: kasujemy gracza (kaskada zabiera obserwacje, wpisy i lajki) i wylogowujemy.
+ * Profil Steam (osiągnięcia) zostaje odpięty w bazie, ale nie ginie — gdyby ktoś wrócił przez
+ * Steam, OpenID znów przypnie go właścicielowi. Rekordu auth.users nie kasujemy (wymaga
+ * service_role); na poziomie apki konto znika, a wylogowanie kończy sesję.
+ */
+export async function usunKonto() {
+  const supabase = await supabaseSerwer()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (user) {
+    await prisma.gracz.deleteMany({ where: { userId: user.id } })
+  }
   await supabase.auth.signOut()
   revalidatePath('/', 'layout')
   redirect('/')

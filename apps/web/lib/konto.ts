@@ -1,29 +1,27 @@
+import { cache } from 'react'
 import { prisma } from '@isaacdex/db'
 import { uzytkownik } from '@/lib/supabase/serwer'
 
 /**
- * Kim jest „ja”. Dwie różne odpowiedzi, celowo:
+ * Kim jest „ja”. Dla gościa: NIKIM.
  *
- *  - `mojGracz()`  — gracz ZALOGOWANEGO użytkownika. Null dla gościa. Tego pilnujemy przy
- *                    zapisie: gość nie obserwuje i nie lajkuje cudzym kontem.
- *  - `jaGracz()`   — kogo POKAZAĆ. Dla gościa to właściciel apki (`ja = true`), żeby dało się
- *                    ją obejrzeć bez zakładania konta (i żeby recenzent zobaczył pełny profil).
- *
- * Rozdzielenie „kogo widzę” od „kim piszę” to cała różnica między apką do oglądania
- * a apką, w której można coś popsuć cudzą ręką.
+ * `mojGracz()` zwraca gracza zalogowanego użytkownika, a dla gościa `null`. Wcześniej istniał
+ * jeszcze `jaGracz()`, który gościowi podstawiał właściciela apki („żeby było co oglądać”) —
+ * ale to pokazywało cudze osiągnięcia jako własne. Teraz gość nie ma tożsamości: jego profil,
+ * statystyki, znajomi i achievementy są puste, a każda taka zakładka zaprasza do logowania.
+ * Wspólne dane (globalny feed, czat globalny, encyklopedia) zostają widoczne bez konta.
  */
 
-/** Gracz zalogowanego użytkownika. Null = gość. */
-export async function mojGracz() {
+/**
+ * Gracz zalogowanego użytkownika. Null = gość.
+ * `cache()` = wynik liczony RAZ na render — layout i strona wołają `mojGracz()` po kilka razy,
+ * a bez tego każde wywołanie robiło osobny `getUser()` (round-trip do Supabase) i zapytanie do bazy.
+ */
+export const mojGracz = cache(async () => {
   const user = await uzytkownik()
   if (!user) return null
   return prisma.gracz.findUnique({ where: { userId: user.id } })
-}
-
-/** Kogo pokazujemy: zalogowanego, a dla gościa — właściciela apki. */
-export async function jaGracz() {
-  return (await mojGracz()) ?? prisma.gracz.findFirst({ where: { ja: true } })
-}
+})
 
 /** Czy w ogóle da się teraz coś zapisać (czyli: czy ktoś jest zalogowany). */
 export async function czyZalogowany() {

@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useFormStatus } from 'react-dom'
 import Sprite from '@/components/Sprite'
+import PoleHasla from '@/components/PoleHasla'
 import { zaloguj, zarejestruj } from '@/app/actions/auth'
 
 /**
@@ -58,6 +59,16 @@ export default function LogowanieForm({
         </Link>
       </div>
 
+      {/* Wejście przez Steam — jeden klik, bez maila i hasła. Zwykły link, bo Steam musi
+          zobaczyć użytkownika (przekierowanie na OpenID), a nie nasz serwer. */}
+      <a className="btn steam-btn" href="/api/steam/polacz">
+        <Sprite name="deadgod" size={20} />
+        {rejestracja ? 'Zarejestruj się przez Steam' : 'Zaloguj się przez Steam'}
+      </a>
+      <div className="log-albo">
+        <span>albo {rejestracja ? 'e-mailem' : 'e-mailem i hasłem'}</span>
+      </div>
+
       <form className="log-form" action={rejestracja ? zarejestruj : zaloguj}>
         {rejestracja && (
           <label className="log-pole">
@@ -86,18 +97,13 @@ export default function LogowanieForm({
           />
         </label>
 
-        <label className="log-pole">
-          <span>Hasło</span>
-          <input
-            className="input"
-            name="haslo"
-            type="password"
-            required
-            minLength={8}
-            placeholder="Co najmniej 8 znaków"
-            autoComplete={rejestracja ? 'new-password' : 'current-password'}
-          />
-        </label>
+        <PoleHasla autoComplete={rejestracja ? 'new-password' : 'current-password'} />
+
+        {!rejestracja && (
+          <p className="log-zapomniane">
+            <Link href="/logowanie/reset">Nie pamiętasz hasła?</Link>
+          </p>
+        )}
 
         {blad && (
           <p className="log-blad" role="alert">

@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
@@ -29,12 +30,16 @@ export async function supabaseSerwer() {
   )
 }
 
-/** Zalogowany użytkownik albo null. Jedyne źródło prawdy o tym, kim jesteś. */
-export async function uzytkownik() {
+/**
+ * Zalogowany użytkownik albo null. Jedyne źródło prawdy o tym, kim jesteś.
+ * `cache()` dedupuje `getUser()` (round-trip do Supabase Auth) do JEDNEGO na render —
+ * bez tego layout + strona pytały serwer auth kilka razy przy każdej nawigacji.
+ */
+export const uzytkownik = cache(async () => {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return null // logowanie nieskonfigurowane
   const supabase = await supabaseSerwer()
   const {
     data: { user },
   } = await supabase.auth.getUser()
   return user
-}
+})

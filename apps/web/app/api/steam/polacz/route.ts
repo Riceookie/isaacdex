@@ -1,18 +1,16 @@
 import { NextResponse, type NextRequest } from 'next/server'
-import { mojGracz } from '@/lib/konto'
 
 /**
- * Start podpinania Steama: odsyłamy użytkownika na Steam OpenID 2.0.
+ * Start logowania/podpinania Steama: odsyłamy użytkownika na Steam OpenID 2.0.
+ *
+ * Działa w obie strony: zalogowany PODPINA Steam do konta, gość LOGUJE SIĘ przez Steam.
+ * O tym, który to przypadek, rozstrzyga dopiero powrót (`/api/steam/powrot`) po sesji.
  *
  * Steam nie daje OAuth, tylko OpenID — nie ma tu żadnego sekretu klienta ani zgody na dane.
  * Steam potwierdza jedną rzecz: „ten człowiek naprawdę jest właścicielem tego SteamID".
  * Resztę (achievementy) i tak dociągamy Web API kluczem, który mamy.
  */
 export async function GET(request: NextRequest) {
-  if (!(await mojGracz())) {
-    return NextResponse.redirect(new URL('/logowanie', request.nextUrl.origin))
-  }
-
   const powrot = new URL('/api/steam/powrot', request.nextUrl.origin)
 
   const params = new URLSearchParams({
