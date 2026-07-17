@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { konfiguracjaSupabase } from '@/lib/supabase/konfiguracja'
 
 /**
  * Odświeża sesję Supabase przy każdym żądaniu i dokłada świeże ciasteczka do odpowiedzi.
@@ -11,22 +12,21 @@ import { NextResponse, type NextRequest } from 'next/server'
 export async function middleware(request: NextRequest) {
   const odpowiedz = NextResponse.next({ request })
 
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return odpowiedz // logowanie nieskonfigurowane
+  // Bez działającej konfiguracji nie ma czego odświeżać — każde żądanie i tak dostałoby
+  // od Supabase odmowę, a apka bez konta ma działać normalnie.
+  const konfiguracja = konfiguracjaSupabase()
+  if (!konfiguracja.ok) return odpowiedz
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll: () => request.cookies.getAll(),
-        setAll: (doUstawienia) => {
-          doUstawienia.forEach(({ name, value, options }) =>
-            odpowiedz.cookies.set(name, value, options),
-          )
-        },
+  const supabase = createServerClient(konfiguracja.url, konfiguracja.klucz, {
+    cookies: {
+      getAll: () => request.cookies.getAll(),
+      setAll: (doUstawienia) => {
+        doUstawienia.forEach(({ name, value, options }) =>
+          odpowiedz.cookies.set(name, value, options),
+        )
       },
     },
-  )
+  })
 
   await supabase.auth.getUser()
   return odpowiedz

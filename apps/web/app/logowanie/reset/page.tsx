@@ -9,6 +9,8 @@ export const metadata = { title: 'Reset hasła — IsaacDex' }
 
 const BLEDY: Record<string, string> = {
   nieskonfigurowane: 'Logowanie nie jest jeszcze skonfigurowane na tym serwerze.',
+  klucz:
+    'Klucz Supabase na tym serwerze jest nieprawidłowy — resetu nie da się teraz wysłać. To usterka po naszej stronie.',
   email: 'To nie wygląda na adres e-mail.',
 }
 const INFO: Record<string, string> = {

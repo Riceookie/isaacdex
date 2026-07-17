@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
 import { prisma } from '@isaacdex/db'
 import { supabaseSerwer } from '@/lib/supabase/serwer'
+import { konfiguracjaSupabase } from '@/lib/supabase/konfiguracja'
 import { zalozGracza } from '@/lib/konto'
 
 /**
@@ -26,6 +27,7 @@ const MIN_HASLO = 8
 /** Kody wracają w URL-u; na tekst zamienia je strona (patrz app/logowanie/page.tsx). */
 export type KodBledu =
   | 'nieskonfigurowane'
+  | 'klucz'
   | 'email'
   | 'haslo'
   | 'nick-krotki'
@@ -37,7 +39,16 @@ export type KodBledu =
   | 'steam'
   | 'inny'
 
-const brakKluczy = () => !process.env.NEXT_PUBLIC_SUPABASE_URL
+/**
+ * Czy w ogóle jest czym się logować. Sprawdza ADRES I KLUCZ (kiedyś tylko adres — przez co
+ * urwany klucz przechodził dalej i wracał z Supabase jako bezimienne „Coś poszło nie tak").
+ * Zwraca gotowy kod błędu albo null, gdy wszystko gra.
+ */
+function blednaKonfiguracja(): KodBledu | null {
+  const stan = konfiguracjaSupabase()
+  if (stan.ok) return null
+  return stan.powod === 'klucz' ? 'klucz' : 'nieskonfigurowane'
+}
 
 // Deklaracja funkcji, nie strzałka: TypeScript zawęża typy po wywołaniu `never` tylko wtedy,
 // gdy funkcja jest zadeklarowana — inaczej nie wie, że dalszy kod jest nieosiągalny.
@@ -53,7 +64,8 @@ function walidacja(email: string, haslo: string): KodBledu | null {
 }
 
 export async function zarejestruj(dane: FormData) {
-  if (brakKluczy()) naLogowanie('nieskonfigurowane', 'rejestracja')
+  const zlaKonfiguracja = blednaKonfiguracja()
+  if (zlaKonfiguracja) naLogowanie(zlaKonfiguracja, 'rejestracja')
 
   const email = String(dane.get('email') ?? '').trim()
   const haslo = String(dane.get('haslo') ?? '')
@@ -98,7 +110,8 @@ export async function zarejestruj(dane: FormData) {
  * /logowanie/nowe-haslo, gdzie ustawia się nowe hasło.
  */
 export async function zresetujHaslo(dane: FormData) {
-  if (brakKluczy()) redirect('/logowanie/reset?blad=nieskonfigurowane')
+  const zlaKonfiguracja = blednaKonfiguracja()
+  if (zlaKonfiguracja) redirect(`/logowanie/reset?blad=${zlaKonfiguracja}`)
   const email = String(dane.get('email') ?? '').trim()
   if (!email.includes('@')) redirect('/logowanie/reset?blad=email')
 
@@ -112,7 +125,8 @@ export async function zresetujHaslo(dane: FormData) {
 }
 
 export async function zaloguj(dane: FormData) {
-  if (brakKluczy()) naLogowanie('nieskonfigurowane')
+  const zlaKonfiguracja = blednaKonfiguracja()
+  if (zlaKonfiguracja) naLogowanie(zlaKonfiguracja)
 
   const email = String(dane.get('email') ?? '').trim()
   const haslo = String(dane.get('haslo') ?? '')
@@ -133,7 +147,7 @@ export async function zaloguj(dane: FormData) {
 }
 
 export async function wyloguj() {
-  if (brakKluczy()) return
+  if (blednaKonfiguracja()) return
   const supabase = await supabaseSerwer()
   await supabase.auth.signOut()
   revalidatePath('/', 'layout')
@@ -147,6 +161,7 @@ export async function wyloguj() {
  * service_role); na poziomie apki konto znika, a wylogowanie kończy sesję.
  */
 export async function usunKonto() {
+  if (blednaKonfiguracja()) return
   const supabase = await supabaseSerwer()
   const {
     data: { user },
@@ -163,6 +178,9 @@ export async function usunKonto() {
 function kodBledu(wiadomosc: string): KodBledu {
   const m = wiadomosc.toLowerCase()
   if (m.includes('invalid login credentials')) return 'dane'
+  // Klucz przeszedł nasze sprawdzenie, a Supabase i tak go odrzucił (np. klucz z innego
+  // projektu albo unieważniony). To wina konfiguracji serwera, nie tego, kto się loguje.
+  if (m.includes('invalid api key')) return 'klucz'
   if (m.includes('email not confirmed')) return 'niepotwierdzony'
   if (m.includes('already registered') || m.includes('already been registered')) return 'istnieje'
   if (m.includes('rate limit') || m.includes('over_email_send')) return 'limit-maili'

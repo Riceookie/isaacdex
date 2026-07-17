@@ -3,6 +3,7 @@ import { createHmac } from 'node:crypto'
 import { prisma } from '@isaacdex/db'
 import { mojGracz, zalozGracza } from '@/lib/konto'
 import { supabaseSerwer } from '@/lib/supabase/serwer'
+import { logowanieDziala } from '@/lib/supabase/konfiguracja'
 
 /**
  * Powrót ze Steama. Nie wierzymy parametrom z adresu — odsyłamy je Steamowi z pytaniem
@@ -65,7 +66,7 @@ async function nickZeSteam(steamId64: string): Promise<string> {
  * signUp nie zwraca sesji. Zwraca null, gdy się nie udało (np. logowanie nieskonfigurowane).
  */
 async function zalogujGosciaPrzezSteam(steamId64: string) {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return null
+  if (!logowanieDziala()) return null // brak/zepsuty klucz — nie ma jak założyć sesji
   const supabase = await supabaseSerwer()
   const { email, haslo } = danesteamowe(steamId64)
 

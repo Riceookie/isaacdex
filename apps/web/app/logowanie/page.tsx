@@ -9,6 +9,8 @@ export const metadata = { title: 'Logowanie — IsaacDex' }
 /** Kody błędów z akcji na zdania po polsku. Serwer je renderuje, więc przeżywają przeładowanie. */
 const BLEDY: Record<KodBledu, string> = {
   nieskonfigurowane: 'Logowanie nie jest jeszcze skonfigurowane na tym serwerze.',
+  klucz:
+    'Klucz Supabase na tym serwerze jest nieprawidłowy — to usterka po naszej stronie, nie Twoje hasło. Logowanie wróci, gdy administrator poprawi konfigurację.',
   email: 'To nie wygląda na adres e-mail.',
   haslo: 'Hasło musi mieć co najmniej 8 znaków.',
   'nick-krotki': 'Nick musi mieć co najmniej 3 znaki.',
