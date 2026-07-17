@@ -200,6 +200,17 @@ export default function KimJestemForm(p: Props) {
         <div className="side-note">
           <span className="side-label">Ustaw ulubioną postać</span>
           <div className="char-picker">
+            {/* „Brak" jako jawny kafel: dotąd odznaczało się ponownym kliknięciem w wybraną
+                postać, czego nikt nie mógł odgadnąć. */}
+            <button
+              type="button"
+              className={'char-pick char-pick-brak' + (ulubiona === '' ? ' sel' : '')}
+              onClick={() => setUlubiona('')}
+              data-tip="Brak ulubionej postaci"
+              aria-label="Brak ulubionej postaci"
+            >
+              <span aria-hidden>✕</span>
+            </button>
             {p.postacie.map((n) => (
               <button
                 key={n}

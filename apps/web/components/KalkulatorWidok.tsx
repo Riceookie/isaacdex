@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 import { policzStaty, type Stat } from '@isaacdex/core'
 import ItemSprite from '@/components/ItemSprite'
+import { powiedz } from '@/lib/companionGlos'
 import { ikonaPostaci } from '@/lib/chars'
 import {
   ITEMY_STATY,
@@ -42,7 +43,12 @@ export default function KalkulatorWidok() {
     )
   }, [q])
 
-  const dodaj = (i: ItemStaty) => setWybrane((w) => [...w, i])
+  // Maskotka komentuje budowanie buildu — reaguje na dodany item (mina „myślę/ekscytacja").
+  const dodaj = (i: ItemStaty) => {
+    if (wybrane.length + 1 >= 6) powiedz('Ale kobyła buildu. Szanuję.', 'excited')
+    else powiedz(`${i.nazwa}? Zobaczmy, co zrobi.`, 'thinking')
+    setWybrane((w) => [...w, i])
+  }
   const usun = (idx: number) => setWybrane((w) => w.filter((_, j) => j !== idx))
 
   return (
@@ -178,7 +184,11 @@ function Wiersz({
 
   return (
     <div className="kalk-wiersz" title={opis}>
-      <span className="kalk-nazwa">{label}</span>
+      <span className="kalk-nazwa">
+        {/* Oficjalna ikona statu z HUD-u gry (resources/gfx/ui/hudstats.png). */}
+        <img className="kalk-ikona" src={`/tboi/staty/${stat}.png`} alt="" width={18} height={18} />
+        {label}
+      </span>
       <span className="kalk-baza">{baza}</span>
       <span className="kalk-teraz">
         <strong>{teraz}</strong>

@@ -2,19 +2,56 @@
 // i logikę (@isaacdex/core) — ten sam kod co backend, bez duplikacji reguł.
 import { prisma, BossKoncowy, TrybGry } from '@isaacdex/db'
 import { procentUkonczenia, ocenItem, type Jakosc } from '@isaacdex/core'
-import { jaGracz } from '@/lib/konto'
+import { mojGracz } from '@/lib/konto'
 
 /**
- * Profil, którego dane właśnie oglądamy: zalogowanego gracza, a dla gościa — właściciela apki.
- * Null = konto bez podpiętego Steama, czyli nie ma jeszcze żadnych achievementów.
+ * Profil, którego dane właśnie oglądamy: WYŁĄCZNIE zalogowanego gracza.
+ * Null = gość (nie ma tożsamości) albo konto bez podpiętego Steama (brak achievementów).
  *
- * Wcześniej apka brała `profil.findFirst()`, bo profil był jeden. Odkąd są konta, „pierwszy
- * z brzegu” pokazywałby cudze osiągnięcia — stąd to jedno miejsce, przez które idą wszystkie odczyty.
+ * To jedno miejsce, przez które idą wszystkie personalne odczyty — więc gość automatycznie
+ * dostaje wszędzie pustkę zamiast cudzych osiągnięć.
  */
 export async function profilWidoku() {
-  const ja = await jaGracz()
+  const ja = await mojGracz()
   if (!ja?.profilId) return null
   return prisma.profil.findUnique({ where: { id: ja.profilId } })
+}
+
+/**
+ * Katalog achievementów gry (nazwa + ikona), BEZ stanu odblokowania.
+ *
+ * Steam zwraca pełną listę achievementów przy każdej synchronizacji, więc wiersze dowolnego
+ * profilu są zarazem katalogiem gry — bierzemy pierwszy z brzegu. Potrzebne do profili graczy
+ * bez Steama: nazwy i ikony mają być PRAWDZIWE, dorabiamy tylko to, kto co odblokował.
+ */
+export async function getKatalogAchievementow(): Promise<
+  { nazwa: string; ikonaUrl: string | null }[]
+> {
+  const jakisProfil = await prisma.profil.findFirst({ select: { id: true } })
+  if (!jakisProfil) return []
+  const ach = await prisma.steamAchievement.findMany({
+    where: { profilId: jakisProfil.id, ikonaUrl: { not: null } },
+    select: { nazwa: true, ikonaUrl: true },
+    orderBy: { nazwa: 'asc' },
+  })
+  return ach
+}
+
+/** Itemy do wybieraczki w gablocie: tylko to, czym rysujemy sprite i sortujemy. */
+export async function getItemyDoGabloty(): Promise<
+  { nazwa: string; idW: number | null; typ: string; jakosc: number }[]
+> {
+  const items = await prisma.item.findMany({
+    orderBy: [{ jakosc: 'desc' }, { nazwa: 'asc' }],
+    select: { nazwa: true, idW: true, typ: true, jakosc: true },
+  })
+  return items
+}
+
+/** Nazwy postaci w kolejności z gry — wspólne dane, niezależne od czyjegokolwiek konta. */
+export async function getPostacie(): Promise<string[]> {
+  const p = await prisma.postac.findMany({ orderBy: { kolejnosc: 'asc' }, select: { nazwa: true } })
+  return p.map((x) => x.nazwa)
 }
 
 export async function getItemyZOcena() {
@@ -105,7 +142,33 @@ export async function getPostacMarks(nazwa: string) {
 
 export async function getKolekcja() {
   const profil = await profilWidoku()
-  if (!profil) return { achievements: [], ostatniSync: null }
+
+  // Bez profilu (gość albo konto bez Steama) pokazujemy pełny KATALOG — te same 641 ikon,
+  // ale wszystkie zablokowane i bez dat. Global% i opisy nie są danymi osobistymi, więc
+  // gość może klikać i czytać warunki odblokowania — tylko nie widzi, co ma odblokowane.
+  if (!profil) {
+    // Flaga właściciela („ja") siedzi na Graczu; jego profil ma komplet 641 achievementów.
+    const wlasciciel = await prisma.gracz.findFirst({
+      where: { ja: true, profilId: { not: null } },
+      select: { profilId: true },
+    })
+    if (!wlasciciel?.profilId) return { achievements: [], ostatniSync: null }
+    const a = await prisma.steamAchievement.findMany({
+      where: { profilId: wlasciciel.profilId },
+      orderBy: [{ globalnyProcent: 'asc' }],
+    })
+    const achievements = a.map((x) => ({
+      apiName: x.apiName,
+      nazwa: x.nazwa,
+      opis: x.opis,
+      ikonaUrl: x.ikonaUrl,
+      globalnyProcent: x.globalnyProcent != null ? Number(x.globalnyProcent) : null,
+      odblokowany: false,
+      dataOdblokowania: null,
+    }))
+    return { achievements, ostatniSync: null }
+  }
+
   const a = await prisma.steamAchievement.findMany({
     where: { profilId: profil.id },
     orderBy: [{ odblokowany: 'desc' }, { globalnyProcent: 'asc' }],
@@ -160,7 +223,9 @@ export async function getProfil() {
   return {
     nick: profil.nick ?? 'Isaac',
     opis: profil.opis ?? '',
-    ulubiona: profil.ulubionaPostac ?? '',
+    // NIE `?? ''` — null (nigdy nie ustawiono) i '' (świadome „Brak") muszą się różnić,
+    // inaczej nie da się odróżnić „podpowiedz z fav" od „użytkownik nie chce żadnej".
+    ulubiona: profil.ulubionaPostac,
     steamId: profil.steamId64,
     achUnlocked: unlocked.length,
     achTotal: total,

@@ -1,15 +1,32 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import Sprite from '@/components/Sprite'
+import { useEffect, useRef, useState, type AnimationEvent } from 'react'
+import Link from 'next/link'
+import Sprite, { type SpriteName } from '@/components/Sprite'
 import { ikonaPostaci } from '@/lib/chars'
+import { useZalogowany } from '@/components/KontoProvider'
+import LinkGracza from '@/components/LinkGracza'
+
+type Typ = 'follow' | 'sync' | 'comment'
 
 type Notif = {
   id: number
-  typ: 'follow' | 'sync' | 'comment'
+  typ: Typ
+  /** Kto to zrobił — osobno od treści, żeby dało się podlinkować profil.
+      `null` = powiadomienie systemowe (np. sync), które nie ma sprawcy. */
+  autor: string | null
+  /** Co zrobił — bez nicku na początku (ten dokleja LinkGracza). */
   tekst: string
   czas: string
   postac?: string
+  nowe?: boolean
+}
+
+// Sprite z gry na każdy typ powiadomienia — jedno źródło prawdy zamiast ifów w JSX.
+const IKONA: Record<Typ, SpriteName> = {
+  follow: 'friendfinder', // Friend Finder — ktoś Cię obserwuje
+  sync: 'trophy', // Challenge Trophy — nowe achievementy
+  comment: 'friends', // BFFS! — komentarz
 }
 
 // DEMO — przykładowe powiadomienia (realne dojdą z backendem social w projekcie końcowym).
@@ -17,39 +34,81 @@ const NOTIFS: Notif[] = [
   {
     id: 1,
     typ: 'follow',
-    tekst: 'VoidKing zaczął Cię obserwować',
+    autor: 'VoidKing',
+    tekst: 'zaczął Cię obserwować',
     czas: '5 min temu',
     postac: 'Azazel',
+    nowe: true,
   },
-  { id: 2, typ: 'sync', tekst: 'Zsynchronizowano 3 nowe achievementy', czas: '1 godz temu' },
+  {
+    id: 2,
+    typ: 'sync',
+    autor: null,
+    tekst: 'Zsynchronizowano 3 nowe achievementy',
+    czas: '1 godz temu',
+    nowe: true,
+  },
   {
     id: 3,
     typ: 'comment',
-    tekst: 'VoidKing skomentował Twój run',
+    autor: 'VoidKing',
+    tekst: 'skomentował Twój run',
     czas: '2 godz temu',
     postac: 'Azazel',
   },
 ]
 
-/** Dzwonek z licznikiem nieprzeczytanych + rozwijana lista. Otwarcie = przeczytane. */
+/**
+ * Dzwonek z licznikiem nieprzeczytanych + rozwijana kartka powiadomień.
+ * Licznik gaśnie po ZAMKNIĘCIU panelu, nie po otwarciu — dzięki temu przez cały czas
+ * czytania widać, które wpisy są nowe (czerwony akcent).
+ */
 export default function NotificationsBell() {
+  const zalogowany = useZalogowany()
+  // Gość nie ma powiadomień — pusty dzwonek bez licznika, z zaproszeniem do logowania.
+  const notyfikacje = zalogowany ? NOTIFS : []
   const [open, setOpen] = useState(false)
-  const [unread, setUnread] = useState(NOTIFS.length)
+  const [zamyka, setZamyka] = useState(false)
+  const [przeczytane, setPrzeczytane] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
-  // Zamknij po kliknięciu poza panelem.
+  const unread = przeczytane ? 0 : notyfikacje.filter((n) => n.nowe).length
+
+  function otworz() {
+    setZamyka(false)
+    setOpen(true)
+  }
+  // Zamknięcie tylko odpala animację wyjścia; odmontowanie robi onAnimationEnd.
+  function zamknij() {
+    if (open && !zamyka) setZamyka(true)
+  }
+
+  // Zamknij po kliknięciu poza panelem albo Escape.
   useEffect(() => {
     if (!open) return
     const onDoc = (e: PointerEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+      if (ref.current && !ref.current.contains(e.target as Node)) zamknij()
     }
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && zamknij()
     window.addEventListener('pointerdown', onDoc)
-    return () => window.removeEventListener('pointerdown', onDoc)
-  }, [open])
+    window.addEventListener('keydown', onKey)
+    return () => {
+      window.removeEventListener('pointerdown', onDoc)
+      window.removeEventListener('keydown', onKey)
+    }
+    // `zamyka` w zależnościach: bez niego domknięcie trzymałoby nieaktualną wartość
+    // i próbowałoby zamykać panel, który już się zamyka.
+  }, [open, zamyka])
 
-  function toggle() {
-    if (!open) setUnread(0) // otwarcie kasuje licznik
-    setOpen((v) => !v)
+  /**
+   * Koniec animacji WYJŚCIA → dopiero teraz znika panel i gaśnie licznik.
+   * `target !== currentTarget` odsiewa animacje dzieci (kapiąca krew), które bąbelkują tutaj.
+   */
+  function onAnimEnd(e: AnimationEvent<HTMLDivElement>) {
+    if (e.target !== e.currentTarget || !zamyka) return
+    setZamyka(false)
+    setOpen(false)
+    setPrzeczytane(true)
   }
 
   return (
@@ -57,7 +116,7 @@ export default function NotificationsBell() {
       <button
         className="util-icon"
         type="button"
-        onClick={toggle}
+        onClick={() => (open ? zamknij() : otworz())}
         aria-label="Powiadomienia"
         aria-expanded={open}
       >
@@ -77,30 +136,74 @@ export default function NotificationsBell() {
       </button>
 
       {open && (
-        <div className="notif-pop" role="menu">
-          <div className="notif-pop-head">Powiadomienia</div>
-          <ul className="notif-list">
-            {NOTIFS.map((n) => (
-              <li key={n.id} className="notif-item" role="menuitem">
-                <span className={'notif-ic notif-ic--' + n.typ}>
-                  {n.postac ? (
-                    <img src={ikonaPostaci(n.postac)} alt="" />
-                  ) : (
-                    <Sprite name="trophy" size={22} />
-                  )}
-                </span>
-                <span className="notif-body">
-                  <span>{n.tekst}</span>
-                  <span className="muted small">{n.czas}</span>
-                </span>
-                {n.typ === 'follow' && <Sprite name="friendfinder" size={16} />}
-                {n.typ === 'comment' && <Sprite name="friends" size={16} />}
-              </li>
-            ))}
-          </ul>
-          <div className="notif-pop-foot">
-            <span className="muted small">DEMO — realne powiadomienia w projekcie końcowym</span>
+        <div
+          className={'notif-pop' + (zamyka ? ' notif-pop--zamyka' : '')}
+          role="menu"
+          onAnimationEnd={onAnimEnd}
+        >
+          <div className="notif-pop-head">
+            <Sprite name="dadsnote" size={18} />
+            Powiadomienia
+            {unread > 0 && <span className="notif-head-licznik">{unread} nowe</span>}
           </div>
+
+          {!zalogowany ? (
+            <div className="notif-pop-foot">
+              <span className="muted small">
+                <Link href="/logowanie">Zaloguj się</Link>, aby dostawać powiadomienia.
+              </span>
+            </div>
+          ) : (
+            <>
+              <ul className="notif-list">
+                {notyfikacje.map((n) => (
+                  <li
+                    key={n.id}
+                    className={'notif-item' + (n.nowe && !przeczytane ? ' notif-item--nowe' : '')}
+                    role="menuitem"
+                  >
+                    <LinkGracza nick={n.autor} className="notif-ic-link">
+                      <span className={'notif-ic notif-ic--' + n.typ}>
+                        {n.postac ? (
+                          <>
+                            <img src={ikonaPostaci(n.postac)} alt="" />
+                            {/* Typ jako mały znaczek w rogu portretu — portret mówi KTO,
+                                znaczek mówi CO zrobił. */}
+                            <span className="notif-typ">
+                              <Sprite name={IKONA[n.typ]} size={13} />
+                            </span>
+                          </>
+                        ) : (
+                          <Sprite name={IKONA[n.typ]} size={22} />
+                        )}
+                      </span>
+                    </LinkGracza>
+                    <span className="notif-body">
+                      <span className="notif-tekst">
+                        {n.autor && (
+                          <>
+                            <LinkGracza nick={n.autor}>
+                              <b className="notif-autor">{n.autor}</b>
+                            </LinkGracza>{' '}
+                          </>
+                        )}
+                        {n.tekst}
+                      </span>
+                      <span className="notif-czas">{n.czas}</span>
+                    </span>
+                    {n.nowe && !przeczytane && <span className="notif-kropka" aria-label="nowe" />}
+                  </li>
+                ))}
+              </ul>
+              {/* DEMO jako pieczątka odbita na kartce, nie jako stopka-doklejka. */}
+              <div className="notif-pop-foot">
+                <span className="notif-stempel">Demo</span>
+                <span className="notif-stempel-opis">
+                  realne powiadomienia w projekcie końcowym
+                </span>
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>

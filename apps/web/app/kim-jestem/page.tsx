@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Sprite from '@/components/Sprite'
 import KimJestemForm from '@/components/KimJestemForm'
+import ZalogujStan from '@/components/ZalogujStan'
 import { getProfilSetup } from '@/lib/queries'
 import { mojGracz } from '@/lib/konto'
 
@@ -41,7 +42,8 @@ export default async function KimJestemPage({
           </p>
         ) : dane.steamId ? (
           <p className="muted small">
-            Podłączony: <b>{dane.steamId}</b>
+            {/* Bez surowego SteamID — liczy się „czy podpięte", nie sam numer. */}
+            <b>Steam podłączony</b>
             {dane.zsynchronizowano
               ? ' — osiągnięcia zsynchronizowane.'
               : ' — jeszcze bez synchronizacji.'}
@@ -61,7 +63,19 @@ export default async function KimJestemPage({
       </div>
 
       <div className="note whoami-card">
-        <KimJestemForm {...dane} />
+        {ja ? (
+          <KimJestemForm {...dane} />
+        ) : (
+          <ZalogujStan
+            tekst={
+              <>
+                <b>Pusta karta postaci.</b> Załóż konto, a tu ulepisz swój nick, opis, avatar i
+                ulubioną postać — Twoja piwnicza tożsamość.
+              </>
+            }
+            cta="Załóż konto"
+          />
+        )}
       </div>
     </section>
   )

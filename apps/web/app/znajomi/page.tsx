@@ -3,8 +3,10 @@ import Sprite from '@/components/Sprite'
 import FeedCard from '@/components/FeedCard'
 import FeedZakres from '@/components/FeedZakres'
 import PustyStan from '@/components/PustyStan'
+import ZalogujStan from '@/components/ZalogujStan'
 import SzukajGraczy from '@/components/SzukajGraczy'
 import { KartaGracza, WierszGracza } from '@/components/KartaGracza'
+import { czyZalogowany } from '@/lib/konto'
 import { PUSTKA } from '@/lib/klimat'
 import { getFeed, getGracze, getLicznikiSpoleczne, type GraczKarta } from '@/lib/social'
 
@@ -23,6 +25,30 @@ export default async function ZnajomiPage({
 }: {
   searchParams?: Promise<{ feed?: string }>
 }) {
+  // Gość nie ma sieci znajomych — cała zakładka to jedno zaproszenie do logowania.
+  if (!(await czyZalogowany())) {
+    return (
+      <section className="znajomi">
+        <header className="znajomi-naglowek">
+          <h1>
+            <Sprite name="friends" size={28} /> Znajomi
+          </h1>
+        </header>
+        <div className="note gosc-panel">
+          <ZalogujStan
+            tekst={
+              <>
+                <b>Nawet Isaac zaczynał sam.</b> Załóż konto, żeby dodawać znajomych, obserwować
+                graczy i podglądać w feedzie, kto właśnie oberwał traumą.
+              </>
+            }
+            cta="Załóż konto"
+          />
+        </div>
+      </section>
+    )
+  }
+
   // Domyślnie feed znajomych — to strona „moich ludzi", nie tablica całego świata.
   const zakres = (await searchParams)?.feed === 'global' ? 'global' : 'znajomi'
   const [gracze, feed, liczniki] = await Promise.all([

@@ -1,14 +1,14 @@
 import type { SpriteName } from '@/components/Sprite'
 
 /**
- * Czat piwnicy. Trzy kanały (globalny, znajomi, ogłoszenia) plus prywatne rozmowy
+ * Czat piwnicy. Dwa kanały (globalny i ogłoszenia) plus prywatne rozmowy
  * ze znajomymi — zamiast tematycznych „pokojów", które tylko rozpraszały.
  *
  * Wiadomości są DEMO (bez backendu), ale rozmówcy to prawdziwi gracze z bazy — te same
  * nicki, kolory i pfp co u Znajomych.
  */
 
-export type TypKanalu = 'global' | 'znajomi' | 'ogloszenia' | 'dm'
+export type TypKanalu = 'global' | 'ogloszenia' | 'dm'
 
 export type Kanal = {
   slug: string
@@ -28,13 +28,6 @@ export const KANALY: Kanal[] = [
     ikona: 'fly',
     opis: 'Czat globalny. Krew, łzy i skill issue.',
     typ: 'global',
-  },
-  {
-    slug: 'znajomi',
-    nazwa: 'znajomi',
-    ikona: 'friends',
-    opis: 'Tylko Twoi znajomi. Sami swoi.',
-    typ: 'znajomi',
   },
   {
     slug: 'ogloszenia',
@@ -61,6 +54,13 @@ export type Wiad = {
   /** Wpis Dogmy — krwawa, „bossowa" ramka zamiast zwykłego dymka. */
   bot?: boolean
   reakcje?: { ikona: SpriteName; ile: number }[]
+  /** Załącznik obrazkowy (blob: albo data:) — bez backendu żyje tylko do odświeżenia. */
+  obraz?: string
+}
+
+/** Kto „pisze" w danym kanale — DEMO, bo bez backendu nikt naprawdę nie pisze. */
+export const PISZACY_W_KANALE: Record<string, string[]> = {
+  piwnica: ['VoidKing', 'Chomik', 'Lilith', 'Sadza'],
 }
 
 export const WIADOMOSCI: Record<string, Wiad[]> = {
@@ -98,30 +98,6 @@ export const WIADOMOSCI: Record<string, Wiad[]> = {
       reakcje: [{ ikona: 'skull', ile: 6 }],
     },
     { id: 'p6', autor: 'Sadza', czas: '14:36', tekst: ['we ball'] },
-  ],
-  znajomi: [
-    {
-      id: 'z1',
-      autor: 'Mama',
-      czas: '13:10',
-      tekst: ['12 minut na Boss Rushu. przyjmuję gratulacje'],
-      reakcje: [{ ikona: 'trophy', ile: 3 }],
-    },
-    {
-      id: 'z2',
-      autor: 'Jorge',
-      czas: '13:22',
-      tekst: ['zginąłem na Delirium mając 3 serca', 'nie chcę o tym rozmawiać'],
-      reakcje: [{ ikona: 'skull', ile: 5 }],
-    },
-    { id: 'z3', autor: 'Chomik', czas: '13:40', tekst: ['ktoś leci na daily? zostało 6 godzin'] },
-    {
-      id: 'z4',
-      autor: 'VoidKing',
-      czas: '13:41',
-      tekst: ['jestem. ale gram Apollyonem, więc i tak zjem cały pokój'],
-      reakcje: [{ ikona: 'heart', ile: 2 }],
-    },
   ],
   ogloszenia: [
     {
@@ -229,7 +205,6 @@ const PO_WYSLANIU = [
 
 const W_KANALE: Record<string, string> = {
   piwnica: 'Cała piwnica cię słyszy.',
-  znajomi: 'Tu są tylko swoi. Na razie.',
   ogloszenia: 'Dogma mówi. Ty słuchasz.',
 }
 

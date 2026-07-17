@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useOptimistic, useTransition } from 'react'
 import { przelaczObserwowanie } from '@/app/actions/social'
 import { useZalogowany } from '@/components/KontoProvider'
+import { powiedz } from '@/lib/companionGlos'
 
 /**
  * Obserwuj / Odwzajemnij / Znajomi / Obserwujesz — zapisuje się w bazie, UI reaguje od razu
@@ -67,6 +68,11 @@ export default function PrzyciskObserwuj({
       aria-pressed={stan}
       onClick={() =>
         start(async () => {
+          // Reakcja maskotki na akcję usera: obserwacja = radość, odklik = neutralnie.
+          powiedz(
+            stan ? 'Szkoda, lubiłem go.' : 'Nowy znajomy? Piwnica rośnie.',
+            stan ? 'sad' : 'happy',
+          )
           przelacz(undefined)
           await przelaczObserwowanie(graczId)
         })

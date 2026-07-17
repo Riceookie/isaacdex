@@ -1,6 +1,7 @@
 import CzatWidok from '@/components/CzatWidok'
 import { getProfil } from '@/lib/queries'
 import { getGracze } from '@/lib/social'
+import { czyZalogowany } from '@/lib/konto'
 
 export const dynamic = 'force-dynamic'
 export const metadata = { title: 'Czat — IsaacDex' }
@@ -12,21 +13,31 @@ export const metadata = { title: 'Czat — IsaacDex' }
  * otwierają się tylko z tymi, których obserwowanie jest odwzajemnione.
  */
 export default async function CzatPage() {
-  const [profil, gracze] = await Promise.all([getProfil(), getGracze()])
+  const [profil, gracze, zalogowany] = await Promise.all([
+    getProfil(),
+    getGracze(),
+    czyZalogowany(),
+  ])
+  const gosc = !zalogowany
 
   const rozmowcy = gracze.map((g) => ({
     nick: g.nick,
     kolor: g.kolor,
     avatar: g.avatar,
-    ja: g.ja,
-    znajomy: g.znajomy,
+    // Gość nie jest nikim z listy — nie oznaczamy właściciela apki jako „to Ty".
+    ja: gosc ? false : g.ja,
+    znajomy: gosc ? false : g.znajomy,
   }))
 
   const ja = gracze.find((g) => g.ja)
 
   return (
     <section className="cz-strona">
-      <CzatWidok gracze={rozmowcy} mojNick={ja?.nick ?? profil?.nick ?? 'Ty'} />
+      <CzatWidok
+        gracze={rozmowcy}
+        mojNick={gosc ? 'Ty' : (ja?.nick ?? profil?.nick ?? 'Ty')}
+        gosc={gosc}
+      />
     </section>
   )
 }

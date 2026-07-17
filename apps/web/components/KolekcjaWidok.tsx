@@ -3,7 +3,10 @@
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import Sprite from '@/components/Sprite'
+import PustyStan from '@/components/PustyStan'
+import { powiedz } from '@/lib/companionGlos'
 import EncDetal from '@/components/EncDetal'
 import warunki from '@/lib/enc/achievementy.json'
 import type { EncWpis } from '@/lib/enc/typy'
@@ -63,9 +66,12 @@ function rzadka(p: number | null) {
 export default function KolekcjaWidok({
   achievements,
   ostatniSync,
+  gosc = false,
 }: {
   achievements: Ach[]
   ostatniSync: string | null
+  /** Gość nie ma achievementów (0/0) i nie synchronizuje — najpierw musi się zalogować. */
+  gosc?: boolean
 }) {
   const router = useRouter()
   const [sel, setSel] = useState<Ach | null>(null)
@@ -93,6 +99,8 @@ export default function KolekcjaWidok({
         setMsg(d.error || 'Nie udało się zsynchronizować.')
         return
       }
+      // „Unlock" w praktyce: świeżo zassane achievementy — maskotka to celebruje.
+      powiedz('Świeże achievementy zassane. Widziałem każdy.', 'excited')
       router.refresh()
     } catch {
       setMsg('Błąd sieci przy synchronizacji.')
@@ -101,21 +109,37 @@ export default function KolekcjaWidok({
     }
   }
 
+  // Krótka reakcja maskotki na obejrzenie achievementu (klik = otwarcie modalu).
+  function reaguj(a: Ach) {
+    const rzadki = rzadka(a.globalnyProcent)
+    if (a.odblokowany) powiedz(rzadki ? 'Rzadkie! Szanuję.' : 'Masz to. Ładnie.', 'happy')
+    else if (gosc) powiedz('Zaloguj się i zdobądź je naprawdę.', 'sad')
+    else powiedz(rzadki ? 'To rzadkie. Warte grindu.' : 'Jeszcze zablokowane. Do dzieła.', 'zwykly')
+  }
+
   return (
     <section className="note paper-panel">
       <div className="kol-head">
-        <button className="btn" onClick={sync} disabled={busy}>
-          <Sprite name="gear" size={18} /> {busy ? 'Synchronizuję…' : 'Synchronizuj ze Steam'}
-        </button>
+        {gosc ? (
+          <Link className="btn" href="/logowanie">
+            <Sprite name="isaacHead" size={18} /> Zaloguj się, aby podłączyć Steam
+          </Link>
+        ) : (
+          <button className="btn" onClick={sync} disabled={busy}>
+            <Sprite name="gear" size={18} /> {busy ? 'Synchronizuję…' : 'Synchronizuj ze Steam'}
+          </button>
+        )}
         <span className="sync-info muted small">
-          {busy
-            ? 'Zaciągam achievementy ze Steama…'
-            : ostatniSync
-              ? `Ostatnia synchronizacja: ${new Date(ostatniSync).toLocaleString('pl-PL', {
-                  dateStyle: 'medium',
-                  timeStyle: 'short',
-                })}`
-              : 'Jeszcze nie synchronizowano'}
+          {gosc
+            ? 'Podgląd katalogu — zaloguj się, aby zobaczyć swoje odblokowania.'
+            : busy
+              ? 'Zaciągam achievementy ze Steama…'
+              : ostatniSync
+                ? `Ostatnia synchronizacja: ${new Date(ostatniSync).toLocaleString('pl-PL', {
+                    dateStyle: 'medium',
+                    timeStyle: 'short',
+                  })}`
+                : 'Jeszcze nie synchronizowano'}
         </span>
       </div>
 
@@ -152,9 +176,23 @@ export default function KolekcjaWidok({
             </div>
           </div>
         </>
+      ) : gosc ? (
+        <div className="note">
+          <p>
+            <b>0 achievementów.</b> Załóż konto i podłącz Steam, a wszystkie 641 ikon TBOI wypełni
+            się Twoimi odblokowaniami.
+          </p>
+        </div>
       ) : (
         <div className="note">
-          <p>Brak danych. Kliknij „Synchronizuj ze Steam", żeby zassać swoje achievementy.</p>
+          <PustyStan
+            tekst={
+              <>
+                <b>Pusta gablota.</b> Kliknij „Synchronizuj ze Steam" u góry, a Twoje 641 ikon
+                zacznie się wypełniać.
+              </>
+            }
+          />
         </div>
       )}
       {msg && (
@@ -170,7 +208,10 @@ export default function KolekcjaWidok({
             className={
               'ach ' + (a.odblokowany ? 'on' : 'off') + (rzadka(a.globalnyProcent) ? ' rare' : '')
             }
-            onClick={() => setSel(a)}
+            onClick={() => {
+              setSel(a)
+              reaguj(a)
+            }}
             data-tip={a.nazwa}
           >
             {a.ikonaUrl ? <img src={a.ikonaUrl} alt={a.nazwa} loading="lazy" /> : <span>?</span>}

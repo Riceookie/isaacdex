@@ -1,9 +1,22 @@
 import Link from 'next/link'
 import { getStatystyki, getDashboard } from '@/lib/queries'
+import { czyZalogowany } from '@/lib/konto'
 import { ikonaPostaci, jestTainted } from '@/lib/chars'
 import Sprite from '@/components/Sprite'
+import PustyStan from '@/components/PustyStan'
 
 export const dynamic = 'force-dynamic'
+
+/** Zerowa statystyka dla gościa — layout ten sam, tylko wszystkie liczby na zero. */
+const STATY_ZERO = {
+  total: 0,
+  unlocked: 0,
+  procent: 0,
+  buckets: { legendarne: 0, rzadkie: 0, czeste: 0 },
+  rarest: null,
+  seria: [] as { m: string; cum: number }[],
+  latest: null,
+}
 
 // ── Wykres: skumulowane odblokowania w czasie (jedna seria → kolor akcentu) ──
 function WykresCzas({ seria }: { seria: { m: string; cum: number }[] }) {
@@ -115,51 +128,82 @@ function WykresRzadkosc({ b }: { b: { legendarne: number; rzadkie: number; czest
 }
 
 export default async function StatystykiPage() {
-  const [s, dash] = await Promise.all([getStatystyki(), getDashboard()])
-  if (!s) {
+  const [zalogowany, s, dash] = await Promise.all([
+    czyZalogowany(),
+    getStatystyki(),
+    getDashboard(),
+  ])
+
+  // Gość widzi ten sam ekran, ale wyzerowany — plus baner, po co się logować.
+  const gosc = !zalogowany
+  if (!s && !gosc) {
     return (
       <section>
         <div className="note">
-          <p>Brak danych. Wejdź w Kolekcję i kliknij „Synchronizuj ze Steam".</p>
+          <PustyStan
+            tekst={
+              <>
+                <b>Jeszcze zero łez do policzenia.</b> Podłącz Steam w Kolekcji, a Twoje statystyki
+                same się tu pojawią.
+              </>
+            }
+            akcja={
+              <Link className="btn" href="/kolekcja">
+                <Sprite name="book" size={18} /> Przejdź do Kolekcji
+              </Link>
+            }
+          />
         </div>
       </section>
     )
   }
+  const dane = s ?? STATY_ZERO
 
   return (
     <section className="note paper-panel">
+      {gosc && (
+        <p className="banner demo" role="status">
+          <Sprite name="deadgod" size={16} /> Same zera — bo to jeszcze nie Twoje liczby. Zaloguj
+          się i zamień je na prawdziwy postęp.{' '}
+          <Link href="/logowanie" className="banner-link">
+            Załóż konto →
+          </Link>
+        </p>
+      )}
       <div className="tiles">
         <div className="tile">
           <span className="tile-num">
-            {s.unlocked}/{s.total}
+            {dane.unlocked}/{dane.total}
           </span>
           <span className="muted small">odblokowane</span>
         </div>
         <div className="tile">
-          <span className="tile-num">{s.procent}%</span>
+          <span className="tile-num">{dane.procent}%</span>
           <span className="muted small">ukończenia</span>
         </div>
         <div className="tile">
           <span className="tile-num">
-            <Sprite name="coin" size={22} /> {s.rarest ? `${s.rarest.p}%` : '—'}
+            <Sprite name="coin" size={22} /> {dane.rarest ? `${dane.rarest.p}%` : '—'}
           </span>
-          <span className="muted small">najrzadszy{s.rarest ? `: ${s.rarest.nazwa}` : ''}</span>
+          <span className="muted small">
+            najrzadszy{dane.rarest ? `: ${dane.rarest.nazwa}` : ''}
+          </span>
         </div>
         <div className="tile">
           <span className="tile-num">
-            {s.latest ? new Date(s.latest.data).toLocaleDateString('pl-PL') : '—'}
+            {dane.latest ? new Date(dane.latest.data).toLocaleDateString('pl-PL') : '—'}
           </span>
-          <span className="muted small">ostatnio{s.latest ? `: ${s.latest.nazwa}` : ''}</span>
+          <span className="muted small">ostatnio{dane.latest ? `: ${dane.latest.nazwa}` : ''}</span>
         </div>
       </div>
 
       <div className="note">
         <h2>Odblokowania w czasie</h2>
-        <WykresCzas seria={s.seria} />
+        <WykresCzas seria={dane.seria} />
       </div>
 
       <div className="note">
-        <h2>Rzadkosc Twoich odblokowanych</h2>
+        <h2>Rzadkość Twoich odblokowanych</h2>
         <div className="chart-legend">
           <span>
             <i className="lg-sw red" /> Częste / rzadkie
@@ -168,11 +212,11 @@ export default async function StatystykiPage() {
             <i className="lg-sw gold" /> Legendarne (&lt;5% graczy)
           </span>
         </div>
-        <WykresRzadkosc b={s.buckets} />
+        <WykresRzadkosc b={dane.buckets} />
       </div>
 
       <div className="note">
-        <h2>Ukonczenie postaci</h2>
+        <h2>Ukończenie postaci</h2>
         <div className="char-bars">
           {dash.postacie.map((c) => {
             // Postacie splugawione (Tainted) nie mają completion marks jako achievementów

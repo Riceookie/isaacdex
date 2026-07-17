@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getProfil } from '@/lib/queries'
 import { getFeed, getLicznikiSpoleczne } from '@/lib/social'
+import { czyZalogowany } from '@/lib/konto'
 import { ikonaPostaci } from '@/lib/chars'
 import { PUSTKA } from '@/lib/klimat'
 import Sprite from '@/components/Sprite'
@@ -10,6 +11,7 @@ import FeedMore from '@/components/FeedMore'
 import BasementRadio from '@/components/BasementRadio'
 import FeedZakres from '@/components/FeedZakres'
 import PustyStan from '@/components/PustyStan'
+import ZalogujStan from '@/components/ZalogujStan'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,22 +21,16 @@ export default async function Home({
   searchParams?: Promise<{ feed?: string }>
 }) {
   const zakres = (await searchParams)?.feed === 'znajomi' ? 'znajomi' : 'global'
-  const [p, feed, liczniki] = await Promise.all([
+  const [zalogowany, p, feed, liczniki] = await Promise.all([
+    czyZalogowany(),
     getProfil(),
     getFeed(zakres),
     getLicznikiSpoleczne(),
   ])
+  const gosc = !zalogowany
 
-  if (!p) {
-    return (
-      <section>
-        <h1>IsaacDex</h1>
-        <div className="note">
-          <p>Brak profilu. Zseeduj bazę i zsynchronizuj Steam w Kolekcji.</p>
-        </div>
-      </section>
-    )
-  }
+  // Feed globalny jest wspólny — pokazujemy go i gościowi. Personalna prawa szyna (profil,
+  // postęp, najrzadsze) zależy od `p`: gość dostaje zamiast niej zaproszenie do logowania.
 
   // Feed jest teraz PRAWDZIWY: wpisy leżą w bazie (Twoje = z odblokowań Steam).
   const feedNodes = feed.slice(0, 6).map((w) => <FeedCard key={w.id} w={w} />)
@@ -49,7 +45,7 @@ export default async function Home({
       <div className="home-feed">
         <div className="feed-head">
           <h2>
-            <Sprite name="friendfinder" size={26} /> Co slychac?
+            <Sprite name="friendfinder" size={26} /> Co słychać?
           </h2>
           <Link className="small" href="/znajomi">
             → Wszyscy znajomi
@@ -77,53 +73,88 @@ export default async function Home({
 
       {/* ── PRAWA SZYNA ── */}
       <aside className="home-aside">
-        {/* Profil mini z licznikami (Obserwujący/Obserwowani/Runy) */}
-        <div className="note me-card pin-synced">
-          <div className="me-head">
-            <div className="avatar sm pfp-frame">
-              <ProfileAvatar fallbackSrc={ikonaPostaci(p.ulubiona || 'Isaac')} />
+        {p ? (
+          <>
+            {/* Profil mini z licznikami (Obserwujący/Obserwowani/Runy) */}
+            <div className="note me-card pin-synced">
+              <div className="me-head">
+                <div className="avatar sm pfp-frame">
+                  <ProfileAvatar fallbackSrc={ikonaPostaci(p.ulubiona || 'Isaac')} />
+                </div>
+                <div className="me-id">
+                  <h3>{p.nick}</h3>
+                  <span className="muted small">
+                    <Sprite name="deadgod" size={16} /> Dead God
+                  </span>
+                </div>
+              </div>
+              {/* Skrót do sieci — te same liczby co u Znajomych, żeby Pulpit i Znajomi
+                  mówili jednym głosem (a nie były dwiema osobnymi apkami). */}
+              <div className="me-siec">
+                <Link href="/znajomi">
+                  <b>{liczniki.znajomi}</b> znajomych
+                </Link>
+                <Link href="/znajomi">
+                  <b>{liczniki.obserwujacych}</b> obserwujących
+                </Link>
+              </div>
+              <Link className="small" href="/profil">
+                → Mój profil
+              </Link>
             </div>
-            <div className="me-id">
-              <h3>{p.nick}</h3>
-              <span className="muted small">
-                <Sprite name="deadgod" size={16} /> Dead God
-              </span>
-            </div>
-          </div>
-          {/* Skrót do sieci — te same liczby co u Znajomych, żeby Pulpit i Znajomi
-              mówili jednym głosem (a nie były dwiema osobnymi apkami). */}
-          <div className="me-siec">
-            <Link href="/znajomi">
-              <b>{liczniki.znajomi}</b> znajomych
-            </Link>
-            <Link href="/znajomi">
-              <b>{liczniki.obserwujacych}</b> obserwujących
-            </Link>
-          </div>
-          <Link className="small" href="/profil">
-            → Mój profil
-          </Link>
-        </div>
 
-        {/* Progress */}
-        <div className="note">
-          <div className="feed-head">
-            <h3>Postep</h3>
-          </div>
-          <p className="small muted">Dead God</p>
-          <div className="prog-row">
-            <div className="bar">
-              <div className="bar-fill" style={{ width: `${p.achProcent}%` }} />
+            {/* Progress */}
+            <div className="note">
+              <div className="feed-head">
+                <h3>Postęp</h3>
+              </div>
+              <p className="small muted">Dead God</p>
+              <div className="prog-row">
+                <div className="bar">
+                  <div className="bar-fill" style={{ width: `${p.achProcent}%` }} />
+                </div>
+                <b className="prog-pct">{p.achProcent}%</b>
+              </div>
             </div>
-            <b className="prog-pct">{p.achProcent}%</b>
+          </>
+        ) : (
+          // Gość albo konto bez Steama: zamiast cudzego profilu — zaproszenie do logowania.
+          <div className="note me-card">
+            {gosc ? (
+              <ZalogujStan
+                maly
+                tekst={
+                  <>
+                    <b>Tu zamieszka Twój save file.</b> Zaloguj się, a pojawi się profil, postęp i
+                    Twoje najrzadsze achievementy.
+                  </>
+                }
+                cta="Załóż konto"
+              />
+            ) : (
+              <PustyStan
+                maly
+                tekst={
+                  <>
+                    <b>Pusto tu jak w Curse of the Blind.</b> Podłącz Steam, a Twój postęp wskoczy
+                    tutaj.
+                  </>
+                }
+                akcja={
+                  <Link className="btn" href="/kim-jestem">
+                    Podłącz Steam
+                  </Link>
+                }
+              />
+            )}
           </div>
-        </div>
+        )}
 
-        {/* Wyzwanie dnia (Basement Radio) */}
+        {/* Wyzwanie dnia (Basement Radio) — wspólne, widać je i bez konta. */}
         <BasementRadio />
 
         {/* Trending / najrzadsze */}
-        {p.showcase.length > 0 && (
+        {p && p.showcase.length > 0 && (
           <div className="note">
             <div className="feed-head">
               <h3>Trendujace (najrzadsze)</h3>
@@ -143,10 +174,6 @@ export default async function Home({
             </ol>
           </div>
         )}
-
-        <Link className="btn full" href="/encyklopedia/przedmioty">
-          <Sprite name="foundsoul" size={20} /> Doradca itemów
-        </Link>
       </aside>
     </section>
   )

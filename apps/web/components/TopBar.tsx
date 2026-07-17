@@ -31,7 +31,7 @@ export default function TopBar({
         {tytul}
       </div>
 
-      <CompanionMascot steamConnected={steamConnected} />
+      <CompanionMascot steamConnected={steamConnected} zalogowany={!!nick} />
 
       <div className="util">
         <Link href="/czat" className="util-icon" aria-label="Czat" title="Czat">

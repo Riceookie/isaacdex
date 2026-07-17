@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getPostacMarks } from '@/lib/queries'
+import { czyZalogowany } from '@/lib/konto'
 import { jestTainted } from '@/lib/chars'
 import MarksBoard from '@/components/MarksBoard'
 import Sprite from '@/components/Sprite'
@@ -22,14 +23,27 @@ const BOSS_LABEL: Record<string, string> = {
 }
 
 export default async function ProfilPostaci({ params }: { params: { postac: string } }) {
-  const data = await getPostacMarks(decodeURIComponent(params.postac))
+  const [data, zalogowany] = await Promise.all([
+    getPostacMarks(decodeURIComponent(params.postac)),
+    czyZalogowany(),
+  ])
   if (!data) notFound()
 
   return (
     <section>
       <p className="small">
-        <Link href="/">← Pulpit</Link>
+        <Link href="/statystyki">← Statystyki</Link>
       </p>
+
+      {!zalogowany && (
+        <p className="banner demo" role="status">
+          <Sprite name="deadgod" size={16} /> Podgląd bez konta — tablica świeci pustkami.{' '}
+          <Link href="/logowanie" className="banner-link">
+            Zaloguj się
+          </Link>
+          , aby ubijać bossów i zbierać własne completion marks.
+        </p>
+      )}
 
       {jestTainted(data.postac) && data.zaznaczone.length === 0 && (
         <p className="small muted char-nodata-note">
