@@ -1,12 +1,10 @@
 import type { ReactNode } from 'react'
+import IsaacAnim from '@/components/IsaacAnim'
 
 /**
- * Jeden pusty stan na całą apkę: martwy Isaac (2 klatki) + wyjaśnienie, co dalej.
+ * Jeden pusty stan na całą apkę: losowa dwuklatkowa animacja Isaaca + wyjaśnienie, co dalej.
  * Używany przy pustym feedzie, zerowych wynikach szukania i błędach — żeby „nic tu nie ma"
- * zawsze wyglądało tak samo i nie było zwykłym szarym akapitem.
- *
- * Animacja jest czysto CSS-owa (mask + keyframes), więc komponent zostaje serwerowy —
- * można go wstawić do dowolnej strony bez 'use client'.
+ * zawsze wyglądało spójnie i nie było zwykłym szarym akapitem.
  */
 export default function PustyStan({
   tekst,
@@ -22,10 +20,7 @@ export default function PustyStan({
 }) {
   return (
     <div className={'pusto' + (maly ? ' pusto-maly' : '')} role="status">
-      <div className="pusto-anim" aria-hidden>
-        <span className="pusto-klatka pusto-k1" />
-        <span className="pusto-klatka pusto-k2" />
-      </div>
+      <IsaacAnim rodzaj="empty" maly={maly} />
       <p className="pusto-tekst">{tekst}</p>
       {akcja && <div className="pusto-akcja">{akcja}</div>}
     </div>
