@@ -197,7 +197,6 @@ export default function KolekcjaWidok({
       ) : (
         <div className="note">
           <PustyStan
-            nastroj="zacheta"
             tekst={
               <>
                 <b>Pusta gablota.</b> Zassij osiągnięcia ze Steama — 641 ikon, daty zdobycia i

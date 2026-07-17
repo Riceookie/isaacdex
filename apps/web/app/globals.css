@@ -3355,9 +3355,18 @@ body::before {
     transform: translateY(4px) rotate(-4deg);
   }
 }
-/* Chowamy maskotkę wcześniej (1150 zamiast 1000): między 1000–1145 px dymek nie miał się
-   gdzie zmieścić bez zachodzenia na ikony narzędziowe. Powyżej 1150 px 230-px dymek je omija. */
+/* Ciasno? Chowamy DYMEK, nie maskotkę.
+   Wcześniej poniżej 1150 px znikał cały familiar — bo 230-px dymek zachodził wtedy na ikony
+   narzędziowe. To leczyło objaw kosztem pacjenta: na typowym oknie laptopa (1100–1300 px)
+   apka traciła swojego jedynego zwierzaka. Sprite ma 56 px i mieści się wszędzie; problemem
+   był wyłącznie dymek, więc to on ustępuje. Maskotka dalej reaguje minami na to, co robisz. */
 @media (max-width: 1150px) {
+  .companion-bubble {
+    display: none;
+  }
+}
+/* Na wąskim ekranie topbar i tak się zawija, a 56-px familiar zjadałby połowę rzędu. */
+@media (max-width: 560px) {
   .companion-top {
     display: none;
   }
@@ -4304,8 +4313,8 @@ body::before {
 /* Pasek narzędzi w polu pisania (obrazek, naklejka). */
 .cz-narzedzie {
   flex: none;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   display: grid;
   place-items: center;
   border: 1px solid var(--border);
@@ -8453,10 +8462,12 @@ body::after {
   /* Wiadomość przewinięta pod nagłówek gaśnie, zamiast być ucięta ostrą krechą —
      wtedy widać, że treść jest PRZEWINIĘTA, a nie że layout się rozjechał. */
   mask-image: linear-gradient(to bottom, transparent 0, #000 16px);
-  padding: 0.9rem 0.8rem;
+  padding: 1rem 1rem 1.1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  /* Wiadomości stały zbite w blok — przy 12 px odstępu nie było widać, gdzie kończy się
+     jedna wypowiedź, a zaczyna druga. */
+  gap: 1.05rem;
   position: relative;
   z-index: 1;
 }
@@ -8635,31 +8646,40 @@ body::after {
 .cz-pisz {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem 0.8rem;
+  gap: 0.55rem;
+  padding: 0.75rem 0.9rem 0.85rem;
   border-top: 1px solid var(--line);
   background: color-mix(in srgb, #000 30%, transparent);
 }
+/* Pole miało 37 px wysokości i font 13 px — pisało się w nim jak w pasku wyszukiwarki
+   z 2005 roku. 44 px to zarazem wygodny cel dotykowy na telefonie. */
 .cz-pole {
   flex: 1;
-  padding: 0.6rem 0.8rem;
+  min-height: 44px;
+  padding: 0.7rem 1rem;
   border: 1px solid var(--border);
   border-radius: 999px;
   background: color-mix(in srgb, #000 35%, var(--surface));
   color: var(--text);
   font-family: var(--bdy);
+  font-size: 0.95rem;
+}
+.cz-pole::placeholder {
+  color: color-mix(in srgb, var(--text) 45%, transparent);
 }
 .cz-pole:focus {
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
 }
+/* Przyciski dorównują polu (44 px) — inaczej pasek wygląda jak poskładany z trzech
+   różnych kontrolek, a na telefonie trudno w nie trafić. */
 .cz-wyslij {
   flex: none;
   display: grid;
   place-items: center;
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
   border: 1px solid var(--accent);
   border-radius: 50%;
   background: color-mix(in srgb, var(--accent) 18%, transparent);
@@ -9067,4 +9087,13 @@ body::after {
 .btn.maly {
   padding: 0.28rem 0.6rem;
   font-size: 0.82rem;
+}
+
+/* Pusty kanał: komunikat na środku pola wiadomości, a nie doklejony w lewym górnym rogu
+   nad hektarem pustki. `margin:auto` w kolumnie flex centruje w obu osiach. */
+.cz-stan {
+  margin: auto;
+  max-width: 34ch;
+  text-align: center;
+  line-height: 1.5;
 }

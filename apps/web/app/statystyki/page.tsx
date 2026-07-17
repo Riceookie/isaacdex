@@ -141,7 +141,6 @@ export default async function StatystykiPage() {
       <section>
         <div className="note">
           <PustyStan
-            nastroj="zacheta"
             tekst={
               <>
                 <b>Jeszcze zero łez do policzenia.</b> Podłącz Steam, a policzymy wszystko: procent

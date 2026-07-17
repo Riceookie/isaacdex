@@ -33,3 +33,24 @@ export async function wgrajObrazek(plik: File): Promise<string | null> {
 
   return supabase.storage.from(KUBELEK).getPublicUrl(sciezka).data.publicUrl
 }
+
+/**
+ * Avatar profilu → Supabase Storage, zwraca publiczny adres.
+ *
+ * Dlaczego nie data: URL prosto do bazy (tak było, gdy avatar siedział w localStorage):
+ *  - `avatarGracza()` uznaje za obrazek tylko to, co zaczyna się od „/" albo „http", więc
+ *    data-URL brałby za NAZWĘ POSTACI i zamieniał w zepsutą ścieżkę — avatar znikał wszędzie;
+ *  - 512×512 webp to ~50 kB base64 w KAŻDEJ odpowiedzi z graczem (feed, czat, listy).
+ *
+ * Wejście to data-URL z `AvatarUpload` (już przeskalowany do kwadratu), więc tu tylko
+ * zamieniamy go na plik i wysyłamy tą samą drogą co załączniki czatu.
+ */
+export async function wgrajAvatar(dataUrl: string): Promise<string | null> {
+  if (!dataUrl.startsWith('data:')) return dataUrl // już adres — nie ma co wysyłać
+  try {
+    const blob = await (await fetch(dataUrl)).blob()
+    return await wgrajObrazek(new File([blob], 'avatar.webp', { type: blob.type || 'image/webp' }))
+  } catch {
+    return null
+  }
+}

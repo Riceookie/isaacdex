@@ -1,4 +1,5 @@
 import DecorMark from '@/components/DecorMark'
+import { wlasnyAvatar } from '@/lib/chars'
 import { type DecorId } from '@/lib/pfpDecor'
 
 /**
@@ -23,8 +24,9 @@ export default function ProfileAvatar({
   className?: string
 }) {
   // Avatar bywa NAZWĄ POSTACI („Azazel"), a nie adresem — wtedy obrazek daje fallback
-  // (ikonę tej postaci), policzony już przez wołającego.
-  const src = avatar && (avatar.startsWith('/') || avatar.startsWith('http')) ? avatar : fallbackSrc
+  // (ikonę tej postaci), policzony już przez wołającego. Rozstrzyga `wlasnyAvatar`, żeby
+  // reguła „co jest obrazkiem" żyła w jednym miejscu (lib/chars), a nie w kopiach.
+  const src = wlasnyAvatar(avatar) ? avatar! : fallbackSrc
 
   return (
     <>

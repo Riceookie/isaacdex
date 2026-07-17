@@ -1,21 +1,18 @@
 import type { ReactNode } from 'react'
 import IsaacAnim from '@/components/IsaacAnim'
-import KlatkiAnim from '@/components/KlatkiAnim'
 
 /**
  * Jeden pusty stan na całą apkę: rysowany Isaac + wyjaśnienie, co dalej.
  *
- * `nastroj` decyduje, KTÓRY Isaac wita:
- *  - `pusto` (domyślnie) — martwy/zakręcony, do prawdziwej pustki: zero wyników, błąd, cisza.
- *  - `zacheta` — uśmiechnięty, do miejsc, gdzie nic nie jest zepsute, tylko czeka na Ciebie
- *    (świeże konto, niepodpięty Steam). Nowego użytkownika nie wita się trupem — „nic tu
- *    jeszcze nie ma" to zaproszenie, a nie awaria.
+ * Animacja jest ZAWSZE losowana z zestawu rysunków (płaczący, zakręcony…) — to one dają
+ * apce charakter. Był tu przez chwilę wariant z jedną, uśmiechniętą buźką dla „zachęt":
+ * pomysł brzmiał sensownie („nie witaj nowego trupem"), a w praktyce zabrał wszystkim
+ * pustym stanom osobowość i zamienił je w jeden generyczny smiley. Nie wracamy do tego.
  */
 export default function PustyStan({
   tekst,
   akcja,
   maly = false,
-  nastroj = 'pusto',
   poza,
 }: {
   /** Co się stało i co użytkownik może z tym zrobić. */
@@ -24,17 +21,12 @@ export default function PustyStan({
   akcja?: ReactNode
   /** Wersja do wąskich paneli (mniejsza klatka, mniej paddingu). */
   maly?: boolean
-  nastroj?: 'pusto' | 'zacheta'
   /** Drugi rząd — drobne „a tymczasem możesz…". Nie krzyczy, ale daje wyjście. */
   poza?: ReactNode
 }) {
   return (
     <div className={'pusto' + (maly ? ' pusto-maly' : '')} role="status">
-      {nastroj === 'zacheta' ? (
-        <KlatkiAnim nazwa="happy" className={maly ? 'ianim-maly' : ''} />
-      ) : (
-        <IsaacAnim rodzaj="empty" maly={maly} />
-      )}
+      <IsaacAnim rodzaj="empty" maly={maly} />
       <p className="pusto-tekst">{tekst}</p>
       {akcja && <div className="pusto-akcja">{akcja}</div>}
       {poza && <p className="pusto-poza muted small">{poza}</p>}

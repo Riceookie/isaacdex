@@ -63,7 +63,6 @@ export default async function Home({
           /* Pusty feed ma trzy różne przyczyny i każda ma inne wyjście. Kiedyś wszystkie
              prowadziły na „Zobacz feed globalny" — czyli tam, gdzie już jesteś. */
           <PustyStan
-            nastroj="zacheta"
             tekst={
               brakZnajomych
                 ? PUSTKA.brakZnajomych

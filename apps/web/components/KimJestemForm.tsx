@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ikonaPostaci } from '@/lib/chars'
+import { ikonaPostaci, wlasnyAvatar } from '@/lib/chars'
+import { wgrajAvatar } from '@/lib/zalaczniki'
 import Sprite from '@/components/Sprite'
 import AvatarUpload from '@/components/AvatarUpload'
 import { DECORATIONS, decorOdblokowana, type DecorId } from '@/lib/pfpDecor'
@@ -41,10 +42,16 @@ export default function KimJestemForm(p: Props) {
   const [nick, setNick] = useState(p.nick)
   const [opis, setOpis] = useState(p.opis)
   const [ulubiona, setUlubiona] = useState(p.ulubionaPostac)
-  // Avatar i ozdoba idą DO BAZY (widzą je inni), ale trzymamy je roboczo w stanie
-  // i zapisujemy dopiero przy „Zapisz" — żeby wybór nie przeciekał na resztę apki
-  // po samym kliknięciu i przejściu na inną zakładkę.
-  const [avatar, setAvatar] = useState<string | null>(p.avatar)
+  /**
+   * Avatar i ozdoba idą DO BAZY (widzą je inni), ale trzymamy je roboczo w stanie
+   * i zapisujemy dopiero przy „Zapisz" — żeby wybór nie przeciekał na resztę apki
+   * po samym kliknięciu i przejściu na inną zakładkę.
+   *
+   * `foto` to WYŁĄCZNIE wgrane zdjęcie (adres albo data-URL). Kolumna `Gracz.avatar`
+   * trzyma jedno z dwojga: zdjęcie ALBO nazwę postaci — i podanie tej drugiej do podglądu
+   * kończyło się `<img src="Isaac">`, czyli zepsutą ikoną w edytorze.
+   */
+  const [foto, setFoto] = useState<string | null>(wlasnyAvatar(p.avatar) ? p.avatar : null)
   const [decor, setDecor] = useState<DecorId>(p.dekoracja)
   const [busy, setBusy] = useState(false)
   const [msg, setMsg] = useState<string | null>(null)
@@ -59,10 +66,27 @@ export default function KimJestemForm(p: Props) {
     setBusy(true)
     setMsg(null)
     try {
+      // Świeżo wybrane zdjęcie jest data-URL-em — najpierw do Storage, dopiero adres do bazy.
+      let avatar: string | null = foto
+      if (foto?.startsWith('data:')) {
+        avatar = await wgrajAvatar(foto)
+        if (!avatar) {
+          setMsg('Nie udało się wysłać avatara. Spróbuj jeszcze raz.')
+          return
+        }
+      }
+
       const r = await fetch('/api/profil', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ nick, opis, ulubionaPostac: ulubiona, avatar, dekoracja: decor }),
+        body: JSON.stringify({
+          nick,
+          opis,
+          ulubionaPostac: ulubiona,
+          // Bez zdjęcia avatarem zostaje NAZWA POSTACI — `avatarGracza` zamieni ją na głowę.
+          avatar: avatar ?? ulubiona ?? 'Isaac',
+          dekoracja: decor,
+        }),
       })
       if (!r.ok) {
         const d = await r.json()
@@ -83,8 +107,8 @@ export default function KimJestemForm(p: Props) {
       <div className="whoami-top">
         <AvatarUpload
           fallbackSrc={ikonaPostaci(ulubiona || 'Isaac')}
-          value={avatar}
-          onPick={setAvatar}
+          value={foto}
+          onPick={setFoto}
           decor={decor}
         />
         <div className="whoami-avatar-side">

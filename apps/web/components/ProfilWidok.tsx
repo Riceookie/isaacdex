@@ -199,7 +199,6 @@ export default function ProfilWidok({
             {d.wpisy.length === 0 ? (
               wlasny ? (
                 <PustyStan
-                  nastroj="zacheta"
                   tekst={PUSTKA.brakWpisow}
                   akcja={
                     <Link className="btn" href="/kolekcja">
@@ -255,7 +254,6 @@ export default function ProfilWidok({
                 </h3>
                 <PustyStan
                   maly
-                  nastroj="zacheta"
                   tekst={
                     <>
                       <b>641 achievementów czeka.</b> Podłącz Steam, a Dead God, marki postaci i

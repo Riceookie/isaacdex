@@ -146,7 +146,6 @@ export default async function ZnajomiPage({
 
           {feed.length === 0 ? (
             <PustyStan
-              nastroj="zacheta"
               tekst={
                 zakres === 'znajomi' && znajomi.length === 0
                   ? PUSTKA.brakZnajomych
@@ -191,7 +190,6 @@ export default async function ZnajomiPage({
              mieszkańcu piwnicy. */
           <PustyStan
             maly
-            nastroj="zacheta"
             tekst={
               gracze.filter((g) => !g.ja).length === 0 ? (
                 <>
