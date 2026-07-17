@@ -172,8 +172,13 @@ model Gracz {
   profil   Profil? @relation(fields: [profilId], references: [id])
   profilId Int?    @unique
 
+  /// Kiedy gracz dołączył — pokazywane w profilu („CZŁONEK OD"). Wcześniej ta data była
+  /// wpisana w kod na sztywno; gracze sprzed tej kolumny dostali datę migracji.
+  dolaczyl DateTime @default(now())
+
   wpisy       Wpis[]
   lajki       Lajk[]
+  wiadomosci  Wiadomosc[]
   obserwuje   Obserwacja[] @relation("obserwujacy")
   obserwowany Obserwacja[] @relation("obserwowany")
 }
@@ -221,4 +226,30 @@ enum TypWpisu {
   BOSS // pokonany boss
   RUN // zakończony run
   TEKST // zwykły wpis
+}
+
+// ── Czat ───────────────────────────────────────────────────────────────────────
+
+/// Wiadomość na czacie. Kanał to zwykły tekst, a nie osobna tabela ani enum:
+/// kanały publiczne mają stałe slugi („piwnica", „ogloszenia"), a rozmowa prywatna
+/// dostaje slug wyliczony z pary graczy („dm:3-17"). Dzięki temu DM nie wymaga
+/// żadnej dodatkowej encji, a jeden indeks (kanal, utworzono) obsługuje oba przypadki.
+///
+/// Realtime słucha INSERT-ów na tej tabeli (patrz migracja 4_czat: publikacja
+/// supabase_realtime + polityka SELECT dla anon), więc wiadomość dolatuje do wszystkich
+/// w kanale bez odświeżania.
+model Wiadomosc {
+  id      Int    @id @default(autoincrement())
+  kanal   String
+  autor   Gracz  @relation(fields: [autorId], references: [id], onDelete: Cascade)
+  autorId Int
+  tresc   String
+
+  /// Załącznik obrazkowy (Supabase Storage). Null = sama treść.
+  obrazekUrl String?
+
+  utworzono DateTime @default(now())
+
+  @@index([kanal, utworzono])
+  @@index([autorId])
 }

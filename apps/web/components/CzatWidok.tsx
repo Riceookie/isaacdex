@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import Sprite, { NAZWY_SPRITEOW } from '@/components/Sprite'
 import DecorMark from '@/components/DecorMark'
@@ -9,18 +9,19 @@ import WybieraczkaReakcji from '@/components/WybieraczkaReakcji'
 import { avatarGracza, wlasnyAvatar } from '@/lib/chars'
 import { dekoracjaGracza } from '@/lib/klimat'
 import { powiedz } from '@/lib/companionGlos'
+import { supabasePrzegladarka } from '@/lib/supabase/przegladarka'
+import { MAX_OBRAZEK, wgrajObrazek } from '@/lib/zalaczniki'
+import { wyslijWiadomosc } from '@/app/actions/czat'
 import {
   czyOnline,
   dmSlug,
   DOMYSLNY_KANAL,
   KANALY,
   kwestiaCzatu,
+  MAX_DLUGOSC,
   nickZDm,
-  PISZACY_W_KANALE,
   REAKCJE,
-  rozmowaZ,
   statusGracza,
-  WIADOMOSCI,
   type Wiad,
 } from '@/lib/czat'
 import type { SpriteName } from '@/components/Sprite'
@@ -50,9 +51,11 @@ export type Rozmowca = {
 }
 
 /**
- * Czat piwnicy: kanał globalny, kanał znajomych, ogłoszenia od Dogmy i prywatne rozmowy
- * ze znajomymi. Bez backendu — wysłane wiadomości i reakcje żyją w stanie komponentu
- * (znikają po odświeżeniu); nicki, kolory i pfp lecą z bazy.
+ * Czat piwnicy: kanał globalny, ogłoszenia od Dogmy i prywatne rozmowy ze znajomymi.
+ *
+ * Wiadomości siedzą w bazie (tabela `Wiadomosc`) i dolatują przez Supabase Realtime, więc
+ * przeżywają odświeżenie i widzą je wszyscy w kanale. Pierwszy kanał przychodzi gotowy
+ * z serwera; przy zmianie kanału dociągamy go z `/api/czat`.
  *
  * Familiar NIE jest tu renderowany — komentarze idą eventem do maskotki w TopBarze,
  * żeby w apce był jeden zwierzak, a nie dwa.
@@ -61,11 +64,17 @@ export default function CzatWidok({
   gracze,
   mojNick,
   gosc = false,
+  startowe,
+  startowyKanalDb,
 }: {
   gracze: Rozmowca[]
   mojNick: string
   /** Gość: tylko czat globalny + ogłoszenia, oba do CZYTANIA. Reszta zablokowana. */
   gosc?: boolean
+  /** Wiadomości kanału startowego, wyrenderowane już na serwerze. */
+  startowe: Wiad[]
+  /** Nazwa kanału startowego w bazie — pod nią słucha Realtime. */
+  startowyKanalDb: string | null
 }) {
   // Gość widzi tylko kanały publiczne (globalny + ogłoszenia); znajomych i DM chowamy.
   const kanaly = useMemo(
@@ -73,13 +82,17 @@ export default function CzatWidok({
     [gosc],
   )
   const [kanal, setKanal] = useState(DOMYSLNY_KANAL)
-  const [wyslane, setWyslane] = useState<Record<string, Wiad[]>>({})
+  const [kanalDb, setKanalDb] = useState<string | null>(startowyKanalDb)
+  const [lista, setLista] = useState<Wiad[]>(startowe)
+  const [ladowanie, setLadowanie] = useState(false)
+  const [blad, setBlad] = useState<string | null>(null)
+  const [wysylanie, setWysylanie] = useState(false)
   const [reakcje, setReakcje] = useState<Record<string, Record<string, number>>>({})
   const [tekst, setTekst] = useState('')
   // Usunięte wiadomości: zostaje po nich ślad („Wiadomość usunięta"), jak na Discordzie.
   const [usuniete, setUsuniete] = useState<string[]>([])
-  // Załącznik czekający na wysłanie (blob: URL z pliku albo ze schowka).
-  const [zalacznik, setZalacznik] = useState<string | null>(null)
+  // Załącznik czekający na wysłanie: podgląd (blob:) + plik, który poleci do Storage.
+  const [zalacznik, setZalacznik] = useState<{ podglad: string; plik: File } | null>(null)
   const [picker, setPicker] = useState<string | null>(null)
   const [kotwica, setKotwica] = useState<HTMLElement | null>(null)
   const [naklejki, setNaklejki] = useState(false)
@@ -100,11 +113,74 @@ export default function CzatWidok({
   // Gość nie pisze nigdzie — wszystkie kanały są dla niego tylko do czytania.
   const tylkoOdczyt = gosc || !!definicja?.tylkoOdczyt
 
-  // Wiadomości kanału = startowe (demo albo wygenerowana rozmowa) + to, co dopisałeś.
-  const lista = useMemo(() => {
-    const bazowe = rozmowca ? rozmowaZ(rozmowca, mojNick) : (WIADOMOSCI[kanal] ?? [])
-    return [...bazowe, ...(wyslane[kanal] ?? [])]
-  }, [kanal, rozmowca, mojNick, wyslane])
+  /** Dociąga wiadomości kanału (razem z autorami) i nazwę kanału w bazie dla Realtime. */
+  const odswiez = useCallback(async (slug: string) => {
+    const r = await fetch(`/api/czat?kanal=${encodeURIComponent(slug)}`, { cache: 'no-store' })
+    if (!r.ok) return { ok: false }
+    const dane = await r.json()
+    setLista(dane.wiadomosci ?? [])
+    setKanalDb(dane.kanalDb ?? null)
+    return { ok: true }
+  }, [])
+
+  // Kanał startowy przyszedł z serwera — nie ma po co pytać o niego drugi raz przy montowaniu.
+  const zamontowany = useRef(false)
+  useEffect(() => {
+    if (!zamontowany.current) {
+      zamontowany.current = true
+      return
+    }
+    let porzucone = false
+    setLadowanie(true)
+    setBlad(null)
+    odswiez(kanal).finally(() => {
+      // Zdążyłeś przełączyć kanał, zanim wróciła odpowiedź — jej wynik już nikogo nie obchodzi.
+      if (!porzucone) setLadowanie(false)
+    })
+    return () => {
+      porzucone = true
+    }
+  }, [kanal, odswiez])
+
+  /**
+   * Realtime: nasłuch INSERT-ów w TYM kanale.
+   *
+   * Zdarzenie niesie same kolumny tabeli (bez nicku i pfp autora), więc nie doklejamy go
+   * do listy — pytamy o kanał jeszcze raz. Jedno zapytanie po indeksie (kanal, utworzono)
+   * jest tańsze niż dociąganie autora osobno i nie potrafi się rozjechać z bazą.
+   *
+   * Ogłoszenia pomijamy: to treść w kodzie, nie tabela — nie ma tam czego słuchać.
+   */
+  useEffect(() => {
+    if (!kanalDb || kanalDb === 'ogloszenia') return
+    const supabase = supabasePrzegladarka()
+    const kanalRt = supabase
+      .channel(`czat:${kanalDb}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'isaacdex',
+          table: 'Wiadomosc',
+          filter: `kanal=eq.${kanalDb}`,
+        },
+        () => {
+          odswiez(kanal)
+        },
+      )
+      // Broadcast „ktoś pisze": leci obok bazy, bo takich rzeczy się nie zapisuje.
+      .on('broadcast', { event: 'pisze' }, ({ payload }) => {
+        const kto = String(payload?.nick ?? '')
+        if (!kto || kto === mojNick) return
+        setPiszacy((p) => (p.includes(kto) ? p : [...p, kto]))
+        setTimeout(() => setPiszacy((p) => p.filter((n) => n !== kto)), 3000)
+      })
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(kanalRt)
+    }
+  }, [kanalDb, kanal, mojNick, odswiez])
 
   /**
    * Zjeżdżamy na dół LISTY, ustawiając jej `scrollTop` — a nie `scrollIntoView` na kotwicy.
@@ -116,57 +192,65 @@ export default function CzatWidok({
     if (el) el.scrollTop = el.scrollHeight
   }, [lista.length, kanal])
 
-  /**
-   * „X pisze…" — DEMO. Bez backendu nikt naprawdę nie pisze, więc co kilka sekund
-   * bierzemy kogoś z kanału, pokazujemy go na chwilę i chowamy.
-   *
-   * Cały ruch siedzi w useEffect (klient), a nie w renderze — inaczej serwer i klient
-   * wylosowałyby innych ludzi i React zgłosiłby błąd hydratacji.
-   */
-  useEffect(() => {
-    const kandydaci = rozmowca ? [rozmowca] : (PISZACY_W_KANALE[kanal] ?? [])
-    if (kandydaci.length === 0 || tylkoOdczyt) {
-      setPiszacy([])
-      return
-    }
-    let ubij: ReturnType<typeof setTimeout>
-    const tik = () => {
-      const ilu = Math.random() < 0.25 ? 2 : 1
-      const kto = [...kandydaci].sort(() => Math.random() - 0.5).slice(0, ilu)
-      setPiszacy(Math.random() < 0.55 ? kto : [])
-      ubij = setTimeout(tik, 2200 + Math.random() * 2600)
-    }
-    ubij = setTimeout(tik, 1200)
-    return () => clearTimeout(ubij)
-  }, [kanal, rozmowca, tylkoOdczyt])
-
+  // Zmiana kanału czyści to, co dotyczyło poprzedniego (kto pisał, jaki był błąd).
   const wejdz = (slug: string) => {
     setKanal(slug)
+    setPiszacy([])
+    setBlad(null)
     powiedz(kwestiaCzatu('kanal', slug, ++licznik.current))
   }
 
-  /** Wspólny szkielet mojej wiadomości — tekst i obrazek idą tą samą drogą. */
-  const mojaWiad = (poza: Partial<Wiad>): Wiad => {
-    const teraz = new Date()
-    return {
-      id: `moja-${teraz.getTime()}-${++licznik.current}`,
-      autor: mojNick,
-      czas: `${String(teraz.getHours()).padStart(2, '0')}:${String(teraz.getMinutes()).padStart(2, '0')}`,
-      tekst: [],
-      ...poza,
-    }
+  /**
+   * Mówimy innym, że piszemy — nie częściej niż raz na 1,5 s, bo inaczej lecielibyśmy
+   * z broadcastem na każdy znak.
+   */
+  const ostatnieStuknij = useRef(0)
+  const stuknij = () => {
+    if (tylkoOdczyt || !kanalDb || kanalDb === 'ogloszenia') return
+    const teraz = Date.now()
+    if (teraz - ostatnieStuknij.current < 1500) return
+    ostatnieStuknij.current = teraz
+    supabasePrzegladarka()
+      .channel(`czat:${kanalDb}`)
+      .send({ type: 'broadcast', event: 'pisze', payload: { nick: mojNick } })
   }
 
-  const dopisz = (w: Wiad) => setWyslane((s) => ({ ...s, [kanal]: [...(s[kanal] ?? []), w] }))
-
-  const wyslij = () => {
+  /**
+   * Wysyłka: zapis leci server action (Prisma), a wiadomość wraca tą samą drogą co cudze —
+   * przez odświeżenie listy. Bez dopisywania „na oko" do stanu, więc na ekranie jest
+   * dokładnie to, co naprawdę zapisała baza.
+   */
+  const wyslij = async () => {
     const t = tekst.trim()
     // Sam obrazek (bez tekstu) też jest wiadomością — stąd warunek na zalacznik.
-    if ((!t && !zalacznik) || tylkoOdczyt) return
-    dopisz(mojaWiad({ tekst: t ? [t] : [], obraz: zalacznik ?? undefined }))
-    setTekst('')
-    setZalacznik(null)
-    powiedz(kwestiaCzatu('wyslano', t || 'obrazek', licznik.current))
+    if ((!t && !zalacznik) || tylkoOdczyt || wysylanie) return
+
+    setWysylanie(true)
+    setBlad(null)
+    try {
+      let obrazekUrl: string | null = null
+      if (zalacznik) {
+        obrazekUrl = await wgrajObrazek(zalacznik.plik)
+        if (!obrazekUrl) {
+          setBlad('Nie udało się wysłać obrazka. Spróbuj jeszcze raz.')
+          return
+        }
+      }
+
+      const wynik = await wyslijWiadomosc(kanal, t, obrazekUrl)
+      if (!wynik.ok) {
+        setBlad(wynik.powod)
+        return
+      }
+
+      setTekst('')
+      if (zalacznik) URL.revokeObjectURL(zalacznik.podglad)
+      setZalacznik(null)
+      await odswiez(kanal)
+      powiedz(kwestiaCzatu('wyslano', t || 'obrazek', ++licznik.current))
+    } finally {
+      setWysylanie(false)
+    }
   }
 
   /**
@@ -181,10 +265,18 @@ export default function CzatWidok({
     pole.current?.focus()
   }
 
-  /** Obrazek z pliku albo ze schowka → blob: URL (bez backendu nie ma gdzie go wysłać). */
+  /**
+   * Obrazek z pliku albo ze schowka. Podgląd robimy lokalnie (blob:), ale trzymamy też sam
+   * plik — dopiero przy wysyłce leci do Storage i wtedy dostaje adres, który przeżyje.
+   */
   const wczytajObraz = (f: File | null | undefined) => {
     if (!f || !f.type.startsWith('image/')) return
-    setZalacznik(URL.createObjectURL(f))
+    if (f.size > MAX_OBRAZEK) {
+      setBlad('Obrazek jest za duży (maks. 3 MB).')
+      return
+    }
+    setBlad(null)
+    setZalacznik({ podglad: URL.createObjectURL(f), plik: f })
   }
 
   const wklej = (e: React.ClipboardEvent) => {
@@ -315,6 +407,14 @@ export default function CzatWidok({
         </header>
 
         <div className="cz-msgs" ref={msgs}>
+          {ladowanie && lista.length === 0 && <p className="cz-stan muted small">Wczytuję…</p>}
+          {!ladowanie && lista.length === 0 && (
+            <p className="cz-stan muted small">
+              {rozmowca
+                ? `Cisza. Napisz do ${rozmowca} pierwszy.`
+                : 'Pusto jak w Sklepie o 3 w nocy. Napisz pierwszy.'}
+            </p>
+          )}
           {lista.map((w) => {
             const g = wgNicku.get(w.autor)
             const wlasny = wlasnyAvatar(g?.avatar)
@@ -486,16 +586,25 @@ export default function CzatWidok({
             {/* Podgląd załącznika nad polem — widać, co poleci, i da się zdjąć. */}
             {zalacznik && (
               <div className="cz-zalacznik">
-                <img src={zalacznik} alt="Podgląd załącznika" />
+                <img src={zalacznik.podglad} alt="Podgląd załącznika" />
                 <button
                   type="button"
                   className="cz-zalacznik-x"
-                  onClick={() => setZalacznik(null)}
+                  onClick={() => {
+                    URL.revokeObjectURL(zalacznik.podglad)
+                    setZalacznik(null)
+                  }}
                   aria-label="Usuń załącznik"
                 >
                   ×
                 </button>
               </div>
+            )}
+
+            {blad && (
+              <p className="cz-blad" role="alert">
+                <Sprite name="skull" size={14} /> {blad}
+              </p>
             )}
 
             <input
@@ -543,19 +652,22 @@ export default function CzatWidok({
               ref={pole}
               className="cz-pole"
               value={tekst}
-              onChange={(e) => setTekst(e.target.value)}
+              onChange={(e) => {
+                setTekst(e.target.value)
+                stuknij()
+              }}
               onPaste={wklej}
               placeholder={rozmowca ? `Napisz do ${rozmowca}…` : `Napisz do #${naglowek.nazwa}…`}
               aria-label="Treść wiadomości"
-              maxLength={280}
+              maxLength={MAX_DLUGOSC}
             />
             <button
               className="cz-wyslij"
               type="submit"
-              disabled={!tekst.trim() && !zalacznik}
+              disabled={(!tekst.trim() && !zalacznik) || wysylanie}
               aria-label="Wyślij"
             >
-              <Sprite name="heart" size={18} />
+              <Sprite name={wysylanie ? 'godhead' : 'heart'} size={18} />
             </button>
           </form>
         )}
