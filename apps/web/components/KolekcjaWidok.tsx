@@ -9,14 +9,26 @@ import PustyStan from '@/components/PustyStan'
 import ZalogujStan from '@/components/ZalogujStan'
 import { powiedz } from '@/lib/companionGlos'
 import EncDetal from '@/components/EncDetal'
+import { useJezyk, useT } from '@/components/JezykProvider'
+import type { Tlumacz } from '@/lib/i18n/slownik'
+import type { Jezyk } from '@/lib/i18n/jezyk'
 import warunki from '@/lib/enc/achievementy.json'
 import type { EncWpis } from '@/lib/enc/typy'
 
 const WARUNKI = warunki as Record<string, string>
 
-/** Achievement → wpis Encyklopedii, żeby modal był ten sam co przy itemach. */
-function naWpis(a: Ach): EncWpis {
+/** Daty formatujemy w locale interfejsu — inaczej „12/03" znaczyłoby co innego w każdym języku. */
+const locale = (j: Jezyk) => (j === 'pl' ? 'pl-PL' : 'en-US')
+
+/**
+ * Achievement → wpis Encyklopedii, żeby modal był ten sam co przy itemach.
+ *
+ * Nazwa i opis achievementu lecą prosto ze Steama — zostają po angielsku w obu językach,
+ * tak samo jak reszta nazw własnych z gry. Tłumaczą się tylko etykiety wokół nich.
+ */
+function naWpis(a: Ach, t: Tlumacz, jezyk: Jezyk): EncWpis {
   const warunek = WARUNKI[a.nazwa]
+  const jakZdobyc = t('kolekcja.jakZdobyc')
   return {
     id: a.apiName,
     nazwa: a.nazwa,
@@ -25,18 +37,23 @@ function naWpis(a: Ach): EncWpis {
     opis: a.opis ?? '',
     szczegoly: {
       znaczniki: [
-        a.odblokowany ? 'odblokowane' : 'zablokowane',
-        ...(rzadka(a.globalnyProcent) ? ['rzadkie'] : []),
+        a.odblokowany ? t('kolekcja.znacznikOdblokowane') : t('kolekcja.znacznikZablokowane'),
+        ...(rzadka(a.globalnyProcent) ? [t('kolekcja.znacznikRzadkie')] : []),
       ],
       pola: [
         ...(a.globalnyProcent != null
-          ? [{ label: 'Ma je globalnie', wartosc: `${a.globalnyProcent}% graczy` }]
+          ? [
+              {
+                label: t('kolekcja.maJeGlobalnie'),
+                wartosc: t('kolekcja.procentGraczy', { procent: a.globalnyProcent }),
+              },
+            ]
           : []),
         ...(a.dataOdblokowania
           ? [
               {
-                label: 'Zdobyte',
-                wartosc: new Date(a.dataOdblokowania).toLocaleDateString('pl-PL'),
+                label: t('kolekcja.zdobyte'),
+                wartosc: new Date(a.dataOdblokowania).toLocaleDateString(locale(jezyk)),
               },
             ]
           : []),
@@ -44,8 +61,12 @@ function naWpis(a: Ach): EncWpis {
       pelnyOpis: a.opis ?? undefined,
       // Warunek zdobycia bierzemy z wiki (Steam podaje go tylko dla części achievementów).
       odblokowanie: warunek
-        ? { nazwa: 'Jak zdobyć', warunek, zdobyte: a.odblokowany }
-        : { nazwa: 'Jak zdobyć', warunek: 'Brak opisu na wiki.', zdobyte: a.odblokowany },
+        ? { nazwa: jakZdobyc, warunek, zdobyte: a.odblokowany }
+        : {
+            nazwa: jakZdobyc,
+            warunek: t('kolekcja.brakOpisuNaWiki'),
+            zdobyte: a.odblokowany,
+          },
     },
   }
 }
@@ -75,6 +96,8 @@ export default function KolekcjaWidok({
   gosc?: boolean
 }) {
   const router = useRouter()
+  const t = useT()
+  const jezyk = useJezyk()
   const [sel, setSel] = useState<Ach | null>(null)
   const [busy, setBusy] = useState(false)
   const [msg, setMsg] = useState<string | null>(null)
@@ -97,14 +120,14 @@ export default function KolekcjaWidok({
       const r = await fetch('/api/sync', { method: 'POST' })
       const d = await r.json()
       if (!r.ok) {
-        setMsg(d.error || 'Nie udało się zsynchronizować.')
+        setMsg(d.error || t('kolekcja.bladSync'))
         return
       }
       // „Unlock" w praktyce: świeżo zassane achievementy — maskotka to celebruje.
-      powiedz('Świeże achievementy zassane. Widziałem każdy.', 'excited')
+      powiedz(t('kolekcja.glosSync'), 'excited')
       router.refresh()
     } catch {
-      setMsg('Błąd sieci przy synchronizacji.')
+      setMsg(t('kolekcja.bladSieci'))
     } finally {
       setBusy(false)
     }
@@ -113,9 +136,9 @@ export default function KolekcjaWidok({
   // Krótka reakcja maskotki na obejrzenie achievementu (klik = otwarcie modalu).
   function reaguj(a: Ach) {
     const rzadki = rzadka(a.globalnyProcent)
-    if (a.odblokowany) powiedz(rzadki ? 'Rzadkie! Szanuję.' : 'Masz to. Ładnie.', 'happy')
-    else if (gosc) powiedz('Zaloguj się i zdobądź je naprawdę.', 'sad')
-    else powiedz(rzadki ? 'To rzadkie. Warte grindu.' : 'Jeszcze zablokowane. Do dzieła.', 'zwykly')
+    if (a.odblokowany) powiedz(t(rzadki ? 'kolekcja.glosRzadkieMam' : 'kolekcja.glosMam'), 'happy')
+    else if (gosc) powiedz(t('kolekcja.glosGosc'), 'sad')
+    else powiedz(t(rzadki ? 'kolekcja.glosRzadkieBrak' : 'kolekcja.glosBrak'), 'zwykly')
   }
 
   return (
@@ -123,47 +146,58 @@ export default function KolekcjaWidok({
       <div className="kol-head">
         {gosc ? (
           <Link className="btn" href="/logowanie">
-            <Sprite name="isaacHead" size={18} /> Zaloguj się, aby podłączyć Steam
+            <Sprite name="isaacHead" size={18} /> {t('kolekcja.zalogujBySteam')}
           </Link>
         ) : (
           <button className="btn" onClick={sync} disabled={busy}>
-            <Sprite name="gear" size={18} /> {busy ? 'Synchronizuję…' : 'Synchronizuj ze Steam'}
+            <Sprite name="gear" size={18} />{' '}
+            {busy ? t('kolekcja.synchronizuje') : t('kolekcja.synchronizuj')}
           </button>
         )}
         <span className="sync-info muted small">
           {gosc
-            ? 'Podgląd katalogu — zaloguj się, aby zobaczyć swoje odblokowania.'
+            ? t('kolekcja.podgladKatalogu')
             : busy
-              ? 'Zaciągam achievementy ze Steama…'
+              ? t('kolekcja.zaciagam')
               : ostatniSync
-                ? `Ostatnia synchronizacja: ${new Date(ostatniSync).toLocaleString('pl-PL', {
-                    dateStyle: 'medium',
-                    timeStyle: 'short',
-                  })}`
-                : 'Jeszcze nie synchronizowano'}
+                ? t('kolekcja.ostatniaSync', {
+                    kiedy: new Date(ostatniSync).toLocaleString(locale(jezyk), {
+                      dateStyle: 'medium',
+                      timeStyle: 'short',
+                    }),
+                  })
+                : t('kolekcja.brakSync')}
         </span>
       </div>
 
       {achievements.length > 0 ? (
         <>
-          <p className="muted">
-            Odblokowane <b>{unlocked}</b> / {achievements.length}
-            {(q || filtr !== 'all') && ` · pokazuję ${filtrowane.length}`}
-          </p>
+          {/* Licznik z pogrubioną liczbą siedzi w jednym kluczu — w obu językach stoi ona
+              w innym miejscu zdania, więc sklejanie go w JSX rozjechałoby szyk. */}
+          <p
+            className="muted"
+            dangerouslySetInnerHTML={{
+              __html:
+                t('kolekcja.odblokowaneZ', { liczba: unlocked, wszystkie: achievements.length }) +
+                (q || filtr !== 'all'
+                  ? ` · ${t('kolekcja.pokazujeWyniki', { liczba: filtrowane.length })}`
+                  : ''),
+            }}
+          />
           <div className="kol-tools">
             <input
               className="input grow"
-              placeholder="Szukaj achievementu…"
+              placeholder={t('kolekcja.szukajAchievementu')}
               value={q}
               onChange={(e) => setQ(e.target.value)}
             />
             <div className="filter-btns">
               {(
                 [
-                  ['all', 'Wszystkie'],
-                  ['unlocked', 'Odblokowane'],
-                  ['locked', 'Zablokowane'],
-                  ['rare', 'Rzadkie'],
+                  ['all', 'kolekcja.filtrWszystkie'],
+                  ['unlocked', 'kolekcja.filtrOdblokowane'],
+                  ['locked', 'kolekcja.filtrZablokowane'],
+                  ['rare', 'kolekcja.filtrRzadkie'],
                 ] as const
               ).map(([k, label]) => (
                 <button
@@ -171,7 +205,7 @@ export default function KolekcjaWidok({
                   className={'chip' + (filtr === k ? ' on' : '')}
                   onClick={() => setFiltr(k)}
                 >
-                  {label}
+                  {t(label)}
                 </button>
               ))}
             </div>
@@ -179,40 +213,24 @@ export default function KolekcjaWidok({
         </>
       ) : gosc ? (
         <div className="note">
+          {/* Teksty pustych stanów mają w środku pogrubienia i link, więc idą jako jeden
+              klucz z HTML-em — inaczej każde zdanie trzeba by ciąć na kawałki i składać. */}
           <ZalogujStan
-            tekst={
-              <>
-                <b>641 ikon czeka na Twoje nazwisko.</b> Załóż konto i podłącz Steam, a katalog
-                zamieni się w Twoją kolekcję — z datami i rzadkością każdego odblokowania.
-              </>
-            }
-            poza={
-              <>
-                Katalog przeglądasz i bez konta — kliknij dowolną ikonę, żeby zobaczyć, jak się ją
-                zdobywa.
-              </>
-            }
+            tekst={<span dangerouslySetInnerHTML={{ __html: t('kolekcja.goscTekst') }} />}
+            poza={<span dangerouslySetInnerHTML={{ __html: t('kolekcja.goscPoza') }} />}
           />
         </div>
       ) : (
         <div className="note">
           <PustyStan
-            tekst={
-              <>
-                <b>Pusta gablota.</b> Zassij osiągnięcia ze Steama — 641 ikon, daty zdobycia i
-                completion marks wskoczą tu same.
-              </>
-            }
+            tekst={<span dangerouslySetInnerHTML={{ __html: t('kolekcja.pustoTekst') }} />}
             akcja={
               <button className="btn" onClick={sync} disabled={busy}>
-                <Sprite name="trophy" size={18} /> {busy ? 'Ściągam…' : 'Synchronizuj ze Steam'}
+                <Sprite name="trophy" size={18} />{' '}
+                {busy ? t('kolekcja.sciagam') : t('kolekcja.synchronizuj')}
               </button>
             }
-            poza={
-              <>
-                Steama podpina się raz — w <a href="/kim-jestem">edytorze profilu</a>.
-              </>
-            }
+            poza={<span dangerouslySetInnerHTML={{ __html: t('kolekcja.pustoPoza') }} />}
           />
         </div>
       )}
@@ -244,7 +262,7 @@ export default function KolekcjaWidok({
         typeof document !== 'undefined' &&
         createPortal(
           <div className="modal-bg" onClick={() => setSel(null)}>
-            <EncDetal wpis={naWpis(sel)} onZamknij={() => setSel(null)} />
+            <EncDetal wpis={naWpis(sel, t, jezyk)} onZamknij={() => setSel(null)} />
           </div>,
           document.body,
         )}

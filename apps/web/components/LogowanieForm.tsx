@@ -4,7 +4,9 @@ import Link from 'next/link'
 import { useFormStatus } from 'react-dom'
 import Sprite from '@/components/Sprite'
 import PoleHasla from '@/components/PoleHasla'
+import { useT } from '@/components/JezykProvider'
 import { zaloguj, zarejestruj } from '@/app/actions/auth'
+import { NICK_MAX, NICK_MIN } from '@/lib/nick'
 
 /**
  * Logowanie i rejestracja w jednym — dwie zakładki zamiast dwóch stron, bo to ta sama
@@ -17,9 +19,10 @@ import { zaloguj, zarejestruj } from '@/app/actions/auth'
 
 function Wyslij({ etykieta }: { etykieta: string }) {
   const { pending } = useFormStatus()
+  const t = useT()
   return (
     <button className="btn full" type="submit" disabled={pending}>
-      {pending ? 'Chwila…' : etykieta}
+      {pending ? t('konto.chwila') : etykieta}
     </button>
   )
 }
@@ -33,29 +36,28 @@ export default function LogowanieForm({
   blad?: string
   info?: string
 }) {
+  const t = useT()
   return (
     <div className="log-box">
       <header className="log-head">
         <Sprite name="isaacHead" size={40} />
         <div>
-          <h1>{rejestracja ? 'Załóż konto' : 'Zaloguj się'}</h1>
+          <h1>{t(rejestracja ? 'konto.zalozKonto' : 'wspolne.zaloguj')}</h1>
           <p className="muted small">
-            {rejestracja
-              ? 'Konto daje Ci własny profil, znajomych i wpisy w feedzie.'
-              : 'Wróć do swojej piwnicy.'}
+            {t(rejestracja ? 'konto.podtytulRejestracja' : 'konto.podtytulLogowanie')}
           </p>
         </div>
       </header>
 
       <div className="log-taby">
         <Link className={'pill-tab' + (!rejestracja ? ' on' : '')} href="/logowanie">
-          Logowanie
+          {t('konto.tabLogowanie')}
         </Link>
         <Link
           className={'pill-tab' + (rejestracja ? ' on' : '')}
           href="/logowanie?tryb=rejestracja"
         >
-          Rejestracja
+          {t('konto.tabRejestracja')}
         </Link>
       </div>
 
@@ -63,36 +65,36 @@ export default function LogowanieForm({
           zobaczyć użytkownika (przekierowanie na OpenID), a nie nasz serwer. */}
       <a className="btn steam-btn" href="/api/steam/polacz">
         <Sprite name="deadgod" size={20} />
-        {rejestracja ? 'Zarejestruj się przez Steam' : 'Zaloguj się przez Steam'}
+        {t(rejestracja ? 'konto.steamRejestracja' : 'konto.steamLogowanie')}
       </a>
       <div className="log-albo">
-        <span>albo {rejestracja ? 'e-mailem' : 'e-mailem i hasłem'}</span>
+        <span>{t(rejestracja ? 'konto.alboEmailem' : 'konto.alboEmailemHaslem')}</span>
       </div>
 
       <form className="log-form" action={rejestracja ? zarejestruj : zaloguj}>
         {rejestracja && (
           <label className="log-pole">
-            <span>Nick</span>
+            <span>{t('konto.poleNick')}</span>
             <input
               className="input"
               name="nick"
               required
-              minLength={3}
-              maxLength={24}
-              placeholder="Jak mają Cię widzieć w feedzie"
+              minLength={NICK_MIN}
+              maxLength={NICK_MAX}
+              placeholder={t('konto.nickPlaceholder')}
               autoComplete="username"
             />
           </label>
         )}
 
         <label className="log-pole">
-          <span>E-mail</span>
+          <span>{t('konto.poleEmail')}</span>
           <input
             className="input"
             name="email"
             type="email"
             required
-            placeholder="ty@example.com"
+            placeholder={t('konto.emailPlaceholder')}
             autoComplete="email"
           />
         </label>
@@ -101,7 +103,7 @@ export default function LogowanieForm({
 
         {!rejestracja && (
           <p className="log-zapomniane">
-            <Link href="/logowanie/reset">Nie pamiętasz hasła?</Link>
+            <Link href="/logowanie/reset">{t('konto.niePamietaszHasla')}</Link>
           </p>
         )}
 
@@ -116,13 +118,10 @@ export default function LogowanieForm({
           </p>
         )}
 
-        <Wyslij etykieta={rejestracja ? 'Załóż konto' : 'Wejdź'} />
+        <Wyslij etykieta={t(rejestracja ? 'konto.zalozKonto' : 'konto.wejdz')} />
       </form>
 
-      <p className="muted small log-stopka">
-        Bez konta też możesz oglądać apkę — po prostu nie da się wtedy obserwować, lajkować ani
-        pisać.
-      </p>
+      <p className="muted small log-stopka">{t('konto.stopkaBezKonta')}</p>
     </div>
   )
 }

@@ -3,6 +3,7 @@
 import { useRef } from 'react'
 import DecorMark from '@/components/DecorMark'
 import type { DecorId } from '@/lib/pfpDecor'
+import { useT } from '@/components/JezykProvider'
 
 const MAX = 512 // px — avatar skalowany do kwadratu, żeby localStorage nie puchł
 
@@ -23,6 +24,7 @@ export default function AvatarUpload({
   onPick: (dataUrl: string | null) => void
   decor: DecorId
 }) {
+  const t = useT()
   const inputRef = useRef<HTMLInputElement>(null)
 
   function onFile(e: React.ChangeEvent<HTMLInputElement>) {
@@ -60,7 +62,7 @@ export default function AvatarUpload({
   return (
     <div className="avatar-upload">
       <div className="avatar-box av-preview pfp-frame">
-        <img className="avatar-img" src={value || fallbackSrc} alt="Podgląd avatara" />
+        <img className="avatar-img" src={value || fallbackSrc} alt={t('profil.avatarPodglad')} />
         <DecorMark id={decor} />
       </div>
       <div className="avatar-upload-btns">
@@ -72,15 +74,15 @@ export default function AvatarUpload({
           style={{ display: 'none' }}
         />
         <button type="button" className="btn" onClick={() => inputRef.current?.click()}>
-          Wybierz obraz…
+          {t('profil.avatarWybierz')}
         </button>
         {value && (
           <button type="button" className="chip" onClick={() => onPick(null)}>
-            Usuń (wróć do postaci)
+            {t('profil.avatarUsun')}
           </button>
         )}
       </div>
-      <p className="small muted">Zapisuje się po kliknięciu „Zapisz profil".</p>
+      <p className="small muted">{t('profil.avatarZapisInfo')}</p>
     </div>
   )
 }

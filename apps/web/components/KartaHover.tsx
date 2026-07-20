@@ -6,6 +6,7 @@ import Sprite from '@/components/Sprite'
 import DecorMark from '@/components/DecorMark'
 import type { DecorId } from '@/lib/pfpDecor'
 import { avatarGracza, wlasnyAvatar } from '@/lib/chars'
+import { useT } from '@/components/JezykProvider'
 
 export type WizytowkaGracza = {
   znaleziony: true
@@ -57,15 +58,17 @@ function pobierz(nick: string): Promise<WizytowkaGracza | null> {
 
 /** Znaczek relacji — ten sam język co na kartach graczy. */
 function Relacja({ d }: { d: WizytowkaGracza }) {
-  if (d.ja) return <span className="rel-badge ja">To Ty</span>
+  const t = useT()
+  if (d.ja) return <span className="rel-badge ja">{t('profil.relacjaToTy')}</span>
   if (d.znajomy)
     return (
       <span className="rel-badge friend">
-        <Sprite name="friends" size={12} /> Znajomy
+        <Sprite name="friends" size={12} /> {t('profil.relacjaZnajomy')}
       </span>
     )
-  if (d.obserwujeMnie) return <span className="rel-badge back">Obserwuje Cię</span>
-  if (d.obserwowany) return <span className="rel-badge back">Obserwujesz</span>
+  if (d.obserwujeMnie)
+    return <span className="rel-badge back">{t('profil.relacjaObserwujeCie')}</span>
+  if (d.obserwowany) return <span className="rel-badge back">{t('profil.relacjaObserwujesz')}</span>
   return null
 }
 
@@ -86,6 +89,7 @@ export default function KartaHover({
   kotwica: HTMLElement
   onZamknij: () => void
 }) {
+  const t = useT()
   const [dane, setDane] = useState<WizytowkaGracza | null | undefined>(undefined)
   const [poz, setPoz] = useState<{ left: number; top: number } | null>(null)
   const ref = useRef<HTMLDivElement>(null)
@@ -158,20 +162,23 @@ export default function KartaHover({
               <Relacja d={dane} />
             </span>
             {dane.procent === 100 && (
-              <span className="hov-dg" title="Dead God — 100% osiągnięć">
+              <span className="hov-dg" title={t('profil.deadGodTytul')}>
                 <Sprite name="deadgod" size={20} />
               </span>
             )}
           </div>
 
           <p className={'hov-opis' + (dane.opis ? '' : ' pusty')}>
-            {dane.opis?.trim() || 'Jeszcze nic o sobie nie napisał.'}
+            {dane.opis?.trim() || t('profil.hovBrakOpisu')}
           </p>
 
           {/* Pasek postępu tylko dla graczy z podpiętym Steamem — reszcie nie mamy co
               narysować, a kreska „0%" wyglądałaby jak ocena, nie jak brak danych. */}
           {dane.procent !== null ? (
-            <div className="hov-pasek" title={`${dane.procent}% osiągnięć`}>
+            <div
+              className="hov-pasek"
+              title={t('profil.achProcentTytul', { procent: dane.procent })}
+            >
               <div className="bar">
                 <div className="bar-fill" style={{ width: `${dane.procent}%` }} />
               </div>
@@ -180,24 +187,30 @@ export default function KartaHover({
           ) : (
             /* Bez tego karta gracza bez Steama miała dziurę i wyglądała na niedziałającą. */
             <p className="hov-bez-steama muted small">
-              <Sprite name="deadgod" size={13} /> Bez podpiętego Steama
+              <Sprite name="deadgod" size={13} /> {t('profil.bezSteama')}
             </p>
           )}
 
+          {/* Liczby stoją poza etykietami, ale forma etykiety i tak za nimi idzie
+              („1 follower" vs „2 followers") — stąd `liczba` w obu wywołaniach. */}
           <ul className="hov-staty">
-            <li title="Obserwujący">
+            <li title={t('profil.tytulObserwujacy')}>
               <Sprite name="friendfinder" size={13} /> {dane.obserwujacych}{' '}
-              <span className="hov-etykieta">obserwujących</span>
+              <span className="hov-etykieta">
+                {t('profil.licznikObserwujacych', { liczba: dane.obserwujacych })}
+              </span>
             </li>
-            <li title="Wpisy w feedzie">
+            <li title={t('profil.tytulWpisy')}>
               <Sprite name="book" size={13} /> {dane.wpisy}{' '}
-              <span className="hov-etykieta">wpisów</span>
+              <span className="hov-etykieta">
+                {t('profil.etykietaWpisow', { liczba: dane.wpisy })}
+              </span>
             </li>
           </ul>
 
           {/* Karta wyskakuje z nicku, który JEST linkiem — ale po samym dymku tego nie widać. */}
           <p className="hov-stopka muted small">
-            {dane.ja ? 'To Ty' : 'Kliknij, by wejść na profil'}
+            {dane.ja ? t('profil.relacjaToTy') : t('profil.hovKliknij')}
           </p>
         </>
       )}

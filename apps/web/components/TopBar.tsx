@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import Sprite from '@/components/Sprite'
 import CompanionMascot from '@/components/Companion'
 import NotificationsBell from '@/components/NotificationsBell'
+import { useT } from '@/components/JezykProvider'
 import { tytulSekcji } from '@/lib/nav'
 import { wyloguj } from '@/app/actions/auth'
 
@@ -22,7 +23,8 @@ export default function TopBar({
   nick: string | null
 }) {
   const pathname = usePathname()
-  const tytul = tytulSekcji(pathname)
+  const t = useT()
+  const tytul = t(tytulSekcji(pathname))
 
   return (
     <div className="topbar">
@@ -34,7 +36,12 @@ export default function TopBar({
       <CompanionMascot steamConnected={steamConnected} zalogowany={!!nick} />
 
       <div className="util">
-        <Link href="/czat" className="util-icon" aria-label="Czat" title="Czat">
+        <Link
+          href="/czat"
+          className="util-icon"
+          aria-label={t('wspolne.navCzat')}
+          title={t('wspolne.navCzat')}
+        >
           <svg
             width="22"
             height="22"
@@ -56,7 +63,12 @@ export default function TopBar({
               <span>{nick}</span>
             </Link>
             <form action={wyloguj}>
-              <button className="util-icon" type="submit" aria-label="Wyloguj" title="Wyloguj">
+              <button
+                className="util-icon"
+                type="submit"
+                aria-label={t('nawigacja.wyloguj')}
+                title={t('nawigacja.wyloguj')}
+              >
                 <svg
                   width="20"
                   height="20"
@@ -76,7 +88,7 @@ export default function TopBar({
         ) : (
           <Link href="/logowanie" className="avatar-chip">
             <Sprite name="isaacHead" size={24} />
-            <span>Zaloguj się</span>
+            <span>{t('wspolne.zaloguj')}</span>
           </Link>
         )}
       </div>

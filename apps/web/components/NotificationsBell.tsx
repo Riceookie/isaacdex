@@ -1,10 +1,11 @@
 'use client'
 
 import { useEffect, useRef, useState, type AnimationEvent } from 'react'
-import Link from 'next/link'
 import Sprite, { type SpriteName } from '@/components/Sprite'
 import { useZalogowany } from '@/components/KontoProvider'
+import { useT } from '@/components/JezykProvider'
 import LinkGracza from '@/components/LinkGracza'
+import type { Klucz, Tlumacz } from '@/lib/i18n/slownik'
 
 type Typ = 'follow' | 'wiadomosc'
 
@@ -13,8 +14,6 @@ type Notif = {
   typ: Typ
   /** Kto to zrobił — osobno od treści, żeby dało się podlinkować profil. */
   autor: string
-  /** Co zrobił — bez nicku na początku (ten dokleja LinkGracza). */
-  tekst: string
   /** ISO z serwera; „ile temu" liczymy w przeglądarce (patrz `ileTemu`). */
   czas: string
 }
@@ -25,17 +24,24 @@ const IKONA: Record<Typ, SpriteName> = {
   wiadomosc: 'friends', // BFFS! — wiadomość prywatna
 }
 
+// Zdanie „co zrobił" — serwer oddaje sam typ, tekst dopiero tutaj, w języku interfejsu.
+// Bez nicku na początku: ten dokleja LinkGracza obok.
+const TEKST: Record<Typ, Klucz> = {
+  follow: 'spolecznosc.powiadomienieObserwuje',
+  wiadomosc: 'spolecznosc.powiadomienieWiadomosc',
+}
+
 /** Kiedy ostatnio otwierałeś dzwonek — to preferencja tej przeglądarki, nie dane konta. */
 const KLUCZ_WIDZIANE = 'idx_powiadomienia_widziane'
 
-function ileTemu(iso: string): string {
+function ileTemu(iso: string, t: Tlumacz): string {
   const minuty = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 60000))
-  if (minuty < 1) return 'przed chwilą'
-  if (minuty < 60) return `${minuty} min temu`
+  if (minuty < 1) return t('spolecznosc.przedChwila')
+  if (minuty < 60) return t('spolecznosc.minTemu', { liczba: minuty })
   const godziny = Math.round(minuty / 60)
-  if (godziny < 24) return `${godziny} godz temu`
+  if (godziny < 24) return t('spolecznosc.godzTemu', { liczba: godziny })
   const dni = Math.round(godziny / 24)
-  return dni === 1 ? 'wczoraj' : `${dni} dni temu`
+  return dni === 1 ? t('spolecznosc.wczoraj') : t('spolecznosc.dniTemu', { liczba: dni })
 }
 
 /**
@@ -45,6 +51,7 @@ function ileTemu(iso: string): string {
  */
 export default function NotificationsBell() {
   const zalogowany = useZalogowany()
+  const t = useT()
   const [notyfikacje, setNotyfikacje] = useState<Notif[]>([])
   const [open, setOpen] = useState(false)
   const [zamyka, setZamyka] = useState(false)
@@ -110,7 +117,7 @@ export default function NotificationsBell() {
         className="util-icon"
         type="button"
         onClick={() => (open ? zamknij() : otworz())}
-        aria-label="Powiadomienia"
+        aria-label={t('spolecznosc.powiadomienia')}
         aria-expanded={open}
       >
         <svg
@@ -136,15 +143,21 @@ export default function NotificationsBell() {
         >
           <div className="notif-pop-head">
             <Sprite name="dadsnote" size={18} />
-            Powiadomienia
-            {unread > 0 && <span className="notif-head-licznik">{unread} nowe</span>}
+            {t('spolecznosc.powiadomienia')}
+            {unread > 0 && (
+              <span className="notif-head-licznik">
+                {t('spolecznosc.nowePowiadomienia', { liczba: unread })}
+              </span>
+            )}
           </div>
 
           {!zalogowany ? (
             <div className="notif-pop-foot">
-              <span className="muted small">
-                <Link href="/logowanie">Zaloguj się</Link>, aby dostawać powiadomienia.
-              </span>
+              {/* Zdanie z linkiem w środku — jako HTML, bo szyk różni się między językami. */}
+              <span
+                className="muted small"
+                dangerouslySetInnerHTML={{ __html: t('spolecznosc.powiadomieniaZaloguj') }}
+              />
             </div>
           ) : (
             <>
@@ -165,11 +178,13 @@ export default function NotificationsBell() {
                         <LinkGracza nick={n.autor}>
                           <b className="notif-autor">{n.autor}</b>
                         </LinkGracza>{' '}
-                        {n.tekst}
+                        {t(TEKST[n.typ])}
                       </span>
-                      <span className="notif-czas">{ileTemu(n.czas)}</span>
+                      <span className="notif-czas">{ileTemu(n.czas, t)}</span>
                     </span>
-                    {czyNowe(n) && <span className="notif-kropka" aria-label="nowe" />}
+                    {czyNowe(n) && (
+                      <span className="notif-kropka" aria-label={t('spolecznosc.nowe')} />
+                    )}
                   </li>
                 ))}
               </ul>

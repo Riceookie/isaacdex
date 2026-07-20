@@ -1,6 +1,7 @@
 import EncLista from '@/components/EncLista'
 import surowe from '@/lib/enc/bossowie.json'
 import type { EncWpis } from '@/lib/enc/typy'
+import { tlumacz } from '@/lib/i18n/serwer'
 
 type Boss = {
   nazwa: string
@@ -18,26 +19,32 @@ const BOSSOWIE = surowe as Boss[]
  * entities2.xml), opisy z wiki.
  */
 export default function BossowiePage() {
+  const t = tlumacz()
+
   const wpisy: EncWpis[] = BOSSOWIE.map((b) => ({
     id: b.nazwa,
     nazwa: b.nazwa,
     ikona: b.ikona ?? undefined,
     odznaka: b.hp ? `${b.hp} HP` : undefined,
     klasa: 'boss',
-    opis: b.hp ? `${b.hp} HP · ${b.obrazenia ?? 1} obrażeń` : 'boss',
+    opis: b.hp
+      ? t('encyklopedia.opisHpObrazenia', { hp: b.hp, dmg: b.obrazenia ?? 1 })
+      : t('encyklopedia.znacznikBoss'),
     waga: b.hp ?? 0,
     szczegoly: {
-      znaczniki: ['boss', ...(b.hp ? [`${b.hp} HP`] : [])],
+      znaczniki: [t('encyklopedia.znacznikBoss'), ...(b.hp ? [`${b.hp} HP`] : [])],
       pola: [
-        ...(b.hp ? [{ label: 'Zdrowie', wartosc: `${b.hp} HP` }] : []),
-        ...(b.obrazenia ? [{ label: 'Obrażenia od dotknięcia', wartosc: `${b.obrazenia}` }] : []),
+        ...(b.hp ? [{ label: t('encyklopedia.poleZdrowie'), wartosc: `${b.hp} HP` }] : []),
+        ...(b.obrazenia
+          ? [{ label: t('encyklopedia.poleObrazeniaOdDotkniecia'), wartosc: `${b.obrazenia}` }]
+          : []),
       ],
       // „Wygląd": portret obok sprite'a z gry — widać i kartę bossa, i to, co spotkasz w pokoju.
       podglad: {
         postac: b.ikona ?? undefined,
-        podpis: 'Portret bossa',
+        podpis: t('encyklopedia.detalPodpisPortretBossa'),
         gra: b.ingame ?? undefined,
-        podpisGra: 'W grze',
+        podpisGra: t('encyklopedia.detalPodpisWGrze'),
       },
       pelnyOpis: b.opis ?? undefined,
     },
@@ -45,11 +52,11 @@ export default function BossowiePage() {
 
   return (
     <EncLista
-      sekcja="Bossowie"
+      sekcja={t('encyklopedia.dzialBossowie')}
       wpisy={wpisy}
-      sortWaga="Zdrowie"
-      placeholder="Szukaj bossa…"
-      wstep="Kliknij bossa, żeby zobaczyć jego portret, statystyki i opis."
+      sortWaga={t('encyklopedia.sortZdrowie')}
+      placeholder={t('encyklopedia.bossowieSzukaj')}
+      wstep={t('encyklopedia.bossowieWstep')}
     />
   )
 }

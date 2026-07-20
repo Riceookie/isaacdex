@@ -1,9 +1,17 @@
+'use client'
+
 import Sprite from '@/components/Sprite'
 import PrzyciskObserwuj from '@/components/PrzyciskObserwuj'
 import DecorMark from '@/components/DecorMark'
 import LinkGracza from '@/components/LinkGracza'
 import { avatarGracza, wlasnyAvatar } from '@/lib/chars'
 import type { GraczKarta } from '@/lib/social'
+import { useT } from '@/components/JezykProvider'
+
+// 'use client' jest tu po to, by karta mogła sięgnąć po `useT()`: renderuje ją zarówno
+// serwerowa strona /znajomi, jak i kliencka szukajka graczy — a tłumacz serwerowy
+// (`cookies()`) w tym drugim drzewie by nie zadziałał. Cała zawartość i tak była
+// klientowa (PrzyciskObserwuj, LinkGracza), więc granica przesuwa się o włos.
 
 /** Avatar gracza + jego dekoracja pfp. Własne zdjęcia kadrujemy (object-fit), sprite'y zostają ostre. */
 function Awatar({ g, rozmiar, klasa }: { g: GraczKarta; rozmiar: number; klasa: string }) {
@@ -38,18 +46,21 @@ function Awatar({ g, rozmiar, klasa }: { g: GraczKarta; rozmiar: number; klasa: 
 
 /** Znaczek relacji: znajomy / obserwuje Cię — czytelny na pierwszy rzut oka. */
 function Relacja({ g }: { g: GraczKarta }) {
-  if (g.ja) return <span className="rel-badge ja">To Ty</span>
+  const t = useT()
+  if (g.ja) return <span className="rel-badge ja">{t('profil.relacjaToTy')}</span>
   if (g.znajomy)
     return (
       <span className="rel-badge friend">
-        <Sprite name="friends" size={13} /> Znajomy
+        <Sprite name="friends" size={13} /> {t('profil.relacjaZnajomy')}
       </span>
     )
-  if (g.obserwujeMnie) return <span className="rel-badge back">Obserwuje Cię</span>
+  if (g.obserwujeMnie)
+    return <span className="rel-badge back">{t('profil.relacjaObserwujeCie')}</span>
   return null
 }
 
 export function WierszGracza({ g }: { g: GraczKarta }) {
+  const t = useT()
   return (
     <li className="soc-wiersz">
       <Awatar g={g} rozmiar={34} klasa="soc-ava" />
@@ -61,7 +72,7 @@ export function WierszGracza({ g }: { g: GraczKarta }) {
             {g.nick}
           </b>
         </LinkGracza>
-        <span className="muted small">{g.opis ?? 'Bez opisu.'}</span>
+        <span className="muted small">{g.opis ?? t('profil.bezOpisu')}</span>
       </span>
       {!g.ja && (
         <PrzyciskObserwuj
@@ -75,6 +86,7 @@ export function WierszGracza({ g }: { g: GraczKarta }) {
 }
 
 export function KartaGracza({ g }: { g: GraczKarta }) {
+  const t = useT()
   const deadGod = g.procent === 100
 
   return (
@@ -90,13 +102,13 @@ export function KartaGracza({ g }: { g: GraczKarta }) {
           <Relacja g={g} />
         </div>
         {deadGod && (
-          <span className="gk-dg" title="Dead God — 100% osiągnięć">
+          <span className="gk-dg" title={t('profil.deadGodTytul')}>
             <Sprite name="deadgod" size={22} />
           </span>
         )}
       </header>
 
-      <p className="gk-opis muted small">{g.opis ?? 'Bez opisu.'}</p>
+      <p className="gk-opis muted small">{g.opis ?? t('profil.bezOpisu')}</p>
 
       {/* Postęp tylko dla graczy z podpiętym Steamem. „Godziny w grze" i „ulubiony item"
           zniknęły stąd na dobre: Steam Web API ich nie daje, więc jedyne, co dało się
@@ -109,14 +121,14 @@ export function KartaGracza({ g }: { g: GraczKarta }) {
           <b className="gk-pct">{g.procent}%</b>
         </div>
       ) : (
-        <p className="gk-bez-steama muted small">Bez podpiętego Steama</p>
+        <p className="gk-bez-steama muted small">{t('profil.bezSteama')}</p>
       )}
 
       <ul className="gk-staty">
-        <li title="Obserwujący">
+        <li title={t('profil.tytulObserwujacy')}>
           <Sprite name="friendfinder" size={15} /> {g.obserwujacych}
         </li>
-        <li title="Wpisy w feedzie">
+        <li title={t('profil.tytulWpisy')}>
           <Sprite name="book" size={15} /> {g.wpisy}
         </li>
       </ul>

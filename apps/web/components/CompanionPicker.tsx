@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { COMPANIONS, companionZId, DOMYSLNY_COMPANION } from '@/lib/companions'
+import { useT } from '@/components/JezykProvider'
 
 /**
  * Wybór companiona (maskotki): duży podgląd wybranego + siatka do zmiany. Zapis w localStorage
@@ -9,6 +10,7 @@ import { COMPANIONS, companionZId, DOMYSLNY_COMPANION } from '@/lib/companions'
  * więc wybór „widać" w całej apce, nie tylko tutaj.
  */
 export default function CompanionPicker() {
+  const t = useT()
   const [sel, setSel] = useState(DOMYSLNY_COMPANION.id)
 
   useEffect(() => {
@@ -31,9 +33,9 @@ export default function CompanionPicker() {
           <img src={`/tboi/${wybrany.file}`} alt="" draggable={false} />
         </div>
         <div className="comp-preview-info">
-          <span className="muted small">Twój towarzysz</span>
+          <span className="muted small">{t('companion.wyborTwojTowarzysz')}</span>
           <b>{wybrany.nazwa}</b>
-          <span className="muted small">Siedzi w pasku u góry i komentuje, co robisz.</span>
+          <span className="muted small">{t('companion.wyborOpisTowarzysza')}</span>
         </div>
       </div>
 

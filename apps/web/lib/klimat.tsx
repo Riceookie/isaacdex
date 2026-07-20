@@ -1,5 +1,8 @@
+import type { ReactElement } from 'react'
 import type { FeedWpis } from '@/lib/social'
 import type { SpriteName } from '@/components/Sprite'
+import type { Klucz } from '@/lib/i18n/slownik'
+import TekstKlimat from '@/components/TekstKlimat'
 
 /**
  * Klimat społeczności: etykiety typów wpisów i teksty „z Isaaca".
@@ -10,6 +13,11 @@ import type { SpriteName } from '@/components/Sprite'
  *
  * Losowanie tekstów jest DETERMINISTYCZNE (hash z id wpisu), a nie Math.random() — inaczej
  * serwer i klient wylosowałyby inny tekst i React zgłosiłby błąd hydratacji.
+ *
+ * I18N: to moduł z DANYMI — nie ma tu ani hooka, ani `cookies()`, więc same napisy siedzą
+ * w słowniku (`lib/i18n/slowniki/klimat.ts`), a stąd wychodzą już jako gotowe elementy
+ * <TekstKlimat …/>, które tłumaczą się przy renderze. Dzięki temu miejsca użycia (`PUSTKA`
+ * na stronach serwerowych, `komentarz` i `ETYKIETA` w klienckim FeedCard) zostają bez zmian.
  */
 
 export const hash = (s: string): number => {
@@ -31,96 +39,71 @@ export type TypWpisu = FeedWpis['typ']
  * Formy BEZOSOBOWE („odblokowano"), a nie „odblokował(a)". Płci gracza nie znamy i nigdy
  * o nią nie pytamy, a nawias z końcówką czyta się jak formularz urzędowy, nie jak feed.
  */
-export const ETYKIETA: Record<TypWpisu, { czasownik: string; ikona: SpriteName }> = {
-  UNLOCK: { czasownik: '— odblokowano achievement', ikona: 'trophy' },
-  BOSS: { czasownik: '— pokonano bossa', ikona: 'deadgod' },
-  RUN: { czasownik: '— zakończono run', ikona: 'stats' },
-  TEKST: { czasownik: '— wpis', ikona: 'book' },
+export const ETYKIETA: Record<TypWpisu, { czasownik: ReactElement; ikona: SpriteName }> = {
+  UNLOCK: { czasownik: <TekstKlimat k="klimat.etykietaUnlock" />, ikona: 'trophy' },
+  BOSS: { czasownik: <TekstKlimat k="klimat.etykietaBoss" />, ikona: 'deadgod' },
+  RUN: { czasownik: <TekstKlimat k="klimat.etykietaRun" />, ikona: 'stats' },
+  TEKST: { czasownik: <TekstKlimat k="klimat.etykietaTekst" />, ikona: 'book' },
 }
 
 // ── Flavor text: krótki komentarz pod wpisem, jak opisy itemów w grze ───────────
 
-const KOMENTARZE: Record<TypWpisu, string[]> = {
+// Losujemy KLUCZE, a nie gotowe zdania: dzięki temu ten sam wpis dostaje ten sam komentarz
+// niezależnie od języka (hash liczy się z id wpisu, nie z treści) — przełączenie języka
+// zmienia tekst, ale nie „przetasowuje" feedu.
+const KOMENTARZE: Record<TypWpisu, Klucz[]> = {
   UNLOCK: [
-    'Kolejna ikonka w kolekcji.',
-    'Papa Isaac byłby dumny.',
-    'Odblokowane. Bezpowrotnie.',
-    'Save file grubszy o jedną pozycję.',
+    'klimat.komentarzUnlock1',
+    'klimat.komentarzUnlock2',
+    'klimat.komentarzUnlock3',
+    'klimat.komentarzUnlock4',
   ],
   BOSS: [
-    'Boss padł. Piwnica pamięta.',
-    'Jedna łza mniej do wylania.',
-    'Nikt nie liczył, ile prób to kosztowało.',
-    'Kolejny znaczek na ścianie.',
+    'klimat.komentarzBoss1',
+    'klimat.komentarzBoss2',
+    'klimat.komentarzBoss3',
+    'klimat.komentarzBoss4',
   ],
   RUN: [
-    'Run zamknięty. Itemy zabrane do grobu.',
-    'Zdrowie: nieistotne. Damage: tak.',
-    'Ten build nie powinien działać. Zadziałał.',
-    'RNG dziś było łaskawe.',
+    'klimat.komentarzRun1',
+    'klimat.komentarzRun2',
+    'klimat.komentarzRun3',
+    'klimat.komentarzRun4',
   ],
   TEKST: [
-    'Piwnica słucha.',
-    'Ktoś musiał to powiedzieć.',
-    'Dyskusja otwarta.',
-    'Wpis prosto z Basementu.',
+    'klimat.komentarzTekst1',
+    'klimat.komentarzTekst2',
+    'klimat.komentarzTekst3',
+    'klimat.komentarzTekst4',
   ],
 }
 
 /** Komentarz do wpisu — ten sam wpis zawsze dostaje ten sam tekst. */
-export function komentarz(w: Pick<FeedWpis, 'id' | 'typ'>): string {
-  return zListy(KOMENTARZE[w.typ], `${w.typ}-${w.id}`)
+export function komentarz(w: Pick<FeedWpis, 'id' | 'typ'>): ReactElement {
+  return <TekstKlimat k={zListy(KOMENTARZE[w.typ], `${w.typ}-${w.id}`)} />
 }
 
 // ── Nagłówki pustych stanów ────────────────────────────────────────────────────
 
 export const PUSTKA = {
   /** Feed ZNAJOMYCH — pusty, bo nie masz jeszcze kogo obserwować. */
-  brakZnajomych: (
-    <>
-      <b>Sam jak Isaac w piwnicy.</b> Zaobserwuj kogoś — gdy odwzajemni, jego odblokowania i ubici
-      bossowie zaczną tu spadać same.
-    </>
-  ),
+  brakZnajomych: <TekstKlimat k="klimat.brakZnajomych" />,
   /**
    * Do LISTY znajomych. Osobny tekst, bo na Znajomych lista i feed stoją obok siebie —
    * ten sam komunikat dwa razy na jednym ekranie wyglądał jak usterka, a nie jak pustka.
    */
-  brakZnajomychLista: (
-    <>
-      <b>Nikt jeszcze nie odwzajemnił.</b> Znajomy = obserwujecie się nawzajem.
-    </>
-  ),
-  brakWynikow: (
-    <>
-      <b>Nikogo takiego tu nie ma.</b> Nikt o tym nicku nie schodził do piwnicy. Spróbuj inaczej.
-    </>
-  ),
+  brakZnajomychLista: <TekstKlimat k="klimat.brakZnajomychLista" />,
+  brakWynikow: <TekstKlimat k="klimat.brakWynikow" />,
   /**
    * Feed GLOBALNY pusty. To pierwsza rzecz, jaką widzi świeże konto, więc nie może być
    * samym „cisza" — musi powiedzieć, SKĄD w ogóle biorą się wpisy (z odblokowań Steama).
    */
-  brakAktywnosci: (
-    <>
-      <b>Piwnica jeszcze nie krwawi.</b> Feed sam zapisuje każde Twoje odblokowanie ze Steama — z
-      prawdziwą datą i ikoną. Zsynchronizuj i zobacz swoją historię.
-    </>
-  ),
+  brakAktywnosci: <TekstKlimat k="klimat.brakAktywnosci" />,
   /**
    * Feed globalny pusty, ale patrzy GOŚĆ. Nie może zsynchronizować, więc nie każemy mu
    * tego robić — tekst musi pasować do przycisku, który stoi pod nim („Załóż konto").
    */
-  brakAktywnosciGosc: (
-    <>
-      <b>Piwnica jeszcze nie krwawi.</b> Feed zapisuje odblokowania graczy prosto ze Steama — z
-      prawdziwą datą i ikoną. Załóż konto, a Twoja historia wpadnie tu pierwsza.
-    </>
-  ),
+  brakAktywnosciGosc: <TekstKlimat k="klimat.brakAktywnosciGosc" />,
   /** Aktywność na WŁASNYM profilu — nie masz wpisów, bo nie było syncu. */
-  brakWpisow: (
-    <>
-      <b>Twoja karta jest jeszcze pusta.</b> Po synchronizacji wyląduje tu każde odblokowanie, które
-      kiedykolwiek zdobyłeś w grze.
-    </>
-  ),
+  brakWpisow: <TekstKlimat k="klimat.brakWpisow" />,
 }

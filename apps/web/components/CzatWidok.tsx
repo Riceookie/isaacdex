@@ -6,6 +6,9 @@ import Sprite, { NAZWY_SPRITEOW } from '@/components/Sprite'
 import DecorMark from '@/components/DecorMark'
 import LinkGracza from '@/components/LinkGracza'
 import WybieraczkaReakcji from '@/components/WybieraczkaReakcji'
+import WybieraczkaNaklejek from '@/components/WybieraczkaNaklejek'
+import IkonaCzatu from '@/components/IkonaCzatu'
+import { naklejka } from '@/lib/naklejki'
 import { avatarGracza, wlasnyAvatar } from '@/lib/chars'
 import { powiedz } from '@/lib/companionGlos'
 import { supabasePrzegladarka } from '@/lib/supabase/przegladarka'
@@ -23,18 +26,44 @@ import {
 } from '@/lib/czat'
 import type { SpriteName } from '@/components/Sprite'
 import type { DecorId } from '@/lib/pfpDecor'
+import { useT } from '@/components/JezykProvider'
 
 /**
  * Zamienia tokeny `:nazwa:` na sprite'y z gry, resztę zostawia tekstem.
  * Nieznana nazwa (ktoś wpisał `:cos:` z palca) zostaje zwykłym tekstem — lepiej pokazać
  * to, co napisał, niż zjeść fragment zdania.
+ *
+ * Dwa źródła: rejestr ikon interfejsu (`:godhead:`) i katalog naklejek, czyli komplet
+ * itemów/trinketów/pickupów po ID z gry (`:c105:`). Rejestr sprawdzamy pierwszy, bo to on
+ * jest w starszych wiadomościach.
+ *
+ * Token dopuszcza cyfry (`:c105:`), ale musi zaczynać się od litery — inaczej godzina
+ * w zdaniu („10:30-11:") zaczęłaby wyglądać jak naklejka.
  */
 function zTokenami(tekst: string): ReactNode[] {
-  return tekst.split(/(:[a-zA-Z]+:)/g).map((kawalek, i) => {
-    const m = kawalek.match(/^:([a-zA-Z]+):$/)
-    const nazwa = m?.[1] as SpriteName | undefined
-    if (nazwa && (NAZWY_SPRITEOW as string[]).includes(nazwa)) {
-      return <Sprite key={i} name={nazwa} size={22} className="cz-naklejka-inline" />
+  return tekst.split(/(:[a-zA-Z][a-zA-Z0-9]*:)/g).map((kawalek, i) => {
+    const m = kawalek.match(/^:([a-zA-Z][a-zA-Z0-9]*):$/)
+    if (!m) return kawalek
+    const nazwa = m[1]
+    if ((NAZWY_SPRITEOW as string[]).includes(nazwa)) {
+      return <Sprite key={i} name={nazwa as SpriteName} size={22} className="cz-naklejka-inline" />
+    }
+    const n = naklejka(nazwa)
+    if (n) {
+      return (
+        <img
+          key={i}
+          src={n.src}
+          alt={n.nazwa}
+          title={n.nazwa}
+          width={22}
+          height={22}
+          loading="lazy"
+          decoding="async"
+          className="sprite cz-naklejka-inline"
+          draggable={false}
+        />
+      )
     }
     return kawalek
   })
@@ -75,6 +104,7 @@ export default function CzatWidok({
   /** Nazwa kanału startowego w bazie — pod nią słucha Realtime. */
   startowyKanalDb: string | null
 }) {
+  const tl = useT()
   // Gość widzi tylko kanały publiczne (globalny + ogłoszenia); znajomych i DM chowamy.
   const kanaly = useMemo(() => (gosc ? KANALY.filter((k) => k.typ === 'global') : KANALY), [gosc])
   const [kanal, setKanal] = useState(DOMYSLNY_KANAL)
@@ -259,7 +289,7 @@ export default function CzatWidok({
     setPiszacy([])
     setBlad(null)
     setMobilnaRozmowa(true)
-    powiedz(kwestiaCzatu('kanal', slug, ++licznik.current))
+    powiedz(kwestiaCzatu(tl, 'kanal', slug, ++licznik.current))
   }
 
   /**
@@ -294,7 +324,7 @@ export default function CzatWidok({
       if (zalacznik) {
         obrazekUrl = await wgrajObrazek(zalacznik.plik)
         if (!obrazekUrl) {
-          setBlad('Nie udało się wysłać obrazka. Spróbuj jeszcze raz.')
+          setBlad(tl('czat.bladWysylkiObrazka'))
           return
         }
       }
@@ -309,7 +339,7 @@ export default function CzatWidok({
       if (zalacznik) URL.revokeObjectURL(zalacznik.podglad)
       setZalacznik(null)
       await odswiez(kanal)
-      powiedz(kwestiaCzatu('wyslano', t || 'obrazek', ++licznik.current))
+      powiedz(kwestiaCzatu(tl, 'wyslano', t || 'obrazek', ++licznik.current))
     } finally {
       setWysylanie(false)
     }
@@ -320,9 +350,9 @@ export default function CzatWidok({
    * dzięki temu da się ją dopisać do zdania („gg :trophy:") i poprawić przed wysłaniem.
    * Render zamienia token z powrotem na sprite (patrz `zTokenami`).
    */
-  const wstawNaklejke = (ikona: SpriteName) => {
+  const wstawNaklejke = (id: string) => {
     if (tylkoOdczyt) return
-    setTekst((t) => (t ? t.replace(/\s*$/, '') + ' ' : '') + `:${ikona}: `)
+    setTekst((t) => (t ? t.replace(/\s*$/, '') + ' ' : '') + `:${id}: `)
     setNaklejki(false)
     pole.current?.focus()
   }
@@ -334,7 +364,7 @@ export default function CzatWidok({
   const wczytajObraz = (f: File | null | undefined) => {
     if (!f || !f.type.startsWith('image/')) return
     if (f.size > MAX_OBRAZEK) {
-      setBlad('Obrazek jest za duży (maks. 3 MB).')
+      setBlad(tl('czat.bladObrazekZaDuzy'))
       return
     }
     setBlad(null)
@@ -355,7 +385,7 @@ export default function CzatWidok({
    * dopisywania „na oko" do stanu: liczniki mają pokazywać to, co naprawdę stoi w bazie,
    * a nie to, co przed chwilą kliknąłeś.
    */
-  const zareaguj = async (idWiad: string, ikona: SpriteName) => {
+  const zareaguj = async (idWiad: string, ikona: string) => {
     if (gosc) return
     const wynik = await przelaczReakcje(Number(idWiad), ikona)
     if (!wynik.ok) {
@@ -366,11 +396,11 @@ export default function CzatWidok({
   }
 
   const naglowek = rozmowca
-    ? { nazwa: rozmowca, ikona: null, opis: 'Rozmowa prywatna. Nikt inny tego nie widzi.' }
+    ? { nazwa: rozmowca, ikona: null, opis: tl('czat.dmOpis') }
     : {
-        nazwa: definicja?.nazwa ?? '',
+        nazwa: definicja ? tl(definicja.kluczNazwy) : '',
         ikona: definicja?.ikona ?? null,
-        opis: definicja?.opis ?? '',
+        opis: definicja ? tl(definicja.kluczOpisu) : '',
       }
 
   return (
@@ -384,7 +414,7 @@ export default function CzatWidok({
       {/* ── KANAŁY + PRYWATNE ── */}
       <aside className="cz-mapa">
         <div className="cz-mapa-head">
-          <Sprite name="dadsnote" size={18} /> Piwnica
+          <Sprite name="dadsnote" size={18} /> {tl('czat.piwnicaNaglowek')}
         </div>
 
         <div className="cz-kanaly">
@@ -395,27 +425,26 @@ export default function CzatWidok({
                   className={'cz-kanal' + (k.slug === kanal ? ' tu' : '')}
                   onClick={() => wejdz(k.slug)}
                   aria-current={k.slug === kanal}
-                  title={k.opis}
+                  title={tl(k.kluczOpisu)}
                 >
                   <span className="cz-kanal-ic">
                     <Sprite name={k.ikona} size={18} />
                   </span>
-                  <span className="cz-kanal-nazwa">{k.nazwa}</span>
+                  <span className="cz-kanal-nazwa">{tl(k.kluczNazwy)}</span>
                   {k.slug === kanal && <span className="cz-tu-kropka" aria-hidden />}
                 </button>
               </li>
             ))}
           </ul>
 
-          <div className="cz-grupa">Prywatne</div>
+          <div className="cz-grupa">{tl('czat.grupaPrywatne')}</div>
           {gosc ? (
             <p className="cz-brak-dm muted small">
-              <a href="/logowanie">Zaloguj się</a>, aby pisać prywatnie ze znajomymi.
+              <a href="/logowanie">{tl('czat.goscZalogujSie')}</a>
+              {tl('czat.goscZalogujReszta')}
             </p>
           ) : znajomi.length === 0 ? (
-            <p className="cz-brak-dm muted small">
-              Brak znajomych. Prywatnie nie ma z kim pogadać.
-            </p>
+            <p className="cz-brak-dm muted small">{tl('czat.brakZnajomych')}</p>
           ) : (
             <ul className="cz-lista-kanalow">
               {znajomi.map((g) => {
@@ -445,7 +474,9 @@ export default function CzatWidok({
                       >
                         {g.nick}
                       </span>
-                      {obecni.includes(g.nick) && <span className="cz-zyje" aria-label="online" />}
+                      {obecni.includes(g.nick) && (
+                        <span className="cz-zyje" aria-label={tl('czat.online')} />
+                      )}
                     </button>
                   </li>
                 )
@@ -460,7 +491,7 @@ export default function CzatWidok({
           <span className="cz-trup" aria-hidden />
           <span className="muted small">
             <b>{gracze.length - online.length}</b>{' '}
-            {gracze.length - online.length === 1 ? 'zginął' : 'zginęło'} — offline
+            {tl('czat.zgineli', { liczba: gracze.length - online.length })}
           </span>
         </div>
       </aside>
@@ -472,7 +503,7 @@ export default function CzatWidok({
           <button
             className="cz-wroc"
             onClick={() => setMobilnaRozmowa(false)}
-            aria-label="Wróć do listy kanałów"
+            aria-label={tl('czat.wrocDoKanalow')}
           >
             ‹
           </button>
@@ -494,9 +525,13 @@ export default function CzatWidok({
           <button
             className={'cz-obecni-btn' + (obecniOtwarci ? ' otwarty' : '')}
             onClick={przelaczObecnych}
-            aria-label={obecniOtwarci ? 'Schowaj listę obecnych' : 'Pokaż, kto jest w piwnicy'}
+            aria-label={tl(obecniOtwarci ? 'czat.schowajObecnych' : 'czat.pokazObecnych')}
             aria-expanded={obecniOtwarci}
-            title={obecniOtwarci ? 'Schowaj listę' : `W piwnicy: ${online.length}`}
+            title={
+              obecniOtwarci
+                ? tl('czat.schowajListe')
+                : tl('czat.wPiwnicyIle', { liczba: online.length })
+            }
           >
             <Sprite name="fly" size={16} />
             <span className="cz-obecni-ile">{online.length}</span>
@@ -507,14 +542,14 @@ export default function CzatWidok({
         </header>
 
         <div className="cz-msgs" ref={msgs}>
-          {ladowanie && lista.length === 0 && <p className="cz-stan muted small">Wczytuję…</p>}
+          {ladowanie && lista.length === 0 && (
+            <p className="cz-stan muted small">{tl('czat.wczytuje')}</p>
+          )}
           {!ladowanie && lista.length === 0 && (
             <p className="cz-stan muted small">
               {rozmowca
-                ? `Cisza. Napisz do ${rozmowca} pierwszy — zobaczy to tylko on.`
-                : gosc
-                  ? 'Piwnica jeszcze milczy. Załóż konto i bądź pierwszy.'
-                  : 'Piwnica jeszcze milczy. Pierwsza wiadomość zostaje w historii na zawsze.'}
+                ? tl('czat.ciszaDm', { nick: rozmowca })
+                : tl(gosc ? 'czat.piwnicaMilczyGosc' : 'czat.piwnicaMilczy')}
             </p>
           )}
           {lista.map((w) => {
@@ -549,12 +584,12 @@ export default function CzatWidok({
                         {w.autor}
                       </span>
                     </LinkGracza>
-                    {moja && <span className="cz-ty">Ty</span>}
+                    {moja && <span className="cz-ty">{tl('czat.ty')}</span>}
                     <span className="cz-czas muted small">{w.czas}</span>
                   </div>
 
                   {skasowana ? (
-                    <p className="cz-linia cz-skasowana">Wiadomość usunięta</p>
+                    <p className="cz-linia cz-skasowana">{tl('czat.wiadomoscUsunieta')}</p>
                   ) : (
                     <>
                       {w.tekst.map((t, j) => (
@@ -562,7 +597,9 @@ export default function CzatWidok({
                           {zTokenami(t)}
                         </p>
                       ))}
-                      {w.obraz && <img className="cz-obraz" src={w.obraz} alt="Załącznik" />}
+                      {w.obraz && (
+                        <img className="cz-obraz" src={w.obraz} alt={tl('czat.zalacznikAlt')} />
+                      )}
                     </>
                   )}
 
@@ -577,7 +614,7 @@ export default function CzatWidok({
                           aria-pressed={r.moja}
                           disabled={gosc}
                         >
-                          <Sprite name={r.ikona} size={14} /> {r.ile}
+                          <IkonaCzatu id={r.ikona} size={14} /> {r.ile}
                         </button>
                       ))}
                     </div>
@@ -592,7 +629,7 @@ export default function CzatWidok({
                           setKotwica(e.currentTarget)
                           setPicker(picker === w.id ? null : w.id)
                         }}
-                        aria-label="Dodaj reakcję"
+                        aria-label={tl('czat.dodajReakcje')}
                         aria-expanded={picker === w.id}
                       >
                         +
@@ -601,7 +638,7 @@ export default function CzatWidok({
                         <button
                           className="cz-akcja cz-usun"
                           onClick={() => usun(w.id)}
-                          aria-label="Usuń wiadomość"
+                          aria-label={tl('czat.usunWiadomosc')}
                         >
                           ×
                         </button>
@@ -635,7 +672,10 @@ export default function CzatWidok({
                 <i />
               </span>
               <span className="muted small">
-                {piszacy.join(' i ')} {piszacy.length > 1 ? 'piszą' : 'pisze'}…
+                {tl('czat.pisze', {
+                  kto: piszacy.join(` ${tl('czat.lacznikI')} `),
+                  liczba: piszacy.length,
+                })}
               </span>
             </>
           )}
@@ -647,8 +687,8 @@ export default function CzatWidok({
           <div className="cz-pisz cz-zamkniete">
             <Sprite name="heart" size={18} />
             <span className="muted small">
-              Czytasz piwnicę jako gość. <a href="/logowanie">Załóż konto</a>, żeby pisać, wrzucać
-              screeny i reagować pickupami.
+              {tl('czat.goscCzytasz')} <a href="/logowanie">{tl('czat.goscZalozKonto')}</a>
+              {tl('czat.goscZalozKontoReszta')}
             </span>
           </div>
         ) : (
@@ -662,7 +702,7 @@ export default function CzatWidok({
             {/* Podgląd załącznika nad polem — widać, co poleci, i da się zdjąć. */}
             {zalacznik && (
               <div className="cz-zalacznik">
-                <img src={zalacznik.podglad} alt="Podgląd załącznika" />
+                <img src={zalacznik.podglad} alt={tl('czat.podgladZalacznika')} />
                 <button
                   type="button"
                   className="cz-zalacznik-x"
@@ -670,7 +710,7 @@ export default function CzatWidok({
                     URL.revokeObjectURL(zalacznik.podglad)
                     setZalacznik(null)
                   }}
-                  aria-label="Usuń załącznik"
+                  aria-label={tl('czat.usunZalacznik')}
                 >
                   ×
                 </button>
@@ -697,8 +737,8 @@ export default function CzatWidok({
               type="button"
               className="cz-narzedzie"
               onClick={() => plik.current?.click()}
-              aria-label="Dodaj obrazek"
-              title="Dodaj obrazek (możesz też wkleić ze schowka)"
+              aria-label={tl('czat.dodajObrazek')}
+              title={tl('czat.dodajObrazekTytul')}
             >
               <Sprite name="kidsdrawing" size={18} />
             </button>
@@ -708,17 +748,15 @@ export default function CzatWidok({
               type="button"
               className={'cz-narzedzie' + (naklejki ? ' tu' : '')}
               onClick={() => setNaklejki((v) => !v)}
-              aria-label="Naklejki"
+              aria-label={tl('czat.naklejkiPrzycisk')}
               aria-expanded={naklejki}
-              title="Naklejka"
+              title={tl('czat.naklejkaTytul')}
             >
               <Sprite name="godhead" size={18} />
             </button>
             {naklejki && (
-              <WybieraczkaReakcji
+              <WybieraczkaNaklejek
                 kotwica={naklejkiBtn.current}
-                domyslne={REAKCJE}
-                tryb="naklejki"
                 onWybierz={wstawNaklejke}
                 onZamknij={() => setNaklejki(false)}
               />
@@ -733,17 +771,21 @@ export default function CzatWidok({
                 stuknij()
               }}
               onPaste={wklej}
-              placeholder={rozmowca ? `Napisz do ${rozmowca}…` : `Napisz do #${naglowek.nazwa}…`}
-              aria-label="Treść wiadomości"
+              placeholder={
+                rozmowca
+                  ? tl('czat.napiszDoNicku', { nick: rozmowca })
+                  : tl('czat.napiszDoKanalu', { kanal: naglowek.nazwa })
+              }
+              aria-label={tl('czat.trescWiadomosci')}
               maxLength={MAX_DLUGOSC}
             />
             <button
               className="cz-wyslij"
               type="submit"
               disabled={(!tekst.trim() && !zalacznik) || wysylanie}
-              aria-label="Wyślij"
+              aria-label={tl('czat.wyslij')}
             >
-              <Sprite name={wysylanie ? 'godhead' : 'heart'} size={18} />
+              <Sprite name={wysylanie ? 'godhead' : 'wyslij'} size={18} />
             </button>
           </form>
         )}
@@ -753,9 +795,13 @@ export default function CzatWidok({
       <aside className="cz-online" aria-hidden={!obecniOtwarci}>
         <div className="cz-online-head">
           <span>
-            <Sprite name="fly" size={18} /> W piwnicy — {online.length}
+            <Sprite name="fly" size={18} /> {tl('czat.wPiwnicyNaglowek', { liczba: online.length })}
           </span>
-          <button className="cz-online-x" onClick={przelaczObecnych} aria-label="Schowaj listę">
+          <button
+            className="cz-online-x"
+            onClick={przelaczObecnych}
+            aria-label={tl('czat.schowajListe')}
+          >
             ×
           </button>
         </div>
@@ -785,7 +831,7 @@ export default function CzatWidok({
                       robi w grze. Wiemy tylko, że tu jest. */}
                   <span className="cz-on-status muted small">
                     <Sprite name={g.ja ? 'isaacHead' : 'fly'} size={13} />
-                    {g.ja ? 'to Ty' : 'w piwnicy'}
+                    {tl(g.ja ? 'czat.toTy' : 'czat.statusWPiwnicy')}
                   </span>
                 </span>
                 <span className="cz-on-serce" aria-hidden>

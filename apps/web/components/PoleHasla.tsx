@@ -2,16 +2,20 @@
 
 import { useState } from 'react'
 import Sprite from '@/components/Sprite'
+import { useT } from '@/components/JezykProvider'
 
 /**
  * Pole hasła z okiem-przełącznikiem: Mom's Eye = pokaż, Mom's Contact = ukryj (klimat gry).
  * Jedno miejsce, żeby logowanie i „nowe hasło" wyglądały tak samo.
+ *
+ * Etykieta i placeholder nie mają domyślnych wartości w sygnaturze, tylko niżej w ciele —
+ * domyślny parametr policzyłby się przed `useT()`, a tekst musi znać język.
  */
 export default function PoleHasla({
-  etykieta = 'Hasło',
+  etykieta,
   name = 'haslo',
   autoComplete = 'current-password',
-  placeholder = 'Co najmniej 8 znaków',
+  placeholder,
 }: {
   etykieta?: string
   name?: string
@@ -19,9 +23,11 @@ export default function PoleHasla({
   placeholder?: string
 }) {
   const [widoczne, setWidoczne] = useState(false)
+  const t = useT()
+  const opisOka = t(widoczne ? 'konto.ukryjHaslo' : 'konto.pokazHaslo')
   return (
     <label className="log-pole">
-      <span>{etykieta}</span>
+      <span>{etykieta ?? t('konto.poleHaslo')}</span>
       <span className="haslo-pole">
         <input
           className="input"
@@ -29,7 +35,7 @@ export default function PoleHasla({
           type={widoczne ? 'text' : 'password'}
           required
           minLength={8}
-          placeholder={placeholder}
+          placeholder={placeholder ?? t('konto.hasloPlaceholder')}
           autoComplete={autoComplete}
         />
         <button
@@ -37,8 +43,8 @@ export default function PoleHasla({
           className="haslo-oko"
           onClick={() => setWidoczne((v) => !v)}
           aria-pressed={widoczne}
-          aria-label={widoczne ? 'Ukryj hasło' : 'Pokaż hasło'}
-          title={widoczne ? 'Ukryj hasło' : 'Pokaż hasło'}
+          aria-label={opisOka}
+          title={opisOka}
         >
           <Sprite name={widoczne ? 'momsContact' : 'momsEye'} size={32} />
         </button>

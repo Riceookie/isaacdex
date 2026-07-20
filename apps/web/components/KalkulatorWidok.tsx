@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 import { policzStaty, type Stat } from '@isaacdex/core'
 import ItemSprite from '@/components/ItemSprite'
+import { useT } from '@/components/JezykProvider'
 import { powiedz } from '@/lib/companionGlos'
 import { ikonaPostaci } from '@/lib/chars'
 import {
@@ -22,6 +23,7 @@ import {
 type Grupa = 'bazowe' | 'tainted'
 
 export default function KalkulatorWidok() {
+  const t = useT()
   const [postac, setPostac] = useState(POSTACIE_STATY[0])
   const [grupa, setGrupa] = useState<Grupa>('bazowe')
   const [wybrane, setWybrane] = useState<ItemStaty[]>([])
@@ -45,8 +47,8 @@ export default function KalkulatorWidok() {
 
   // Maskotka komentuje budowanie buildu — reaguje na dodany item (mina „myślę/ekscytacja").
   const dodaj = (i: ItemStaty) => {
-    if (wybrane.length + 1 >= 6) powiedz('Ale kobyła buildu. Szanuję.', 'excited')
-    else powiedz(`${i.nazwa}? Zobaczmy, co zrobi.`, 'thinking')
+    if (wybrane.length + 1 >= 6) powiedz(t('kolekcja.kalkGlosDuzyBuild'), 'excited')
+    else powiedz(t('kolekcja.kalkGlosDodano', { item: i.nazwa }), 'thinking')
     setWybrane((w) => [...w, i])
   }
   const usun = (idx: number) => setWybrane((w) => w.filter((_, j) => j !== idx))
@@ -54,29 +56,29 @@ export default function KalkulatorWidok() {
   return (
     <section className="note paper-panel kalk">
       <div className="paper-head">
-        <h2>Kalkulator statystyk</h2>
+        <h2>{t('kolekcja.kalkTytul')}</h2>
         {wybrane.length > 0 && (
           <button className="chip" onClick={() => setWybrane([])}>
-            Wyczyść itemy ({wybrane.length})
+            {t('kolekcja.kalkWyczysc', { ile: wybrane.length })}
           </button>
         )}
       </div>
 
       {/* ── Postać ── */}
-      <h3 className="kalk-naglowek">Postać</h3>
+      <h3 className="kalk-naglowek">{t('kolekcja.kalkPostac')}</h3>
       <div className="filter-btns kalk-grupy">
         <button
           className={'chip' + (grupa === 'bazowe' ? ' on' : '')}
           onClick={() => setGrupa('bazowe')}
         >
-          Bazowe{' '}
+          {t('kolekcja.kalkBazowe')}{' '}
           <span className="chip-licznik">{POSTACIE_STATY.filter((p) => !p.tainted).length}</span>
         </button>
         <button
           className={'chip' + (grupa === 'tainted' ? ' on' : '')}
           onClick={() => setGrupa('tainted')}
         >
-          Splugawione{' '}
+          {t('kolekcja.kalkSplugawione')}{' '}
           <span className="chip-licznik">{POSTACIE_STATY.filter((p) => p.tainted).length}</span>
         </button>
       </div>
@@ -93,24 +95,23 @@ export default function KalkulatorWidok() {
           </button>
         ))}
       </div>
-      <p className="muted small">
-        Formy mają własne staty, więc stoją osobno (Dark Judas, Lazarus Risen, The Soul, Esau…).
-      </p>
+      <p className="muted small">{t('kolekcja.kalkFormyPrzypis')}</p>
 
       {/* ── Tabela statów ── */}
-      <h3 className="kalk-naglowek">Statystyki</h3>
+      <h3 className="kalk-naglowek">{t('kolekcja.kalkStatystyki')}</h3>
       <div className="kalk-tabela">
         <div className="kalk-wiersz kalk-glowka">
-          <span>Statystyka</span>
-          <span>Baza</span>
-          <span>Po itemach</span>
+          <span>{t('kolekcja.kalkKolStat')}</span>
+          <span>{t('kolekcja.kalkKolBaza')}</span>
+          <span>{t('kolekcja.kalkKolPoItemach')}</span>
         </div>
-        {STATY_OPIS.map(({ stat, label, opis }) => (
+        {/* Nazwy i opisy statów mieszkają w przestrzeni „encyklopedia" — kalkulator tylko je czyta. */}
+        {STATY_OPIS.map(({ stat, labelKlucz, opisKlucz }) => (
           <Wiersz
             key={stat}
             stat={stat}
-            label={label}
-            opis={opis}
+            label={t(labelKlucz)}
+            opis={t(opisKlucz)}
             baza={baza[stat]}
             teraz={suma[stat]}
           />
@@ -118,9 +119,11 @@ export default function KalkulatorWidok() {
       </div>
 
       {/* ── Wybrane itemy ── */}
-      <h3 className="kalk-naglowek">Twoje itemy {wybrane.length > 0 && `(${wybrane.length})`}</h3>
+      <h3 className="kalk-naglowek">
+        {t('kolekcja.kalkTwojeItemy')} {wybrane.length > 0 && `(${wybrane.length})`}
+      </h3>
       {wybrane.length === 0 ? (
-        <p className="muted small">Nic nie wzięte — tabela pokazuje same staty postaci.</p>
+        <p className="muted small">{t('kolekcja.kalkNicNieWziete')}</p>
       ) : (
         <div className="kalk-wybrane">
           {wybrane.map((i, idx) => (
@@ -136,20 +139,17 @@ export default function KalkulatorWidok() {
       )}
 
       {/* ── Dodawanie itemów ── */}
-      <h3 className="kalk-naglowek">Dodaj item</h3>
+      <h3 className="kalk-naglowek">{t('kolekcja.kalkDodajItem')}</h3>
       <div className="kol-tools">
         <input
           className="input grow"
-          placeholder="Szukaj itemu ze statami…"
+          placeholder={t('kolekcja.kalkSzukajPlaceholder')}
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          aria-label="Szukaj itemu"
+          aria-label={t('kolekcja.kalkSzukajAria')}
         />
       </div>
-      <p className="muted small">
-        {ITEMY_STATY.length} itemów zmienia statystyki liczbowo. Reszta (np. Brimstone) zmienia broń
-        albo działa efektem, więc nie wchodzi do tabeli.
-      </p>
+      <p className="muted small">{t('kolekcja.kalkIleItemow', { liczba: ITEMY_STATY.length })}</p>
       <div className="item-grid">
         {znalezione.map((i) => (
           <button
@@ -161,7 +161,7 @@ export default function KalkulatorWidok() {
             <ItemSprite nazwa={i.nazwa} idW={i.id} size={32} />
             <span className="item-txt">
               <span className="item-name">{i.nazwa}</span>
-              <span className="item-desc">{opisModyfikatora(i)}</span>
+              <span className="item-desc">{opisModyfikatora(i, t)}</span>
             </span>
           </button>
         ))}

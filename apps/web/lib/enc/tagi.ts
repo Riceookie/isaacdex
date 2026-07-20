@@ -5,6 +5,8 @@
  * na karcie ich nie pokazujemy; w szczegółach zostają, ale w czytelnej formie.
  */
 
+import type { Klucz, Tlumacz } from '../i18n/slownik'
+
 /** Flagi techniczne — nie trafiają do opisu na karcie. */
 const TECHNICZNE = new Set([
   'nolostbr',
@@ -20,34 +22,35 @@ const TECHNICZNE = new Set([
   'norebirth',
 ])
 
-const ETYKIETY: Record<string, string> = {
-  offensive: 'ofensywny',
-  summonable: 'przyzywalny',
-  tearsup: 'więcej łez',
-  monstermanual: 'monster manual',
-  baby: 'bobas',
-  stars: 'gwiazdy',
-  fly: 'mucha',
-  spider: 'pająk',
-  book: 'książka',
-  angel: 'anielski',
-  devil: 'diabelski',
-  mom: 'mama',
-  dead: 'śmierć',
-  poop: 'kupa',
-  mushroom: 'grzyb',
-  syringe: 'strzykawka',
-  food: 'jedzenie',
-  tech: 'tech',
-  guppy: 'guppy',
-  battery: 'bateria',
-  bob: 'bob',
-  quest: 'questowy',
+const ETYKIETY: Record<string, Klucz> = {
+  offensive: 'encyklopedia.tagOffensive',
+  summonable: 'encyklopedia.tagSummonable',
+  tearsup: 'encyklopedia.tagTearsup',
+  monstermanual: 'encyklopedia.tagMonstermanual',
+  baby: 'encyklopedia.tagBaby',
+  stars: 'encyklopedia.tagStars',
+  fly: 'encyklopedia.tagFly',
+  spider: 'encyklopedia.tagSpider',
+  book: 'encyklopedia.tagBook',
+  angel: 'encyklopedia.tagAngel',
+  devil: 'encyklopedia.tagDevil',
+  mom: 'encyklopedia.tagMom',
+  dead: 'encyklopedia.tagDead',
+  poop: 'encyklopedia.tagPoop',
+  mushroom: 'encyklopedia.tagMushroom',
+  syringe: 'encyklopedia.tagSyringe',
+  food: 'encyklopedia.tagFood',
+  tech: 'encyklopedia.tagTech',
+  guppy: 'encyklopedia.tagGuppy',
+  battery: 'encyklopedia.tagBattery',
+  bob: 'encyklopedia.tagBob',
+  quest: 'encyklopedia.tagQuest',
 }
 
-/** Tag w czytelnej formie (po polsku, jeśli znamy). */
-export function etykietaTagu(tag: string): string {
-  return ETYKIETY[tag] ?? tag
+/** Tag w czytelnej formie (przetłumaczony, jeśli go znamy — inaczej surowy z plików gry). */
+export function etykietaTagu(tag: string, t: Tlumacz): string {
+  const k = ETYKIETY[tag]
+  return k ? t(k) : tag
 }
 
 /** Tagi opisujące mechanikę — bez flag technicznych. */
@@ -56,7 +59,9 @@ export function tagiZnaczace(tagi: string[]): string[] {
 }
 
 /** Krótki opis na kartę: kilka znaczących tagów, a gdy ich brak — sam typ itemu. */
-export function opisItemu(tagi: string[], typ: string): string {
-  const znaczace = tagiZnaczace(tagi).slice(0, 3).map(etykietaTagu)
+export function opisItemu(tagi: string[], typ: string, t: Tlumacz): string {
+  const znaczace = tagiZnaczace(tagi)
+    .slice(0, 3)
+    .map((tag) => etykietaTagu(tag, t))
   return znaczace.length ? znaczace.join(' · ') : typ.toLowerCase()
 }

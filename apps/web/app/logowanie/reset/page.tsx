@@ -2,19 +2,23 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import Sprite from '@/components/Sprite'
 import { mojGracz } from '@/lib/konto'
+import { tlumacz } from '@/lib/i18n/serwer'
+import type { Klucz } from '@/lib/i18n/slownik'
 import { zresetujHaslo } from '@/app/actions/auth'
 
 export const dynamic = 'force-dynamic'
-export const metadata = { title: 'Reset hasła — IsaacDex' }
 
-const BLEDY: Record<string, string> = {
-  nieskonfigurowane: 'Logowanie nie jest jeszcze skonfigurowane na tym serwerze.',
-  klucz:
-    'Klucz Supabase na tym serwerze jest nieprawidłowy — resetu nie da się teraz wysłać. To usterka po naszej stronie.',
-  email: 'To nie wygląda na adres e-mail.',
+export function generateMetadata() {
+  return { title: tlumacz()('konto.tytulStronyReset') }
 }
-const INFO: Record<string, string> = {
-  wyslano: 'Jeśli takie konto istnieje, wysłaliśmy link do zresetowania hasła. Sprawdź skrzynkę.',
+
+const BLEDY: Record<string, Klucz> = {
+  nieskonfigurowane: 'konto.bladNieskonfigurowane',
+  klucz: 'konto.bladKluczReset',
+  email: 'konto.bladEmail',
+}
+const INFO: Record<string, Klucz> = {
+  wyslano: 'konto.infoWyslano',
 }
 
 export default async function ResetPage({
@@ -23,8 +27,11 @@ export default async function ResetPage({
   searchParams: { blad?: string; info?: string }
 }) {
   if (await mojGracz()) redirect('/profil')
-  const blad = searchParams.blad ? BLEDY[searchParams.blad] : undefined
-  const info = searchParams.info ? INFO[searchParams.info] : undefined
+  const t = tlumacz()
+  const kluczBledu = searchParams.blad ? BLEDY[searchParams.blad] : undefined
+  const kluczInfo = searchParams.info ? INFO[searchParams.info] : undefined
+  const blad = kluczBledu ? t(kluczBledu) : undefined
+  const info = kluczInfo ? t(kluczInfo) : undefined
 
   return (
     <section className="log-strona">
@@ -33,20 +40,20 @@ export default async function ResetPage({
           <header className="log-head">
             <Sprite name="momsEye" size={40} />
             <div>
-              <h1>Reset hasła</h1>
-              <p className="muted small">Podaj e-mail konta — wyślemy link do ustawienia nowego.</p>
+              <h1>{t('konto.resetTytul')}</h1>
+              <p className="muted small">{t('konto.resetPodtytul')}</p>
             </div>
           </header>
 
           <form className="log-form" action={zresetujHaslo}>
             <label className="log-pole">
-              <span>E-mail</span>
+              <span>{t('konto.poleEmail')}</span>
               <input
                 className="input"
                 name="email"
                 type="email"
                 required
-                placeholder="ty@example.com"
+                placeholder={t('konto.emailPlaceholder')}
                 autoComplete="email"
               />
             </label>
@@ -63,12 +70,12 @@ export default async function ResetPage({
             )}
 
             <button className="btn full" type="submit">
-              Wyślij link resetujący
+              {t('konto.resetWyslij')}
             </button>
           </form>
 
           <p className="muted small log-stopka">
-            <Link href="/logowanie">← Wróć do logowania</Link>
+            <Link href="/logowanie">{t('konto.wrocDoLogowania')}</Link>
           </p>
         </div>
       </div>

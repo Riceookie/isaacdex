@@ -1,6 +1,7 @@
 import EncLista from '@/components/EncLista'
 import surowe from '@/lib/enc/przeciwnicy.json'
 import type { EncFiltr, EncWpis } from '@/lib/enc/typy'
+import { tlumacz } from '@/lib/i18n/serwer'
 
 type Przeciwnik = {
   nazwa: string
@@ -12,17 +13,20 @@ type Przeciwnik = {
 
 const PRZECIWNICY = surowe as Przeciwnik[]
 
-const FILTRY: EncFiltr[] = [
-  { id: 'slabe', label: 'do 20 HP' },
-  { id: 'srednie', label: '20–60 HP' },
-  { id: 'mocne', label: 'powyżej 60 HP' },
-]
-
 /**
  * Sekcja „Przeciwnicy" — 367 potworów: lista i opisy z wiki, statystyki (HP, obrażenia)
  * z entities2.xml.
  */
 export default function PrzeciwnicyPage() {
+  const t = tlumacz()
+
+  // Id filtrów zostają — to one łączą chip z `grupy` wpisu.
+  const FILTRY: EncFiltr[] = [
+    { id: 'slabe', label: t('encyklopedia.filtrHpDo20') },
+    { id: 'srednie', label: t('encyklopedia.filtrHp20Do60') },
+    { id: 'mocne', label: t('encyklopedia.filtrHpPonad60') },
+  ]
+
   const wpisy: EncWpis[] = PRZECIWNICY.map((p) => {
     const hp = p.hp ?? 0
     const grupa = hp === 0 ? [] : hp <= 20 ? ['slabe'] : hp <= 60 ? ['srednie'] : ['mocne']
@@ -33,16 +37,22 @@ export default function PrzeciwnicyPage() {
       ikona: p.ikona ?? undefined,
       odznaka: p.hp ? `${p.hp}` : undefined,
       klasa: 'przeciwnik',
-      opis: p.hp ? `${p.hp} HP · ${p.obrazenia ?? 1} obrażeń` : 'przeciwnik',
+      opis: p.hp
+        ? t('encyklopedia.opisHpObrazenia', { hp: p.hp, dmg: p.obrazenia ?? 1 })
+        : t('encyklopedia.znacznikPrzeciwnik'),
       grupy: grupa,
       waga: hp,
       szczegoly: {
-        znaczniki: ['przeciwnik', ...(p.hp ? [`${p.hp} HP`] : [])],
+        znaczniki: [t('encyklopedia.znacznikPrzeciwnik'), ...(p.hp ? [`${p.hp} HP`] : [])],
         pola: [
-          ...(p.hp ? [{ label: 'Zdrowie', wartosc: `${p.hp} HP` }] : []),
-          ...(p.obrazenia ? [{ label: 'Obrażenia od dotknięcia', wartosc: `${p.obrazenia}` }] : []),
+          ...(p.hp ? [{ label: t('encyklopedia.poleZdrowie'), wartosc: `${p.hp} HP` }] : []),
+          ...(p.obrazenia
+            ? [{ label: t('encyklopedia.poleObrazeniaOdDotkniecia'), wartosc: `${p.obrazenia}` }]
+            : []),
         ],
-        podglad: p.ikona ? { postac: p.ikona, podpis: 'Sprite z gry' } : undefined,
+        podglad: p.ikona
+          ? { postac: p.ikona, podpis: t('encyklopedia.detalPodpisSpriteZGry') }
+          : undefined,
         pelnyOpis: p.opis ?? undefined,
       },
     }
@@ -50,12 +60,12 @@ export default function PrzeciwnicyPage() {
 
   return (
     <EncLista
-      sekcja="Przeciwnicy"
+      sekcja={t('encyklopedia.dzialPrzeciwnicy')}
       wpisy={wpisy}
       filtry={FILTRY}
-      sortWaga="Zdrowie"
-      placeholder="Szukaj przeciwnika…"
-      wstep="Kliknij przeciwnika, żeby zobaczyć jego statystyki i zachowanie."
+      sortWaga={t('encyklopedia.sortZdrowie')}
+      placeholder={t('encyklopedia.przeciwnicySzukaj')}
+      wstep={t('encyklopedia.przeciwnicyWstep')}
     />
   )
 }

@@ -4,13 +4,9 @@ import { MARK_NA_POSTAC } from '@/lib/queries'
 import { ikonaPostaci, jestTainted } from '@/lib/chars'
 import { danePostaci, opisZdrowia, opisZnajdziek } from '@/lib/enc/postacieDane'
 import type { EncFiltr, EncWpis } from '@/lib/enc/typy'
+import { tlumacz } from '@/lib/i18n/serwer'
 
 export const dynamic = 'force-dynamic'
-
-const FILTRY: EncFiltr[] = [
-  { id: 'bazowe', label: 'Bazowe' },
-  { id: 'tainted', label: 'Splugawione' },
-]
 
 /**
  * Sekcja „Postacie": 34 postacie z danymi z gry (zdrowie, znajdźki, itemy startowe,
@@ -22,6 +18,13 @@ const FILTRY: EncFiltr[] = [
 export default async function PostaciePage() {
   const [dash, odblokowane] = await Promise.all([getDashboard(), getOdblokowaneAchievementy()])
   const postep = new Map(dash.postacie.map((p) => [p.nazwa, p]))
+  const t = tlumacz()
+
+  // Id filtrów zostają — to one łączą chip z `grupy` wpisu.
+  const FILTRY: EncFiltr[] = [
+    { id: 'bazowe', label: t('encyklopedia.filtrBazowe') },
+    { id: 'tainted', label: t('encyklopedia.filtrSplugawione') },
+  ]
 
   const wpisy: EncWpis[] = dash.postacie
     .slice()
@@ -33,12 +36,12 @@ export default async function PostaciePage() {
       const znajdzki = d ? opisZnajdziek(d) : null
 
       const pola = [
-        ...(d ? [{ label: 'Zdrowie', wartosc: opisZdrowia(d.hp) }] : []),
-        ...(znajdzki ? [{ label: 'Na start', wartosc: znajdzki }] : []),
+        ...(d ? [{ label: t('encyklopedia.poleZdrowie'), wartosc: opisZdrowia(d.hp) }] : []),
+        ...(znajdzki ? [{ label: t('encyklopedia.poleNaStart'), wartosc: znajdzki }] : []),
         {
-          label: 'Twoje marki',
+          label: t('encyklopedia.poleTwojeMarki'),
           wartosc: tainted
-            ? 'brak danych ze Steama'
+            ? t('encyklopedia.markiBrakDanych')
             : `${marki?.zaliczone ?? 0} / ${MARK_NA_POSTAC} (${marki?.procent ?? 0}%)`,
         },
       ]
@@ -61,15 +64,17 @@ export default async function PostaciePage() {
         // Splugawione nie mają marek w Steamie, więc odznaka z procentem byłaby kłamstwem.
         odznaka: tainted ? undefined : `${p.procent}%`,
         klasa,
-        opis: d?.birthright ?? (tainted ? 'postać splugawiona' : 'postać'),
+        opis:
+          d?.birthright ??
+          t(tainted ? 'encyklopedia.opisPostacSplugawiona' : 'encyklopedia.opisPostac'),
         grupy: [tainted ? 'tainted' : 'bazowe'],
         waga: tainted ? -1 : p.procent,
         szczegoly: {
           // Birthright jest „mottem" postaci — czytelniej jako cytat pod nazwą niż w tabelce.
           cytat: d?.birthright ?? undefined,
           znaczniki: [
-            tainted ? 'splugawiona' : 'bazowa',
-            ...(tainted ? [] : [`${p.procent}% marek`]),
+            t(tainted ? 'encyklopedia.znacznikSplugawiona' : 'encyklopedia.znacznikBazowa'),
+            ...(tainted ? [] : [t('encyklopedia.znacznikProcentMarek', { procent: p.procent })]),
           ],
           pola,
           itemy: d?.itemy.map((i) => ({ idW: i.id, nazwa: i.nazwa })),
@@ -87,12 +92,12 @@ export default async function PostaciePage() {
 
   return (
     <EncLista
-      sekcja="Postacie"
+      sekcja={t('encyklopedia.dzialPostacie')}
       wpisy={wpisy}
       filtry={FILTRY}
-      sortWaga="Postęp"
-      placeholder="Szukaj postaci…"
-      wstep="Kliknij postać, żeby zobaczyć szczegóły i swój postęp."
+      sortWaga={t('encyklopedia.sortPostep')}
+      placeholder={t('encyklopedia.postacieSzukaj')}
+      wstep={t('encyklopedia.postacieWstep')}
     />
   )
 }

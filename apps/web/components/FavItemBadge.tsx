@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import ItemSprite from '@/components/ItemSprite'
+import { useT } from '@/components/JezykProvider'
 
 // Kilkanaście kultowych itemów do wyboru (mają sprite'y w public/tboi/items).
 const DO_WYBORU = [
@@ -25,6 +26,7 @@ const DO_WYBORU = [
 
 /** Ulubiony item (preferencja lokalna, jak avatar/companion). Klik = zmiana z listy. */
 export default function FavItemBadge() {
+  const t = useT()
   const [item, setItem] = useState('Sacred Heart')
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLSpanElement>(null)
@@ -55,10 +57,10 @@ export default function FavItemBadge() {
         type="button"
         className="badge fav-item-btn"
         onClick={() => setOpen((v) => !v)}
-        title="Zmień ulubiony item"
+        title={t('profil.ulubionyItemZmien')}
         aria-expanded={open}
       >
-        <ItemSprite nazwa={item} size={20} /> Ulubiony item: {item}
+        <ItemSprite nazwa={item} size={20} /> {t('profil.ulubionyItemEtykieta', { nazwa: item })}
       </button>
       {open && (
         <div className="fav-item-pop" role="menu">

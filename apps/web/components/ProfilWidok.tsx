@@ -9,8 +9,10 @@ import Gablota, { type ItemDoWyboru } from '@/components/Gablota'
 import LicznikiObserwacji from '@/components/LicznikiObserwacji'
 import { avatarGracza, ikonaPostaci, pelnaPostaci } from '@/lib/chars'
 import { PUSTKA } from '@/lib/klimat'
+import { jezykSerwera, tlumacz } from '@/lib/i18n/serwer'
 import type { DecorId } from '@/lib/pfpDecor'
 import type { FeedWpis, GraczKarta } from '@/lib/social'
+import { NICK_DLUGI } from '@/lib/nick'
 
 /** Odblokowany achievement ze Steama — nazwa, ikona i data zdobycia (wszystko prawdziwe). */
 export type Odblokowanie = { nazwa: string; ikonaUrl: string | null; data: string }
@@ -93,6 +95,10 @@ export default function ProfilWidok({
   /** Prawy górny róg karty: ołówek (ja) albo „Obserwuj" (obcy). */
   akcje?: ReactNode
 }) {
+  const t = tlumacz()
+  // Daty achievementów idą za językiem interfejsu — inaczej angielski profil pokazywałby
+  // „14.03.2021" w polskim formacie.
+  const locale = jezykSerwera() === 'pl' ? 'pl-PL' : 'en-GB'
   return (
     <section className="pf-page">
       <div className="pf-grid">
@@ -115,10 +121,24 @@ export default function ProfilWidok({
               />
             </div>
             <div className="pf-id">
-              <h1 style={d.kolor ? { color: d.kolor } : undefined}>
-                {d.nick}{' '}
+              {/* Nick w osobnym elemencie, a nie gołym tekstem w <h1>: tylko wtedy da się go
+                  przyciąć do dwóch linijek i dołożyć wielokropek. Nowe nicki mają limit 20
+                  znaków, ale w bazie siedzą starsze (i te ze Steama), więc nagłówek musi
+                  przeżyć 49 znaków bez ani jednej spacji. `title` zostawia pełną wersję
+                  pod kursorem — przycinamy WYŚWIETLANIE, nie dane. */}
+              <h1
+                className={d.nick.length > NICK_DLUGI ? 'pf-tytul dlugi' : 'pf-tytul'}
+                style={d.kolor ? { color: d.kolor } : undefined}
+              >
+                <span className="pf-nick" title={d.nick}>
+                  {d.nick}
+                </span>{' '}
                 {wlasny && (
-                  <Link className="pf-edit" href="/kim-jestem" aria-label="Edytuj profil">
+                  <Link
+                    className="pf-edit"
+                    href="/kim-jestem"
+                    aria-label={t('profil.edytujProfil')}
+                  >
                     {/* Lead Pencil z gry zamiast znaku „✎" — ikona, nie glif z fontu. */}
                     <Sprite name="pencil" size={26} />
                   </Link>
@@ -135,7 +155,7 @@ export default function ProfilWidok({
                 listaObserwujacych={d.listaObserwujacych ?? []}
                 listaObserwowanych={d.listaObserwowanych ?? []}
               />
-              <p className="pf-bio">„{d.opis || 'Za dużo gram w Isaaca. Ratunku.'}"</p>
+              <p className="pf-bio">„{d.opis || t('profil.cytatDomyslny')}"</p>
             </div>
             <div className="pf-meta">
               {d.meta.map((m) => (
@@ -151,7 +171,7 @@ export default function ProfilWidok({
           {/* Ulubiona postać + Dead God progress obok siebie */}
           <div className="pf-favprog">
             <div className="note fav-char-card">
-              <h3>Ulubiona postać</h3>
+              <h3>{t('profil.ulubionaPostacNaglowek')}</h3>
               {/* Brak ulubionej to prawidłowy wybór („Brak" w edytorze) — pokazujemy pusty
                   cokół, a nie podstawiamy Isaaca i nie udajemy, że ktoś go wybrał. */}
               {d.ulubionaPostac ? (
@@ -176,7 +196,7 @@ export default function ProfilWidok({
                     <span className="fav-char-cien" aria-hidden />
                   </div>
                   <div className="fav-char-name muted">
-                    {wlasny ? 'Nie wybrano' : 'Brak ulubionej'}
+                    {wlasny ? t('profil.ulubionaNieWybrano') : t('profil.ulubionaBrak')}
                   </div>
                 </div>
               )}
@@ -193,15 +213,15 @@ export default function ProfilWidok({
 
           {/* Aktywność — wpisy są PRAWDZIWE (baza), u mnie i u innych. */}
           <div className="note">
-            <GlowaSekcji wiecej={wlasny ? { href: '/', tekst: 'Feed →' } : null}>
+            <GlowaSekcji wiecej={wlasny ? { href: '/', tekst: t('profil.linkFeed') } : null}>
               <h2>
-                <Sprite name="stats" size={24} /> Ostatnia aktywność
+                <Sprite name="stats" size={24} /> {t('profil.aktywnoscNaglowek')}
               </h2>
             </GlowaSekcji>
             <p className="sekcja-opis muted small">
               {wlasny
-                ? 'Twoje wpisy w feedzie — odblokowane achievementy i ubici bossowie, prosto ze Steama. To samo widzą znajomi.'
-                : `Co ${d.nick} wrzucił do feedu — odblokowania i ubici bossowie.`}
+                ? t('profil.aktywnoscOpisWlasny')
+                : t('profil.aktywnoscOpisObcy', { nick: d.nick })}
             </p>
             {d.wpisy.length === 0 ? (
               wlasny ? (
@@ -209,12 +229,12 @@ export default function ProfilWidok({
                   tekst={PUSTKA.brakWpisow}
                   akcja={
                     <Link className="btn" href="/kolekcja">
-                      Synchronizuj ze Steam
+                      {t('profil.aktywnoscSynchronizuj')}
                     </Link>
                   }
                 />
               ) : (
-                <PustyStan maly tekst={<>Cisza. {d.nick} jeszcze nic tu nie wrzucił.</>} />
+                <PustyStan maly tekst={t('profil.aktywnoscPustoObcy', { nick: d.nick })} />
               )
             ) : (
               <div className="feed">
@@ -241,7 +261,7 @@ export default function ProfilWidok({
               }
             >
               <h3>
-                <Sprite name="deadgod" size={20} /> Dead God — postęp
+                <Sprite name="deadgod" size={20} /> {t('profil.deadGodNaglowek')}
               </h3>
               <div className="hero-progress">
                 <div className="bar">
@@ -250,34 +270,28 @@ export default function ProfilWidok({
                 <span className="hero-pct">{d.achProcent}%</span>
               </div>
               <p className="small muted">
-                {d.achUnlocked}/{d.achTotal} achievementów
+                {t('profil.achPostep', { zdobyte: d.achUnlocked, wszystkie: d.achTotal })}
               </p>
             </div>
           ) : (
             wlasny && (
               <div className="note dead-god-card">
                 <h3>
-                  <Sprite name="deadgod" size={20} /> Dead God — postęp
+                  <Sprite name="deadgod" size={20} /> {t('profil.deadGodNaglowek')}
                 </h3>
                 <PustyStan
                   maly
                   tekst={
                     <>
-                      <b>641 achievementów czeka.</b> Podłącz Steam, a Dead God, marki postaci i
-                      najrzadsze zdobycze wskoczą tu same — razem z datami sprzed lat.
+                      <b>{t('profil.steamZaproszenieTytul')}</b> {t('profil.steamZaproszenieOpis')}
                     </>
                   }
                   akcja={
                     <Link className="btn" href="/kim-jestem">
-                      Podłącz Steam
+                      {t('profil.podlaczSteam')}
                     </Link>
                   }
-                  poza={
-                    <>
-                      Profil, gablotę i ozdoby ustawisz już teraz — Steam nie jest do tego
-                      potrzebny.
-                    </>
-                  }
+                  poza={t('profil.steamZaproszeniePoza')}
                 />
               </div>
             )
@@ -286,9 +300,11 @@ export default function ProfilWidok({
           {/* Recent Achievements */}
           {d.recent.length > 0 && (
             <div className="note">
-              <GlowaSekcji wiecej={wlasny ? { href: '/kolekcja', tekst: 'Wszystkie →' } : null}>
+              <GlowaSekcji
+                wiecej={wlasny ? { href: '/kolekcja', tekst: t('profil.linkWszystkie') } : null}
+              >
                 <h3>
-                  <Sprite name="trophy" size={22} /> Ostatnie achievementy
+                  <Sprite name="trophy" size={22} /> {t('profil.ostatnieAchievementy')}
                 </h3>
               </GlowaSekcji>
               <ul className="ra-list">
@@ -297,7 +313,7 @@ export default function ProfilWidok({
                     {a.ikonaUrl && <img src={a.ikonaUrl} alt="" />}
                     <span className="grow">{a.nazwa}</span>
                     <span className="muted small">
-                      {new Date(a.data).toLocaleDateString('pl-PL')}
+                      {new Date(a.data).toLocaleDateString(locale)}
                     </span>
                   </li>
                 ))}
@@ -310,9 +326,11 @@ export default function ProfilWidok({
               Bez Steama cała siatka to same zera — nie pokazujemy jej wcale. */}
           {d.steamPodlaczony && (
             <div className="note">
-              <GlowaSekcji wiecej={wlasny ? { href: '/statystyki', tekst: 'Statystyki →' } : null}>
+              <GlowaSekcji
+                wiecej={wlasny ? { href: '/statystyki', tekst: t('profil.linkStatystyki') } : null}
+              >
                 <h3>
-                  <Sprite name="chad" size={22} /> Postępy postaci
+                  <Sprite name="chad" size={22} /> {t('profil.postepyPostaci')}
                 </h3>
               </GlowaSekcji>
               <div className="char-grid">
@@ -341,9 +359,12 @@ export default function ProfilWidok({
 
           {/* Znajomi — PRAWDZIWI (obserwacja w obie strony), nie mock jak reszta demo. */}
           <div className="note">
-            <GlowaSekcji wiecej={wlasny ? { href: '/znajomi', tekst: 'Wszyscy →' } : null}>
+            <GlowaSekcji
+              wiecej={wlasny ? { href: '/znajomi', tekst: t('profil.linkWszyscy') } : null}
+            >
               <h3>
-                <Sprite name="friendfinder" size={22} /> Znajomi ({d.znajomi.length})
+                <Sprite name="friendfinder" size={22} />{' '}
+                {t('profil.znajomiNaglowek', { liczba: d.znajomi.length })}
               </h3>
             </GlowaSekcji>
             {d.znajomi.length === 0 ? (
@@ -353,12 +374,12 @@ export default function ProfilWidok({
                   tekst={PUSTKA.brakZnajomychLista}
                   akcja={
                     <Link className="btn" href="/znajomi">
-                      Znajdź graczy
+                      {t('profil.znajdzGraczy')}
                     </Link>
                   }
                 />
               ) : (
-                <PustyStan maly tekst={<>{d.nick} nie ma jeszcze znajomych.</>} />
+                <PustyStan maly tekst={t('profil.znajomiPustoObcy', { nick: d.nick })} />
               )
             ) : (
               <ul className="fr-list">
@@ -372,7 +393,7 @@ export default function ProfilWidok({
                     </LinkGracza>
                     {/* Bez „X%" postępu: cudzy procent znaliśmy tylko dlatego, że był
                         wyliczany z hasza nicku. Liczba wpisów jest prawdziwa. */}
-                    <span className="muted small">{g.wpisy} wpisów</span>
+                    <span className="muted small">{t('wspolne.wpisy', { liczba: g.wpisy })}</span>
                   </li>
                 ))}
               </ul>

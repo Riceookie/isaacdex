@@ -4,14 +4,16 @@ import KimJestemForm from '@/components/KimJestemForm'
 import ZalogujStan from '@/components/ZalogujStan'
 import { getProfilSetup } from '@/lib/queries'
 import { mojGracz } from '@/lib/konto'
+import { tlumacz } from '@/lib/i18n/serwer'
+import type { Klucz } from '@/lib/i18n/slownik'
 
 export const dynamic = 'force-dynamic'
 
 /** Komunikat po powrocie ze Steama (?steam=…). Bez tego podpięcie kończyłoby się ciszą. */
-const KOMUNIKAT: Record<string, { tekst: string; zle?: boolean }> = {
-  ok: { tekst: 'Steam podłączony. Możesz zsynchronizować osiągnięcia.' },
-  blad: { tekst: 'Steam nie potwierdził logowania. Spróbuj jeszcze raz.', zle: true },
-  zajety: { tekst: 'To konto Steam jest już przypięte do innego konta w IsaacDex.', zle: true },
+const KOMUNIKAT: Record<string, { klucz: Klucz; zle?: boolean }> = {
+  ok: { klucz: 'konto.steamOk' },
+  blad: { klucz: 'konto.steamNiepotwierdzony', zle: true },
+  zajety: { klucz: 'konto.steamZajety', zle: true },
 }
 
 export default async function KimJestemPage({
@@ -20,43 +22,43 @@ export default async function KimJestemPage({
   searchParams: { steam?: string }
 }) {
   const [dane, ja] = await Promise.all([getProfilSetup(), mojGracz()])
+  const t = tlumacz()
   const komunikat = searchParams.steam ? KOMUNIKAT[searchParams.steam] : undefined
 
   return (
     <section className="whoami-page">
       {komunikat && (
         <p className={'note steam-komunikat' + (komunikat.zle ? ' zle' : '')} role="status">
-          <Sprite name={komunikat.zle ? 'skull' : 'heart'} size={16} /> {komunikat.tekst}
+          <Sprite name={komunikat.zle ? 'skull' : 'heart'} size={16} /> {t(komunikat.klucz)}
         </p>
       )}
 
       <div className="note steam-karta">
         <h2>
-          <Sprite name="trophy" size={20} /> Konto Steam
+          <Sprite name="trophy" size={20} /> {t('konto.kontoSteam')}
         </h2>
 
         {!ja ? (
           <p className="muted small">
-            <Link href="/logowanie">Zaloguj się</Link>, żeby podłączyć swojego Steama i widzieć
-            własne osiągnięcia zamiast cudzych.
+            <Link href="/logowanie">{t('wspolne.zaloguj')}</Link>
+            {t('konto.steamGoscPo')}
           </p>
         ) : dane.steamId ? (
           <p className="muted small">
             {/* Bez surowego SteamID — liczy się „czy podpięte", nie sam numer. */}
-            <b>Steam podłączony</b>
-            {dane.zsynchronizowano
-              ? ' — osiągnięcia zsynchronizowane.'
-              : ' — jeszcze bez synchronizacji.'}
+            <b>{t('konto.steamPodlaczony')}</b>
+            {t(
+              dane.zsynchronizowano
+                ? 'konto.steamZsynchronizowane'
+                : 'konto.steamBezSynchronizacji',
+            )}
           </p>
         ) : (
           <>
-            <p className="muted small">
-              Bez Steama IsaacDex nie zna Twoich osiągnięć ani completion marks — profil będzie
-              pusty.
-            </p>
+            <p className="muted small">{t('konto.steamBezSteama')}</p>
             {/* Zwykły link, nie fetch: Steam musi zobaczyć użytkownika, a nie nasz serwer. */}
             <a className="btn" href="/api/steam/polacz">
-              Podłącz Steam
+              {t('konto.podlaczSteam')}
             </a>
           </>
         )}
@@ -69,11 +71,11 @@ export default async function KimJestemPage({
           <ZalogujStan
             tekst={
               <>
-                <b>Pusta karta postaci.</b> Załóż konto, a tu ulepisz swój nick, opis, avatar i
-                ulubioną postać — Twoja piwnicza tożsamość.
+                <b>{t('konto.goscPustaKartaMocne')}</b>
+                {t('konto.goscPustaKartaReszta')}
               </>
             }
-            cta="Załóż konto"
+            cta={t('konto.zalozKonto')}
           />
         )}
       </div>

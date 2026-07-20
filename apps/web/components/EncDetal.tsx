@@ -1,5 +1,8 @@
+'use client'
+
 import ItemSprite from '@/components/ItemSprite'
 import Sprite, { type SpriteName } from '@/components/Sprite'
+import { useT } from '@/components/JezykProvider'
 import Zamknij from '@/components/Zamknij'
 import type { EncWpis } from '@/lib/enc/typy'
 
@@ -9,6 +12,7 @@ import type { EncWpis } from '@/lib/enc/typy'
  * Wszystkie sekcje są opcjonalne, więc ten sam komponent obsługuje itemy, trinkety i postacie.
  */
 export default function EncDetal({ wpis, onZamknij }: { wpis: EncWpis; onZamknij: () => void }) {
+  const t = useT()
   const s = wpis.szczegoly ?? {}
 
   return (
@@ -44,7 +48,7 @@ export default function EncDetal({ wpis, onZamknij }: { wpis: EncWpis; onZamknij
         <dl className="ed-meta">
           {s.jakosc != null && (
             <div className="ed-wiersz">
-              <dt>Jakość</dt>
+              <dt>{t('encyklopedia.detalJakosc')}</dt>
               <dd>
                 <Gwiazdki n={s.jakosc} />
               </dd>
@@ -60,7 +64,7 @@ export default function EncDetal({ wpis, onZamknij }: { wpis: EncWpis; onZamknij
       )}
 
       {s.pule && s.pule.length > 0 && (
-        <Sekcja tytul="Pule itemów" icon="coin">
+        <Sekcja tytul={t('encyklopedia.detalPule')} icon="coin">
           <div className="filter-btns">
             {s.pule.map((p) => (
               <span key={p} className="chip xs">
@@ -72,7 +76,7 @@ export default function EncDetal({ wpis, onZamknij }: { wpis: EncWpis; onZamknij
       )}
 
       {s.efekty && s.efekty.length > 0 && (
-        <Sekcja tytul="Zmienia" icon="stats">
+        <Sekcja tytul={t('encyklopedia.detalZmienia')} icon="stats">
           <div className="filter-btns">
             {s.efekty.map((e) => (
               <span key={e} className="chip xs">
@@ -84,7 +88,7 @@ export default function EncDetal({ wpis, onZamknij }: { wpis: EncWpis; onZamknij
       )}
 
       {s.itemy && s.itemy.length > 0 && (
-        <Sekcja tytul={s.itemyTytul ?? 'Itemy startowe'} icon="d6">
+        <Sekcja tytul={s.itemyTytul ?? t('encyklopedia.detalItemyStartowe')} icon="d6">
           <div className="ed-itemy">
             {s.itemy.map((i) => (
               <span key={`${i.typ ?? ''}${i.idW}`} className="ed-item">
@@ -97,26 +101,37 @@ export default function EncDetal({ wpis, onZamknij }: { wpis: EncWpis; onZamknij
       )}
 
       {(s.podglad?.postac || s.podglad?.gra || s.podglad?.lzy) && (
-        <Sekcja tytul="Wygląd" icon="isaacHead">
+        <Sekcja tytul={t('encyklopedia.detalWyglad')} icon="isaacHead">
           <div className="ed-podglad">
             {s.podglad.postac && (
               <figure>
-                <img src={s.podglad.postac} alt={`Wygląd: ${wpis.nazwa}`} />
+                <img
+                  src={s.podglad.postac}
+                  alt={t('encyklopedia.detalAltWyglad', { nazwa: wpis.nazwa })}
+                />
                 <figcaption className="muted small">
-                  {s.podglad.podpis ?? 'Isaac z tym itemem'}
+                  {s.podglad.podpis ?? t('encyklopedia.detalPodpisIsaac')}
                 </figcaption>
               </figure>
             )}
             {s.podglad.gra && (
               <figure>
-                <img src={s.podglad.gra} alt={`${wpis.nazwa} w grze`} />
-                <figcaption className="muted small">{s.podglad.podpisGra ?? 'W grze'}</figcaption>
+                <img
+                  src={s.podglad.gra}
+                  alt={t('encyklopedia.detalAltWGrze', { nazwa: wpis.nazwa })}
+                />
+                <figcaption className="muted small">
+                  {s.podglad.podpisGra ?? t('encyklopedia.detalPodpisWGrze')}
+                </figcaption>
               </figure>
             )}
             {s.podglad.lzy && (
               <figure>
-                <img src={s.podglad.lzy} alt={`Łzy po wzięciu ${wpis.nazwa}`} />
-                <figcaption className="muted small">Efekt łez</figcaption>
+                <img
+                  src={s.podglad.lzy}
+                  alt={t('encyklopedia.detalAltLzy', { nazwa: wpis.nazwa })}
+                />
+                <figcaption className="muted small">{t('encyklopedia.detalEfektLez')}</figcaption>
               </figure>
             )}
           </div>
@@ -124,21 +139,21 @@ export default function EncDetal({ wpis, onZamknij }: { wpis: EncWpis; onZamknij
       )}
 
       {s.pelnyOpis && (
-        <Sekcja tytul="Opis" icon="book">
+        <Sekcja tytul={t('encyklopedia.detalOpis')} icon="book">
           <p className="ed-opis">{s.pelnyOpis}</p>
         </Sekcja>
       )}
 
       {s.odblokowanie && (
-        <Sekcja tytul="Odblokowanie" icon="trophy">
+        <Sekcja tytul={t('encyklopedia.detalOdblokowanie')} icon="trophy">
           <p className={'ed-unlock' + (s.odblokowanie.zdobyte ? ' zdobyte' : '')}>
             <strong>{s.odblokowanie.nazwa}</strong>
             {s.odblokowanie.warunek && <span className="ed-warunek">{s.odblokowanie.warunek}</span>}
             {s.odblokowanie.zdobyte !== undefined && (
               <span className="muted small">
                 {s.odblokowanie.zdobyte
-                  ? 'Masz ten achievement.'
-                  : 'Nie masz jeszcze tego achievementu.'}
+                  ? t('encyklopedia.detalMaszAchievement')
+                  : t('encyklopedia.detalBrakAchievementu')}
               </span>
             )}
           </p>
@@ -169,11 +184,12 @@ function Sekcja({
 
 /** Jakość 0–4 jako gwiazdki (puste = do pełnych czterech). */
 function Gwiazdki({ n }: { n: number }) {
+  const t = useT()
   // Gwiazdki świecą KOLOREM JAKOŚCI (Q0 szary … Q4 złoty) — tą samą skalą co odznaki
   // w Encyklopedii i obwódki w gablocie. Wcześniej były złote niezależnie od poziomu,
   // więc Q1 wyglądał jak legenda.
   return (
-    <span className={`ed-stars q${n}`} aria-label={`Jakość ${n} na 4`}>
+    <span className={`ed-stars q${n}`} aria-label={t('encyklopedia.detalJakoscOpis', { n })}>
       {[0, 1, 2, 3].map((i) => (
         <span key={i} className={'ed-star' + (i < n ? ' on' : '')} aria-hidden>
           ★

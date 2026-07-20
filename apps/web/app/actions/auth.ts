@@ -7,6 +7,7 @@ import { prisma } from '@isaacdex/db'
 import { supabaseSerwer } from '@/lib/supabase/serwer'
 import { konfiguracjaSupabase } from '@/lib/supabase/konfiguracja'
 import { zalozGracza } from '@/lib/konto'
+import { NICK_MAX, NICK_MIN } from '@/lib/nick'
 
 /**
  * Logowanie i rejestracja (Supabase Auth, e-mail + hasło).
@@ -31,6 +32,7 @@ export type KodBledu =
   | 'email'
   | 'haslo'
   | 'nick-krotki'
+  | 'nick-dlugi'
   | 'nick-zajety'
   | 'dane'
   | 'niepotwierdzony'
@@ -73,7 +75,8 @@ export async function zarejestruj(dane: FormData) {
 
   const blad = walidacja(email, haslo)
   if (blad) naLogowanie(blad, 'rejestracja')
-  if (nick.length < 3) naLogowanie('nick-krotki', 'rejestracja')
+  if (nick.length < NICK_MIN) naLogowanie('nick-krotki', 'rejestracja')
+  if (nick.length > NICK_MAX) naLogowanie('nick-dlugi', 'rejestracja')
 
   // Nick jest widoczny w feedzie i czacie. Jeśli trzyma go REALNE konto (z logowaniem) — stop.
   // Ale „stare" konto bez logowania (userId == null: gracz-demo albo profil sprzed ery kont)

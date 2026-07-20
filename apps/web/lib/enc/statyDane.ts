@@ -2,6 +2,7 @@ import surowePostacie from './statyPostaci.json'
 import soweItemy from './statyItemow.json'
 import soweItemyKatalog from './itemy.json'
 import type { ModyfikatorStatow, Stat, StatyBazowe } from '@isaacdex/core'
+import type { Klucz, Tlumacz } from '../i18n/slownik'
 
 /**
  * Dane do kalkulatora statystyk.
@@ -40,14 +41,43 @@ export const ITEMY_STATY = (soweItemy as ItemStaty[])
   .map((i) => ({ ...i, jakosc: JAKOSC_PO_ID.get(i.id) }))
   .sort((a, b) => a.nazwa.localeCompare(b.nazwa))
 
-/** Kolejność i nazwy statów w tabeli (jak na ekranie postaci w grze). */
-export const STATY_OPIS: { stat: Stat; label: string; opis: string }[] = [
-  { stat: 'damage', label: 'Obrażenia', opis: 'Ile zabiera jedna łza.' },
-  { stat: 'tears', label: 'Łzy', opis: 'Szybkostrzelność — łzy na sekundę.' },
-  { stat: 'speed', label: 'Szybkość', opis: 'Jak szybko Isaac się porusza.' },
-  { stat: 'range', label: 'Zasięg', opis: 'Jak daleko lecą łzy.' },
-  { stat: 'shotSpeed', label: 'Prędkość łez', opis: 'Jak szybko lecą łzy.' },
-  { stat: 'luck', label: 'Szczęście', opis: 'Podbija szanse efektów losowych.' },
+/**
+ * Kolejność i nazwy statów w tabeli (jak na ekranie postaci w grze).
+ *
+ * `label`/`opis` to KLUCZE słownika, nie gotowe napisy — stała modułowa nie ma jak zawołać
+ * tłumacza, więc robi to Kalkulator przy renderze.
+ */
+export const STATY_OPIS: { stat: Stat; labelKlucz: Klucz; opisKlucz: Klucz }[] = [
+  {
+    stat: 'damage',
+    labelKlucz: 'encyklopedia.kalkStatDamage',
+    opisKlucz: 'encyklopedia.kalkStatDamageOpis',
+  },
+  {
+    stat: 'tears',
+    labelKlucz: 'encyklopedia.kalkStatTears',
+    opisKlucz: 'encyklopedia.kalkStatTearsOpis',
+  },
+  {
+    stat: 'speed',
+    labelKlucz: 'encyklopedia.kalkStatSpeed',
+    opisKlucz: 'encyklopedia.kalkStatSpeedOpis',
+  },
+  {
+    stat: 'range',
+    labelKlucz: 'encyklopedia.kalkStatRange',
+    opisKlucz: 'encyklopedia.kalkStatRangeOpis',
+  },
+  {
+    stat: 'shotSpeed',
+    labelKlucz: 'encyklopedia.kalkStatShotSpeed',
+    opisKlucz: 'encyklopedia.kalkStatShotSpeedOpis',
+  },
+  {
+    stat: 'luck',
+    labelKlucz: 'encyklopedia.kalkStatLuck',
+    opisKlucz: 'encyklopedia.kalkStatLuckOpis',
+  },
 ]
 
 /** Maksimum skali paska dla każdego statu (do wizualizacji, nie do liczenia). */
@@ -60,24 +90,29 @@ export const SKALA: Record<Stat, number> = {
   luck: 15,
 }
 
-/** Krótki opis wpływu itemu — np. „+0.5 obrażeń · ×1.5 obrażeń". */
-const NAZWY_STATOW: Record<Stat, string> = {
-  damage: 'obrażeń',
-  tears: 'łez',
-  speed: 'szybkości',
-  range: 'zasięgu',
-  shotSpeed: 'prędkości łez',
-  luck: 'szczęścia',
+/**
+ * Krótki opis wpływu itemu — np. „+0.5 obrażeń · ×1.5 obrażeń".
+ *
+ * Osobne klucze niż nagłówki tabeli, bo polski wymaga tu dopełniacza („Obrażenia" w główce,
+ * ale „+0.5 obrażeń" w opisie); po angielsku obie formy brzmią tak samo.
+ */
+const NAZWY_STATOW: Record<Stat, Klucz> = {
+  damage: 'encyklopedia.modDamage',
+  tears: 'encyklopedia.modTears',
+  speed: 'encyklopedia.modSpeed',
+  range: 'encyklopedia.modRange',
+  shotSpeed: 'encyklopedia.modShotSpeed',
+  luck: 'encyklopedia.modLuck',
 }
 
-export function opisModyfikatora(i: ItemStaty): string {
+export function opisModyfikatora(i: ItemStaty, t: Tlumacz): string {
   const czesci: string[] = []
   for (const [stat, wartosc] of Object.entries(i.plaskie ?? {})) {
     const znak = wartosc > 0 ? '+' : ''
-    czesci.push(`${znak}${wartosc} ${NAZWY_STATOW[stat as Stat]}`)
+    czesci.push(`${znak}${wartosc} ${t(NAZWY_STATOW[stat as Stat])}`)
   }
   for (const [stat, wartosc] of Object.entries(i.mnozniki ?? {})) {
-    czesci.push(`×${wartosc} ${NAZWY_STATOW[stat as Stat]}`)
+    czesci.push(`×${wartosc} ${t(NAZWY_STATOW[stat as Stat])}`)
   }
   return czesci.join(' · ')
 }

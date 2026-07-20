@@ -4,6 +4,7 @@ import { prisma } from '@isaacdex/db'
 import { mojGracz } from '@/lib/konto'
 import { czyMojKanal, kanalDlaSlugu } from '@/lib/wiadomosci'
 import { MAX_DLUGOSC } from '@/lib/czat'
+import { tlumacz } from '@/lib/i18n/serwer'
 
 /**
  * Wysłanie wiadomości.
@@ -19,14 +20,15 @@ export async function wyslijWiadomosc(
   tresc: string,
   obrazekUrl?: string | null,
 ): Promise<{ ok: true } | { ok: false; powod: string }> {
+  const t = tlumacz()
   const ja = await mojGracz()
-  if (!ja) return { ok: false, powod: 'Zaloguj się, aby pisać.' }
+  if (!ja) return { ok: false, powod: t('czat.bladZalogujByPisac') }
 
   const czysta = tresc.trim().slice(0, MAX_DLUGOSC)
-  if (!czysta && !obrazekUrl) return { ok: false, powod: 'Pusta wiadomość.' }
+  if (!czysta && !obrazekUrl) return { ok: false, powod: t('czat.bladPustaWiadomosc') }
 
   const kanal = await kanalDlaSlugu(slug)
-  if (!kanal) return { ok: false, powod: 'Nie ma takiego kanału.' }
+  if (!kanal) return { ok: false, powod: t('czat.bladBrakKanalu') }
 
   await prisma.wiadomosc.create({
     data: { kanal, autorId: ja.id, tresc: czysta, obrazekUrl: obrazekUrl ?? null },
@@ -46,9 +48,13 @@ export async function przelaczReakcje(
   wiadomoscId: number,
   ikona: string,
 ): Promise<{ ok: true; dodana: boolean } | { ok: false; powod: string }> {
+  const t = tlumacz()
   const ja = await mojGracz()
-  if (!ja) return { ok: false, powod: 'Zaloguj się, aby reagować.' }
-  if (!/^[a-zA-Z]{1,24}$/.test(ikona)) return { ok: false, powod: 'Nieznana reakcja.' }
+  if (!ja) return { ok: false, powod: t('czat.bladZalogujByReagowac') }
+  // Cyfry są dozwolone, bo reakcją może być naklejka z katalogu („c105", „t1"), ale token
+  // wciąż musi zaczynać się od litery — kształt sprawdzamy tu, sens przy renderowaniu.
+  if (!/^[a-zA-Z][a-zA-Z0-9]{0,23}$/.test(ikona))
+    return { ok: false, powod: t('czat.bladNieznanaReakcja') }
 
   // Reagować można tylko tam, gdzie w ogóle wolno Ci czytać — kanał wiadomości musi być
   // jednym z Twoich (publiczny albo Twój DM).
@@ -56,8 +62,9 @@ export async function przelaczReakcje(
     where: { id: wiadomoscId },
     select: { kanal: true },
   })
-  if (!wiad) return { ok: false, powod: 'Nie ma takiej wiadomości.' }
-  if (!(await czyMojKanal(wiad.kanal, ja.id))) return { ok: false, powod: 'Nie Twój kanał.' }
+  if (!wiad) return { ok: false, powod: t('czat.bladBrakWiadomosci') }
+  if (!(await czyMojKanal(wiad.kanal, ja.id)))
+    return { ok: false, powod: t('czat.bladNieTwojKanal') }
 
   const klucz = { wiadomoscId_graczId_ikona: { wiadomoscId, graczId: ja.id, ikona } }
   const istnieje = await prisma.reakcjaWiadomosci.findUnique({ where: klucz })

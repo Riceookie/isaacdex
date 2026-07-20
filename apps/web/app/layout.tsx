@@ -9,6 +9,8 @@ import TopBar from '@/components/TopBar'
 import { getCompanionInfo } from '@/lib/queries'
 import { mojGracz } from '@/lib/konto'
 import { KontoProvider } from '@/components/KontoProvider'
+import JezykProvider from '@/components/JezykProvider'
+import { jezykSerwera } from '@/lib/i18n/serwer'
 
 // Upheaval TT (BRK) — font menu The Binding of Isaac (Brian Kent / aenigma, freeware).
 const display = localFont({
@@ -38,9 +40,12 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     getCompanionInfo().catch(() => ({ steamConnected: true })),
     mojGracz().catch(() => null),
   ])
+  // Język czytamy z ciasteczka na serwerze i podajemy go NIŻEJ w drzewie — dzięki temu
+  // atrybut `lang` i teksty w komponentach klienckich zgadzają się od pierwszego renderu.
+  const jezyk = jezykSerwera()
   return (
     <html
-      lang="pl"
+      lang={jezyk}
       data-floor="basement"
       data-theme="dark"
       data-cards="tainted"
@@ -50,15 +55,17 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       <body>
         <ThemeApplier />
         <Ambience />
-        <KontoProvider zalogowany={ja !== null}>
-          <div className="app">
-            <Sidebar />
-            <div className="main-wrap">
-              <TopBar steamConnected={steamConnected} nick={ja?.nick ?? null} />
-              <main className="container">{children}</main>
+        <JezykProvider jezyk={jezyk}>
+          <KontoProvider zalogowany={ja !== null}>
+            <div className="app">
+              <Sidebar />
+              <div className="main-wrap">
+                <TopBar steamConnected={steamConnected} nick={ja?.nick ?? null} />
+                <main className="container">{children}</main>
+              </div>
             </div>
-          </div>
-        </KontoProvider>
+          </KontoProvider>
+        </JezykProvider>
       </body>
     </html>
   )

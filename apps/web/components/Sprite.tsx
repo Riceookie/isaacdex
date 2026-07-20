@@ -39,11 +39,15 @@ const SPRITES = {
   superfan: 'items/collectibles/smbsuperfan.png', // SMB Super Fan — Ustawienia
   momsEye: 'icons/moms-eye.png', // Mom's Eye — hasło ukryte (pokaż)
   momsContact: 'icons/moms-contact.png', // Mom's Contact — hasło widoczne (ukryj)
+  // Wysyłka wiadomości. Gra nie ma papierowego samolotu (najbliżej: Mysterious Paper, czyli
+  // ZMIĘTA kartka — czyta się jako „papier", nie jako „wyślij"), więc ikona jest rysowana:
+  // pixel-art 18x18 w palecie kartki, skrypt scripts/gen-paper-plane.mjs.
+  wyslij: 'ui/paper-plane.svg',
 } as const
 
 export type SpriteName = keyof typeof SPRITES
 
-/** Wszystkie sprity — do siatki reakcji/naklejek na czacie (potrzebna lista w runtime). */
+/** Wszystkie sprity — do siatki reakcji na czacie (potrzebna lista w runtime). */
 export const NAZWY_SPRITEOW = Object.keys(SPRITES) as SpriteName[]
 
 type Props = {

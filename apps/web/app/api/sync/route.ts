@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma, BossKoncowy, TrybGry, TypWpisu } from '@isaacdex/db'
 import mapaMarek from '@/lib/marki-mapa.json'
 import { mojGracz } from '@/lib/konto'
+import { tlumacz } from '@/lib/i18n/serwer'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -22,17 +23,19 @@ async function jget<T>(url: string): Promise<T> {
 // Synchronizujemy WYŁĄCZNIE Steam zalogowanego gracza: inaczej dowolny gość mógłby
 // odświeżać cudze osiągnięcia (a przy okazji zużywać nasz limit Web API).
 export async function POST() {
+  // Błędy z tego endpointu lądują wprost na ekranie Kolekcji, więc mówią językiem gracza.
+  const t = tlumacz()
   const key = process.env.STEAM_API_KEY
-  if (!key) return NextResponse.json({ error: 'Brak STEAM_API_KEY na serwerze.' }, { status: 500 })
+  if (!key) return NextResponse.json({ error: t('kolekcja.apiBrakKlucza') }, { status: 500 })
 
   const ja = await mojGracz()
-  if (!ja) return NextResponse.json({ error: 'Zaloguj się, żeby synchronizować.' }, { status: 401 })
+  if (!ja) return NextResponse.json({ error: t('kolekcja.apiZalogujBySync') }, { status: 401 })
   if (!ja.profilId) {
-    return NextResponse.json({ error: 'Najpierw podłącz konto Steam.' }, { status: 400 })
+    return NextResponse.json({ error: t('kolekcja.apiPodlaczSteam') }, { status: 400 })
   }
 
   const profil = await prisma.profil.findUnique({ where: { id: ja.profilId } })
-  if (!profil) return NextResponse.json({ error: 'Brak profilu.' }, { status: 400 })
+  if (!profil) return NextResponse.json({ error: t('kolekcja.apiBrakProfilu') }, { status: 400 })
   const sid = profil.steamId64
 
   const schema = await jget<{ game?: { availableGameStats?: { achievements?: SchemaAch[] } } }>(
@@ -49,7 +52,7 @@ export async function POST() {
     return NextResponse.json(
       {
         private: true,
-        error: 'Szczegóły gry (Game details) są prywatne — ustaw je na publiczne w Steam.',
+        error: t('kolekcja.apiProfilPrywatny'),
       },
       { status: 409 },
     )

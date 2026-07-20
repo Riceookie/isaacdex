@@ -4,11 +4,13 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import type { CSSProperties } from 'react'
 import Sprite from '@/components/Sprite'
+import { useT } from '@/components/JezykProvider'
 import { NAV } from '@/lib/nav'
 
 /** Pionowa nawigacja w sidebarze — jak menu The Binding of Isaac, z aktywną „zakładką". */
 export default function SideNav() {
   const pathname = usePathname()
+  const t = useT()
   return (
     <nav className="side-nav">
       {NAV.map((n) => {
@@ -22,7 +24,7 @@ export default function SideNav() {
             style={n.accent ? ({ '--nav-accent': n.accent } as CSSProperties) : undefined}
           >
             <Sprite name={n.icon} size={28} />
-            <span>{n.label}</span>
+            <span>{t(n.klucz)}</span>
           </Link>
         )
       })}

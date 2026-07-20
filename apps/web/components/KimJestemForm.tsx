@@ -6,6 +6,7 @@ import { ikonaPostaci, wlasnyAvatar } from '@/lib/chars'
 import { wgrajAvatar } from '@/lib/zalaczniki'
 import Sprite from '@/components/Sprite'
 import AvatarUpload from '@/components/AvatarUpload'
+import { useT } from '@/components/JezykProvider'
 import { DECORATIONS, decorOdblokowana, type DecorId } from '@/lib/pfpDecor'
 
 type Props = {
@@ -39,6 +40,7 @@ const IMIONA = [
 
 export default function KimJestemForm(p: Props) {
   const router = useRouter()
+  const t = useT()
   const [nick, setNick] = useState(p.nick)
   const [opis, setOpis] = useState(p.opis)
   const [ulubiona, setUlubiona] = useState(p.ulubionaPostac)
@@ -71,7 +73,7 @@ export default function KimJestemForm(p: Props) {
       if (foto?.startsWith('data:')) {
         avatar = await wgrajAvatar(foto)
         if (!avatar) {
-          setMsg('Nie udało się wysłać avatara. Spróbuj jeszcze raz.')
+          setMsg(t('konto.bladAvatara'))
           return
         }
       }
@@ -90,7 +92,7 @@ export default function KimJestemForm(p: Props) {
       })
       if (!r.ok) {
         const d = await r.json()
-        setMsg(d.error || 'Nie udało się zapisać.')
+        setMsg(d.error || t('konto.bladZapisu'))
         return
       }
       router.push('/profil')
@@ -112,10 +114,8 @@ export default function KimJestemForm(p: Props) {
           decor={decor}
         />
         <div className="whoami-avatar-side">
-          <p className="small muted whoami-avatar-cap">
-            Kliknij, by wgrać własny avatar. Bez obrazu użyjemy ikony ulubionej postaci.
-          </p>
-          <span className="side-label">Dekoracja avatara</span>
+          <p className="small muted whoami-avatar-cap">{t('konto.avatarPodpowiedz')}</p>
+          <span className="side-label">{t('konto.dekoracjaAvatara')}</span>
           <div className="decor-picker">
             {DECORATIONS.map((d) => {
               const locked = !decorOdblokowana(d, odblokSet)
@@ -129,7 +129,9 @@ export default function KimJestemForm(p: Props) {
                   onClick={() => !locked && setDecor(d.id)}
                   disabled={locked}
                   data-tip={locked ? d.unlock?.text : d.label}
-                  aria-label={locked ? `${d.label} (zablokowane)` : d.label}
+                  aria-label={
+                    locked ? t('konto.dekoracjaZablokowana', { nazwa: d.label }) : d.label
+                  }
                 >
                   <span className="decor-swatch">
                     {d.id === 'none' ? (
@@ -169,7 +171,7 @@ export default function KimJestemForm(p: Props) {
             if (zablokowane.length) {
               return (
                 <p className="small muted decor-hint">
-                  {zablokowane.length} dekoracji zablokowanych — odblokuj achievementy w grze.
+                  {t('konto.dekoracjeZablokowane', { liczba: zablokowane.length })}
                 </p>
               )
             }
@@ -180,7 +182,7 @@ export default function KimJestemForm(p: Props) {
 
       <div className="whoami-name">
         <label>
-          Wpisz nazwę…
+          {t('konto.wpiszNazwe')}
           <span className="name-row">
             <input
               className="input grow"
@@ -188,7 +190,12 @@ export default function KimJestemForm(p: Props) {
               onChange={(e) => setNick(e.target.value)}
               maxLength={40}
             />
-            <button className="dice" type="button" onClick={losujImie} data-tip="Losowe imię">
+            <button
+              className="dice"
+              type="button"
+              onClick={losujImie}
+              data-tip={t('konto.losoweImie')}
+            >
               <Sprite name="d6" size={20} />
             </button>
           </span>
@@ -196,25 +203,26 @@ export default function KimJestemForm(p: Props) {
       </div>
 
       <p className="small muted whoami-hint">
-        Konto Steam i synchronizację ustawisz w <a href="/ustawienia">Ustawieniach</a>.
+        {t('konto.steamWUstawieniachPrzed')}
+        <a href="/ustawienia">{t('konto.linkUstawienia')}</a>.
       </p>
 
       <div className="whoami-sides">
         <div className="side-note">
           <label>
-            Opis…
+            {t('konto.poleOpis')}
             <textarea
               className="input"
               rows={3}
               value={opis}
               onChange={(e) => setOpis(e.target.value)}
               maxLength={300}
-              placeholder="Kilka słów o sobie…"
+              placeholder={t('konto.opisPlaceholder')}
             />
           </label>
         </div>
         <div className="side-note">
-          <span className="side-label">Ustaw ulubioną postać</span>
+          <span className="side-label">{t('konto.ustawUlubionaPostac')}</span>
           <div className="char-picker">
             {/* „Brak" jako jawny kafel: dotąd odznaczało się ponownym kliknięciem w wybraną
                 postać, czego nikt nie mógł odgadnąć. */}
@@ -222,8 +230,8 @@ export default function KimJestemForm(p: Props) {
               type="button"
               className={'char-pick char-pick-brak' + (ulubiona === '' ? ' sel' : '')}
               onClick={() => setUlubiona('')}
-              data-tip="Brak ulubionej postaci"
-              aria-label="Brak ulubionej postaci"
+              data-tip={t('konto.brakUlubionejPostaci')}
+              aria-label={t('konto.brakUlubionejPostaci')}
             >
               <span aria-hidden>✕</span>
             </button>
@@ -248,7 +256,7 @@ export default function KimJestemForm(p: Props) {
         </p>
       )}
       <button className="btn full" onClick={zapisz} disabled={busy}>
-        {busy ? 'Zapisuję…' : 'Zapisz profil'}
+        {t(busy ? 'konto.zapisuje' : 'konto.zapiszProfil')}
       </button>
     </div>
   )

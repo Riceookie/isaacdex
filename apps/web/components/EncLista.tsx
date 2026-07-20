@@ -6,12 +6,15 @@ import EncDetal from '@/components/EncDetal'
 import EncPowrot from '@/components/EncPowrot'
 import ItemSprite from '@/components/ItemSprite'
 import PustyStan from '@/components/PustyStan'
+import { useT } from '@/components/JezykProvider'
 import type { EncFiltr, EncWpis } from '@/lib/enc/typy'
 
 type Props = {
   wpisy: EncWpis[]
   /** Chipy nad siatką; wpis pasuje, gdy ma id filtra w `grupy`. Puste = bez filtrów. */
   filtry?: EncFiltr[]
+  /** Teksty przychodzą JUŻ przetłumaczone z serwerowych stron sekcji. Bez placeholdera
+   *  wchodzi domyślne „Szukaj…". */
   placeholder?: string
   /** Podpowiedź nad szukajką. */
   wstep?: string
@@ -30,11 +33,15 @@ type Sort = 'domyslna' | 'nazwa' | 'waga'
 export default function EncLista({
   wpisy,
   filtry = [],
-  placeholder = 'Szukaj…',
+  placeholder,
   wstep,
   sortWaga,
   sekcja,
 }: Props) {
+  const t = useT()
+  // Placeholder domyślny liczymy tu, a nie w domyślnej wartości parametru — inaczej trzeba by
+  // wołać hooka przed destrukturyzacją propsów.
+  const szukajkaPlaceholder = placeholder ?? t('encyklopedia.szukajDomyslnie')
   const [q, setQ] = useState('')
   const [grupa, setGrupa] = useState<string | null>(null)
   const [sort, setSort] = useState<Sort>('domyslna')
@@ -101,13 +108,17 @@ export default function EncLista({
           <input
             ref={szukajka}
             className="input grow"
-            placeholder={placeholder}
+            placeholder={szukajkaPlaceholder}
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            aria-label={placeholder}
+            aria-label={szukajkaPlaceholder}
           />
           {q ? (
-            <button className="enc-clear" onClick={() => setQ('')} aria-label="Wyczyść">
+            <button
+              className="enc-clear"
+              onClick={() => setQ('')}
+              aria-label={t('encyklopedia.wyczyscSzukajke')}
+            >
               ✕
             </button>
           ) : (
@@ -123,7 +134,8 @@ export default function EncLista({
               className={'chip' + (grupa === null ? ' on' : '')}
               onClick={() => setGrupa(null)}
             >
-              Wszystkie <span className="chip-licznik">{poSzukaniu.length}</span>
+              {t('encyklopedia.filtrWszystkie')}{' '}
+              <span className="chip-licznik">{poSzukaniu.length}</span>
             </button>
             {filtry.map((f) => (
               <button
@@ -140,20 +152,23 @@ export default function EncLista({
 
       <div className="enc-pasek">
         <span className="muted small">
-          {widoczne.length} z {wpisy.length}
+          {t('encyklopedia.licznikWidocznych', {
+            widoczne: widoczne.length,
+            wszystkie: wpisy.length,
+          })}
         </span>
         <span className="filter-btns">
           <button
             className={'chip xs' + (sort === 'domyslna' ? ' on' : '')}
             onClick={() => setSort('domyslna')}
           >
-            Domyślnie
+            {t('encyklopedia.sortDomyslnie')}
           </button>
           <button
             className={'chip xs' + (sort === 'nazwa' ? ' on' : '')}
             onClick={() => setSort('nazwa')}
           >
-            A–Z
+            {t('encyklopedia.sortAlfabetycznie')}
           </button>
           {sortWaga && (
             <button
@@ -170,7 +185,7 @@ export default function EncLista({
         <PustyStan
           tekst={
             <>
-              <b>Brak wyników dla „{q}".</b> Spróbuj innej nazwy albo słowa z opisu.
+              <b>{t('encyklopedia.brakWynikow', { q })}</b> {t('encyklopedia.brakWynikowRada')}
             </>
           }
         />

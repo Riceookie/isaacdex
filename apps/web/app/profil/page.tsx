@@ -11,10 +11,13 @@ import ZalogujStan from '@/components/ZalogujStan'
 import { czyZalogowany, mojGracz } from '@/lib/konto'
 import { wlasnyAvatar } from '@/lib/chars'
 import type { DecorId } from '@/lib/pfpDecor'
+import { jezykSerwera, tlumacz } from '@/lib/i18n/serwer'
 
 export const dynamic = 'force-dynamic'
 
 export default async function ProfilPage() {
+  const t = tlumacz()
+
   // Gość nie ma profilu — zamiast cudzych osiągnięć widzi zaproszenie do założenia konta.
   if (!(await czyZalogowany())) {
     return (
@@ -23,11 +26,10 @@ export default async function ProfilPage() {
           <ZalogujStan
             tekst={
               <>
-                <b>Nawet Isaac musiał gdzieś zacząć.</b> Załóż konto, podłącz Steam i zdobądź własne
-                Dead God, completion marks i najrzadsze achievementy — zamiast oglądać cudze.
+                <b>{t('profil.goscTytul')}</b> {t('profil.goscOpis')}
               </>
             }
-            cta="Zacznij swoją drogę"
+            cta={t('profil.goscCta')}
           />
         </div>
       </section>
@@ -68,12 +70,14 @@ export default async function ProfilPage() {
   const wybrana = p?.ulubiona ?? zAvatara
   const ulubionaPostac = wybrana === '' ? '' : (wybrana ?? p?.fav?.nazwa ?? 'Isaac')
 
+  // Data dołączenia w formacie języka interfejsu („mar 2021" / „Mar 2021").
+  const locale = jezykSerwera() === 'pl' ? 'pl-PL' : 'en-GB'
   const dolaczyl = ja?.dolaczyl
-    ? new Intl.DateTimeFormat('pl-PL', { month: 'short', year: 'numeric' }).format(ja.dolaczyl)
+    ? new Intl.DateTimeFormat(locale, { month: 'short', year: 'numeric' }).format(ja.dolaczyl)
     : '—'
 
   const dane: DaneProfilu = {
-    nick: p?.nick ?? ja?.nick ?? 'Gracz',
+    nick: p?.nick ?? ja?.nick ?? t('profil.graczDomyslny'),
     opis: p?.opis ?? ja?.opis ?? '',
     ulubionaPostac,
     achProcent: p?.achProcent ?? 0,
@@ -88,11 +92,11 @@ export default async function ProfilPage() {
     wpisy: aktywnosc,
     znajomi,
     meta: [
-      { etykieta: 'CZŁONEK OD', wartosc: dolaczyl },
-      { etykieta: 'REGION', wartosc: 'Europa' },
+      { etykieta: t('profil.metaCzlonekOd'), wartosc: dolaczyl },
+      { etykieta: t('profil.metaRegion'), wartosc: t('profil.metaRegionEuropa') },
       {
-        etykieta: 'ACHIEVEMENTY',
-        wartosc: steamPodlaczony ? `${p!.achUnlocked}/${p!.achTotal}` : 'bez Steama',
+        etykieta: t('profil.metaAchievementy'),
+        wartosc: steamPodlaczony ? `${p!.achUnlocked}/${p!.achTotal}` : t('profil.metaBezSteama'),
       },
     ],
     steamPodlaczony,

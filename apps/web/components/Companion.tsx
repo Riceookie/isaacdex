@@ -11,6 +11,7 @@ import {
   type Companion,
 } from '@/lib/companions'
 import { nasluchujGlosu, type Nastroj, type GlosWtret } from '@/lib/companionGlos'
+import { useT } from '@/components/JezykProvider'
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
@@ -24,6 +25,7 @@ export default function CompanionMascot({
   zalogowany?: boolean
 }) {
   const pathname = usePathname()
+  const t = useT()
   const [comp, setComp] = useState<Companion>(DOMYSLNY_COMPANION)
   const [shown, setShown] = useState('')
   const [talking, setTalking] = useState(false)
@@ -51,12 +53,15 @@ export default function CompanionMascot({
     const onChange = () => {
       const nowy = companionZId(localStorage.getItem('idx_companion'))
       setComp(nowy)
-      wtret.current = { tekst: `Cześć! Teraz to ja — ${nowy.nazwa}.`, nastroj: 'excited' }
-      setWtretTick((t) => t + 1)
+      wtret.current = {
+        tekst: t('companion.przedstawienieSie', { nazwa: nowy.nazwa }),
+        nastroj: 'excited',
+      }
+      setWtretTick((n) => n + 1)
     }
     window.addEventListener('idx-companion', onChange)
     return () => window.removeEventListener('idx-companion', onChange)
-  }, [])
+  }, [t])
 
   // Pętla: wpisz kwestię (litera po literze), przytrzymaj, wymaż, następna.
   useEffect(() => {
@@ -102,13 +107,14 @@ export default function CompanionMascot({
         // dopiero potem maskotka wchodzi w spokojną pętlę idle.
         await sleep(400)
         const e = wejscie(pathname, steamConnected, zalogowany)
-        await pisz(e.tekst, e.nastroj)
+        const tekst = t(e.klucz)
+        await pisz(tekst, e.nastroj)
         if (!cancelled) await sleep(6000)
-        if (!cancelled) await wymaz(e.tekst)
+        if (!cancelled) await wymaz(tekst)
         if (!cancelled) await sleep(3000)
       }
       while (!cancelled) {
-        const text = pool[idx]
+        const text = t(pool[idx])
         await pisz(text, idleMood)
         if (cancelled) break
         await sleep(9000) // długo trzyma kwestię, zanim ją wymaże
@@ -123,7 +129,7 @@ export default function CompanionMascot({
     return () => {
       cancelled = true
     }
-  }, [pathname, steamConnected, zalogowany, muted, wtretTick])
+  }, [pathname, steamConnected, zalogowany, muted, wtretTick, t])
 
   function toggleMute() {
     const m = !muted
@@ -142,8 +148,12 @@ export default function CompanionMascot({
           (!muted ? ` mood-${mood}` : '')
         }
         onClick={toggleMute}
-        aria-label={muted ? `Odcisz ${comp.nazwa}` : `Wycisz ${comp.nazwa}`}
-        title={muted ? 'Kliknij, by odciszyć' : 'Kliknij, by wyciszyć'}
+        aria-label={
+          muted
+            ? t('companion.odcisz', { nazwa: comp.nazwa })
+            : t('companion.wycisz', { nazwa: comp.nazwa })
+        }
+        title={muted ? t('companion.klikBySieOdciszyc') : t('companion.klikBySieWyciszyc')}
       >
         <img src={`/tboi/${comp.file}`} alt="" draggable={false} />
         {muted && (

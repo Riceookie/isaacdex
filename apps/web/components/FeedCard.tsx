@@ -11,23 +11,29 @@ import { przelaczLajk } from '@/app/actions/social'
 import { powiedz } from '@/lib/companionGlos'
 import { avatarGracza, ikonaPostaci, wlasnyAvatar } from '@/lib/chars'
 import { ETYKIETA, komentarz } from '@/lib/klimat'
+import { useJezyk, useT } from '@/components/JezykProvider'
+import type { Tlumacz } from '@/lib/i18n/slownik'
+import type { Jezyk } from '@/lib/i18n/jezyk'
 import type { FeedWpis } from '@/lib/social'
 
+/** Kod locale dla `Intl` — daty starsze niż miesiąc pokazujemy w formacie języka UI. */
+const locale = (jezyk: Jezyk) => (jezyk === 'pl' ? 'pl-PL' : 'en-US')
+
 /** „2 godz. temu" — jedna funkcja zamiast biblioteki. */
-function kiedy(iso: string): string {
+function kiedy(iso: string, t: Tlumacz, jezyk: Jezyk): string {
   const min = Math.round((Date.now() - new Date(iso).getTime()) / 60000)
-  if (min < 1) return 'przed chwilą'
-  if (min < 60) return `${min} min temu`
+  if (min < 1) return t('spolecznosc.przedChwila')
+  if (min < 60) return t('spolecznosc.minTemu', { liczba: min })
   const godz = Math.round(min / 60)
-  if (godz < 24) return `${godz} godz. temu`
+  if (godz < 24) return t('spolecznosc.godzTemu', { liczba: godz })
   const dni = Math.round(godz / 24)
-  if (dni === 1) return 'wczoraj'
-  if (dni < 31) return `${dni} dni temu`
-  return new Date(iso).toLocaleDateString('pl-PL')
+  if (dni === 1) return t('spolecznosc.wczoraj')
+  if (dni < 31) return t('spolecznosc.dniTemu', { liczba: dni })
+  return new Date(iso).toLocaleDateString(locale(jezyk))
 }
 
-const pelnaData = (iso: string) =>
-  new Date(iso).toLocaleString('pl-PL', { dateStyle: 'long', timeStyle: 'short' })
+const pelnaData = (iso: string, jezyk: Jezyk) =>
+  new Date(iso).toLocaleString(locale(jezyk), { dateStyle: 'long', timeStyle: 'short' })
 
 /**
  * Kartka feedu. Lajk leci server-action → baza, a UI reaguje natychmiast (useOptimistic),
@@ -39,6 +45,8 @@ const pelnaData = (iso: string) =>
 export default function FeedCard({ w }: { w: FeedWpis }) {
   const router = useRouter()
   const zalogowany = useZalogowany()
+  const t = useT()
+  const jezyk = useJezyk()
   const [czekam, start] = useTransition()
   const [stan, przelacz] = useOptimistic(
     { lajki: w.lajki, polubione: w.polubione },
@@ -53,7 +61,7 @@ export default function FeedCard({ w }: { w: FeedWpis }) {
   const lajkuj = () => {
     if (!zalogowany) return router.push('/logowanie')
     // Maskotka cieszy się z polubienia (tylko przy dodaniu, żeby nie gadała przy cofaniu).
-    if (!stan.polubione) powiedz('Serducho poszło!', 'happy')
+    if (!stan.polubione) powiedz(t('spolecznosc.serduchoPoszlo'), 'happy')
     start(async () => {
       przelacz(undefined)
       await przelaczLajk(w.id)
@@ -89,11 +97,11 @@ export default function FeedCard({ w }: { w: FeedWpis }) {
               {w.autor.nick}
             </span>
           </LinkGracza>
-          {w.autor.ja && <span className="feed-ty">Ty</span>}
+          {w.autor.ja && <span className="feed-ty">{t('spolecznosc.ty')}</span>}
           <span className="feed-co muted small">{etykieta.czasownik}</span>
         </span>
-        <time className="feed-czas muted small" dateTime={w.czas} title={pelnaData(w.czas)}>
-          {kiedy(w.czas)}
+        <time className="feed-czas muted small" dateTime={w.czas} title={pelnaData(w.czas, jezyk)}>
+          {kiedy(w.czas, t, jezyk)}
         </time>
       </header>
 
@@ -133,7 +141,7 @@ export default function FeedCard({ w }: { w: FeedWpis }) {
           onClick={lajkuj}
           disabled={czekam}
           aria-pressed={stan.polubione}
-          aria-label={stan.polubione ? 'Cofnij polubienie' : 'Polub'}
+          aria-label={stan.polubione ? t('spolecznosc.cofnijPolubienie') : t('spolecznosc.polub')}
         >
           <Sprite name="heart" size={16} /> {stan.lajki}
         </button>

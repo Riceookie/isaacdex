@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import KartaHover, { OPOZNIENIE } from '@/components/KartaHover'
+import { useT } from '@/components/JezykProvider'
 
 /**
  * Dokąd prowadzi klik w gracza. Własny nick leci na /profil (tam jest edycja i Steam),
@@ -44,6 +45,7 @@ export default function LinkGracza({
   className?: string
   children: ReactNode
 }) {
+  const t = useT()
   const [hover, setHover] = useState(false)
   const kotwica = useRef<HTMLAnchorElement>(null)
   const zegar = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -80,7 +82,7 @@ export default function LinkGracza({
         ref={kotwica}
         href={hrefGracza(nick, ja)}
         className={klasy + 'gracz-link'}
-        title={ja ? 'Twój profil' : `Profil gracza ${nick}`}
+        title={ja ? t('profil.tytulTwojProfil') : t('profil.tytulProfilGracza', { nick })}
         prefetch={false}
         onPointerEnter={wjazd}
         onPointerLeave={wyjazd}

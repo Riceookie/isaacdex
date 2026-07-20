@@ -1,4 +1,5 @@
 import surowe from './itemy.json'
+import type { Klucz, Tlumacz } from '../i18n/slownik'
 
 /**
  * Dane itemów wyciągnięte z plików gry (items.xml, items_metadata.xml, itempools.xml,
@@ -46,64 +47,69 @@ export function daneItemu(idW: number | null | undefined, nazwa: string): ItemDa
   return (idW != null ? WG_ID.get(idW) : undefined) ?? WG_NAZWY.get(nazwa.toLowerCase())
 }
 
-/** Statystyki/efekty z atrybutu `cache` — po polsku. */
-const STATY: Record<string, string> = {
-  damage: 'Obrażenia',
-  firedelay: 'Szybkostrzelność',
-  speed: 'Szybkość',
-  range: 'Zasięg',
-  shotspeed: 'Prędkość łez',
-  luck: 'Szczęście',
-  tearcolor: 'Kolor łez',
-  tearflag: 'Efekt łez',
-  familiars: 'Chowańce',
-  flying: 'Latanie',
-  weapon: 'Zmienia broń',
-  size: 'Rozmiar postaci',
-  color: 'Wygląd postaci',
-  pickupvision: 'Podgląd znajdziek',
-  all: 'Wszystkie statystyki',
+/**
+ * Statystyki/efekty z atrybutu `cache` — nazwy z gry mapowane na klucze słownika.
+ * Nieznany klucz oddajemy w oryginale: nowa wersja gry doda stata, a to lepsze niż pustka.
+ */
+const STATY: Record<string, Klucz> = {
+  damage: 'encyklopedia.statDamage',
+  firedelay: 'encyklopedia.statFiredelay',
+  speed: 'encyklopedia.statSpeed',
+  range: 'encyklopedia.statRange',
+  shotspeed: 'encyklopedia.statShotspeed',
+  luck: 'encyklopedia.statLuck',
+  tearcolor: 'encyklopedia.statTearcolor',
+  tearflag: 'encyklopedia.statTearflag',
+  familiars: 'encyklopedia.statFamiliars',
+  flying: 'encyklopedia.statFlying',
+  weapon: 'encyklopedia.statWeapon',
+  size: 'encyklopedia.statSize',
+  color: 'encyklopedia.statColor',
+  pickupvision: 'encyklopedia.statPickupvision',
+  all: 'encyklopedia.statAll',
 }
 
-export function etykietaStatu(s: string): string {
-  return STATY[s] ?? s
+export function etykietaStatu(s: string, t: Tlumacz): string {
+  const k = STATY[s]
+  return k ? t(k) : s
 }
 
-/** Pule itemów (skąd item wypada) — po polsku. */
-const PULE: Record<string, string> = {
-  treasure: 'Skarbiec',
-  shop: 'Sklep',
-  boss: 'Boss',
-  devil: 'Diabelski pokój',
-  angel: 'Anielski pokój',
-  secret: 'Sekretny pokój',
-  ultraSecret: 'Ultra sekretny pokój',
-  library: 'Biblioteka',
-  curse: 'Przeklęty pokój',
-  planetarium: 'Planetarium',
-  goldenChest: 'Złota skrzynia',
-  redChest: 'Czerwona skrzynia',
-  woodenChest: 'Drewniana skrzynia',
-  oldChest: 'Stara skrzynia',
-  momsChest: 'Skrzynia mamy',
-  beggar: 'Żebrak',
-  demonBeggar: 'Demon-żebrak',
-  rottenBeggar: 'Zgniły żebrak',
-  keyMaster: 'Klucznik',
-  batteryBum: 'Bum od baterii',
-  bombBum: 'Bum od bomb',
-  babyShop: 'Sklep z bobasami',
-  shellGame: 'Gra w kubki',
-  craneGame: 'Automat z pluszakami',
-  greedTreasure: 'Greed — skarbiec',
-  greedBoss: 'Greed — boss',
-  greedShop: 'Greed — sklep',
-  greedDevil: 'Greed — diabelski',
-  greedAngel: 'Greed — anielski',
-  greedCurse: 'Greed — przeklęty',
-  greedSecret: 'Greed — sekretny',
+/** Pule itemów (skąd item wypada) — klucze słownika. */
+const PULE: Record<string, Klucz> = {
+  treasure: 'encyklopedia.pulaTreasure',
+  shop: 'encyklopedia.pulaShop',
+  boss: 'encyklopedia.pulaBoss',
+  devil: 'encyklopedia.pulaDevil',
+  angel: 'encyklopedia.pulaAngel',
+  secret: 'encyklopedia.pulaSecret',
+  ultraSecret: 'encyklopedia.pulaUltraSecret',
+  library: 'encyklopedia.pulaLibrary',
+  curse: 'encyklopedia.pulaCurse',
+  planetarium: 'encyklopedia.pulaPlanetarium',
+  goldenChest: 'encyklopedia.pulaGoldenChest',
+  redChest: 'encyklopedia.pulaRedChest',
+  woodenChest: 'encyklopedia.pulaWoodenChest',
+  oldChest: 'encyklopedia.pulaOldChest',
+  momsChest: 'encyklopedia.pulaMomsChest',
+  beggar: 'encyklopedia.pulaBeggar',
+  demonBeggar: 'encyklopedia.pulaDemonBeggar',
+  rottenBeggar: 'encyklopedia.pulaRottenBeggar',
+  keyMaster: 'encyklopedia.pulaKeyMaster',
+  batteryBum: 'encyklopedia.pulaBatteryBum',
+  bombBum: 'encyklopedia.pulaBombBum',
+  babyShop: 'encyklopedia.pulaBabyShop',
+  shellGame: 'encyklopedia.pulaShellGame',
+  craneGame: 'encyklopedia.pulaCraneGame',
+  greedTreasure: 'encyklopedia.pulaGreedTreasure',
+  greedBoss: 'encyklopedia.pulaGreedBoss',
+  greedShop: 'encyklopedia.pulaGreedShop',
+  greedDevil: 'encyklopedia.pulaGreedDevil',
+  greedAngel: 'encyklopedia.pulaGreedAngel',
+  greedCurse: 'encyklopedia.pulaGreedCurse',
+  greedSecret: 'encyklopedia.pulaGreedSecret',
 }
 
-export function etykietaPuli(p: string): string {
-  return PULE[p] ?? p
+export function etykietaPuli(p: string, t: Tlumacz): string {
+  const k = PULE[p]
+  return k ? t(k) : p
 }

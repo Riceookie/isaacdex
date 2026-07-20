@@ -1,4 +1,5 @@
 import type { SpriteName } from '@/components/Sprite'
+import type { Klucz, Tlumacz } from '@/lib/i18n/slownik'
 
 /**
  * Czat piwnicy: kanał globalny plus prywatne rozmowy ze znajomymi.
@@ -15,19 +16,20 @@ export type TypKanalu = 'global' | 'dm'
 
 export type Kanal = {
   slug: string
-  nazwa: string
+  /** Klucz nazwy w słowniku — slug zostaje po polsku, nazwa na ekranie idzie za językiem. */
+  kluczNazwy: Klucz
   ikona: SpriteName
-  /** Zdanie pod nazwą — klimat, nie instrukcja obsługi. */
-  opis: string
+  /** Klucz zdania pod nazwą — klimat, nie instrukcja obsługi. */
+  kluczOpisu: Klucz
   typ: TypKanalu
 }
 
 export const KANALY: Kanal[] = [
   {
     slug: 'piwnica',
-    nazwa: 'piwnica',
+    kluczNazwy: 'czat.kanalPiwnicaNazwa',
     ikona: 'fly',
-    opis: 'Czat globalny. Krew, łzy i skill issue.',
+    kluczOpisu: 'czat.kanalPiwnicaOpis',
     typ: 'global',
   },
 ]
@@ -51,8 +53,13 @@ export type Wiad = {
   /** Godzina jako gotowy tekst („14:32") — patrz `godzina()`. */
   czas: string
   tekst: string[]
-  /** Reakcje z bazy: ikona, ile osób i czy jestem wśród nich. */
-  reakcje?: { ikona: SpriteName; ile: number; moja: boolean }[]
+  /**
+   * Reakcje z bazy: ikona, ile osób i czy jestem wśród nich.
+   *
+   * `ikona` to STRING, nie `SpriteName` — reakcją może być zarówno ikona interfejsu
+   * („heart"), jak i dowolna naklejka z katalogu („c105"). Rozplątuje to `IkonaCzatu`.
+   */
+  reakcje?: { ikona: string; ile: number; moja: boolean }[]
   /** Załącznik obrazkowy. */
   obraz?: string
 }
@@ -78,30 +85,41 @@ export const LIMIT_WIADOMOSCI = 60
 /** Najdłuższa wiadomość — tyle samo, ile przyjmuje pole w UI. */
 export const MAX_DLUGOSC = 280
 
-/** Reakcje pod wiadomością — pickupy zamiast emoji. */
-export const REAKCJE: SpriteName[] = ['heart', 'coin', 'skull', 'trophy']
+/**
+ * Domyślna czwórka pod przyciskiem „+" — zanim ktokolwiek kliknie cokolwiek własnego.
+ * Reagować można dowolnym itemem z katalogu naklejek („Więcej…"); to tylko skrót na start.
+ */
+export const REAKCJE: string[] = ['heart', 'coin', 'skull', 'trophy']
 
 // ── Kwestie dla familiara z górnego paska (jednego, tego z TopBara) ───────────
 
-const PO_WYSLANIU = [
-  'Piwnica słucha.',
-  'Ładnie powiedziane. Nikt nie odpowie.',
-  'Zapisane. Na zawsze.',
-  'Odważne. Zobaczymy.',
-  'Ktoś to przeczyta. Kiedyś.',
+const PO_WYSLANIU: Klucz[] = [
+  'czat.poWyslaniu1',
+  'czat.poWyslaniu2',
+  'czat.poWyslaniu3',
+  'czat.poWyslaniu4',
+  'czat.poWyslaniu5',
 ]
 
-const W_KANALE: Record<string, string> = {
-  piwnica: 'Cała piwnica cię słyszy.',
+const W_KANALE: Record<string, Klucz> = {
+  piwnica: 'czat.wKanalePiwnica',
 }
 
 /**
  * Co familiar ma powiedzieć na zdarzenie w czacie. Sam tekst — wysyłką zajmuje się
  * `powiedz()` z lib/companionGlos, a wypisuje go maskotka w TopBarze.
+ *
+ * Tłumacz wchodzi parametrem, bo funkcja jest wołana z komponentu klienckiego — tam
+ * język siedzi w kontekście (`useT`), a nie w ciasteczku czytanym z serwera.
  */
-export function kwestiaCzatu(typ: 'wyslano' | 'kanal', co: string, licznik: number): string {
-  if (typ === 'wyslano') return PO_WYSLANIU[licznik % PO_WYSLANIU.length]
+export function kwestiaCzatu(
+  t: Tlumacz,
+  typ: 'wyslano' | 'kanal',
+  co: string,
+  licznik: number,
+): string {
+  if (typ === 'wyslano') return t(PO_WYSLANIU[licznik % PO_WYSLANIU.length])
   const nick = nickZDm(co)
-  if (nick) return `Piszesz do ${nick}. Tylko wy dwoje.`
-  return W_KANALE[co] ?? 'Idziemy dalej.'
+  if (nick) return t('czat.wDm', { nick })
+  return t(W_KANALE[co] ?? 'czat.wKanaleInny')
 }

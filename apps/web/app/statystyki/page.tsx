@@ -4,6 +4,8 @@ import { czyZalogowany } from '@/lib/konto'
 import { ikonaPostaci, jestTainted } from '@/lib/chars'
 import Sprite from '@/components/Sprite'
 import PustyStan from '@/components/PustyStan'
+import { jezykSerwera, tlumacz } from '@/lib/i18n/serwer'
+import type { Tlumacz } from '@/lib/i18n/slownik'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,9 +21,9 @@ const STATY_ZERO = {
 }
 
 // ── Wykres: skumulowane odblokowania w czasie (jedna seria → kolor akcentu) ──
-function WykresCzas({ seria }: { seria: { m: string; cum: number }[] }) {
+function WykresCzas({ seria, t }: { seria: { m: string; cum: number }[]; t: Tlumacz }) {
   if (seria.length < 2) {
-    return <p className="muted small">Za mało danych z datami, żeby narysować wykres.</p>
+    return <p className="muted small">{t('kolekcja.wykresZaMaloDanych')}</p>
   }
   const W = 680
   const H = 210
@@ -35,7 +37,12 @@ function WykresCzas({ seria }: { seria: { m: string; cum: number }[] }) {
   const obszar = `${linia} L${x(n - 1)},${H - pad.b} L${x(0)},${H - pad.b} Z`
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="chart" role="img" aria-label="Odblokowania w czasie">
+    <svg
+      viewBox={`0 0 ${W} ${H}`}
+      className="chart"
+      role="img"
+      aria-label={t('kolekcja.statyWCzasie')}
+    >
       <line className="chart-axis" x1={pad.l} y1={H - pad.b} x2={W - pad.r} y2={H - pad.b} />
       <line className="chart-axis" x1={pad.l} y1={pad.t} x2={pad.l} y2={H - pad.b} />
       <text
@@ -60,7 +67,7 @@ function WykresCzas({ seria }: { seria: { m: string; cum: number }[] }) {
       <path className="chart-line" d={linia} />
       {seria.map((p, i) => (
         <circle key={p.m} className="chart-dot" cx={x(i)} cy={y(p.cum)} r={3}>
-          <title>{`${p.m}: ${p.cum} odblokowanych`}</title>
+          <title>{t('kolekcja.wykresPunkt', { miesiac: p.m, liczba: p.cum })}</title>
         </circle>
       ))}
       <text className="chart-txt" x={pad.l} y={H - 8}>
@@ -74,11 +81,17 @@ function WykresCzas({ seria }: { seria: { m: string; cum: number }[] }) {
 }
 
 // ── Wykres: rzadkość Twoich odblokowanych (3 kubełki, legendarne = złoto) ──
-function WykresRzadkosc({ b }: { b: { legendarne: number; rzadkie: number; czeste: number } }) {
+function WykresRzadkosc({
+  b,
+  t,
+}: {
+  b: { legendarne: number; rzadkie: number; czeste: number }
+  t: Tlumacz
+}) {
   const dane = [
-    { label: 'Częste', pod: '>20%', v: b.czeste, gold: false },
-    { label: 'Rzadkie', pod: '5–20%', v: b.rzadkie, gold: false },
-    { label: 'Legendarne', pod: '<5%', v: b.legendarne, gold: true },
+    { label: t('kolekcja.kubelekCzeste'), pod: '>20%', v: b.czeste, gold: false },
+    { label: t('kolekcja.kubelekRzadkie'), pod: '5–20%', v: b.rzadkie, gold: false },
+    { label: t('kolekcja.kubelekLegendarne'), pod: '<5%', v: b.legendarne, gold: true },
   ]
   const W = 680
   const H = 210
@@ -89,7 +102,12 @@ function WykresRzadkosc({ b }: { b: { legendarne: number; rzadkie: number; czest
   const h = (v: number) => (v / max) * (H - pad.t - pad.b)
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="chart" role="img" aria-label="Rzadkość odblokowanych">
+    <svg
+      viewBox={`0 0 ${W} ${H}`}
+      className="chart"
+      role="img"
+      aria-label={t('kolekcja.statyRzadkosc')}
+    >
       {dane.map((d, i) => {
         const bx = gap + i * (bw + gap)
         const bh = h(d.v)
@@ -133,6 +151,8 @@ export default async function StatystykiPage() {
     getStatystyki(),
     getDashboard(),
   ])
+  const t = tlumacz()
+  const jezyk = jezykSerwera()
 
   // Gość widzi ten sam ekran, ale wyzerowany — plus baner, po co się logować.
   const gosc = !zalogowany
@@ -140,25 +160,16 @@ export default async function StatystykiPage() {
     return (
       <section>
         <div className="note">
+          {/* Zdania z pogrubieniem i linkiem idą jednym kluczem — po pocięciu na kawałki
+              szyk drugiego języka i tak by się rozjechał. */}
           <PustyStan
-            tekst={
-              <>
-                <b>Jeszcze zero łez do policzenia.</b> Podłącz Steam, a policzymy wszystko: procent
-                Dead Goda, marki każdej postaci, najrzadsze zdobycze i to, ile razy zginąłeś na
-                Mamie.
-              </>
-            }
+            tekst={<span dangerouslySetInnerHTML={{ __html: t('kolekcja.statyPustoTekst') }} />}
             akcja={
               <Link className="btn" href="/kim-jestem">
-                <Sprite name="trophy" size={18} /> Podłącz Steam
+                <Sprite name="trophy" size={18} /> {t('kolekcja.statyPodlaczSteam')}
               </Link>
             }
-            poza={
-              <>
-                Steam trzeba podpiąć raz. Potem wystarczy „Synchronizuj" w{' '}
-                <Link href="/kolekcja">Osiągnięciach</Link>.
-              </>
-            }
+            poza={<span dangerouslySetInnerHTML={{ __html: t('kolekcja.statyPustoPoza') }} />}
           />
         </div>
       </section>
@@ -170,10 +181,9 @@ export default async function StatystykiPage() {
     <section className="note paper-panel">
       {gosc && (
         <p className="banner demo" role="status">
-          <Sprite name="deadgod" size={16} /> To szkielet Twoich statystyk — zera zamienią się w
-          prawdziwe liczby, gdy założysz konto i podepniesz Steam.{' '}
+          <Sprite name="deadgod" size={16} /> {t('kolekcja.statyBanerGosc')}{' '}
           <Link href="/logowanie" className="banner-link">
-            Załóż konto →
+            {t('kolekcja.statyBanerLink')}
           </Link>
         </p>
       )}
@@ -182,48 +192,57 @@ export default async function StatystykiPage() {
           <span className="tile-num">
             {dane.unlocked}/{dane.total}
           </span>
-          <span className="muted small">odblokowane</span>
+          <span className="muted small">{t('kolekcja.statyOdblokowane')}</span>
         </div>
         <div className="tile">
           <span className="tile-num">{dane.procent}%</span>
-          <span className="muted small">ukończenia</span>
+          <span className="muted small">{t('kolekcja.statyUkonczenia')}</span>
         </div>
         <div className="tile">
           <span className="tile-num">
             <Sprite name="coin" size={22} /> {dane.rarest ? `${dane.rarest.p}%` : '—'}
           </span>
+          {/* Nazwa achievementu zostaje po angielsku — tłumaczy się tylko podpis kafelka. */}
           <span className="muted small">
-            najrzadszy{dane.rarest ? `: ${dane.rarest.nazwa}` : ''}
+            {dane.rarest
+              ? t('kolekcja.statyNajrzadszyZ', { nazwa: dane.rarest.nazwa })
+              : t('kolekcja.statyNajrzadszy')}
           </span>
         </div>
         <div className="tile">
           <span className="tile-num">
-            {dane.latest ? new Date(dane.latest.data).toLocaleDateString('pl-PL') : '—'}
+            {dane.latest
+              ? new Date(dane.latest.data).toLocaleDateString(jezyk === 'pl' ? 'pl-PL' : 'en-US')
+              : '—'}
           </span>
-          <span className="muted small">ostatnio{dane.latest ? `: ${dane.latest.nazwa}` : ''}</span>
+          <span className="muted small">
+            {dane.latest
+              ? t('kolekcja.statyOstatnioZ', { nazwa: dane.latest.nazwa })
+              : t('kolekcja.statyOstatnio')}
+          </span>
         </div>
       </div>
 
       <div className="note">
-        <h2>Odblokowania w czasie</h2>
-        <WykresCzas seria={dane.seria} />
+        <h2>{t('kolekcja.statyWCzasie')}</h2>
+        <WykresCzas seria={dane.seria} t={t} />
       </div>
 
       <div className="note">
-        <h2>Rzadkość Twoich odblokowanych</h2>
+        <h2>{t('kolekcja.statyRzadkosc')}</h2>
         <div className="chart-legend">
           <span>
-            <i className="lg-sw red" /> Częste / rzadkie
+            <i className="lg-sw red" /> {t('kolekcja.legendaCzesteRzadkie')}
           </span>
           <span>
-            <i className="lg-sw gold" /> Legendarne (&lt;5% graczy)
+            <i className="lg-sw gold" /> {t('kolekcja.legendaLegendarne')}
           </span>
         </div>
-        <WykresRzadkosc b={dane.buckets} />
+        <WykresRzadkosc b={dane.buckets} t={t} />
       </div>
 
       <div className="note">
-        <h2>Ukończenie postaci</h2>
+        <h2>{t('kolekcja.statyUkonczeniePostaci')}</h2>
         <div className="char-bars">
           {dash.postacie.map((c) => {
             // Postacie splugawione (Tainted) nie mają completion marks jako achievementów
@@ -239,11 +258,8 @@ export default async function StatystykiPage() {
                 <img className="char-icon" src={ikonaPostaci(c.nazwa)} alt="" />
                 <span className="char-name">{c.nazwa}</span>
                 {bezDanych ? (
-                  <span
-                    className="char-nodata"
-                    title="Steam Web API nie udostępnia completion marks postaci Tainted"
-                  >
-                    bez danych Steam
+                  <span className="char-nodata" title={t('kolekcja.bezDanychTytul')}>
+                    {t('kolekcja.bezDanychSteam')}
                   </span>
                 ) : (
                   <>
@@ -259,11 +275,7 @@ export default async function StatystykiPage() {
         </div>
         <p className="small muted char-nodata-note">
           <Sprite name="godhead" size={14} />
-          <span>
-            Postacie <b>splugawione (Tainted)</b> pokazują „bez danych Steam" — ich completion marks
-            nie są achievementami Steam, więc Web API ich nie zwraca. Liczą się tylko marki postaci
-            bazowych.
-          </span>
+          <span dangerouslySetInnerHTML={{ __html: t('kolekcja.bezDanychPrzypis') }} />
         </p>
       </div>
     </section>

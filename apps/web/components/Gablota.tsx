@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 import ItemSprite from '@/components/ItemSprite'
 import Sprite from '@/components/Sprite'
+import { useT } from '@/components/JezykProvider'
 
 export type ItemDoWyboru = { nazwa: string; idW: number | null; typ: string; jakosc: number }
 
@@ -22,6 +23,7 @@ function Wybieraczka({
   onWybierz: (nazwa: string) => void
   onZamknij: () => void
 }) {
+  const t = useT()
   const [fraza, setFraza] = useState('')
   const [montaz, setMontaz] = useState(false)
   useEffect(() => setMontaz(true), [])
@@ -50,17 +52,17 @@ function Wybieraczka({
         className="modal paper gab-wybor"
         role="dialog"
         aria-modal="true"
-        aria-label="Wybierz item do gabloty"
+        aria-label={t('profil.gablotaWyborAria')}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="gab-wybor-head">
           <h3>
-            <Sprite name="book" size={18} /> Wybierz item
+            <Sprite name="book" size={18} /> {t('profil.gablotaWybierzItem')}
           </h3>
           <input
             className="gab-szukaj"
             type="search"
-            placeholder="Szukaj itemu…"
+            placeholder={t('profil.gablotaSzukajItemu')}
             value={fraza}
             onChange={(e) => setFraza(e.target.value)}
             autoFocus
@@ -74,7 +76,7 @@ function Wybieraczka({
                 key={i.nazwa}
                 type="button"
                 className={'gab-opcja jakosc-' + i.jakosc + (juz ? ' juz' : '')}
-                title={juz ? `${i.nazwa} — już w gablocie` : i.nazwa}
+                title={juz ? t('profil.gablotaJuzWystawiony', { nazwa: i.nazwa }) : i.nazwa}
                 disabled={juz}
                 onClick={() => onWybierz(i.nazwa)}
               >
@@ -83,7 +85,9 @@ function Wybieraczka({
               </button>
             )
           })}
-          {widoczne.length === 0 && <p className="muted small">Nic takiego nie ma w piwnicy.</p>}
+          {widoczne.length === 0 && (
+            <p className="muted small">{t('profil.gablotaNicNieZnaleziono')}</p>
+          )}
         </div>
       </div>
     </div>,
@@ -119,6 +123,7 @@ export default function Gablota({
    */
   metaItemow?: ItemDoWyboru[]
 }) {
+  const t = useT()
   const [gniazdo, setGniazdo] = useState<number | null>(null)
   // Stan lokalny tylko po to, żeby klik był natychmiastowy — źródłem prawdy jest baza.
   const [moje, setMoje] = useState<(string | null)[]>(() =>
@@ -149,7 +154,7 @@ export default function Gablota({
   return (
     <div className="note gablota-card">
       <h3>
-        <Sprite name="godhead" size={18} /> Top 3 ulubione przedmioty
+        <Sprite name="godhead" size={18} /> {t('profil.gablotaNaglowek')}
       </h3>
       <div className="gablota">
         {lista.map((nazwa, i) => {
@@ -179,7 +184,7 @@ export default function Gablota({
                         type="button"
                         className="pedestal-x"
                         onClick={() => ustaw(i, null)}
-                        aria-label={`Zdejmij ${nazwa} z gabloty`}
+                        aria-label={t('profil.gablotaZdejmij', { nazwa })}
                       >
                         ×
                       </button>
@@ -190,7 +195,7 @@ export default function Gablota({
                     type="button"
                     className="pedestal-plus"
                     onClick={() => setGniazdo(i)}
-                    aria-label="Dodaj item do gabloty"
+                    aria-label={t('profil.gablotaDodaj')}
                   >
                     +
                   </button>

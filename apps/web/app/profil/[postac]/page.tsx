@@ -5,6 +5,7 @@ import { czyZalogowany } from '@/lib/konto'
 import { jestTainted } from '@/lib/chars'
 import MarksBoard from '@/components/MarksBoard'
 import Sprite from '@/components/Sprite'
+import { tlumacz } from '@/lib/i18n/serwer'
 
 export const dynamic = 'force-dynamic'
 
@@ -28,31 +29,30 @@ export default async function ProfilPostaci({ params }: { params: { postac: stri
     czyZalogowany(),
   ])
   if (!data) notFound()
+  const t = tlumacz()
 
   return (
     <section>
       <p className="small">
-        <Link href="/statystyki">← Statystyki</Link>
+        <Link href="/statystyki">{t('profil.wrocStatystyki')}</Link>
       </p>
 
       {!zalogowany && (
         <p className="banner demo" role="status">
-          <Sprite name="deadgod" size={16} /> Podgląd bez konta — tablica świeci pustkami.{' '}
+          <Sprite name="deadgod" size={16} /> {t('profil.postacBanerGosc')}{' '}
           <Link href="/logowanie" className="banner-link">
-            Zaloguj się
+            {t('wspolne.zaloguj')}
           </Link>
-          , aby ubijać bossów i zbierać własne completion marks.
+          {t('profil.postacBanerGoscDalej')}
         </p>
       )}
 
       {jestTainted(data.postac) && data.zaznaczone.length === 0 && (
         <p className="small muted char-nodata-note">
           <Sprite name="godhead" size={14} />
-          <span>
-            To postać <b>splugawiona (Tainted)</b> — jej completion marks nie są achievementami
-            Steam, więc Web API ich nie zwraca i tablica pozostaje pusta. Śledzimy tylko marki
-            postaci bazowych.
-          </span>
+          {/* Pogrubione wtrącenie siedzi w środku zdania — jeden klucz z HTML zamiast trzech
+              sklejanych w JSX, bo szyk zdania różni się między językami. */}
+          <span dangerouslySetInnerHTML={{ __html: t('profil.postacTaintedNota') }} />
         </p>
       )}
 

@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Sprite from '@/components/Sprite'
 import SideNav from '@/components/SideNav'
+import { useT } from '@/components/JezykProvider'
 
 /**
  * Nawigacja boczna.
@@ -18,6 +19,7 @@ import SideNav from '@/components/SideNav'
 export default function Sidebar() {
   const [otwarte, setOtwarte] = useState(false)
   const pathname = usePathname()
+  const t = useT()
 
   // Wejście na inną stronę zamyka szufladę — inaczej zasłaniałaby to, co właśnie wybrałeś.
   useEffect(() => setOtwarte(false), [pathname])
@@ -40,7 +42,7 @@ export default function Sidebar() {
       <button
         className="ham"
         onClick={() => setOtwarte((v) => !v)}
-        aria-label={otwarte ? 'Zamknij menu' : 'Otwórz menu'}
+        aria-label={t(otwarte ? 'nawigacja.zamknijMenu' : 'nawigacja.otworzMenu')}
         aria-expanded={otwarte}
         aria-controls="sidebar"
       >

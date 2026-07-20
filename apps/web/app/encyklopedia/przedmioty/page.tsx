@@ -9,18 +9,9 @@ import {
   obrazekLez,
   obrazekWygladu,
 } from '@/lib/enc/itemyDane'
+import { tlumacz } from '@/lib/i18n/serwer'
 
 export const dynamic = 'force-dynamic'
-
-const FILTRY: EncFiltr[] = [
-  { id: 'q4', label: 'Q4' },
-  { id: 'q3', label: 'Q3' },
-  { id: 'q2', label: 'Q2' },
-  { id: 'q1', label: 'Q1' },
-  { id: 'q0', label: 'Q0' },
-  { id: 'aktywny', label: 'Aktywne' },
-  { id: 'pasywny', label: 'Pasywne' },
-]
 
 /**
  * Sekcja „Przedmioty": lista itemów z bazy + szczegóły w stylu wiki (cytat, ID, jakość,
@@ -28,13 +19,28 @@ const FILTRY: EncFiltr[] = [
  */
 export default async function PrzedmiotyPage() {
   const [items, odblokowane] = await Promise.all([getItemyZOcena(), getOdblokowaneAchievementy()])
+  const t = tlumacz()
+
+  // Id filtrów są danymi (dopasowują się do `grupy` wpisu), więc zostają — tłumaczymy etykiety.
+  const FILTRY: EncFiltr[] = [
+    { id: 'q4', label: 'Q4' },
+    { id: 'q3', label: 'Q3' },
+    { id: 'q2', label: 'Q2' },
+    { id: 'q1', label: 'Q1' },
+    { id: 'q0', label: 'Q0' },
+    { id: 'aktywny', label: t('encyklopedia.filtrAktywne') },
+    { id: 'pasywny', label: t('encyklopedia.filtrPasywne') },
+  ]
 
   const wpisy: EncWpis[] = items.map((i) => {
     const typ = i.typ.toLowerCase()
     const d = daneItemu(i.idW, i.nazwa)
 
     // Typ i ładunek są już w znacznikach pod nazwą — w tabelce zostaje ID i jakość.
-    const pola = i.idW ? [{ label: 'ID', wartosc: `#${i.idW}` }] : []
+    const pola = i.idW ? [{ label: t('encyklopedia.poleId'), wartosc: `#${i.idW}` }] : []
+
+    // `typ` z bazy (PASYWNY/AKTYWNY) jest identyfikatorem — na chip idzie przetłumaczone słowo.
+    const typEtykieta = t(typ === 'aktywny' ? 'encyklopedia.typAktywny' : 'encyklopedia.typPasywny')
 
     return {
       id: String(i.idW ?? i.nazwa),
@@ -44,20 +50,20 @@ export default async function PrzedmiotyPage() {
       odznaka: `Q${i.jakosc}`,
       klasa: `q${i.jakosc}`,
       // Na karcie: krótki tekst z gry, a gdy go brak — znaczące tagi.
-      opis: d?.cytat ?? i.opis ?? opisItemu(i.tagi, typ),
+      opis: d?.cytat ?? i.opis ?? opisItemu(i.tagi, typ, t),
       grupy: [`q${i.jakosc}`, typ],
       waga: i.jakosc,
       szczegoly: {
         cytat: d?.cytat,
         znaczniki: [
-          d?.familiar ? 'chowaniec' : typ,
-          ...(d?.ladunek ? [`ładunek ${d.ladunek}`] : []),
-          ...(d?.pule?.length ? [etykietaPuli(d.pule[0])] : []),
+          d?.familiar ? t('encyklopedia.znacznikChowaniec') : typEtykieta,
+          ...(d?.ladunek ? [t('encyklopedia.znacznikLadunek', { ile: d.ladunek })] : []),
+          ...(d?.pule?.length ? [etykietaPuli(d.pule[0], t)] : []),
         ],
         jakosc: i.jakosc,
         pola,
-        pule: d?.pule?.map(etykietaPuli),
-        efekty: d?.staty?.map(etykietaStatu),
+        pule: d?.pule?.map((p) => etykietaPuli(p, t)),
+        efekty: d?.staty?.map((e) => etykietaStatu(e, t)),
         // „Wygląd" = obrazki z wiki (Isaac w kostiumie itemu, efekt łez). Sekcja znika,
         // gdy item nie zmienia wyglądu — wtedy wiki nie ma dla niego takiego obrazka.
         podglad: { postac: obrazekWygladu(d), lzy: obrazekLez(d) },
@@ -75,12 +81,12 @@ export default async function PrzedmiotyPage() {
 
   return (
     <EncLista
-      sekcja="Przedmioty"
+      sekcja={t('encyklopedia.dzialPrzedmioty')}
       wpisy={wpisy}
       filtry={FILTRY}
-      sortWaga="Jakość"
-      placeholder="Szukaj itemu (nazwa lub opis)…"
-      wstep="Kliknij item, żeby zobaczyć pełne szczegóły."
+      sortWaga={t('encyklopedia.sortJakosc')}
+      placeholder={t('encyklopedia.przedmiotySzukaj')}
+      wstep={t('encyklopedia.przedmiotyWstep')}
     />
   )
 }

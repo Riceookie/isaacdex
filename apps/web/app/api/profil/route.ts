@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@isaacdex/db'
 import { mojGracz } from '@/lib/konto'
+import { tlumacz } from '@/lib/i18n/serwer'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -15,9 +16,11 @@ export const dynamic = 'force-dynamic'
 // przeglądarki — dla wszystkich innych profil wyglądał inaczej (albo apka zgadywała ozdobę
 // z nicku). Dlatego lądują tu, w bazie.
 export async function POST(req: Request) {
+  // Komunikaty błędów lądują wprost w interfejsie (edytor profilu je wypisuje), więc lecą
+  // w języku użytkownika — ciasteczko języka jest przy żądaniu tak samo jak przy renderze.
+  const t = tlumacz()
   const ja = await mojGracz()
-  if (!ja)
-    return NextResponse.json({ error: 'Zaloguj się, żeby edytować profil.' }, { status: 401 })
+  if (!ja) return NextResponse.json({ error: t('profil.bladNiezalogowany') }, { status: 401 })
 
   const b = (await req.json().catch(() => ({}))) as Record<string, unknown>
   const nick = typeof b.nick === 'string' ? b.nick.trim().slice(0, 40) : undefined
@@ -34,7 +37,7 @@ export async function POST(req: Request) {
   // byłoby w feedzie nie do odróżnienia.
   if (nick && nick !== ja.nick) {
     const zajety = await prisma.gracz.findUnique({ where: { nick } })
-    if (zajety) return NextResponse.json({ error: 'Ten nick jest już zajęty.' }, { status: 409 })
+    if (zajety) return NextResponse.json({ error: t('profil.bladNickZajety') }, { status: 409 })
   }
 
   await prisma.gracz.update({

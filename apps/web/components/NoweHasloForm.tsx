@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Sprite from '@/components/Sprite'
 import PoleHasla from '@/components/PoleHasla'
+import { useT } from '@/components/JezykProvider'
 import { supabasePrzegladarka } from '@/lib/supabase/przegladarka'
 
 /**
@@ -14,6 +15,7 @@ import { supabasePrzegladarka } from '@/lib/supabase/przegladarka'
  */
 export default function NoweHasloForm() {
   const router = useRouter()
+  const t = useT()
   const [gotowe, setGotowe] = useState(false)
   const [blad, setBlad] = useState<string | null>(null)
   const [ok, setOk] = useState(false)
@@ -37,7 +39,7 @@ export default function NoweHasloForm() {
     setCzekam(true)
     const haslo = String(formularz.get('haslo') ?? '')
     if (haslo.length < 8) {
-      setBlad('Hasło musi mieć co najmniej 8 znaków.')
+      setBlad(t('konto.bladHaslo'))
       setCzekam(false)
       return
     }
@@ -45,7 +47,7 @@ export default function NoweHasloForm() {
     const { error } = await supabase.auth.updateUser({ password: haslo })
     setCzekam(false)
     if (error) {
-      setBlad('Nie udało się zmienić hasła. Link mógł wygasnąć — poproś o nowy.')
+      setBlad(t('konto.bladZmianyHasla'))
       return
     }
     setOk(true)
@@ -56,24 +58,17 @@ export default function NoweHasloForm() {
   if (ok) {
     return (
       <p className="log-info" role="status">
-        <Sprite name="heart" size={14} /> Hasło zmienione. Przenoszę Cię do profilu…
+        <Sprite name="heart" size={14} /> {t('konto.hasloZmienione')}
       </p>
     )
   }
 
   return (
     <form className="log-form" action={ustaw}>
-      <PoleHasla
-        etykieta="Nowe hasło"
-        autoComplete="new-password"
-        placeholder="Co najmniej 8 znaków"
-      />
+      {/* Placeholder zostaje domyślny („co najmniej 8 znaków") — inny byłby tu tylko szumem. */}
+      <PoleHasla etykieta={t('konto.noweHaslo')} autoComplete="new-password" />
 
-      {!gotowe && !blad && (
-        <p className="muted small">
-          Otwórz tę stronę z linku w mailu resetującym — inaczej nie ma czego zmieniać.
-        </p>
-      )}
+      {!gotowe && !blad && <p className="muted small">{t('konto.otworzZLinku')}</p>}
       {blad && (
         <p className="log-blad" role="alert">
           <Sprite name="skull" size={14} /> {blad}
@@ -81,11 +76,11 @@ export default function NoweHasloForm() {
       )}
 
       <button className="btn full" type="submit" disabled={!gotowe || czekam}>
-        {czekam ? 'Chwila…' : 'Ustaw nowe hasło'}
+        {t(czekam ? 'konto.chwila' : 'konto.ustawNoweHaslo')}
       </button>
 
       <p className="muted small log-stopka">
-        <Link href="/logowanie">← Wróć do logowania</Link>
+        <Link href="/logowanie">{t('konto.wrocDoLogowania')}</Link>
       </p>
     </form>
   )

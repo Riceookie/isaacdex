@@ -4,6 +4,7 @@ import { prisma } from '@isaacdex/db'
 import { mojGracz, zalozGracza } from '@/lib/konto'
 import { supabaseSerwer } from '@/lib/supabase/serwer'
 import { logowanieDziala } from '@/lib/supabase/konfiguracja'
+import { tlumacz } from '@/lib/i18n/serwer'
 
 /**
  * Powrót ze Steama. Nie wierzymy parametrom z adresu — odsyłamy je Steamowi z pytaniem
@@ -42,7 +43,11 @@ function danesteamowe(steamId64: string) {
   return { email: `steam.${steamId64}@steamid.isaacdex.app`, haslo }
 }
 
-/** Nick dla świeżego konta ze Steama: persona ze Steam Web API, a jak się nie uda — `Gracz<last4>`. */
+/**
+ * Nick dla świeżego konta ze Steama: persona ze Steam Web API, a jak się nie uda — zapasowy
+ * „Gracz<last4>" / „Player<last4>" w języku, w którym akurat siedzi zakładający konto.
+ * To jedyny nick, którego użytkownik nie wpisuje sam, więc nie ma komu pokazać formularza.
+ */
 async function nickZeSteam(steamId64: string): Promise<string> {
   const key = process.env.STEAM_API_KEY
   if (key) {
@@ -57,7 +62,7 @@ async function nickZeSteam(steamId64: string): Promise<string> {
       // Brak persony to nie błąd — wpadamy w fallback poniżej.
     }
   }
-  return `Gracz${steamId64.slice(-4)}`
+  return tlumacz()('konto.nickZeSteamZapasowy', { koncowka: steamId64.slice(-4) })
 }
 
 /**

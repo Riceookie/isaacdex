@@ -7,11 +7,13 @@ import LinkGracza from '@/components/LinkGracza'
 import DecorMark from '@/components/DecorMark'
 import { avatarGracza, wlasnyAvatar } from '@/lib/chars'
 import type { GraczKarta } from '@/lib/social'
+import { useT } from '@/components/JezykProvider'
 
 type Zakladka = 'obserwujacych' | 'obserwuje'
 
 /** Lista graczy w modalu — ta sama pod obiema zakładkami. */
 function Lista({ gracze, pusto }: { gracze: GraczKarta[]; pusto: string }) {
+  const t = useT()
   if (gracze.length === 0) return <p className="muted small obs-pusto">{pusto}</p>
   return (
     <ul className="obs-lista">
@@ -34,7 +36,7 @@ function Lista({ gracze, pusto }: { gracze: GraczKarta[]; pusto: string }) {
               </span>
               <span className="obs-kto">
                 <b style={g.kolor ? { color: g.kolor } : undefined}>{g.nick}</b>
-                <span className="muted small">{g.opis ?? 'Bez opisu.'}</span>
+                <span className="muted small">{g.opis ?? t('profil.bezOpisu')}</span>
               </span>
             </LinkGracza>
           </li>
@@ -64,6 +66,7 @@ export default function LicznikiObserwacji({
   listaObserwujacych: GraczKarta[]
   listaObserwowanych: GraczKarta[]
 }) {
+  const t = useT()
   const [otwarte, setOtwarte] = useState<Zakladka | null>(null)
   const [montaz, setMontaz] = useState(false)
   useEffect(() => setMontaz(true), [])
@@ -88,21 +91,25 @@ export default function LicznikiObserwacji({
           type="button"
           className="pf-licznik"
           onClick={() => setOtwarte('obserwujacych')}
-          aria-label={`${obserwujacych} obserwujących — pokaż listę`}
+          aria-label={t('profil.licznikObserwujacychAria', { liczba: obserwujacych })}
         >
           <Sprite name="friendfinder" size={15} />
           <b>{obserwujacych}</b>
-          <span className="pf-licznik-txt">obserwujących</span>
+          {/* Sama etykieta — liczba stoi obok w <b>, ale forma i tak idzie za nią
+              („1 follower" vs „2 followers"), więc `liczba` musi tu wejść. */}
+          <span className="pf-licznik-txt">
+            {t('profil.licznikObserwujacych', { liczba: obserwujacych })}
+          </span>
         </button>
         <button
           type="button"
           className="pf-licznik"
           onClick={() => setOtwarte('obserwuje')}
-          aria-label={`obserwuje ${obserwuje} — pokaż listę`}
+          aria-label={t('profil.licznikObserwujeAria', { liczba: obserwuje })}
         >
           <Sprite name="friends" size={15} />
           <b>{obserwuje}</b>
-          <span className="pf-licznik-txt">obserwuje</span>
+          <span className="pf-licznik-txt">{t('profil.licznikObserwuje')}</span>
         </button>
       </div>
 
@@ -114,7 +121,7 @@ export default function LicznikiObserwacji({
               className="modal paper obs-modal"
               role="dialog"
               aria-modal="true"
-              aria-label="Obserwujący i obserwowani"
+              aria-label={t('profil.obsModalAria')}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="obs-zakladki" role="tablist">
@@ -124,7 +131,8 @@ export default function LicznikiObserwacji({
                   className={'obs-zakladka' + (otwarte === 'obserwujacych' ? ' tu' : '')}
                   onClick={() => setOtwarte('obserwujacych')}
                 >
-                  <Sprite name="friendfinder" size={16} /> Obserwujący ({obserwujacych})
+                  <Sprite name="friendfinder" size={16} />{' '}
+                  {t('profil.obsZakladkaObserwujacy', { liczba: obserwujacych })}
                 </button>
                 <button
                   role="tab"
@@ -132,15 +140,16 @@ export default function LicznikiObserwacji({
                   className={'obs-zakladka' + (otwarte === 'obserwuje' ? ' tu' : '')}
                   onClick={() => setOtwarte('obserwuje')}
                 >
-                  <Sprite name="friends" size={16} /> Obserwuje ({obserwuje})
+                  <Sprite name="friends" size={16} />{' '}
+                  {t('profil.obsZakladkaObserwuje', { liczba: obserwuje })}
                 </button>
               </div>
               <Lista
                 gracze={gracze}
                 pusto={
                   otwarte === 'obserwuje'
-                    ? `${nick} nikogo jeszcze nie obserwuje.`
-                    : `Nikt jeszcze nie obserwuje ${nick}.`
+                    ? t('profil.obsPustoObserwuje', { nick })
+                    : t('profil.obsPustoObserwujacych', { nick })
                 }
               />
             </div>

@@ -11,12 +11,15 @@ import { wlasnyAvatar } from '@/lib/chars'
 import ProfilWidok, { type DaneProfilu } from '@/components/ProfilWidok'
 import PrzyciskObserwuj from '@/components/PrzyciskObserwuj'
 import Sprite from '@/components/Sprite'
+import { jezykSerwera, tlumacz } from '@/lib/i18n/serwer'
 
 export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: { params: { nick: string } }) {
   const dane = await getGraczPoNicku(decodeURIComponent(params.nick))
-  return { title: dane ? `${dane.gracz.nick} — IsaacDex` : 'Nie ma takiego gracza — IsaacDex' }
+  return {
+    title: dane ? `${dane.gracz.nick} — IsaacDex` : tlumacz()('profil.tytulBrakGracza'),
+  }
 }
 
 /**
@@ -30,6 +33,7 @@ export async function generateMetadata({ params }: { params: { nick: string } })
  * widać jego rzeczywisty postęp; nie ma — sekcji z gry po prostu nie ma.
  */
 export default async function ProfilGracza({ params }: { params: { nick: string } }) {
+  const t = tlumacz()
   const nick = decodeURIComponent(params.nick)
   const dane = await getGraczPoNicku(nick)
   if (!dane) notFound()
@@ -52,7 +56,8 @@ export default async function ProfilGracza({ params }: { params: { nick: string 
     ? (steam?.fav ?? '')
     : (g.avatar ?? steam?.fav ?? '')
 
-  const dolaczyl = new Intl.DateTimeFormat('pl-PL', { month: 'short', year: 'numeric' }).format(
+  const locale = jezykSerwera() === 'pl' ? 'pl-PL' : 'en-GB'
+  const dolaczyl = new Intl.DateTimeFormat(locale, { month: 'short', year: 'numeric' }).format(
     g.dolaczyl,
   )
 
@@ -78,11 +83,11 @@ export default async function ProfilGracza({ params }: { params: { nick: string 
     avatar: g.avatar,
     decor: g.dekoracja,
     meta: [
-      { etykieta: 'CZŁONEK OD', wartosc: dolaczyl },
-      { etykieta: 'WPISY', wartosc: String(g.wpisy) },
+      { etykieta: t('profil.metaCzlonekOd'), wartosc: dolaczyl },
+      { etykieta: t('profil.metaWpisy'), wartosc: String(g.wpisy) },
       {
-        etykieta: 'ACHIEVEMENTY',
-        wartosc: steam ? `${steam.achUnlocked}/${steam.achTotal}` : 'bez Steama',
+        etykieta: t('profil.metaAchievementy'),
+        wartosc: steam ? `${steam.achUnlocked}/${steam.achTotal}` : t('profil.metaBezSteama'),
       },
     ],
     gablota: g.gablota,
@@ -92,7 +97,7 @@ export default async function ProfilGracza({ params }: { params: { nick: string 
   return (
     <>
       <p className="small gracz-wroc">
-        <Link href="/znajomi">← Znajomi</Link>
+        <Link href="/znajomi">{t('profil.wrocZnajomi')}</Link>
       </p>
       <ProfilWidok
         d={d}
@@ -101,10 +106,12 @@ export default async function ProfilGracza({ params }: { params: { nick: string 
           <>
             {g.znajomy && (
               <span className="rel-badge friend">
-                <Sprite name="friends" size={13} /> Znajomy
+                <Sprite name="friends" size={13} /> {t('profil.relacjaZnajomy')}
               </span>
             )}
-            {!g.znajomy && g.obserwujeMnie && <span className="rel-badge back">Obserwuje Cię</span>}
+            {!g.znajomy && g.obserwujeMnie && (
+              <span className="rel-badge back">{t('profil.relacjaObserwujeCie')}</span>
+            )}
             <PrzyciskObserwuj
               graczId={g.id}
               obserwowany={g.obserwowany}

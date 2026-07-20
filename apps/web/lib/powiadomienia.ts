@@ -11,14 +11,19 @@ import { mojGracz } from '@/lib/konto'
  *
  * Czego tu NIE ma: lajków — `Lajk` nie zapisuje czasu, więc nie da się powiedzieć „kiedy",
  * a powiadomienie bez „kiedy" nie ma sensu. Wróci, gdy tabela dostanie znacznik czasu.
+ *
+ * Czego tu też NIE ma: gotowych zdań. To moduł danych, a nie widok — język zna dopiero
+ * przeglądarka (ciasteczko + provider), więc zamiast „zaczyna Cię obserwować" oddajemy
+ * sam `typ`, a zdanie składa dzwonek (`spolecznosc.powiadomienie*`). Typ i tak wyznaczał
+ * treść jeden do jednego, więc osobne pole `tekst` było tylko duplikatem — po polsku.
  */
 
 export type Powiadomienie = {
   id: string
+  /** Rodzaj zdarzenia — z niego widok bierze i ikonę, i przetłumaczone zdanie. */
   typ: 'follow' | 'wiadomosc'
   /** Kto — do podlinkowania profilu. */
   autor: string
-  tekst: string
   /** ISO; „ile temu" liczy już przeglądarka. */
   czas: string
 }
@@ -58,14 +63,12 @@ export async function getPowiadomienia(): Promise<Powiadomienie[]> {
       id: `follow-${o.obserwujacyId}`,
       typ: 'follow' as const,
       autor: o.obserwujacy.nick,
-      tekst: 'zaczyna Cię obserwować',
       czas: o.createdAt.toISOString(),
     })),
     ...mojeDm.map((w) => ({
       id: `wiad-${w.id}`,
       typ: 'wiadomosc' as const,
       autor: w.autor.nick,
-      tekst: 'napisał prywatnie',
       czas: w.utworzono.toISOString(),
     })),
   ]

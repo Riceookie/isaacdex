@@ -8,10 +8,14 @@ import SzukajGraczy from '@/components/SzukajGraczy'
 import { KartaGracza, WierszGracza } from '@/components/KartaGracza'
 import { czyZalogowany } from '@/lib/konto'
 import { PUSTKA } from '@/lib/klimat'
+import { tlumacz } from '@/lib/i18n/serwer'
 import { getFeed, getGracze, getLicznikiSpoleczne, type GraczKarta } from '@/lib/social'
 
 export const dynamic = 'force-dynamic'
-export const metadata = { title: 'Znajomi — IsaacDex' }
+
+export async function generateMetadata() {
+  return { title: tlumacz()('spolecznosc.tytulStrony') }
+}
 
 /**
  * Znajomi: szukajka graczy, Twoja sieć i dwa osobne feedy (znajomi / globalny).
@@ -25,31 +29,24 @@ export default async function ZnajomiPage({
 }: {
   searchParams?: Promise<{ feed?: string }>
 }) {
+  const t = tlumacz()
+
   // Gość nie ma sieci znajomych — cała zakładka to jedno zaproszenie do logowania.
   if (!(await czyZalogowany())) {
     return (
       <section className="znajomi">
         <header className="znajomi-naglowek">
           <h1>
-            <Sprite name="friends" size={28} /> Znajomi
+            <Sprite name="friends" size={28} /> {t('spolecznosc.znajomi')}
           </h1>
         </header>
         <div className="note gosc-panel">
           <ZalogujStan
-            tekst={
-              <>
-                <b>Nawet Isaac zaczynał sam.</b> Załóż konto, żeby obserwować graczy, zbierać
-                znajomych i widzieć w feedzie, kto właśnie oberwał traumą.
-              </>
-            }
-            cta="Załóż konto"
-            poza={
-              <>
-                Bez konta też jest co robić: <Link href="/encyklopedia">Encyklopedia</Link>,{' '}
-                <Link href="/kalkulator">Kalkulator</Link> i <Link href="/czat">czat piwnicy</Link>{' '}
-                (do czytania).
-              </>
-            }
+            // Zdania z pogrubieniem i linkami idą jako HTML — szyk zdania różni się
+            // między językami, więc sklejanka z kilku kluczy by się rozjechała.
+            tekst={<span dangerouslySetInnerHTML={{ __html: t('spolecznosc.goscTekst') }} />}
+            cta={t('spolecznosc.zalozKonto')}
+            poza={<span dangerouslySetInnerHTML={{ __html: t('spolecznosc.goscPoza') }} />}
           />
         </div>
       </section>
@@ -73,11 +70,9 @@ export default async function ZnajomiPage({
     <section className="znajomi">
       <header className="znajomi-naglowek">
         <h1>
-          <Sprite name="friends" size={28} /> Znajomi
+          <Sprite name="friends" size={28} /> {t('spolecznosc.znajomi')}
         </h1>
-        <p className="muted small">
-          Znajomy = obserwujecie się nawzajem. Sam nikt do piwnicy nie schodzi.
-        </p>
+        <p className="muted small">{t('spolecznosc.podtytul')}</p>
       </header>
 
       <SzukajGraczy />
@@ -87,20 +82,22 @@ export default async function ZnajomiPage({
         <div className="znajomi-panel">
           <div className="note">
             <div className="paper-head">
-              <h2>Twoja sieć</h2>
+              <h2>{t('spolecznosc.twojaSiec')}</h2>
             </div>
             <div className="soc-liczniki">
               <span>
-                <b>{liczniki.znajomi}</b> znajomych
+                <b>{liczniki.znajomi}</b>{' '}
+                {t('spolecznosc.licznikZnajomi', { liczba: liczniki.znajomi })}
               </span>
               <span>
-                <b>{liczniki.obserwuje}</b> obserwujesz
+                <b>{liczniki.obserwuje}</b> {t('spolecznosc.licznikObserwujesz')}
               </span>
               <span>
-                <b>{liczniki.obserwujacych}</b> obserwujących
+                <b>{liczniki.obserwujacych}</b>{' '}
+                {t('spolecznosc.licznikObserwujacych', { liczba: liczniki.obserwujacych })}
               </span>
               <span>
-                <b>{liczniki.wpisy}</b> wpisów
+                <b>{liczniki.wpisy}</b> {t('spolecznosc.licznikWpisy', { liczba: liczniki.wpisy })}
               </span>
             </div>
           </div>
@@ -109,10 +106,11 @@ export default async function ZnajomiPage({
             <div className="note note-cta">
               <div className="paper-head">
                 <h3>
-                  <Sprite name="heart" size={18} /> Czekają na odwzajemnienie ({czekaja.length})
+                  <Sprite name="heart" size={18} /> {t('spolecznosc.czekajaNaglowek')} (
+                  {czekaja.length})
                 </h3>
               </div>
-              <p className="muted small">Obserwują Cię. Jeden klik i robi się znajomość.</p>
+              <p className="muted small">{t('spolecznosc.czekajaOpis')}</p>
               <ul className="soc-lista">
                 {czekaja.map((g) => (
                   <WierszGracza key={g.id} g={g} />
@@ -122,25 +120,25 @@ export default async function ZnajomiPage({
           )}
 
           <Lista
-            tytul="Znajomi"
+            tytul={t('spolecznosc.znajomi')}
             ikona="friends"
             gracze={znajomi}
             pusto={<PustyStan maly tekst={PUSTKA.brakZnajomychLista} />}
           />
 
           <Lista
-            tytul="Obserwowani"
+            tytul={t('spolecznosc.listaObserwowani')}
             ikona="stopwatch"
             gracze={obserwowani}
-            podpis="Obserwujesz jednostronnie — jeszcze nie odwzajemnili."
-            pusto={<p className="muted small">Nikogo nie obserwujesz jednostronnie. Czysto.</p>}
+            podpis={t('spolecznosc.obserwowaniPodpis')}
+            pusto={<p className="muted small">{t('spolecznosc.obserwowaniPusto')}</p>}
           />
         </div>
 
         {/* ── FEED: znajomi albo globalny ── */}
         <div className="znajomi-feed">
           <div className="feed-head">
-            <h2>Aktywność</h2>
+            <h2>{t('spolecznosc.aktywnosc')}</h2>
             <FeedZakres zakres={zakres} bazowa="/znajomi" domyslny="znajomi" />
           </div>
 
@@ -154,13 +152,13 @@ export default async function ZnajomiPage({
               akcja={
                 zakres === 'znajomi' ? (
                   <Link className="btn" href="/znajomi?feed=global">
-                    Zobacz feed globalny
+                    {t('spolecznosc.feedGlobalny')}
                   </Link>
                 ) : (
                   /* Feed globalny pusty = nikt (łącznie z Tobą) nic nie zsynchronizował.
                      Jedyne sensowne wyjście prowadzi do Twojego Steama. */
                   <Link className="btn" href="/kolekcja">
-                    Synchronizuj ze Steam
+                    {t('spolecznosc.synchronizujSteam')}
                   </Link>
                 )
               }
@@ -179,9 +177,9 @@ export default async function ZnajomiPage({
       <div className="odkryj">
         <div className="feed-head">
           <h2>
-            <Sprite name="friendfinder" size={24} /> Odkryj graczy
+            <Sprite name="friendfinder" size={24} /> {t('spolecznosc.odkryjGraczy')}
           </h2>
-          <span className="muted small">Ciekawe save file’y z całej piwnicy</span>
+          <span className="muted small">{t('spolecznosc.odkryjPodpis')}</span>
         </div>
 
         {doPoznania.length === 0 ? (
@@ -191,23 +189,18 @@ export default async function ZnajomiPage({
           <PustyStan
             maly
             tekst={
-              gracze.filter((g) => !g.ja).length === 0 ? (
-                <>
-                  <b>Jesteś tu pierwszy.</b> Piwnica świeżo otwarta — gdy dołączą inni, pojawią się
-                  w tym miejscu.
-                </>
-              ) : (
-                <>
-                  <b>Znasz już wszystkich.</b> Cała piwnica jest w Twojej sieci.
-                </>
-              )
+              <span
+                dangerouslySetInnerHTML={{
+                  __html:
+                    gracze.filter((g) => !g.ja).length === 0
+                      ? t('spolecznosc.pierwszyTekst')
+                      : t('spolecznosc.znaszWszystkich'),
+                }}
+              />
             }
             poza={
               gracze.filter((g) => !g.ja).length === 0 ? (
-                <>
-                  W międzyczasie zajrzyj do <Link href="/encyklopedia">Encyklopedii</Link> albo
-                  urządź <Link href="/kim-jestem">swój profil</Link>.
-                </>
+                <span dangerouslySetInnerHTML={{ __html: t('spolecznosc.pierwszyPoza') }} />
               ) : null
             }
           />

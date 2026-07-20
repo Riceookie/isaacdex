@@ -1,4 +1,13 @@
 import type { Nastroj } from '@/lib/companionGlos'
+import type { Klucz } from '@/lib/i18n/slownik'
+
+/**
+ * Kwestie maskotki trzymamy jako KLUCZE słownika, a nie gotowe napisy — ten moduł jest
+ * czystymi danymi (bez Reacta), więc nie ma tu dostępu do tłumacza. Tekst powstaje dopiero
+ * w `components/Companion.tsx`, który ma `useT()`. Dzięki temu zmiana języka w locie
+ * przestawia też maskotkę, bez przeładowania strony.
+ */
+export type KwestiaKlucz = Extract<Klucz, `companion.${string}`>
 
 // Companion = pływający familiar-maskotka. Wita po nicku, podpowiada, prowadzi do Doradcy.
 export type Companion = {
@@ -30,147 +39,152 @@ export function companionZId(id: string | null): Companion {
   return COMPANIONS.find((c) => c.id === id) ?? DOMYSLNY_COMPANION
 }
 
-// ── Kwestie companiona (PL) — pogrupowane, reagują na aktualną sekcję ──
-const GENERAL = [
-  'Witaj z powrotem.',
-  'Kolejny dzień w piwnicy.',
-  'Wciąż bez Dead Goda?',
-  'Spokojnie, dziś ten run się uda.',
-  'Powodzenia. Przyda się.',
-  'Wierzę w Ciebie. Prawie.',
-  'Postaraj się dziś nie mieć skill issue.',
-  'Piwnica za Tobą tęskniła.',
-  'Już wracasz?',
-  'Czas przegrać kolejny run.',
+// ── Kwestie companiona — pogrupowane, reagują na aktualną sekcję ──
+const GENERAL: KwestiaKlucz[] = [
+  'companion.ogolneWitajZPowrotem',
+  'companion.ogolneKolejnyDzien',
+  'companion.ogolneWciazBezDeadGoda',
+  'companion.ogolneDzisSieUda',
+  'companion.ogolnePowodzeniaPrzydaSie',
+  'companion.ogolneWierzePrawie',
+  'companion.ogolneBezSkillIssue',
+  'companion.ogolnePiwnicaTesknila',
+  'companion.ogolneJuzWracasz',
+  'companion.ogolneCzasPrzegrac',
 ]
 
 // Otwarcie apki — dorzucane do puli Pulpitu.
-const OPENING = [
-  'Twój save file czeka.',
-  'Kto dziś oberwie traumą?',
-  'Zobaczmy, co u innych.',
-  'Oby streak przeżył.',
-  'Czuję zapach itemu jakości 0.',
+const OPENING: KwestiaKlucz[] = [
+  'companion.otwarcieSaveCzeka',
+  'companion.otwarcieKtoOberwie',
+  'companion.otwarcieCoUInnych',
+  'companion.otwarcieObyStreak',
+  'companion.otwarcieZapachJakosci0',
 ]
 
 // Steam niepodłączony — popchnij do synchronizacji.
-const STEAM_OFF = [
-  'Psst… podłącz Steam, żebym mógł podglądać Twoje achievementy.',
-  'Nie zsynchronizuję wyimaginowanych achievementów.',
-  'Najpierw Steam, potem chwała.',
+const STEAM_OFF: KwestiaKlucz[] = [
+  'companion.steamPodlaczPodgladac',
+  'companion.steamWyimaginowane',
+  'companion.steamNajpierwPotemChwala',
 ]
 
 // Gość (niezalogowany) — namawiamy do założenia konta, ciepło i z humorem.
-const GOSC = [
-  'Nawet Isaac musiał gdzieś zacząć. Załóż konto.',
-  'Bez konta jestem tylko ładną maskotką.',
-  'Zaloguj się — obiecuję nie gryźć. Za bardzo.',
-  'Twój save file gdzieś tam czeka. Serio.',
-  'Piwnica ma wolne łóżko. Zaloguj się i wejdź.',
-  'Konto za darmo, trauma gratis.',
-  'Nie oglądaj cudzych achievementów. Zdobądź własne.',
+const GOSC: KwestiaKlucz[] = [
+  'companion.goscIsaacTezZaczynal',
+  'companion.goscLadnaMaskotka',
+  'companion.goscNieGryze',
+  'companion.goscSaveCzeka',
+  'companion.goscWolneLozko',
+  'companion.goscKontoZaDarmo',
+  'companion.goscZdobadzWlasne',
 ]
 
-const HOME = [
-  'Świeże ploteczki z piwnicy.',
-  'Ktoś dobił Dead Goda pod Twoją nieobecność.',
-  'Ludzie uwielbiają wrzucać połamane runy.',
-  'O Twoim ostatnim runie… nie rozmawiamy.',
+const HOME: KwestiaKlucz[] = [
+  'companion.pulpitSwiezePloteczki',
+  'companion.pulpitKtosDobilDeadGoda',
+  'companion.pulpitPolamaneRuny',
+  'companion.pulpitNieRozmawiamy',
 ]
 
-const PROFILE = [
-  'Nieźle wyglądasz.',
-  'Ładne staty. Ignoruj śmierci.',
-  'Bio przydałoby się trochę charakteru.',
-  'Pochwal się achievementami.',
+const PROFILE: KwestiaKlucz[] = [
+  'companion.profilNiezleWygladasz',
+  'companion.profilLadneStaty',
+  'companion.profilBioBezCharakteru',
+  'companion.profilPochwalSie',
 ]
 
-const ACHIEVEMENTS = [
-  'Już prawie.',
-  'Po jednym odblokowaniu na raz.',
-  'Completioniści mnie przerażają.',
-  'Dead God sam się nie odblokuje.',
+const ACHIEVEMENTS: KwestiaKlucz[] = [
+  'companion.osiagnieciaJuzPrawie',
+  'companion.osiagnieciaPoJednym',
+  'companion.osiagnieciaCompletionisci',
+  'companion.osiagnieciaDeadGodSamSie',
 ]
 
-const ENCYKLOPEDIA = [
-  'Kliknij item — powiem, brać czy zostawić.',
-  'Brać czy zostawić? Pytaj śmiało.',
-  'Ten item? Weź. Zaufaj mi.',
-  'Zostaw to. Serio.',
+const ENCYKLOPEDIA: KwestiaKlucz[] = [
+  'companion.encyklopediaKliknijItem',
+  'companion.encyklopediaPytajSmialo',
+  'companion.encyklopediaWezZaufajMi',
+  'companion.encyklopediaZostawTo',
 ]
 
-const STATYSTYKI = [
-  'Twoje liczby wyglądają nieźle.',
-  'Wykresy nie kłamią.',
-  'Widać progres!',
-  'Śmierci nie liczymy, prawda?',
+const STATYSTYKI: KwestiaKlucz[] = [
+  'companion.statystykiLiczbyNiezle',
+  'companion.statystykiWykresyNieKlamia',
+  'companion.statystykiWidacProgres',
+  'companion.statystykiSmierciNieLiczymy',
 ]
 
-const ZNAJOMI = [
-  'Zobacz, co ubili znajomi.',
-  'Kto dziś gra?',
-  'Pochwal się runem!',
-  'Nie zazdrość Dead Goda.',
+const ZNAJOMI: KwestiaKlucz[] = [
+  'companion.znajomiCoUbili',
+  'companion.znajomiKtoGra',
+  'companion.znajomiPochwalSieRunem',
+  'companion.znajomiNieZazdrosc',
 ]
 
-const CHAT = [
-  'Bądź miły.',
-  'Albo chociaż zabawny.',
-  'Ktoś znowu kłóci się o Jacob & Esau.',
-  'Pamiętaj: żadnych spoilerów seedów.',
+const CHAT: KwestiaKlucz[] = [
+  'companion.czatBadzMily',
+  'companion.czatAlboZabawny',
+  'companion.czatKlotniaJacobEsau',
+  'companion.czatZadnychSpoilerow',
 ]
 
-const USTAWIENIA = [
-  'Możesz mnie tu zmienić na innego familiara.',
-  'Wybierz sobie kumpla.',
-  'Tainted rządzi.',
+const USTAWIENIA: KwestiaKlucz[] = [
+  'companion.ustawieniaZmienFamiliara',
+  'companion.ustawieniaWybierzKumpla',
+  'companion.ustawieniaTaintedRzadzi',
 ]
 
-const KALKULATOR = [
-  'Dorzuć item — pokażę, co zrobi ze statami.',
-  'Damage czy szybkostrzelność? Klasyk.',
-  'Uważaj na ujemny zasięg łez.',
-  'Speed ma limit. Damage prawie nie.',
-  'Polyphemus + wysoki damage = poezja.',
+const KALKULATOR: KwestiaKlucz[] = [
+  'companion.kalkulatorDorzucItem',
+  'companion.kalkulatorDamageCzyTears',
+  'companion.kalkulatorUjemnyZasieg',
+  'companion.kalkulatorSpeedMaLimit',
+  'companion.kalkulatorPolyphemusPoezja',
 ]
 
 // Porady „z życia piwnicy" — wpadają od czasu do czasu na każdej stronie.
-const TIPS = [
-  'Tip: łzy w górę? To pewnie Curse of the Blind.',
-  'Tip: Sklep zawsze warto sprawdzić przed bossem.',
-  'Tip: Devil Room lubi Twoje serduszka.',
-  'Tip: nie każdy quality 4 pasuje do Twojego buildu.',
-  'Tip: Bomby otwierają więcej niż drzwi.',
-  'Tip: The D6 to najlepszy przyjaciel Isaaca.',
-  'Tip: czerwone serca kontra soul hearts — wybieraj mądrze.',
+const TIPS: KwestiaKlucz[] = [
+  'companion.tipLzyWGore',
+  'companion.tipSklepPrzedBossem',
+  'companion.tipDevilRoomSerduszka',
+  'companion.tipQuality4NieZawsze',
+  'companion.tipBombyOtwierajaWiecej',
+  'companion.tipD6NajlepszyPrzyjaciel',
+  'companion.tipSercaKontraSoulHearts',
 ]
 
-const FUNNY = [
-  'Ed zapomniał mnie znerfić.',
-  'Butter Bean jest niedoceniany.',
-  'Wyznawcy „braku Chaosa" w rozsypce.',
-  'Zawsze jest Curse of the Blind.',
-  '50/50. Albo się uda, albo nie.',
-  'Kolejny quality 4? No pewnie.',
-  'Skill issue.',
-  'Ustawione.',
-  'We ball.',
-  'Balowanie ma konsekwencje.',
-  'Nie bierz TMTRAINER.',
-  'Wziąłeś TMTRAINER, co nie?',
-  'Sacred Heart się manifestuje…',
-  'Wina Curse of the Lost.',
-  'Przeciętne doświadczenie Tainted Lost.',
+const FUNNY: KwestiaKlucz[] = [
+  'companion.zartEdZapomnialZnerfic',
+  'companion.zartButterBean',
+  'companion.zartBrakChaosuWRozsypce',
+  'companion.zartZawszeCurseOfTheBlind',
+  'companion.zartPiecdziesiatPiecdziesiat',
+  'companion.zartKolejnyQuality4',
+  'companion.zartSkillIssue',
+  'companion.zartUstawione',
+  'companion.zartWeBall',
+  'companion.zartBalowanieKonsekwencje',
+  'companion.zartNieBierzTmtrainer',
+  'companion.zartWziolesTmtrainer',
+  'companion.zartSacredHeartManifestuje',
+  'companion.zartWinaCurseOfTheLost',
+  'companion.zartTaintedLostDoswiadczenie',
 ]
 
-/** Pula kwestii companiona zależna od strony (reaguje na sekcję). Osobne teksty per zakładka. */
-export function kwestie(pathname: string, steamConnected = true, zalogowany = true): string[] {
+/** Pula kwestii companiona zależna od strony (reaguje na sekcję). Osobne teksty per zakładka.
+ *  Zwraca KLUCZE słownika — tekst robi z nich `t()` w komponencie. */
+export function kwestie(
+  pathname: string,
+  steamConnected = true,
+  zalogowany = true,
+): KwestiaKlucz[] {
   // Gość ma pierwszeństwo: zamiast namawiać na Steam, namawiamy na konto (+ trochę żartów).
   if (!zalogowany) return [...GOSC, ...FUNNY]
   // Zalogowany bez Steama — najpierw popchnij do synchronizacji.
   if (!steamConnected) return [...STEAM_OFF, ...GENERAL, ...TIPS]
 
-  let page: string[]
+  let page: KwestiaKlucz[]
   if (pathname === '/') page = [...HOME, ...OPENING]
   else if (pathname.startsWith('/kim-jestem')) page = PROFILE
   else if (pathname.startsWith('/profil')) page = PROFILE
@@ -203,31 +217,31 @@ export function nastrojStrony(pathname: string, zalogowany = true): Nastroj {
  * Jednorazowa REAKCJA na wejście w sekcję (mówiona zaraz po nawigacji, przed pętlą idle).
  * Dzięki temu maskotka „wita" każdą stronę z odpowiednią miną — cheeruje przy osiągnięciach,
  * myśli przy kalkulatorze, zaprasza gościa do logowania.
+ *
+ * Zwraca KLUCZ, nie gotowy tekst — tak samo jak `kwestie`.
  */
 export function wejscie(
   pathname: string,
   steamConnected = true,
   zalogowany = true,
-): { tekst: string; nastroj: Nastroj } {
-  if (!zalogowany)
-    return { tekst: 'Rozejrzyj się. A potem załóż konto — będzie lepiej.', nastroj: 'sad' }
-  if (!steamConnected) return { tekst: 'Podłącz Steam, a ożyję na dobre.', nastroj: 'thinking' }
-  if (pathname === '/') return { tekst: 'Świeże ploteczki z piwnicy!', nastroj: 'excited' }
+): { klucz: KwestiaKlucz; nastroj: Nastroj } {
+  if (!zalogowany) return { klucz: 'companion.wejscieGosc', nastroj: 'sad' }
+  if (!steamConnected) return { klucz: 'companion.wejscieSteamOff', nastroj: 'thinking' }
+  if (pathname === '/') return { klucz: 'companion.wejsciePulpit', nastroj: 'excited' }
   if (pathname.startsWith('/kolekcja'))
-    return { tekst: 'Obejrzyjmy te trofea!', nastroj: 'excited' }
+    return { klucz: 'companion.wejscieKolekcja', nastroj: 'excited' }
   if (pathname.startsWith('/statystyki'))
-    return { tekst: 'Czas na liczby. Śmierci pomijamy.', nastroj: 'happy' }
+    return { klucz: 'companion.wejscieStatystyki', nastroj: 'happy' }
   if (pathname.startsWith('/kalkulator'))
-    return { tekst: 'Pobawmy się statami. Dorzuć item.', nastroj: 'thinking' }
+    return { klucz: 'companion.wejscieKalkulator', nastroj: 'thinking' }
   if (pathname.startsWith('/encyklopedia'))
-    return { tekst: 'Kliknij item — powiem, brać czy zostawić.', nastroj: 'thinking' }
+    return { klucz: 'companion.encyklopediaKliknijItem', nastroj: 'thinking' }
   if (pathname.startsWith('/znajomi'))
-    return { tekst: 'Zobaczmy, co ubili znajomi!', nastroj: 'happy' }
-  if (pathname.startsWith('/czat'))
-    return { tekst: 'Bądź miły. Albo chociaż zabawny.', nastroj: 'zwykly' }
+    return { klucz: 'companion.wejscieZnajomi', nastroj: 'happy' }
+  if (pathname.startsWith('/czat')) return { klucz: 'companion.wejscieCzat', nastroj: 'zwykly' }
   if (pathname.startsWith('/ustawienia'))
-    return { tekst: 'Możesz mnie tu wymienić na innego kumpla.', nastroj: 'happy' }
+    return { klucz: 'companion.wejscieUstawienia', nastroj: 'happy' }
   if (pathname.startsWith('/profil') || pathname.startsWith('/kim-jestem'))
-    return { tekst: 'Twój kąt piwnicy. Nieźle wygląda.', nastroj: 'happy' }
-  return { tekst: 'Kolejny dzień w piwnicy.', nastroj: 'zwykly' }
+    return { klucz: 'companion.wejscieProfil', nastroj: 'happy' }
+  return { klucz: 'companion.ogolneKolejnyDzien', nastroj: 'zwykly' }
 }

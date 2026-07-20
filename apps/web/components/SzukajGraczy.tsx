@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useTransition } from 'react'
 import { szukajGraczyAkcja } from '@/app/actions/social'
 import { KartaGracza } from '@/components/KartaGracza'
 import PustyStan from '@/components/PustyStan'
+import { useT } from '@/components/JezykProvider'
 import { PUSTKA } from '@/lib/klimat'
 import type { GraczKarta } from '@/lib/social'
 
@@ -19,6 +20,7 @@ export default function SzukajGraczy() {
   const [wyniki, setWyniki] = useState<GraczKarta[] | null>(null)
   const [czekam, start] = useTransition()
   const ostatnie = useRef('')
+  const t = useT()
 
   useEffect(() => {
     const fraza = q.trim()
@@ -47,12 +49,16 @@ export default function SzukajGraczy() {
           value={q}
           onChange={(e) => setQ(e.target.value)}
           onKeyDown={(e) => e.key === 'Escape' && setQ('')}
-          placeholder="Szukaj gracza po nicku lub opisie…"
-          aria-label="Szukaj gracza"
+          placeholder={t('spolecznosc.szukajPlaceholder')}
+          aria-label={t('spolecznosc.szukajAria')}
           className="input"
         />
         {q && (
-          <button className="szukaj-x" onClick={() => setQ('')} aria-label="Wyczyść">
+          <button
+            className="szukaj-x"
+            onClick={() => setQ('')}
+            aria-label={t('spolecznosc.wyczysc')}
+          >
             ×
           </button>
         )}
@@ -65,7 +71,7 @@ export default function SzukajGraczy() {
           ) : (
             <>
               <p className="muted small szukaj-ile">
-                Znaleziono {wyniki.length} {wyniki.length === 1 ? 'gracza' : 'graczy'}
+                {t('spolecznosc.znaleziono', { liczba: wyniki.length })}
               </p>
               <div className="gracze-siatka">
                 {wyniki.map((g) => (

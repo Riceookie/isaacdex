@@ -6,6 +6,7 @@ import { getOnboarding } from '@/lib/onboarding'
 import { ikonaPostaci } from '@/lib/chars'
 import type { DecorId } from '@/lib/pfpDecor'
 import { PUSTKA } from '@/lib/klimat'
+import { tlumacz } from '@/lib/i18n/serwer'
 import Sprite from '@/components/Sprite'
 import ProfileAvatar from '@/components/ProfileAvatar'
 import PierwszeKroki from '@/components/PierwszeKroki'
@@ -23,6 +24,7 @@ export default async function Home({
 }: {
   searchParams?: Promise<{ feed?: string }>
 }) {
+  const t = tlumacz()
   const zakres = (await searchParams)?.feed === 'znajomi' ? 'znajomi' : 'global'
   const [zalogowany, p, feed, liczniki, ja, onboarding] = await Promise.all([
     czyZalogowany(),
@@ -50,10 +52,10 @@ export default async function Home({
       <div className="home-feed">
         <div className="feed-head">
           <h2>
-            <Sprite name="friendfinder" size={26} /> Co słychać?
+            <Sprite name="friendfinder" size={26} /> {t('spolecznosc.coSlychac')}
           </h2>
           <Link className="small" href="/znajomi">
-            → Wszyscy znajomi
+            {t('spolecznosc.wszyscyZnajomi')}
           </Link>
         </div>
 
@@ -73,30 +75,26 @@ export default async function Home({
             akcja={
               brakZnajomych ? (
                 <Link className="btn" href="/znajomi">
-                  Znajdź graczy
+                  {t('spolecznosc.znajdzGraczy')}
                 </Link>
               ) : gosc ? (
                 <Link className="btn" href="/logowanie">
-                  Załóż konto
+                  {t('spolecznosc.zalozKonto')}
                 </Link>
               ) : (
                 <Link className="btn" href="/kolekcja">
-                  Synchronizuj ze Steam
+                  {t('spolecznosc.synchronizujSteam')}
                 </Link>
               )
             }
+            // Zdania z wplecionymi linkami trzymamy jako HTML w słowniku — inaczej trzeba
+            // by je ciąć na kilka kluczy, a szyk zdania i tak różni się między językami.
             poza={
-              gosc ? (
-                <>
-                  A bez konta i tak możesz zwiedzić <Link href="/encyklopedia">Encyklopedię</Link>{' '}
-                  albo policzyć build w <Link href="/kalkulator">Kalkulatorze</Link>.
-                </>
-              ) : (
-                <>
-                  W międzyczasie: <Link href="/encyklopedia">Encyklopedia</Link> (717 itemów, 103
-                  bossów) i <Link href="/kalkulator">Kalkulator</Link> statystyk.
-                </>
-              )
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: gosc ? t('spolecznosc.pulpitGoscPoza') : t('spolecznosc.pulpitPoza'),
+                }}
+              />
             }
           />
         ) : (
@@ -136,21 +134,23 @@ export default async function Home({
                   mówili jednym głosem (a nie były dwiema osobnymi apkami). */}
               <div className="me-siec">
                 <Link href="/znajomi">
-                  <b>{liczniki.znajomi}</b> znajomych
+                  <b>{liczniki.znajomi}</b>{' '}
+                  {t('spolecznosc.licznikZnajomi', { liczba: liczniki.znajomi })}
                 </Link>
                 <Link href="/znajomi">
-                  <b>{liczniki.obserwujacych}</b> obserwujących
+                  <b>{liczniki.obserwujacych}</b>{' '}
+                  {t('spolecznosc.licznikObserwujacych', { liczba: liczniki.obserwujacych })}
                 </Link>
               </div>
               <Link className="small" href="/profil">
-                → Mój profil
+                {t('spolecznosc.mojProfil')}
               </Link>
             </div>
 
             {/* Progress */}
             <div className="note">
               <div className="feed-head">
-                <h3>Postęp</h3>
+                <h3>{t('spolecznosc.postep')}</h3>
               </div>
               <p className="small muted">Dead God</p>
               <div className="prog-row">
@@ -167,18 +167,10 @@ export default async function Home({
             <ZalogujStan
               maly
               tekst={
-                <>
-                  <b>Tu zamieszka Twój save file.</b> Załóż konto, a to miejsce wypełni Twój postęp,
-                  Dead God i najrzadsze zdobycze.
-                </>
+                <span dangerouslySetInnerHTML={{ __html: t('spolecznosc.goscProfilTekst') }} />
               }
-              cta="Załóż konto"
-              poza={
-                <>
-                  Bez konta i tak zwiedzisz <Link href="/encyklopedia">Encyklopedię</Link> (717
-                  itemów) i policzysz build w <Link href="/kalkulator">Kalkulatorze</Link>.
-                </>
-              }
+              cta={t('spolecznosc.zalozKonto')}
+              poza={<span dangerouslySetInnerHTML={{ __html: t('spolecznosc.goscProfilPoza') }} />}
             />
           </div>
         ) : null}
@@ -190,9 +182,9 @@ export default async function Home({
         {p && p.showcase.length > 0 && (
           <div className="note">
             <div className="feed-head">
-              <h3>Trendujace (najrzadsze)</h3>
+              <h3>{t('spolecznosc.trendujace')}</h3>
               <Link className="paper-more" href="/statystyki">
-                Wszystkie →
+                {t('spolecznosc.wszystkie')}
               </Link>
             </div>
             <ol className="trend-list">

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Sprite from '@/components/Sprite'
 import KlatkiAnim from '@/components/KlatkiAnim'
+import { useT } from '@/components/JezykProvider'
 import { usunKonto } from '@/app/actions/auth'
 
 /**
@@ -18,6 +19,7 @@ export default function UsunKonto() {
   const [otwarte, setOtwarte] = useState(false)
   const [najazd, setNajazd] = useState<'nie' | 'tak' | null>(null)
   const [montaz, setMontaz] = useState(false)
+  const t = useT()
 
   useEffect(() => setMontaz(true), [])
 
@@ -38,7 +40,7 @@ export default function UsunKonto() {
   return (
     <>
       <button className="btn danger usun-btn" type="button" onClick={() => setOtwarte(true)}>
-        <Sprite name="skull" size={18} /> Usuń konto
+        <Sprite name="skull" size={18} /> {t('konto.usunKonto')}
       </button>
 
       {otwarte &&
@@ -49,7 +51,7 @@ export default function UsunKonto() {
               className="modal paper usun-modal"
               role="dialog"
               aria-modal="true"
-              aria-label="Potwierdź usunięcie konta"
+              aria-label={t('konto.potwierdzUsuniecie')}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Nagłówek-rysunek: „ARE YOU SURE YOU WANT ME TO DIE?" */}
@@ -69,7 +71,7 @@ export default function UsunKonto() {
                     onFocus={() => setNajazd('nie')}
                     onBlur={() => setNajazd(null)}
                   >
-                    Nie
+                    {t('konto.nie')}
                   </button>
                   <form action={usunKonto}>
                     <button
@@ -80,7 +82,7 @@ export default function UsunKonto() {
                       onFocus={() => setNajazd('tak')}
                       onBlur={() => setNajazd(null)}
                     >
-                      Tak
+                      {t('konto.tak')}
                     </button>
                   </form>
                 </div>

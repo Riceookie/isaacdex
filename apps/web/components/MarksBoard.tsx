@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Sprite from '@/components/Sprite'
+import { useT } from '@/components/JezykProvider'
 import { ikonaPostaci } from '@/lib/chars'
 
 type Props = {
@@ -19,6 +20,7 @@ type Props = {
  * ustawia najpierw NORMAL (wymóg reguły), wyłączenie zdejmuje HARD.
  */
 export default function MarksBoard({ postac, bossy, zaznaczone, labels, roster }: Props) {
+  const t = useT()
   const [done, setDone] = useState<Set<string>>(new Set(zaznaczone.map((z) => z.split(':')[0])))
   const [busy, setBusy] = useState<string | null>(null)
   const [err, setErr] = useState<string | null>(null)
@@ -35,7 +37,7 @@ export default function MarksBoard({ postac, bossy, zaznaczone, labels, roster }
     })
     if (!res.ok) {
       const d = await res.json().catch(() => ({}))
-      throw new Error(d.error || 'Nie udało się zapisać marka.')
+      throw new Error(d.error || t('kolekcja.markBladZapisu'))
     }
   }
 
@@ -58,7 +60,7 @@ export default function MarksBoard({ postac, bossy, zaznaczone, labels, roster }
         return n
       })
     } catch (e) {
-      setErr(e instanceof Error ? e.message : 'Błąd zapisu.')
+      setErr(e instanceof Error ? e.message : t('kolekcja.markBlad'))
     } finally {
       setBusy(null)
     }
@@ -71,7 +73,7 @@ export default function MarksBoard({ postac, bossy, zaznaczone, labels, roster }
           className="char-portrait"
           onClick={() => setPickerOpen((o) => !o)}
           aria-expanded={pickerOpen}
-          data-tip="Zmień postać"
+          data-tip={t('kolekcja.zmienPostac')}
         >
           <img className="char-icon big" src={ikonaPostaci(postac)} alt={postac} />
         </button>
@@ -113,9 +115,8 @@ export default function MarksBoard({ postac, bossy, zaznaczone, labels, roster }
               className={'mark-cell' + (on ? ' on' : '') + (busy === b ? ' busy' : '')}
               onClick={() => toggle(b)}
               disabled={busy === b}
-              data-tip={
-                (labels[b] || b) + (on ? ' — kliknij, by odznaczyć' : ' — kliknij, by zaliczyć')
-              }
+              // Nazwa bossa (labels) zostaje po angielsku — tłumaczy się tylko podpowiedź.
+              data-tip={(labels[b] || b) + t(on ? 'kolekcja.markOdznacz' : 'kolekcja.markZalicz')}
             >
               <img src={`/tboi/marks/${b}.webp`} alt={labels[b] || b} />
             </button>
@@ -123,10 +124,7 @@ export default function MarksBoard({ postac, bossy, zaznaczone, labels, roster }
         })}
       </div>
 
-      <p className="muted small">
-        Marki wyliczają się z achievementów (Steam), ale możesz je <b>kliknąć</b>, by ręcznie
-        poprawić, gdyby coś się nie zgadzało. Czerwone = Hard.
-      </p>
+      <p className="muted small" dangerouslySetInnerHTML={{ __html: t('kolekcja.markiPrzypis') }} />
     </div>
   )
 }

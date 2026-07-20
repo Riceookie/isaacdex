@@ -1,11 +1,16 @@
 import Sprite from '@/components/Sprite'
 import NoweHasloForm from '@/components/NoweHasloForm'
+import { tlumacz } from '@/lib/i18n/serwer'
 
 export const dynamic = 'force-dynamic'
-export const metadata = { title: 'Nowe hasło — IsaacDex' }
+
+export function generateMetadata() {
+  return { title: tlumacz()('konto.tytulStronyNoweHaslo') }
+}
 
 /** Strona lądowania linku resetującego z maila — samo ustawienie hasła robi klient. */
 export default function NoweHasloPage() {
+  const t = tlumacz()
   return (
     <section className="log-strona">
       <div className="note log-karta">
@@ -13,8 +18,8 @@ export default function NoweHasloPage() {
           <header className="log-head">
             <Sprite name="momsContact" size={40} />
             <div>
-              <h1>Nowe hasło</h1>
-              <p className="muted small">Wpisz nowe hasło do swojej piwnicy.</p>
+              <h1>{t('konto.noweHaslo')}</h1>
+              <p className="muted small">{t('konto.noweHasloPodtytul')}</p>
             </div>
           </header>
           <NoweHasloForm />

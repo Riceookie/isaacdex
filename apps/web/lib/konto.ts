@@ -1,6 +1,7 @@
 import { cache } from 'react'
 import { prisma } from '@isaacdex/db'
 import { uzytkownik } from '@/lib/supabase/serwer'
+import { NICK_MAX, przytnijNick } from '@/lib/nick'
 
 /**
  * Kim jest „ja”. Dla gościa: NIKIM.
@@ -36,9 +37,13 @@ export async function zalozGracza(userId: string, nick: string) {
   const istnieje = await prisma.gracz.findUnique({ where: { userId } })
   if (istnieje) return istnieje
 
-  let kandydat = nick
+  const bazowy = przytnijNick(nick)
+  let kandydat = bazowy
+  // Licznik przy kolizji nie może przepchnąć nicku ponad limit — skracamy bazę o tyle,
+  // ile zajmie sufiks, zamiast dopisywać go „na wierzch".
   for (let i = 2; await prisma.gracz.findUnique({ where: { nick: kandydat } }); i++) {
-    kandydat = `${nick}${i}`
+    const sufiks = String(i)
+    kandydat = bazowy.slice(0, NICK_MAX - sufiks.length) + sufiks
   }
 
   return prisma.gracz.create({

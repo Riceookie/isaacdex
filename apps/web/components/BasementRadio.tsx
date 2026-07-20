@@ -4,10 +4,12 @@ import { useRef, useState } from 'react'
 import Sprite from '@/components/Sprite'
 import { ikonaPostaci } from '@/lib/chars'
 import { seedDnia } from '@/lib/dailySeed'
+import { useT } from '@/components/JezykProvider'
 
 /** „Basement Radio" — seed dnia + polecana postać i trudność (nasze wyzwanie, liczone z daty).
  *  Kliknięcie „gra" radio: krótki jingle (Web Audio, bez pliku) + animacja „ON AIR". */
 export default function BasementRadio() {
+  const t = useT()
   const s = seedDnia(new Date())
   const [playing, setPlaying] = useState(false)
   const acRef = useRef<AudioContext | null>(null)
@@ -71,15 +73,15 @@ export default function BasementRadio() {
           type="button"
           className="radio-play"
           onClick={zagraj}
-          aria-label="Włącz radio"
-          title="Włącz radio"
+          aria-label={t('companion.radioWlacz')}
+          title={t('companion.radioWlacz')}
         >
           {playing ? '♪' : '▶'}
         </button>
       </h3>
 
       <div className="radio-seed">
-        <span className="muted small">Seed dnia</span>
+        <span className="muted small">{t('companion.radioSeedDnia')}</span>
         <b className="radio-code">{s.seed}</b>
       </div>
 

@@ -2,7 +2,6 @@ import 'server-only'
 import { prisma } from '@isaacdex/db'
 import { mojGracz } from '@/lib/konto'
 import { godzina, KANALY, kanalDm, LIMIT_WIADOMOSCI, nickZDm, type Wiad } from '@/lib/czat'
-import type { SpriteName } from '@/components/Sprite'
 
 /**
  * Odczyt i zapis wiadomości czatu.
@@ -62,7 +61,7 @@ const doWiad = (
     tekst: w.tresc ? w.tresc.split('\n') : [],
     obraz: w.obrazekUrl ?? undefined,
     reakcje: [...licznik.entries()].map(([ikona, ile]) => ({
-      ikona: ikona as SpriteName,
+      ikona,
       ile,
       moja: moje.has(ikona),
     })),

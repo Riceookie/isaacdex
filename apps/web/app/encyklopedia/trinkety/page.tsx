@@ -2,13 +2,9 @@ import EncLista from '@/components/EncLista'
 import { getOdblokowaneAchievementy } from '@/lib/queries'
 import { TRINKETY } from '@/lib/enc/itemyDane'
 import type { EncFiltr, EncWpis } from '@/lib/enc/typy'
+import { tlumacz } from '@/lib/i18n/serwer'
 
 export const dynamic = 'force-dynamic'
-
-const FILTRY: EncFiltr[] = [
-  { id: 'masz', label: 'Odblokowane' },
-  { id: 'zablokowane', label: 'Zablokowane' },
-]
 
 /**
  * Sekcja „Trinkety" — 188 bibelotów z plików gry (cytat) + opisem efektu i warunkiem
@@ -16,6 +12,13 @@ const FILTRY: EncFiltr[] = [
  */
 export default async function TrinketyPage() {
   const odblokowane = await getOdblokowaneAchievementy()
+  const tl = tlumacz()
+
+  // Id filtrów zostają — to one łączą chip z `grupy` wpisu.
+  const FILTRY: EncFiltr[] = [
+    { id: 'masz', label: tl('encyklopedia.filtrOdblokowane') },
+    { id: 'zablokowane', label: tl('encyklopedia.filtrZablokowane') },
+  ]
 
   const wpisy: EncWpis[] = TRINKETY.map((t) => {
     // Trinket bez achievementu jest dostępny od początku.
@@ -30,14 +33,17 @@ export default async function TrinketyPage() {
       // Zablokowane wyszarzamy klasą (żadnych emoji — apka jest na sprite'ach z gry).
       odznaka: 'T',
       klasa: zdobyte ? 'trinket' : 'trinket zablokowany',
-      opis: t.cytat ?? t.opis ?? 'bibelot',
+      opis: t.cytat ?? t.opis ?? tl('encyklopedia.opisBibelot'),
       grupy: [zdobyte ? 'masz' : 'zablokowane'],
       waga: zdobyte ? 1 : 0,
       szczegoly: {
         cytat: t.cytat,
         // Typ jest już w znacznikach — w tabelce zostaje samo ID.
-        znaczniki: ['trinket', zdobyte ? 'odblokowany' : 'zablokowany'],
-        pola: [{ label: 'ID', wartosc: `#${t.id}` }],
+        znaczniki: [
+          tl('encyklopedia.znacznikTrinket'),
+          tl(zdobyte ? 'encyklopedia.znacznikOdblokowany' : 'encyklopedia.znacznikZablokowany'),
+        ],
+        pola: [{ label: tl('encyklopedia.poleId'), wartosc: `#${t.id}` }],
         pelnyOpis: t.opis,
         odblokowanie: t.achievement
           ? { nazwa: t.achievement, warunek: t.warunek, zdobyte }
@@ -48,12 +54,12 @@ export default async function TrinketyPage() {
 
   return (
     <EncLista
-      sekcja="Trinkety"
+      sekcja={tl('encyklopedia.dzialTrinkety')}
       wpisy={wpisy}
       filtry={FILTRY}
-      sortWaga="Odblokowane"
-      placeholder="Szukaj trinketu (nazwa lub efekt)…"
-      wstep="Kliknij trinket, żeby zobaczyć jego efekt i sposób odblokowania."
+      sortWaga={tl('encyklopedia.sortOdblokowane')}
+      placeholder={tl('encyklopedia.trinketySzukaj')}
+      wstep={tl('encyklopedia.trinketyWstep')}
     />
   )
 }
