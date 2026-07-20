@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@isaacdex/db'
 import { mojGracz } from '@/lib/konto'
+import { MIEJSC_GABLOTY } from '@/lib/gablota'
 import { tlumacz } from '@/lib/i18n/serwer'
 
 export const runtime = 'nodejs'
@@ -30,7 +31,7 @@ export async function POST(req: Request) {
   const avatar = b.avatar === null ? null : typeof b.avatar === 'string' ? b.avatar : undefined
   const dekoracja = typeof b.dekoracja === 'string' ? b.dekoracja.slice(0, 32) : undefined
   const gablota = Array.isArray(b.gablota)
-    ? b.gablota.filter((x): x is string => typeof x === 'string').slice(0, 3)
+    ? b.gablota.filter((x): x is string => typeof x === 'string').slice(0, MIEJSC_GABLOTY)
     : undefined
 
   // Nick widnieje pod każdym wpisem, więc musi być unikalny — inaczej dwóch graczy

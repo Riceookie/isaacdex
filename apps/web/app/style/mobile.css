@@ -1,0 +1,229 @@
+/* Wypełnia agent pracujący nad obszarem „mobile". Osobny plik, żeby równoległa praca
+   nie kończyła się konfliktami w jednym wielkim globals.css.
+
+   UWAGA na kolejność: ten plik jest importowany PRZED regułami globals.css, więc przy
+   równej specyficzności przegrywa. Dlatego wszędzie tam, gdzie nadpisujemy istniejącą
+   regułę, selektor jest zdublowany (`.chip.chip`) — to podbija specyficzność do 0,2,0
+   bez `!important`, które psułoby dalsze nadpisania w skinach (light/dark). */
+
+/* ============================================================================
+   1. SZUFLADA NAWIGACJI (☰) — otwieranie, dotyk, blokada tła
+   ============================================================================ */
+@media (max-width: 820px) {
+  /* Hamburger był 42x42 — poniżej progu 44x44, który wygodnie trafia się kciukiem.
+     `touch-action: manipulation` zdejmuje ~300 ms opóźnienia na tapnięcie (double-tap zoom). */
+  .ham.ham {
+    width: 44px;
+    height: 44px;
+    /* Na telefonach z wcięciem pasek statusu zjadałby górną krawędź przycisku. */
+    top: max(0.55rem, env(safe-area-inset-top));
+    left: max(0.55rem, env(safe-area-inset-left));
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Szuflada bywa dłuższa niż ekran (9 pozycji + brand). `overscroll-behavior: contain`
+     pilnuje, żeby doscrollowanie jej do końca NIE zaczęło przewijać strony pod spodem. */
+  .sidebar.sidebar {
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding-top: max(1.5rem, env(safe-area-inset-top));
+    padding-bottom: max(2rem, env(safe-area-inset-bottom));
+  }
+
+  /* Pozycje menu to główny cel dotyku w całej apce — pełne 48 px wysokości i pełna
+     szerokość szuflady, żeby trafiał w nie każdy kciuk, nie tylko w sam tekst. */
+  .sidebar .side-link {
+    min-height: 48px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .sidebar .side-brand {
+    min-height: 48px;
+    touch-action: manipulation;
+  }
+
+  /* Nakładka musi łapać dotyk na całym ekranie (to ona zamyka szufladę tapnięciem obok)
+     i nie może przepuszczać scrolla na stronę pod spodem. */
+  .sidebar-cien.sidebar-cien {
+    touch-action: none;
+    overscroll-behavior: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Blokada przewijania tła pod otwartą szufladą.
+   Samo `overflow: hidden` na <body> bywa ignorowane, gdy to <html> jest kontenerem
+   przewijania — dlatego domykamy oba końce: klasę na <body> i `:has()` na <html>. */
+body.bez-scrolla.bez-scrolla {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+html:has(body.bez-scrolla) {
+  overflow: hidden;
+}
+
+/* ============================================================================
+   2. PASEK GÓRNY — ☰ nie może siadać na papierowej zakładce
+   ============================================================================ */
+@media (max-width: 820px) {
+  /* W globals.css `.topbar { padding-left: 3.4rem }` jest kasowane przez PÓŹNIEJSZY
+     skrót `.topbar { padding: 0.9rem 1rem 0.4rem }` — przez to hamburger nachodził na
+     tytuł sekcji. Ustawiamy padding jednym skrótem, więc nic go już nie zeruje.
+     `nowrap` + kurczliwa zakładka: wcześniej ikony zawijały się do drugiego rzędu i
+     zostawiały ~60 px pustki między tytułem a treścią. */
+  .topbar.topbar {
+    padding: 0.6rem 1rem 0.35rem 3.7rem;
+    row-gap: 0.2rem;
+  }
+  /* `flex: 0 0 auto` = zakładka NIGDY się nie kurczy, więc `text-overflow: ellipsis`
+     z globals nie ma czego obcinać. Przy krótkim tytule („STATS") wszystko mieści się
+     w jednym rzędzie; przy długim („ENCYCLOPEDIA") na wąskim ekranie do drugiego rzędu
+     schodzą IKONY, a tytuł zostaje czytelny w całości. Odwrotnie — kurcząc zakładkę —
+     przy 320 px zostawało z niej „ENC…". */
+  .topbar .page-tab {
+    flex: 0 0 auto;
+  }
+  .topbar .util {
+    flex: none;
+  }
+
+  /* Ikony narzędziowe (czat, dzwonek) miały 34x34 — poniżej progu dotyku. */
+  .util-icon.util-icon {
+    width: 44px;
+    height: 44px;
+    touch-action: manipulation;
+  }
+  .util.util {
+    gap: 0.3rem;
+  }
+}
+
+/* Najwęższe telefony: niższa zakładka, żeby pasek — nawet zawinięty do dwóch rzędów —
+   nie zjadał czubka ekranu. */
+@media (max-width: 400px) {
+  .topbar .page-tab {
+    font-size: 1.1rem;
+    padding: 0.3rem 0.7rem;
+    border-width: 10px;
+  }
+}
+
+/* ============================================================================
+   3. OBSZARY DOTYKU — wspólne minimum 44x44 na ekranach dotykowych
+   ============================================================================ */
+@media (max-width: 820px) {
+  /* Guziki i filtry: `.chip` miało 40 px (reguła w globals dla 560 px), pola 39 px,
+     `.pill-tab` ledwie 24 px. Ujednolicamy do 44 px — progu z wytycznych dostępności. */
+  .chip.chip,
+  .btn.btn,
+  .pill-tab.pill-tab,
+  .enc-back.enc-back,
+  .fly-toggle.fly-toggle {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
+  }
+
+  .haslo-oko.haslo-oko {
+    width: 44px;
+    height: 44px;
+    touch-action: manipulation;
+  }
+
+  .cz-kanal.cz-kanal {
+    min-height: 48px;
+    touch-action: manipulation;
+  }
+
+  .char-bar.char-bar {
+    min-height: 44px;
+  }
+
+  /* Linki-akcje stojące samodzielnie (nie w środku zdania) — jako czysty `inline` miały
+     ~16 px wysokości. `inline-flex` + `min-height` daje pełny cel dotyku, a że stoją na
+     końcu własnej linii, nie nachodzą na sąsiedni tekst. */
+  .banner-link,
+  a.small {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  /* Kółko „play" w radiu miało 30x30 — najmniejszy klikalny element w apce. */
+  .radio-play.radio-play {
+    width: 44px;
+    height: 44px;
+    touch-action: manipulation;
+  }
+
+  /* Pola formularzy: <16px czcionki powoduje na iOS automatyczne przybliżenie strony
+     przy wejściu w pole — stąd twarde 16 px, nie 0.9rem. */
+  .input.input {
+    min-height: 44px;
+    font-size: 16px;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+/* ============================================================================
+   4. POJEDYNCZE EKRANY
+   ============================================================================ */
+@media (max-width: 820px) {
+  /* ── Encyklopedia / kolekcja: szukajka ──
+     `.enc-szukajka { flex: 1 1 220px }` w zawijanym `.kol-tools` schodziło poniżej
+     bazy i wychodziło poza kartę. Na telefonie szukajka dostaje własny, pełny rząd. */
+  .enc-szukajka.enc-szukajka {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+  .enc-szukajka .input,
+  .kol-tools .input,
+  .input.grow {
+    width: 100%;
+    min-width: 0;
+  }
+  .kol-tools.kol-tools {
+    min-width: 0;
+  }
+}
+
+/* ── Statystyki: paski postaci ──
+   `grid-template-columns: 30px 150px 1fr 46px` + 3 przerwy to ~260 px sztywnej
+   szerokości — poniżej ~390 px siatka nie mieściła się i to ONA rozjeżdżała całą
+   stronę w poziomie. Kolumna z nazwą przestaje być sztywna i może się kurczyć. */
+@media (max-width: 820px) {
+  .char-bar.char-bar {
+    grid-template-columns: 26px minmax(0, 1.1fr) minmax(0, 1fr) 40px;
+    gap: 0.45rem;
+    font-size: 0.85rem;
+  }
+  /* Dopisek „brak danych ze Steam" ma `white-space: nowrap` — na wąskim ekranie
+     rozpychał wiersz. Pozwalamy mu się złamać. */
+  .char-nodata.char-nodata {
+    white-space: normal;
+  }
+  .char-pct.char-pct {
+    min-width: 0;
+  }
+}
+
+/* ============================================================================
+   5. SIATKI I MEDIA — nic nie może wystawać poza szerokość ekranu
+   ============================================================================ */
+@media (max-width: 820px) {
+  /* Obrazki i sprite'y potrafią mieć własne, większe wymiary intrinsic. */
+  .container img,
+  .container svg {
+    max-width: 100%;
+  }
+
+  /* Karty w siatkach (itemy encyklopedii) miały `minmax(160px, 1fr)` — przy 320 px
+     i paddingu karty zostaje ~248 px, więc dwie kolumny się nie mieszczą. */
+  .item-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(140px, 100%), 1fr));
+  }
+}

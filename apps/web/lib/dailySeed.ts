@@ -37,6 +37,22 @@ function prng(seed: number) {
   }
 }
 
+/** Dzień jako `YYYY-MM-DD` — wspólny „stempel doby" dla wszystkiego, co ma być stabilne w jej obrębie. */
+export function kluczDnia(data: Date): string {
+  return data.toISOString().slice(0, 10)
+}
+
+/**
+ * Deterministyczny wybór elementu z listy na podstawie tekstowego klucza.
+ *
+ * Istnieje po to, żeby rzeczy „stałe w obrębie doby" (porada dnia maskotki) NIE szły przez
+ * `Math.random()`: przy losowaniu każde odświeżenie strony dawałoby inną kwestię i wyglądałoby
+ * to na błąd. Ten sam klucz = zawsze ten sam wynik, na każdym renderze i po każdym reloadzie.
+ */
+export function wybierzZSeeda<T>(lista: readonly T[], klucz: string): T {
+  return lista[hash(klucz) % lista.length]
+}
+
 export type SeedDnia = {
   seed: string
   postac: string
@@ -44,8 +60,7 @@ export type SeedDnia = {
 }
 
 export function seedDnia(data: Date): SeedDnia {
-  const dzien = data.toISOString().slice(0, 10)
-  const rnd = prng(hash(dzien))
+  const rnd = prng(hash(kluczDnia(data)))
   let kod = ''
   for (let i = 0; i < 8; i++) kod += ALFABET[Math.floor(rnd() * ALFABET.length)]
   const postac = POSTACIE[Math.floor(rnd() * POSTACIE.length)]

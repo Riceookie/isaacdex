@@ -33,7 +33,7 @@ export default function TopBar({
         {tytul}
       </div>
 
-      <CompanionMascot steamConnected={steamConnected} zalogowany={!!nick} />
+      <CompanionMascot steamConnected={steamConnected} zalogowany={!!nick} nick={nick} />
 
       <div className="util">
         <Link

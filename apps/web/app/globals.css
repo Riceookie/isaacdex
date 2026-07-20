@@ -1,3 +1,9 @@
+/* Arkusze obszarowe. `@import` MUSI stać przed resztą reguł, stąd na samej górze.
+   Rozbicie na pliki jest po to, żeby prace nad osobnymi obszarami nie biły się o jeden plik. */
+@import './style/profil-plus.css';
+@import './style/powiadomienia.css';
+@import './style/mobile.css';
+
 /* ============================================================================
    IsaacDex — czysty, ciemny UI companiona. Tożsamość: pixel-artowe portrety
    i ikony achievementów + akcent koloru wybranego piętra. Bez tandetnych tekstur.

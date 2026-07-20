@@ -1,0 +1,269 @@
+/* Wypełnia agent pracujący nad obszarem „powiadomienia". Osobny plik, żeby równoległa praca
+   nie kończyła się konfliktami w jednym wielkim globals.css.
+
+   UWAGA NA KOLEJNOŚĆ: ten plik leci przez `@import` z SAMEJ GÓRY globals.css, więc przy równej
+   specyficzności wygrywa globals (jest później). Dlatego każda reguła, która ma NADPISAĆ bazę
+   z globals, jest tu pisana od `.notif` / `.notif-pop` — to podbija specyficzność o jedną klasę
+   i rozstrzyga starcie bez `!important`.
+
+   Cel wizualny: kartka wyrwana z notesu i przypięta pod dzwonkiem. Pergamin i przechył
+   są już w globals; tutaj idzie wnętrze — wiersze, portrety, czasy, pusto i stopka.
+   Zasady: twarde krawędzie (3px), font display w nagłówkach, sprity zamiast emoji,
+   zero rozmytych cieni. */
+
+/* ── Licznik przy dzwonku ─────────────────────────────────────────────────────
+   Był miękką pigułką (border-radius 99px) — czyli jedynym elementem w topbarze
+   z estetyki „aplikacji webowej". Teraz twarda, krwawa plakietka z fontem display. */
+.notif .notif-badge {
+  top: -6px;
+  right: -6px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 3px;
+  border-radius: 3px;
+  border: 2px solid var(--sidebar-bg);
+  font-family: var(--dsp);
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  /* Bez poświaty — plakietka ma być stemplem, nie diodą. */
+  box-shadow: none;
+}
+
+/* ── Kartka ───────────────────────────────────────────────────────────────── */
+.notif .notif-pop {
+  width: 344px;
+  /* Cień odbity twardo w bok, jak kartka leżąca na blacie. `drop-shadow` (nie `box-shadow`),
+     bo tylko on idzie za poszarpanym brzegiem border-image, a nie za prostokątem. */
+  filter: drop-shadow(3px 4px 0 rgba(0, 0, 0, 0.5));
+}
+
+/* Nagłówek: mniejszy odstęp od listy — krew pod kreską i tak robi separację. */
+.notif .notif-pop-head {
+  gap: 0.4rem;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.55rem;
+}
+.notif .notif-head-licznik {
+  font-family: var(--dsp);
+  text-transform: uppercase;
+}
+
+/* ── Lista ────────────────────────────────────────────────────────────────────
+   Kartka nie może rosnąć w nieskończoność (12 wpisów × 3 linijki wyszłoby poza ekran),
+   więc przewija się SAMA LISTA, w środku pergaminu. Panel zostaje w całości —
+   `overflow` na `.notif-pop` obciąłby border-image po prostym prostokącie. */
+.notif .notif-list {
+  max-height: min(58vh, 380px);
+  overflow-y: auto;
+  /* Pasek przewijania w kolorze atramentu, nie systemowy niebieski. */
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.notif .notif-list::-webkit-scrollbar {
+  width: 6px;
+}
+.notif .notif-list::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+.notif .notif-item {
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.5rem 0.4rem 0.5rem 0.55rem;
+}
+.notif .notif-item--nowe::before {
+  border-radius: 0; /* twarda krecha na marginesie, nie zaokrąglona pigułka */
+}
+
+/* ── Portret + znaczek typu ──────────────────────────────────────────────── */
+.notif .notif-ic {
+  width: 36px;
+  height: 36px;
+  border-radius: 3px;
+  /* `--surface-2` to ciemny fiolet z motywu apki — na pergaminie wyglądał jak dziura.
+     Tło liczymy z koloru atramentu, więc idzie za jasnym i ciemnym papierem. */
+  background: color-mix(in srgb, var(--text) 7%, transparent);
+  border: 1px solid var(--border);
+}
+.notif .notif-ic > img {
+  padding: 2px;
+}
+/* Wgrany avatar (zdjęcie, nie pixelowa głowa) ma wypełnić kadr i zostać gładki —
+   `image-rendering: pixelated` z globals zamieniłby go w mozaikę. */
+.notif .notif-portret--wlasny {
+  object-fit: cover;
+  image-rendering: auto;
+  padding: 0;
+}
+/* Znaczek typu: mały stempel w rogu portretu, na papierze — nie na tle apki. */
+.notif .notif-typ {
+  right: -4px;
+  bottom: -4px;
+  border-radius: 3px;
+  /* Kolor papieru wpisany wprost: `--bg-2` z globals to tło CIEMNEJ apki, a znaczek leży
+     na pergaminie, więc wyglądał jak wycięta w kartce dziura. */
+  background: #efe3cc;
+  box-shadow: 0 0 0 1px var(--border);
+}
+[data-theme='dark'] .notif .notif-typ {
+  background: #2a251f;
+}
+
+/* Obwódka portretu mówi, JAKIEGO rodzaju jest zdarzenie — zanim przeczytasz zdanie.
+   `box-shadow` bez rozmycia (0 0 0 1px) to obrys, a nie cień — mieści się w zasadzie
+   „zero rozmytych cieni". */
+.notif .notif-ic--follow {
+  border-color: var(--ok);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ok) 45%, transparent);
+}
+.notif .notif-ic--wiadomosc {
+  border-color: var(--krew);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--krew) 45%, transparent);
+}
+.notif .notif-ic--achievement,
+.notif .notif-ic--znajomyUnlock {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--gold) 45%, transparent);
+}
+/* Rzadki achievement — podwójny złoty obrys, bo to jedyny wpis wart pochwalenia się. */
+.notif .notif-ic--achievementRzadki {
+  border-color: var(--gold);
+  box-shadow:
+    0 0 0 1px var(--gold),
+    0 0 0 3px color-mix(in srgb, var(--gold) 28%, transparent);
+}
+.notif .notif-ic--znajomyBoss {
+  border-color: var(--krew);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--krew) 45%, transparent);
+}
+.notif .notif-ic--znajomyRun {
+  border-color: var(--q2);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--q2) 45%, transparent);
+}
+
+/* ── Treść wiersza ───────────────────────────────────────────────────────── */
+.notif .notif-body {
+  gap: 0.15rem;
+  padding-top: 0.05rem;
+}
+.notif .notif-tekst {
+  font-size: 0.84rem;
+  line-height: 1.35;
+}
+/* Nazwa z gry (achievement / boss / run) — zostaje po angielsku, więc odcinamy ją
+   wizualnie od przetłumaczonego zdania: podkreślenie jak w notesie, nie kolor. */
+.notif .notif-detal {
+  font-weight: 700;
+  color: var(--text);
+  border-bottom: 1px solid color-mix(in srgb, var(--krew) 45%, transparent);
+}
+/* Czas ze sprite'em zepsutego zegarka (Broken Watch) zamiast emoji — ikona wchodzi
+   przez CSS, bo to czysta dekoracja wiersza i nie ma po co siedzieć w JSX. */
+.notif .notif-czas {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  font-family: var(--dsp);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.notif .notif-czas::before {
+  content: '';
+  width: 11px;
+  height: 11px;
+  flex: none;
+  background: url('/tboi/items/collectibles/brokenwatch.png') center / contain no-repeat;
+  image-rendering: pixelated;
+  opacity: 0.75;
+}
+
+/* Kropka „nowe": kwadratowa kropla krwi zamiast świecącego kółka. Poświata (box-shadow
+   z rozmyciem) była jedynym rozmytym cieniem w całym panelu. */
+.notif .notif-kropka {
+  width: 6px;
+  height: 6px;
+  margin-top: 0.5rem;
+  border-radius: 0;
+  box-shadow: none;
+  transform: rotate(45deg);
+}
+
+/* ── Pusty stan ───────────────────────────────────────────────────────────────
+   Wspólny `PustyStan` (rysowany Isaac) — ale on jest robiony pod szerokie panele.
+   Na kartce 344px trzeba mu ściąć oddechy, żeby dzwonek nie urósł na pół ekranu. */
+.notif .notif-pop .pusto {
+  padding: 0.6rem 0.2rem 0.9rem;
+  gap: 0.4rem;
+  color: var(--muted);
+}
+.notif .notif-pop .pusto-tekst {
+  font-family: var(--dsp);
+  font-size: 0.86rem;
+  letter-spacing: 0.03em;
+  color: var(--text);
+}
+.notif .notif-pop .pusto-poza {
+  max-width: 24ch;
+  margin: 0 auto;
+  font-size: 0.7rem;
+  line-height: 1.35;
+  color: var(--muted);
+}
+
+/* ── Akcje pod listą ─────────────────────────────────────────────────────────
+   „Oznacz przeczytane" jest tu, a nie tylko na zamknięciu panelu: zamknięcie gasi
+   licznik po cichu, a czasem chcesz go zgasić i CZYTAĆ dalej. */
+.notif .notif-pop-akcje {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0.1rem 0.1rem;
+  margin-top: 0.35rem;
+  border-top: 1px dashed var(--line);
+}
+.notif .notif-akcja {
+  appearance: none;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  padding: 0.16rem 0.36rem;
+  color: var(--muted);
+  font-family: var(--dsp);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    color 0.12s,
+    border-color 0.12s;
+}
+.notif .notif-akcja:hover {
+  color: var(--krew);
+  border-color: color-mix(in srgb, var(--krew) 55%, transparent);
+}
+/* Link „wszyscy znajomi" dosunięty do prawej także wtedy, gdy nie ma czego oznaczać. */
+.notif .notif-akcja--link {
+  margin-left: auto;
+}
+
+/* ── Stopka = pieczątka odbita na kartce ─────────────────────────────────── */
+.notif .notif-pop-foot {
+  justify-content: flex-start;
+  gap: 0.5rem;
+  padding: 0.5rem 0.1rem 0;
+  margin-top: 0.3rem;
+}
+.notif .notif-stempel {
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+}
+.notif .notif-stempel-opis {
+  font-size: 0.62rem;
+  line-height: 1.3;
+}
+

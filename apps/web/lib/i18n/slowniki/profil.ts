@@ -86,8 +86,52 @@ export const profil = {
   ulubionaNieWybrano: { en: 'Not picked', pl: 'Nie wybrano' },
   ulubionaBrak: { en: 'No favourite', pl: 'Brak ulubionej' },
 
-  // ── Gablota „Top 3" ──
-  gablotaNaglowek: { en: 'Top 3 favourite items', pl: 'Top 3 ulubione przedmioty' },
+  // ── Tytuły pod nickiem (nadawane automatycznie — patrz lib/odznaki.ts) ──
+  /**
+   * Same nazwy tytułów zostają po angielsku w OBU językach: to żargon społeczności Isaaca
+   * („Dead God", „completion marks"), a nie tekst interfejsu. Tłumaczone są dopiero opisy
+   * pod kursorem, bo one wyjaśniają, za co tytuł przysługuje.
+   */
+  odznakiAria: { en: 'Earned titles', pl: 'Zdobyte tytuły' },
+  odznakaDeadGod: { en: 'Dead God', pl: 'Dead God' },
+  odznakaDeadGodOpis: {
+    en: '100% of Steam achievements — nothing left to unlock.',
+    pl: '100% achievementów ze Steama — nie ma już czego odblokowywać.',
+  },
+  odznakaGrinder: { en: 'Dead God Grinder', pl: 'Dead God Grinder' },
+  odznakaGrinderOpis: {
+    en: '{procent}% of achievements — Dead God within reach.',
+    pl: '{procent}% achievementów — Dead God na wyciągnięcie ręki.',
+  },
+  odznakaCompletionist: { en: 'Completionist', pl: 'Completionist' },
+  odznakaMarkHunter: { en: 'Mark Hunter', pl: 'Mark Hunter' },
+  odznakaMarkiOpis: {
+    en: 'Full completion marks on {liczba} of {wszystkie} characters.',
+    pl: 'Komplet completion marks na {liczba} z {wszystkie} postaci.',
+  },
+  odznakaMain: { en: '{postac} Main', pl: '{postac} Main' },
+  odznakaMainOpis: {
+    en: '{postac} is the furthest along — {procent}% of completion marks.',
+    pl: '{postac} jest najdalej — {procent}% completion marks.',
+  },
+  odznakaCelebrity: { en: 'Local Celebrity', pl: 'Local Celebrity' },
+  odznakaKnown: { en: 'Well Known', pl: 'Well Known' },
+  odznakaObserwujacychOpis: {
+    en: 'Followers: {liczba}.',
+    pl: 'Obserwujących: {liczba}.',
+  },
+
+  // ── Gablota („Top N ulubionych itemów") ──
+  /** Liczba z `MIEJSC_GABLOTY`, żeby nagłówek nie kłamał po zmianie liczby pedestałów. */
+  gablotaNaglowek: {
+    en: { one: 'Top favourite item', other: 'Top {liczba} favourite items' },
+    pl: {
+      one: 'Top ulubiony przedmiot',
+      few: 'Top {liczba} ulubione przedmioty',
+      many: 'Top {liczba} ulubionych przedmiotów',
+      other: 'Top {liczba} ulubionych przedmiotów',
+    },
+  },
   gablotaWyborAria: { en: 'Pick an item for the showcase', pl: 'Wybierz item do gabloty' },
   gablotaWybierzItem: { en: 'Pick an item', pl: 'Wybierz item' },
   gablotaSzukajItemu: { en: 'Search items…', pl: 'Szukaj itemu…' },

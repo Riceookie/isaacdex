@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -8,6 +8,7 @@ import Sprite from '@/components/Sprite'
 import PustyStan from '@/components/PustyStan'
 import ZalogujStan from '@/components/ZalogujStan'
 import { powiedz } from '@/lib/companionGlos'
+import { kwestiaPostepu, wielkiAchievement } from '@/lib/companions'
 import EncDetal from '@/components/EncDetal'
 import { useJezyk, useT } from '@/components/JezykProvider'
 import type { Tlumacz } from '@/lib/i18n/slownik'
@@ -85,6 +86,36 @@ function rzadka(p: number | null) {
   return p != null && p < 5
 }
 
+/**
+ * Wielkie achievementy (Dead God, Platinum God…) maskotka celebruje RAZ w życiu, nie przy
+ * każdym wejściu w Kolekcję — inaczej „moment" zamieniłby się w powiadomienie. Lista już
+ * odegranych siedzi w localStorage, bo to preferencja prezentacji, a nie dane gracza:
+ * czyszczenie przeglądarki co najwyżej da komuś drugą fetę z Dead Goda.
+ */
+const KLUCZ_SWIETOWANE = 'idx_companion_swietowane'
+
+function odczytajSwietowane(): Set<string> {
+  try {
+    const raw = localStorage.getItem(KLUCZ_SWIETOWANE)
+    const lista: unknown = raw ? JSON.parse(raw) : []
+    return new Set(
+      Array.isArray(lista) ? lista.filter((x): x is string => typeof x === 'string') : [],
+    )
+  } catch {
+    // Uszkodzony/zajęty localStorage nie ma prawa wywalić widoku Kolekcji — w najgorszym
+    // razie maskotka pogratuluje drugi raz.
+    return new Set()
+  }
+}
+
+function zapiszSwietowane(zbior: Set<string>) {
+  try {
+    localStorage.setItem(KLUCZ_SWIETOWANE, JSON.stringify([...zbior]))
+  } catch {
+    // Prywatne okno / brak miejsca — trudno, celebracja po prostu się powtórzy.
+  }
+}
+
 export default function KolekcjaWidok({
   achievements,
   ostatniSync,
@@ -113,6 +144,51 @@ export default function KolekcjaWidok({
     return true
   })
 
+  const procent = achievements.length ? Math.round((unlocked / achievements.length) * 100) : 0
+
+  /**
+   * Reakcja maskotki na WEJŚCIE w Kolekcję — jedna kwestia, w kolejności ważności:
+   * wielki achievement (jeśli jest świeży) > postęp procentowy > pusty stan.
+   *
+   * Kolejność jest istotna, bo `powiedz` nadpisuje poprzednią kwestię: dwa wywołania pod rząd
+   * dałyby tylko to drugie i Dead God przepadłby pod komentarzem o procentach. Dlatego jeden
+   * efekt wybiera jedną kwestię, zamiast kilku efektów strzelających równolegle.
+   */
+  const juzOdezwalSie = useRef(false)
+  // Po synchronizacji efekt puszczamy jeszcze raz, ale WYŁĄCZNIE po to, by wyłapać świeży
+  // wielki achievement. Bez tego komentarz o postępie nadpisałby dopiero co powiedziane
+  // „N nowych achievementów" — `router.refresh()` wraca z nowymi danymi ułamek sekundy później.
+  const tylkoWielki = useRef(false)
+  useEffect(() => {
+    // Gość ogląda cudzy katalog (0/0) — komentowanie „jego" postępu nie miałoby sensu.
+    if (gosc || juzOdezwalSie.current) return
+    juzOdezwalSie.current = true
+    const poSync = tylkoWielki.current
+    tylkoWielki.current = false
+
+    if (achievements.length === 0) {
+      if (poSync) return
+      powiedz(t('companion.pustoKolekcja'), 'thinking')
+      return
+    }
+
+    // WIELKI MOMENT — Dead God / Platinum God / 1000000% / Real Platinum God.
+    const swietowane = odczytajSwietowane()
+    const swiezy = achievements.find(
+      (a) => a.odblokowany && wielkiAchievement(a.nazwa) && !swietowane.has(a.nazwa),
+    )
+    if (swiezy) {
+      const klucz = wielkiAchievement(swiezy.nazwa)!
+      swietowane.add(swiezy.nazwa)
+      zapiszSwietowane(swietowane)
+      powiedz(t(klucz), 'excited')
+      return
+    }
+
+    if (poSync) return
+    powiedz(t(kwestiaPostepu(procent), { procent }), procent >= 75 ? 'excited' : 'zwykly')
+  }, [achievements, gosc, procent, t])
+
   async function sync() {
     setBusy(true)
     setMsg(null)
@@ -123,8 +199,16 @@ export default function KolekcjaWidok({
         setMsg(d.error || t('kolekcja.bladSync'))
         return
       }
-      // „Unlock" w praktyce: świeżo zassane achievementy — maskotka to celebruje.
-      powiedz(t('kolekcja.glosSync'), 'excited')
+      // Ile faktycznie doszło od ostatniego razu — serwer oddaje nowy licznik, my mamy stary.
+      // Konkretna liczba jest ciekawsza niż generyczne „zsynchronizowano", a zero też jest
+      // informacją (i okazją do docinki).
+      const nowe = typeof d.unlocked === 'number' ? d.unlocked - unlocked : 0
+      if (nowe > 0) powiedz(t('companion.syncNowe', { liczba: nowe }), 'excited')
+      else powiedz(t('companion.syncBezZmian'), 'zwykly')
+      // Świeże dane mogą przynieść wielki achievement — pozwól efektowi odezwać się jeszcze raz,
+      // ale tylko w tej jednej sprawie (patrz `tylkoWielki`).
+      juzOdezwalSie.current = false
+      tylkoWielki.current = true
       router.refresh()
     } catch {
       setMsg(t('kolekcja.bladSieci'))

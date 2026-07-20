@@ -5,11 +5,9 @@ import { createPortal } from 'react-dom'
 import ItemSprite from '@/components/ItemSprite'
 import Sprite from '@/components/Sprite'
 import { useT } from '@/components/JezykProvider'
+import { MIEJSC_GABLOTY } from '@/lib/gablota'
 
 export type ItemDoWyboru = { nazwa: string; idW: number | null; typ: string; jakosc: number }
-
-/** Ile pedestałów stoi w gablocie. Trzy — jak w pokoju z wyborem itemu (Angel/Devil). */
-export const MIEJSC = 3
 
 /** Wybór itemu: szukajka + siatka sprite'ów z gry. W portalu, żeby nie rozpychał karty. */
 function Wybieraczka({
@@ -96,7 +94,8 @@ function Wybieraczka({
 }
 
 /**
- * „Top 3 ulubione przedmioty": trzy pedestały (prawdziwa skała z gry), obok „Ulubionej postaci".
+ * „Top N ulubionych przedmiotów": pedestały (prawdziwa skała z gry), obok „Ulubionej postaci".
+ * Ile ich stoi, mówi `MIEJSC_GABLOTY` — ta sama stała, którą tnie zapis w /api/profil.
  *
  * `edycja` = to Twój profil: puste pedestały dostają „+", zajęte — „×" do zdjęcia.
  * Na cudzym profilu gablota jest tylko do oglądania.
@@ -127,10 +126,10 @@ export default function Gablota({
   const [gniazdo, setGniazdo] = useState<number | null>(null)
   // Stan lokalny tylko po to, żeby klik był natychmiastowy — źródłem prawdy jest baza.
   const [moje, setMoje] = useState<(string | null)[]>(() =>
-    Array.from({ length: MIEJSC }, (_, i) => itemy[i] ?? null),
+    Array.from({ length: MIEJSC_GABLOTY }, (_, i) => itemy[i] ?? null),
   )
 
-  const lista = edycja ? moje : Array.from({ length: MIEJSC }, (_, i) => itemy[i] ?? null)
+  const lista = edycja ? moje : Array.from({ length: MIEJSC_GABLOTY }, (_, i) => itemy[i] ?? null)
 
   // Katalog (edycja) + metadane wystawionych — jedno źródło dla sprite'a i jakości.
   const mapaItemow = useMemo(
@@ -154,7 +153,8 @@ export default function Gablota({
   return (
     <div className="note gablota-card">
       <h3>
-        <Sprite name="godhead" size={18} /> {t('profil.gablotaNaglowek')}
+        <Sprite name="godhead" size={18} />{' '}
+        {t('profil.gablotaNaglowek', { liczba: MIEJSC_GABLOTY })}
       </h3>
       <div className="gablota">
         {lista.map((nazwa, i) => {

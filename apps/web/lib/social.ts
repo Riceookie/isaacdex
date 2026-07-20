@@ -131,7 +131,7 @@ export type GraczKarta = {
   opis: string | null
   /** Ozdoba przy avatarze — z bazy, więc widzą ją wszyscy tak samo. */
   dekoracja: DecorId
-  /** Gablota „Top 3" — nazwy itemów. */
+  /** Gablota profilu — nazwy wystawionych itemów. */
   gablota: string[]
   /** Podpięty Steam (null = brak) — decyduje, czy profil ma sekcje z gry. */
   profilId: number | null

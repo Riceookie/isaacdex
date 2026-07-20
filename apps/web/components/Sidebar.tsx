@@ -24,6 +24,11 @@ export default function Sidebar() {
   // Wejście na inną stronę zamyka szufladę — inaczej zasłaniałaby to, co właśnie wybrałeś.
   useEffect(() => setOtwarte(false), [pathname])
 
+  // Samo `pathname` nie wystarcza: tapnięcie w pozycję AKTUALNEJ strony nie zmienia ścieżki,
+  // więc efekt wyżej się nie odpala i szuflada zostawała otwarta — wyglądało to na zawieszony
+  // klik. Dlatego każdy link w szufladzie dodatkowo zamyka ją wprost.
+  const zamknij = () => setOtwarte(false)
+
   // Otwarta szuflada zasłania stronę, więc Escape musi ją zamykać; scroll pod spodem blokujemy,
   // żeby przewijanie nie uciekało treści za nakładkę.
   useEffect(() => {
@@ -57,11 +62,11 @@ export default function Sidebar() {
       {otwarte && <div className="sidebar-cien" onClick={() => setOtwarte(false)} aria-hidden />}
 
       <aside id="sidebar" className={'sidebar' + (otwarte ? ' otwarty' : '')}>
-        <Link href="/" className="side-brand">
+        <Link href="/" className="side-brand" onClick={zamknij}>
           <Sprite name="godhead" size={30} />
           <span>IsaacDex</span>
         </Link>
-        <SideNav />
+        <SideNav onNawigacja={zamknij} />
       </aside>
     </>
   )

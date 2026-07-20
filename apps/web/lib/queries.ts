@@ -362,11 +362,11 @@ export async function getSteamGracza(profilId: number | null) {
 }
 
 /**
- * Metadane itemów po nazwach — do gabloty („Top 3") na DOWOLNYM profilu.
+ * Metadane itemów po nazwach — do gabloty na DOWOLNYM profilu.
  *
  * Gablota trzyma w bazie same nazwy, a pedestały potrzebują jeszcze jakości (kolor ramki)
  * i idW (pewny sprite). Katalog ma ~900 pozycji, więc nie wysyłamy go na każdy profil —
- * pytamy tylko o te trzy.
+ * pytamy tylko o te kilka, które stoją na pedestałach.
  */
 export async function getItemyPoNazwach(
   nazwy: string[],

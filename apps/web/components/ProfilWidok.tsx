@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import Sprite from '@/components/Sprite'
 import FeedCard from '@/components/FeedCard'
 import ProfileAvatar from '@/components/ProfileAvatar'
@@ -13,6 +13,8 @@ import { jezykSerwera, tlumacz } from '@/lib/i18n/serwer'
 import type { DecorId } from '@/lib/pfpDecor'
 import type { FeedWpis, GraczKarta } from '@/lib/social'
 import { NICK_DLUGI } from '@/lib/nick'
+import { policzOdznaki } from '@/lib/odznaki'
+import { akcentPostaci } from '@/lib/tloProfilu'
 
 /** Odblokowany achievement ze Steama — nazwa, ikona i data zdobycia (wszystko prawdziwe). */
 export type Odblokowanie = { nazwa: string; ikonaUrl: string | null; data: string }
@@ -54,7 +56,7 @@ export type DaneProfilu = {
   gablota?: (string | null)[]
   /** Katalog itemów do wybieraczki — tylko na własnym profilu. */
   itemyDoWyboru?: ItemDoWyboru[]
-  /** Metadane 3 wystawionych itemów (jakość, sprite) — także na cudzym profilu. */
+  /** Metadane wystawionych itemów (jakość, sprite) — także na cudzym profilu. */
   gablotaMeta?: ItemDoWyboru[]
 }
 
@@ -99,6 +101,10 @@ export default function ProfilWidok({
   // Daty achievementów idą za językiem interfejsu — inaczej angielski profil pokazywałby
   // „14.03.2021" w polskim formacie.
   const locale = jezykSerwera() === 'pl' ? 'pl-PL' : 'en-GB'
+  // Tytuły liczone z tych samych danych, które i tak są na stronie — nic nie dociągamy.
+  const odznaki = policzOdznaki(d)
+  // Akcent tła. `null` (postać nieznana / „Brak") = karta zostaje domyślna, bez losowego tintu.
+  const akcent = akcentPostaci(d.ulubionaPostac)
   return (
     <section className="pf-page">
       <div className="pf-grid">
@@ -109,7 +115,14 @@ export default function ProfilWidok({
               pierwszej etykiecie mety („CZŁONEK OD" / „GODZINY"), i przy węższych ekranach
               ją zasłaniał. W karcie i tak siedzi już stwór wystający z polaroidu — dwa
               potwory na jednym nagłówku to nie klimat, tylko bałagan. */}
-          <div className="profil-hero pf-hero pin-synced">
+          <div
+            className="profil-hero pf-hero pin-synced"
+            style={akcent ? ({ '--pf-akcent': akcent } as CSSProperties) : undefined}
+          >
+            {/* Tint w kolorze ulubionej postaci. Osobny element, a nie ::before/::after karty:
+                oba pseudo są już zajęte (pinezka i przybrudzenie ciemnego motywu). Leży pod
+                treścią (z-index: -1), więc pergamin i tekst zostają nietknięte. */}
+            {akcent && <span className="pf-tlo" aria-hidden />}
             <div className="pf-photo">
               {/* Ten sam komponent dla własnego i cudzego profilu — wszystko leci z bazy,
                   więc nie ma już ryzyka, że pokaże MOJE zdjęcie na cudzym profilu. */}
@@ -144,10 +157,37 @@ export default function ProfilWidok({
                   </Link>
                 )}
               </h1>
-              {/* Bez odznak „Dead God %" i „X main" — pierwsze mówi to samo co wielki pasek
-                  postępu, drugie to samo co pełna sylwetka w „Ulubionej postaci". Zostają
-                  liczniki, bo są jedyną rzeczą, której nie widać nigdzie indziej.
-                  Siedzą tuż pod nickiem (jak podpis), a cytat zamyka blok tożsamości. */}
+              {/* Tytuły. Stare odznaki „Dead God %" i „X main" wyleciały stąd, bo powtarzały
+                  liczby z paska postępu i sylwetkę z „Ulubionej postaci". Te są inne: to PROGI
+                  (przekroczone albo nie), a nie liczby, i każdy z nich trzeba zdobyć —
+                  „main" liczy się z completion marks, nie z tego, co ktoś kliknął w edytorze.
+                  Reguły w lib/odznaki.ts. */}
+              {odznaki.length > 0 && (
+                <ul className="pf-odznaki" aria-label={t('profil.odznakiAria')}>
+                  {odznaki.map((o) => (
+                    <li
+                      key={o.id}
+                      className={'pf-odznaka ' + o.wariant}
+                      title={t(o.kluczOpisu, o.zmienne)}
+                    >
+                      {o.postac ? (
+                        <img
+                          className="pf-odznaka-ikona"
+                          src={ikonaPostaci(o.postac)}
+                          alt=""
+                          width={14}
+                          height={14}
+                          aria-hidden
+                        />
+                      ) : (
+                        o.sprite && <Sprite name={o.sprite} size={14} />
+                      )}
+                      <span>{t(o.klucz, o.zmienne)}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {/* Liczniki siedzą tuż pod nickiem (jak podpis), a cytat zamyka blok tożsamości. */}
               <LicznikiObserwacji
                 nick={d.nick}
                 obserwujacych={d.obserwujacych}
@@ -202,7 +242,7 @@ export default function ProfilWidok({
               )}
             </div>
 
-            {/* Top 3: 3 pedestały z itemami. Na własnym profilu klikalne („+"). */}
+            {/* Gablota: pedestały z itemami (liczba w lib/gablota.ts). Na własnym klikalne („+"). */}
             <Gablota
               itemy={d.gablota ?? []}
               edycja={wlasny}

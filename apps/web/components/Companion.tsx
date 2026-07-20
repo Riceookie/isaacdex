@@ -6,6 +6,7 @@ import {
   companionZId,
   kwestie,
   nastrojStrony,
+  poradaDnia,
   wejscie,
   DOMYSLNY_COMPANION,
   type Companion,
@@ -20,9 +21,13 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 export default function CompanionMascot({
   steamConnected = true,
   zalogowany = true,
+  nick = null,
 }: {
   steamConnected?: boolean
   zalogowany?: boolean
+  /** Nick zalogowanego gracza — używany WYŁĄCZNIE jako ziarno porady dnia, żeby dwie
+   *  osoby tego samego dnia nie dostawały tej samej kwestii. */
+  nick?: string | null
 }) {
   const pathname = usePathname()
   const t = useT()
@@ -71,8 +76,8 @@ export default function CompanionMascot({
       return
     }
     let cancelled = false
-    const pool = kwestie(pathname, steamConnected, zalogowany)
-    const idleMood = nastrojStrony(pathname, zalogowany)
+    const pool = kwestie(pathname, steamConnected, zalogowany, comp.id)
+    const idleMood = nastrojStrony(pathname, zalogowany, comp.id)
     // Losowy start + losowa kolejność, żeby nie powtarzał w kółko tego samego.
     let idx = Math.floor(Math.random() * pool.length)
 
@@ -106,12 +111,24 @@ export default function CompanionMascot({
         // Wejście w sekcję: jednorazowa reakcja „witająca" stronę (z własną miną),
         // dopiero potem maskotka wchodzi w spokojną pętlę idle.
         await sleep(400)
-        const e = wejscie(pathname, steamConnected, zalogowany)
+        const e = wejscie(pathname, steamConnected, zalogowany, comp.id)
         const tekst = t(e.klucz)
         await pisz(tekst, e.nastroj)
         if (!cancelled) await sleep(6000)
         if (!cancelled) await wymaz(tekst)
         if (!cancelled) await sleep(3000)
+
+        // PORADA DNIA — osobny beat zaraz po powitaniu, tylko przy wejściu do apki (Pulpit).
+        // Stoi tu, a nie w puli idle, żeby była WYRÓŻNIONA: gracz słyszy ją raz, na wejściu,
+        // zamiast tonąć wśród żartów. Treść jest stała w obrębie doby (patrz `poradaDnia`),
+        // więc odświeżenie strony nie podmienia jej na inną.
+        if (pathname === '/' && zalogowany && !cancelled) {
+          const porada = t(poradaDnia(nick, comp.id))
+          await pisz(porada, 'thinking')
+          if (!cancelled) await sleep(7000)
+          if (!cancelled) await wymaz(porada)
+          if (!cancelled) await sleep(3000)
+        }
       }
       while (!cancelled) {
         const text = t(pool[idx])
@@ -129,7 +146,9 @@ export default function CompanionMascot({
     return () => {
       cancelled = true
     }
-  }, [pathname, steamConnected, zalogowany, muted, wtretTick, t])
+    // `comp.id` w zależnościach: zmiana familiara ma natychmiast przełączyć pulę i minę
+    // na głos nowego towarzysza, a nie dopiero przy następnej nawigacji.
+  }, [pathname, steamConnected, zalogowany, muted, wtretTick, t, comp.id, nick])
 
   function toggleMute() {
     const m = !muted

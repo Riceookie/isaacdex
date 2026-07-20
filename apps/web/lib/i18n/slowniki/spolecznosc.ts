@@ -69,6 +69,9 @@ export const spolecznosc = {
 
   aktywnosc: { en: 'Activity', pl: 'Aktywność' },
   feedGlobalny: { en: 'See the global feed', pl: 'Zobacz feed globalny' },
+  /* Przełącznik zakresu feedu (FeedZakres) — krótkie etykiety chipów, nie całe zdania. */
+  zakresZnajomi: { en: 'Friends', pl: 'Znajomi' },
+  zakresGlobalny: { en: 'Global', pl: 'Globalny' },
   synchronizujSteam: { en: 'Sync with Steam', pl: 'Synchronizuj ze Steam' },
 
   odkryjGraczy: { en: 'Discover players', pl: 'Odkryj graczy' },
@@ -173,4 +176,29 @@ export const spolecznosc = {
   /** Treść powiadomień — `lib/powiadomienia.ts` oddaje sam typ, tekst składa dzwonek. */
   powiadomienieObserwuje: { en: 'started following you', pl: 'zaczyna Cię obserwować' },
   powiadomienieWiadomosc: { en: 'sent you a private message', pl: 'napisał prywatnie' },
+  /**
+   * Zdania z dopełnieniem: po nich dzwonek dokleja `detal` (nazwa achievementu, bossa,
+   * opis runu). Nazwy z gry zostają po angielsku, więc polska wersja musi kończyć się tak,
+   * żeby angielski rzeczownik dało się dokleić bez odmiany („odblokowuje Dead God”).
+   */
+  powiadomienieAchievement: { en: 'You unlocked', pl: 'Odblokowujesz' },
+  powiadomienieAchievementRzadki: { en: 'Rare unlock:', pl: 'Rzadkie odblokowanie:' },
+  powiadomienieZnajomyUnlock: { en: 'unlocked', pl: 'odblokowuje' },
+  powiadomienieZnajomyBoss: { en: 'defeated', pl: 'pokonuje' },
+  powiadomienieZnajomyRun: { en: 'finished a run:', pl: 'kończy run:' },
+
+  // ── Dzwonek: pusto, stopka, przeczytane ──
+  powiadomieniaPusto: { en: 'Quiet down in the basement.', pl: 'W piwnicy cicho.' },
+  powiadomieniaPustoPoza: {
+    en: 'Follow other players and their unlocks land right here.',
+    pl: 'Obserwuj innych graczy, a ich odblokowania wylądują właśnie tutaj.',
+  },
+  powiadomieniaStempel: { en: "Dad's note", pl: 'Notatka taty' },
+  powiadomieniaZnajomi: { en: 'All friends →', pl: 'Wszyscy znajomi →' },
+  powiadomieniaPrzeczytaj: { en: 'Mark all read', pl: 'Oznacz przeczytane' },
+  /** Podpis pod stopką — tłumaczy, czemu „przeczytane” nie wędruje między urządzeniami. */
+  powiadomieniaTaPrzegladarka: {
+    en: 'Read state is kept in this browser only.',
+    pl: 'Stan „przeczytane” trzyma tylko ta przeglądarka.',
+  },
 } satisfies Przestrzen

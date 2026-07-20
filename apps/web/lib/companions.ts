@@ -1,5 +1,6 @@
 import type { Nastroj } from '@/lib/companionGlos'
 import type { Klucz } from '@/lib/i18n/slownik'
+import { kluczDnia, wybierzZSeeda } from '@/lib/dailySeed'
 
 /**
  * Kwestie maskotki trzymamy jako KLUCZE słownika, a nie gotowe napisy — ten moduł jest
@@ -172,17 +173,283 @@ const FUNNY: KwestiaKlucz[] = [
   'companion.zartTaintedLostDoswiadczenie',
 ]
 
+/* ────────────────────────────────────────────────────────────────────────────
+ * GŁOSY FAMILIARÓW
+ *
+ * Do tej pory wszystkie kwestie były wspólne, więc wybór familiara w Ustawieniach
+ * zmieniał tylko obrazek — maskotka brzmiała identycznie. Tutaj każdy dostaje własną
+ * pulę i własne powitanie, dokładane do KAŻDEJ strony, żeby charakter było słychać
+ * wszędzie, a nie tylko przy jednej okazji.
+ *
+ * `nastroj` to domyślna mina w pętli idle. Demon Baby nie ma prawa robić `happy`,
+ * a Dry Baby ani razu w życiu nie był `excited` — mina jest częścią charakteru.
+ * ──────────────────────────────────────────────────────────────────────────── */
+export type GlosFamiliara = {
+  /** Kwestie charakterystyczne — dorzucane do puli każdej sekcji. */
+  osobowosc: KwestiaKlucz[]
+  /** Czym wita gracza przy wejściu do apki (Pulpit). */
+  powitanie: KwestiaKlucz
+  /** Domyślna mina idle — nadpisuje minę sekcji, bo charakter jest ważniejszy. */
+  nastroj: Nastroj
+}
+
+const GLOSY: Record<string, GlosFamiliara> = {
+  brotherbobby: {
+    osobowosc: [
+      'companion.glosBobbyStoje',
+      'companion.glosBobbyNieOdejde',
+      'companion.glosBobbyPierwszy',
+      'companion.glosBobbyStrzelam',
+      'companion.glosBobbyNiepotrzebny',
+      'companion.glosBobbyDobryDzien',
+    ],
+    powitanie: 'companion.glosBobbyPowitanie',
+    nastroj: 'zwykly',
+  },
+  sistermaggy: {
+    osobowosc: [
+      'companion.glosMaggyZjadlesCos',
+      'companion.glosMaggyNieBiegaj',
+      'companion.glosMaggyOpatrunek',
+      'companion.glosMaggyPolHeartu',
+      'companion.glosMaggyPostawa',
+      'companion.glosMaggyDumna',
+    ],
+    powitanie: 'companion.glosMaggyPowitanie',
+    nastroj: 'happy',
+  },
+  guardianangel: {
+    osobowosc: [
+      'companion.glosAngelChronie',
+      'companion.glosAngelLza',
+      'companion.glosAngelZasluzyles',
+      'companion.glosAngelSwiatlo',
+      'companion.glosAngelWierzeWCiebie',
+      'companion.glosAngelNieZasmuc',
+    ],
+    powitanie: 'companion.glosAngelPowitanie',
+    nastroj: 'happy',
+  },
+  demonbaby: {
+    osobowosc: [
+      'companion.glosDemonZginiesz',
+      'companion.glosDemonSerduszko',
+      'companion.glosDemonSmieszneStaty',
+      'companion.glosDemonPodpisz',
+      'companion.glosDemonPlaczesz',
+      'companion.glosDemonZaslugujesz',
+    ],
+    powitanie: 'companion.glosDemonPowitanie',
+    // `excited` = uciecha, nie radość — Demon Baby cieszy się z Twoich kłopotów.
+    nastroj: 'excited',
+  },
+  ghostbaby: {
+    osobowosc: [
+      'companion.glosGhostPrzenikam',
+      'companion.glosGhostCieplo',
+      'companion.glosGhostByloDawno',
+      'companion.glosGhostPrzezWrogow',
+      'companion.glosGhostPamietasz',
+      'companion.glosGhostCicho',
+    ],
+    powitanie: 'companion.glosGhostPowitanie',
+    nastroj: 'sad',
+  },
+  lilbrimstone: {
+    osobowosc: [
+      'companion.glosBrimstoneLaser',
+      'companion.glosBrimstoneWiecejDamage',
+      'companion.glosBrimstoneNieUnikaj',
+      'companion.glosBrimstoneCharge',
+      'companion.glosBrimstoneSciana',
+      'companion.glosBrimstoneTears',
+    ],
+    powitanie: 'companion.glosBrimstonePowitanie',
+    nastroj: 'excited',
+  },
+  rainbowbaby: {
+    osobowosc: [
+      'companion.glosRainbowLosuje',
+      'companion.glosRainbowNieWiem',
+      'companion.glosRainbowKolor',
+      'companion.glosRainbowKostka',
+      'companion.glosRainbowRng',
+      'companion.glosRainbowZmienilem',
+    ],
+    powitanie: 'companion.glosRainbowPowitanie',
+    nastroj: 'excited',
+  },
+  rottenbaby: {
+    osobowosc: [
+      'companion.glosRottenMuchy',
+      'companion.glosRottenZapach',
+      'companion.glosRottenKawalek',
+      'companion.glosRottenNieDotykaj',
+      'companion.glosRottenWilgotno',
+      'companion.glosRottenJadles',
+    ],
+    powitanie: 'companion.glosRottenPowitanie',
+    nastroj: 'happy',
+  },
+  drybaby: {
+    osobowosc: [
+      'companion.glosDryBezLez',
+      'companion.glosDryNieCieszSie',
+      'companion.glosDryTak',
+      'companion.glosDryPusto',
+      'companion.glosDryNieWarto',
+      'companion.glosDryKosc',
+    ],
+    powitanie: 'companion.glosDryPowitanie',
+    nastroj: 'zwykly',
+  },
+  littlechad: {
+    osobowosc: [
+      'companion.glosChadSerce',
+      'companion.glosChadLubiszMnie',
+      'companion.glosChadMieso',
+      'companion.glosChadZostan',
+      'companion.glosChadNieWymieniaj',
+      'companion.glosChadPrzytul',
+    ],
+    powitanie: 'companion.glosChadPowitanie',
+    nastroj: 'happy',
+  },
+  lilloki: {
+    osobowosc: [
+      'companion.glosLokiCztery',
+      'companion.glosLokiKrzyz',
+      'companion.glosLokiKlamie',
+      'companion.glosLokiObejrzSie',
+      'companion.glosLokiZamiana',
+      'companion.glosLokiWybierz',
+    ],
+    powitanie: 'companion.glosLokiPowitanie',
+    nastroj: 'excited',
+  },
+  robobaby: {
+    osobowosc: [
+      'companion.glosRoboAnaliza',
+      'companion.glosRoboSzansa',
+      'companion.glosRoboBlad',
+      'companion.glosRoboLog',
+      'companion.glosRoboOptymalizacja',
+      'companion.glosRoboNieCzuje',
+    ],
+    powitanie: 'companion.glosRoboPowitanie',
+    nastroj: 'thinking',
+  },
+  freezerbaby: {
+    osobowosc: [
+      'companion.glosFreezerZimno',
+      'companion.glosFreezerNieRuszaj',
+      'companion.glosFreezerCieplo',
+      'companion.glosFreezerCierpliwosc',
+      'companion.glosFreezerUczucia',
+      'companion.glosFreezerKostka',
+    ],
+    powitanie: 'companion.glosFreezerPowitanie',
+    nastroj: 'zwykly',
+  },
+  acidbaby: {
+    osobowosc: [
+      'companion.glosAcidPigulka',
+      'companion.glosAcidRozpuszcza',
+      'companion.glosAcidNieLiz',
+      'companion.glosAcidPodloga',
+      'companion.glosAcidPh',
+      'companion.glosAcidWiecejPigulek',
+    ],
+    powitanie: 'companion.glosAcidPowitanie',
+    nastroj: 'thinking',
+  },
+}
+
+export function glosFamiliara(id: string | null): GlosFamiliara {
+  return GLOSY[id ?? ''] ?? GLOSY[DOMYSLNY_COMPANION.id]
+}
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * PORADA DNIA
+ * ──────────────────────────────────────────────────────────────────────────── */
+const PORADY_DNIA: KwestiaKlucz[] = [
+  'companion.poradaDniaJedenRun',
+  'companion.poradaDniaNieRerolluj',
+  'companion.poradaDniaPrzerwa',
+  'companion.poradaDniaJedenAch',
+  'companion.poradaDniaPrzeczytaj',
+  'companion.poradaDniaWoda',
+  'companion.poradaDniaTrudnaPostac',
+  'companion.poradaDniaDevilDeal',
+  'companion.poradaDniaBezWiki',
+  'companion.poradaDniaWolniej',
+  'companion.poradaDniaBomba',
+  'companion.poradaDniaDokoncz',
+]
+
+/**
+ * Porada / zachęta na dziś — STABILNA w obrębie doby dla danego gracza.
+ *
+ * Świadomie NIE ma tu `Math.random()`: przy losowaniu każde odświeżenie strony dawałoby
+ * inną poradę i wyglądałoby to jak błąd („czemu ona co chwilę mówi co innego?"). Wybór
+ * idzie z hasha `dzień|gracz|familiar`, tak samo jak seed dnia w `lib/dailySeed.ts`:
+ * ten sam gracz tego samego dnia dostaje zawsze tę samą kwestię, a o północy zmienia się
+ * sama. `familiar` jest w kluczu celowo — zmiana towarzysza ma odświeżyć poradę, bo to
+ * wtedy wygląda jak inna osoba, a nie jak zacięta płyta.
+ */
+export function poradaDnia(gracz: string | null, familiarId: string | null, data = new Date()) {
+  return wybierzZSeeda(
+    PORADY_DNIA,
+    `${kluczDnia(data)}|${gracz ?? 'gosc'}|${familiarId ?? DOMYSLNY_COMPANION.id}`,
+  )
+}
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * WIELKIE ACHIEVEMENTY
+ *
+ * Klucze po nazwach ze Steama (nazwy własne z gry — po angielsku w obu językach).
+ * Te cztery dostają własne, cięższe kwestie: zwykłe „nieźle!" przy Dead Godzie byłoby
+ * marnowaniem momentu, na który ktoś zszedł setki godzin.
+ * ──────────────────────────────────────────────────────────────────────────── */
+export const WIELKIE_ACHIEVEMENTY: Record<string, KwestiaKlucz> = {
+  'Dead God': 'companion.wielkiDeadGod',
+  'Platinum God': 'companion.wielkiPlatinumGod',
+  '1000000%': 'companion.wielkiMilion',
+  'Real Platinum God': 'companion.wielkiRealPlatinumGod',
+}
+
+/** Dopasowanie odporne na wielkość liter i spacje — Steam bywa niechlujny w nazwach. */
+export function wielkiAchievement(nazwa: string): KwestiaKlucz | null {
+  const cel = nazwa.trim().toLowerCase()
+  for (const [k, v] of Object.entries(WIELKIE_ACHIEVEMENTY)) {
+    if (k.toLowerCase() === cel) return v
+  }
+  return null
+}
+
+/** Komentarz do postępu kolekcji — progi dobrane tak, żeby ton zmieniał się razem z procentem. */
+export function kwestiaPostepu(procent: number): KwestiaKlucz {
+  if (procent >= 100) return 'companion.postepKomplet'
+  if (procent >= 90) return 'companion.postepPrawie'
+  if (procent >= 75) return 'companion.postepBlisko'
+  if (procent >= 50) return 'companion.postepPolowa'
+  return 'companion.postepStart'
+}
+
 /** Pula kwestii companiona zależna od strony (reaguje na sekcję). Osobne teksty per zakładka.
- *  Zwraca KLUCZE słownika — tekst robi z nich `t()` w komponencie. */
+ *  Zwraca KLUCZE słownika — tekst robi z nich `t()` w komponencie.
+ *  `familiarId` domieszkuje kwestie charakterystyczne wybranego towarzysza. */
 export function kwestie(
   pathname: string,
   steamConnected = true,
   zalogowany = true,
+  familiarId: string | null = null,
 ): KwestiaKlucz[] {
+  const osobowosc = glosFamiliara(familiarId).osobowosc
   // Gość ma pierwszeństwo: zamiast namawiać na Steam, namawiamy na konto (+ trochę żartów).
-  if (!zalogowany) return [...GOSC, ...FUNNY]
+  if (!zalogowany) return [...osobowosc, ...GOSC, ...FUNNY]
   // Zalogowany bez Steama — najpierw popchnij do synchronizacji.
-  if (!steamConnected) return [...STEAM_OFF, ...GENERAL, ...TIPS]
+  if (!steamConnected) return [...osobowosc, ...STEAM_OFF, ...GENERAL, ...TIPS]
 
   let page: KwestiaKlucz[]
   if (pathname === '/') page = [...HOME, ...OPENING]
@@ -198,7 +465,12 @@ export function kwestie(
   else page = GENERAL
 
   // TIPS wpadają wszędzie od czasu do czasu — „porady, które zmieniają się co jakiś czas".
-  return [...page, ...GENERAL, ...FUNNY, ...TIPS]
+  //
+  // `osobowosc` wchodzi DWA razy i w dwóch różnych miejscach listy. Pętla idle chodzi po puli
+  // po kolei, więc pozycja = częstotliwość: przy jednym wystąpieniu 6 kwestii charakteru ginęłoby
+  // wśród ~36 wspólnych i wybór familiara znów byłby niesłyszalny. Dwa rozstawione bloki dają
+  // charakterowi mniej więcej co trzecią kwestię, równo rozłożoną w cyklu.
+  return [...osobowosc, ...page, ...GENERAL, ...osobowosc, ...FUNNY, ...TIPS]
 }
 
 /**
@@ -206,11 +478,18 @@ export function kwestie(
  * Pulpit/znajomi = radośnie, kalkulator/encyklopedia = w zamyśleniu, gość = smutno-proszący.
  * Reakcje na akcje (unlock, klik, dodanie itemu) nadają własną minę przez `powiedz`.
  */
-export function nastrojStrony(pathname: string, zalogowany = true): Nastroj {
+export function nastrojStrony(
+  pathname: string,
+  zalogowany = true,
+  familiarId: string | null = null,
+): Nastroj {
+  // Gość jest wyjątkiem od charakteru: prosimy go o konto, więc nawet Demon Baby robi smutną minę.
   if (!zalogowany) return 'sad'
-  if (pathname === '/' || pathname.startsWith('/znajomi')) return 'happy'
+  // Kalkulator i Encyklopedia to sekcje „do myślenia" — tu mina sekcji wygrywa z charakterem.
   if (pathname.startsWith('/kalkulator') || pathname.startsWith('/encyklopedia')) return 'thinking'
-  return 'zwykly'
+  // Poza tym rządzi familiar: Ghost Baby nie ma się jak „ucieszyć" Pulpitem, a Demon Baby
+  // nie robi `happy` nigdzie. Mina jest częścią osobowości, więc bije domyślną minę strony.
+  return glosFamiliara(familiarId).nastroj
 }
 
 /**
@@ -224,10 +503,17 @@ export function wejscie(
   pathname: string,
   steamConnected = true,
   zalogowany = true,
+  familiarId: string | null = null,
 ): { klucz: KwestiaKlucz; nastroj: Nastroj } {
   if (!zalogowany) return { klucz: 'companion.wejscieGosc', nastroj: 'sad' }
   if (!steamConnected) return { klucz: 'companion.wejscieSteamOff', nastroj: 'thinking' }
-  if (pathname === '/') return { klucz: 'companion.wejsciePulpit', nastroj: 'excited' }
+  // Wejście do apki (Pulpit) = moment, w którym familiar się przedstawia SWOIM głosem.
+  // To pierwsza rzecz, jaką gracz słyszy w sesji, więc tu charakter niesie najwięcej.
+  if (pathname === '/')
+    return {
+      klucz: glosFamiliara(familiarId).powitanie,
+      nastroj: glosFamiliara(familiarId).nastroj,
+    }
   if (pathname.startsWith('/kolekcja'))
     return { klucz: 'companion.wejscieKolekcja', nastroj: 'excited' }
   if (pathname.startsWith('/statystyki'))

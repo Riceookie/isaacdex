@@ -8,7 +8,7 @@ import { useT } from '@/components/JezykProvider'
 import { NAV } from '@/lib/nav'
 
 /** Pionowa nawigacja w sidebarze — jak menu The Binding of Isaac, z aktywną „zakładką". */
-export default function SideNav() {
+export default function SideNav({ onNawigacja }: { onNawigacja?: () => void }) {
   const pathname = usePathname()
   const t = useT()
   return (
@@ -22,6 +22,7 @@ export default function SideNav() {
             className={'side-link' + (active ? ' active' : '') + (n.accent ? ' has-accent' : '')}
             aria-current={active ? 'page' : undefined}
             style={n.accent ? ({ '--nav-accent': n.accent } as CSSProperties) : undefined}
+            onClick={onNawigacja}
           >
             <Sprite name={n.icon} size={28} />
             <span>{t(n.klucz)}</span>

@@ -1,0 +1,176 @@
+/* Wypełnia agent pracujący nad obszarem „profil-plus". Osobny plik, żeby równoległa praca
+   nie kończyła się konfliktami w jednym wielkim globals.css.
+
+   UWAGA na kolejność: ten arkusz jest wciągany @importem z GÓRY globals.css, więc przy równej
+   specyficzności wygrywają reguły z globals. Dlatego nadpisania niżej celowo mają selektor
+   o jeden człon dłuższy (`.gablota-card .gablota`, a nie `.gablota`). */
+
+/* ============================================================================
+   TŁO KARTY PROFILU — akcent w kolorze ulubionej postaci.
+   Kolor wjeżdża zmienną `--pf-akcent` ustawianą inline w ProfilWidok (patrz lib/tloProfilu.ts).
+   Ma być AKCENTEM, nie tapetą: karta leży na pergaminie z border-image i to on ma zostać
+   bohaterem, a tekst — czytelny. Stąd procenty w color-mix rzędu kilkunastu, nie kilkudziesięciu.
+   ============================================================================ */
+.pf-tlo {
+  position: absolute;
+  /* `inset: 0` to dokładnie boks wewnątrz 20-pikselowej ramki border-image — tint nie wychodzi
+     poza postrzępiony brzeg kartki i nie potrzebuje własnego zaokrąglenia. */
+  inset: 0;
+  /* Karta ma `filter`, czyli własny kontekst stackingu — ujemny z-index zostaje w środku:
+     maluje się NAD tłem pergaminu, a POD treścią. */
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 60% 75% at 10% 0%,
+      color-mix(in srgb, var(--pf-akcent) 18%, transparent),
+      transparent 70%
+    ),
+    linear-gradient(160deg, color-mix(in srgb, var(--pf-akcent) 8%, transparent), transparent 55%);
+}
+/* Ciemny („tainted") pergamin nie przepuszcza karty przez sepię, więc kolor dochodzi mocniej —
+   przy tych samych wartościach tint robił się z akcentu plamą. */
+[data-theme='dark'] .pf-tlo {
+  background:
+    radial-gradient(
+      ellipse 60% 75% at 10% 0%,
+      color-mix(in srgb, var(--pf-akcent) 12%, transparent),
+      transparent 70%
+    ),
+    linear-gradient(160deg, color-mix(in srgb, var(--pf-akcent) 5%, transparent), transparent 55%);
+}
+/* Cienka listwa akcentu przy górnej krawędzi — twarda krawędź zamiast rozmytej poświaty,
+   żeby tło dało się w ogóle zauważyć przy tak niskim nasyceniu gradientów. */
+.pf-tlo::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: color-mix(in srgb, var(--pf-akcent) 55%, transparent);
+}
+
+/* ============================================================================
+   TYTUŁY POD NICKIEM — nadawane automatycznie (lib/odznaki.ts).
+   Kolory jadą skalą jakości itemów (Q1…Q4), tą samą co Encyklopedia i pedestały gabloty:
+   apka ma jedną skalę „jak bardzo to rzadkie", a nie osobną na każdy widok.
+   ============================================================================ */
+.pf-odznaki {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin: 0.1rem 0 0.35rem;
+  padding: 0;
+  list-style: none;
+  /* Rodzic (`.pf-id`) ma min-width: 0, ale flexowa lista i tak rozpychałaby się treścią —
+     bez tego długi tytuł przy długim nicku wypychał kolumnę tożsamości poza kartkę. */
+  min-width: 0;
+}
+.pf-odznaka {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 0;
+  max-width: 100%;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid color-mix(in srgb, var(--od) 50%, transparent);
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--od) 14%, transparent);
+  color: color-mix(in srgb, var(--od) 70%, var(--text));
+  font-family: var(--dsp);
+  font-size: 0.63rem;
+  line-height: 1.6;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: default;
+}
+/* Nazwa tytułu przycinana, nie zawijana: odznaka ma być jednym „stemplem". Pełna treść
+   razem z uzasadnieniem siedzi w `title`. */
+.pf-odznaka > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pf-odznaka .sprite,
+.pf-odznaka-ikona {
+  flex: none;
+  image-rendering: pixelated;
+}
+.pf-odznaka.zloto {
+  --od: var(--q4);
+}
+.pf-odznaka.fiolet {
+  --od: var(--q3);
+}
+.pf-odznaka.blekit {
+  --od: var(--q2);
+}
+.pf-odznaka.zielen {
+  --od: var(--q1);
+}
+
+/* ============================================================================
+   GABLOTA — pięć pedestałów zamiast trzech.
+   Rząd musi się zmieścić także wtedy, gdy karta gabloty dostaje ~1.35fr wąskiej kolumny
+   profilu, więc cokół i sprite jadą na zmiennych i zjeżdżają razem z szerokością.
+   ============================================================================ */
+.gablota-card .gablota {
+  /* `minmax(0, 1fr)`, bo domyślne `auto` w gridzie nie zejdzie poniżej treści kolumny —
+     przy pięciu pedestałach siatka wychodziła wtedy poza kartkę zamiast się ścisnąć. */
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.35rem;
+  /* Wymiary cokołu (sprite 46×39 z gry) w jednym miejscu — margines wsuwający item w skałę
+     musi zmieniać się razem z jej wysokością, inaczej item zawiśnie nad nią albo w środku. */
+  --cok-w: 46px;
+  --cok-h: 39px;
+}
+.gablota .pedestal {
+  padding-inline: 0.1rem;
+}
+.gablota .pedestal-cokol {
+  /* `min(...)`: przy pięciu kolumnach cokół bywa szerszy niż jego kolumna. `contain` trzyma
+     proporcje sprite'a, więc wystarczy ograniczyć szerokość. */
+  width: min(var(--cok-w), 100%);
+  height: var(--cok-h);
+}
+.gablota .pedestal-item {
+  height: calc(var(--cok-h) + 3px);
+  margin-bottom: calc(var(--cok-h) * -0.44);
+}
+.gablota .pedestal-sprite {
+  max-width: 100%;
+  height: auto;
+}
+.gablota .pedestal-nazwa {
+  font-size: 0.55rem;
+}
+
+/* Wąska karta gabloty: profil jest jeszcze dwukolumnowy (układ mobilny włącza się dopiero
+   przy 640 px), a na pięć pełnowymiarowych cokołów już nie ma miejsca. Zjeżdżamy skalą
+   zamiast zawijać rząd — pięć pedestałów w jednej linii to cała idea gabloty. */
+@media (max-width: 1100px) {
+  .gablota-card .gablota {
+    --cok-w: 38px;
+    --cok-h: 32px;
+    gap: 0.25rem;
+  }
+}
+/* Telefon: kolumny profilu składają się do jednej, więc karta znów jest szeroka i cokoły
+   mogą wrócić do pełnego rozmiaru. */
+@media (max-width: 640px) {
+  .gablota-card .gablota {
+    --cok-w: 46px;
+    --cok-h: 39px;
+    gap: 0.35rem;
+  }
+}
+/* Najwęższe telefony — pięć kolumn w ~280 px kartki. */
+@media (max-width: 400px) {
+  .gablota-card .gablota {
+    --cok-w: 36px;
+    --cok-h: 31px;
+    gap: 0.2rem;
+  }
+  .gablota .pedestal-nazwa {
+    font-size: 0.5rem;
+  }
+}

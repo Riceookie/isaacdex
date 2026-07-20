@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Sprite from '@/components/Sprite'
 import type { ZakresFeedu } from '@/lib/social'
+import { tlumacz } from '@/lib/i18n/serwer'
 
 /**
  * Przełącznik dwóch osobnych feedów: znajomych i globalnego.
@@ -19,6 +20,7 @@ export default function FeedZakres({
   bazowa?: string
   domyslny?: ZakresFeedu
 }) {
+  const t = tlumacz()
   const href = (cel: ZakresFeedu) => (cel === domyslny ? bazowa : `${bazowa}?feed=${cel}`)
 
   return (
@@ -29,7 +31,7 @@ export default function FeedZakres({
         role="tab"
         aria-selected={zakres === 'znajomi'}
       >
-        <Sprite name="friends" size={15} /> Znajomi
+        <Sprite name="friends" size={15} /> {t('spolecznosc.zakresZnajomi')}
       </Link>
       <Link
         className={'chip' + (zakres === 'global' ? ' on' : '')}
@@ -37,7 +39,7 @@ export default function FeedZakres({
         role="tab"
         aria-selected={zakres === 'global'}
       >
-        <Sprite name="friendfinder" size={15} /> Globalny
+        <Sprite name="friendfinder" size={15} /> {t('spolecznosc.zakresGlobalny')}
       </Link>
     </div>
   )
