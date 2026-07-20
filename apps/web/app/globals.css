@@ -3788,19 +3788,42 @@ body::before {
    `fixed` + portal: linki siedzą w listach z `overflow: auto` (feed, czat), więc
    dymek puszczony w miejscu byłby przycinany.
    ============================================================================ */
+/* Mini-profil (hover) = ta sama kartka, co duży profil, tylko wyrwana mniejsza.
+   Wcześniej był ciemnym panelem z `border-radius: 10px` i akcentowym paskiem u góry —
+   czytał się jak tooltip z panelu admina, a nie jak profil tej samej osoby. Teraz jedzie
+   tym samym pergaminem (`border-image`), co `.profil-hero`, `.note` i `.feed-item`,
+   i tak samo wisi lekko krzywo jak `.notif-pop`.
+   Zmienne koloru nadpisujemy lokalnie — dzięki temu WSZYSTKIE dzieci (nick, opis, pasek
+   Dead God, liczniki) dostają atrament na papierze bez ruszania ich reguł. */
 .hov-karta {
   position: fixed;
   z-index: 200;
   width: 268px;
-  padding: 0.7rem;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--surface);
-  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.6);
-  /* Akcentowy pasek na górze — jak w panelu powiadomień. */
-  border-top: 2px solid var(--accent);
+  padding: 0;
+  --text: #2c2521;
+  --muted: #6f6155;
+  --border: #b9a99b;
+  --line: rgba(0, 0, 0, 0.14);
+  --surface: rgba(0, 0, 0, 0.06);
+  --surface-2: rgba(0, 0, 0, 0.1);
+  color: var(--text);
+  background: none;
+  border-style: solid;
+  border-width: 16px;
+  border-image: var(--paper-img) 16 fill repeat;
+  border-radius: 0;
+  filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.6));
+  transform: rotate(-0.6deg);
   animation: comp-pop 0.12s ease;
   pointer-events: auto;
+}
+/* Ciemny („tainted") pergamin — jak w reszcie apki. */
+[data-theme='dark'] .hov-karta {
+  --paper-img: url('/tboi/ui/paper-dark.png');
+  --text: #e9e2d6;
+  --muted: #9d9081;
+  --border: #4a3f36;
+  --line: rgba(255, 255, 255, 0.1);
 }
 .hov-glowa {
   display: flex;
@@ -3832,7 +3855,11 @@ body::before {
   min-width: 0;
   flex: 1;
 }
+/* Nick jak w nagłówku dużego profilu: font display, wersaliki. */
 .hov-kto b {
+  font-family: var(--dsp);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
   font-family: var(--dsp);
   font-size: 1rem;
   overflow: hidden;
@@ -8964,36 +8991,49 @@ body::after {
 }
 
 /* Dymek z ogonkiem w kształcie łzy (kropla po lewej stronie). */
-/* Dymek wiadomości: kartka wydarta z notesu, nie bańka z komunikatora.
-   `border-radius: 12px` + cień z rozmyciem czytały się jak Discord wklejony w apkę
-   o Isaacu — reszta ekranów nie ma ANI JEDNEJ tak zaokrąglonej krawędzi. Teraz twarda
-   krawędź (2 px, wpadająca w czerń), 3 px promienia „na oko piksela" i cień bez blura. */
+/* Dymek wiadomości = kartka wydarta z notesu, dokładnie ta sama co `.feed-item`.
+   Najpierw był bańką z komunikatora (12 px promienia, rozmyty cień), potem dostał twardą
+   krawędź — ale wciąż był ciemnym prostokątem w apce, w której KAŻDA treść leży na
+   pergaminie. Teraz jedzie tym samym `border-image`, więc czat przestaje być osobną wyspą:
+   ciemny pokój ze śladami krwi zostaje tłem, a wypowiedzi są karteczkami na nim.
+   Zmienne koloru nadpisane lokalnie — nick, godzina i reakcje same biorą atrament. */
 .cz-bak {
   position: relative;
   flex: 1;
   min-width: 0;
-  padding: 0.5rem 0.7rem;
-  border: 2px solid color-mix(in srgb, var(--border) 65%, #000);
-  border-radius: 3px;
-  background: color-mix(in srgb, var(--surface) 92%, #000);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.05),
-    2px 2px 0 rgba(0, 0, 0, 0.45);
+  padding: 0;
+  --text: #2c2521;
+  --muted: #6f6155;
+  --border: #b9a99b;
+  --line: rgba(0, 0, 0, 0.14);
+  --surface: rgba(0, 0, 0, 0.06);
+  --surface-2: rgba(0, 0, 0, 0.1);
+  color: var(--text);
+  background: none;
+  border-style: solid;
+  border-width: 13px;
+  border-image: var(--paper-img) 13 fill repeat;
+  border-radius: 0;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.45));
 }
-.cz-bak::before {
-  content: '';
-  position: absolute;
-  left: -6px;
-  top: 12px;
-  width: 12px;
-  height: 12px;
-  background: inherit;
-  border-left: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  /* Kropla: okrągła z trzech stron, spiczasta w stronę autora. */
-  border-radius: 50% 0 50% 50%;
-  transform: rotate(45deg);
+[data-theme='dark'] .cz-bak {
+  --paper-img: url('/tboi/ui/paper-dark.png');
+  --text: #e9e2d6;
+  --muted: #9d9081;
+  --border: #4a3f36;
+  --line: rgba(255, 255, 255, 0.1);
 }
+/* Kartki wisiały idealnie równo, co przy pergaminie wygląda sztucznie — lekki, stały
+   przechył (co druga w drugą stronę) robi z listy stos karteczek, a nie tabelę. */
+.cz-msg:nth-child(odd) .cz-bak {
+  transform: rotate(-0.35deg);
+}
+.cz-msg:nth-child(even) .cz-bak {
+  transform: rotate(0.3deg);
+}
+/* Ogonek dymka zniknął razem z dymkiem: pergamin ma poszarpany brzeg z `border-image`,
+   więc nie da się doczepić do niego kropli „z tego samego tła" — wychodziła szara łatka
+   przy krawędzi. Autora i tak wskazuje avatar tuż obok. */
 .cz-msg-top {
   display: flex;
   align-items: baseline;

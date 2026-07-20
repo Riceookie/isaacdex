@@ -39,6 +39,10 @@ const SPRITES = {
   superfan: 'items/collectibles/smbsuperfan.png', // SMB Super Fan — Ustawienia
   momsEye: 'icons/moms-eye.png', // Mom's Eye — hasło ukryte (pokaż)
   momsContact: 'icons/moms-contact.png', // Mom's Contact — hasło widoczne (ukryj)
+  // Logo Steama na przycisku logowania. Rysowane wektorowo, nie pixel-art jak reszta:
+  // znak firmowy ma być ROZPOZNAWALNY, a piston Steama w siatce 20x20 czytał się jak
+  // yin-yang. To jedyna ikona w apce, która świadomie wychodzi z konwencji pikseli.
+  steam: 'ui/steam.svg',
   // Wysyłka wiadomości. Gra nie ma papierowego samolotu (najbliżej: Mysterious Paper, czyli
   // ZMIĘTA kartka — czyta się jako „papier", nie jako „wyślij"), więc ikona jest rysowana:
   // pixel-art 18x18 w palecie kartki, skrypt scripts/gen-paper-plane.mjs.

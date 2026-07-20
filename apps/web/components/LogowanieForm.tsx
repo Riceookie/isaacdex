@@ -64,7 +64,7 @@ export default function LogowanieForm({
       {/* Wejście przez Steam — jeden klik, bez maila i hasła. Zwykły link, bo Steam musi
           zobaczyć użytkownika (przekierowanie na OpenID), a nie nasz serwer. */}
       <a className="btn steam-btn" href="/api/steam/polacz">
-        <Sprite name="deadgod" size={20} />
+        <Sprite name="steam" size={20} />
         {t(rejestracja ? 'konto.steamRejestracja' : 'konto.steamLogowanie')}
       </a>
       <div className="log-albo">
