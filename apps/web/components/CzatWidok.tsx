@@ -200,6 +200,9 @@ export default function CzatWidok({
   useEffect(() => {
     if (!kanalDb) return
     const supabase = supabasePrzegladarka()
+    // Brak konfiguracji Supabase = brak kanału na żywo. Wiadomości lecą z /api/czat,
+    // więc czat dalej się czyta — po prostu nie dochodzą same, bez odświeżenia.
+    if (!supabase) return
     const kanalRt = supabase
       .channel(`czat:${kanalDb}`)
       .on(
@@ -251,6 +254,7 @@ export default function CzatWidok({
   useEffect(() => {
     if (gosc) return // gość nie melduje obecności — nie ma tożsamości
     const supabase = supabasePrzegladarka()
+    if (!supabase) return
     const kanalObecnych = supabase.channel('piwnica:obecni', {
       config: { presence: { key: mojNick } },
     })
@@ -303,7 +307,7 @@ export default function CzatWidok({
     if (teraz - ostatnieStuknij.current < 1500) return
     ostatnieStuknij.current = teraz
     supabasePrzegladarka()
-      .channel(`czat:${kanalDb}`)
+      ?.channel(`czat:${kanalDb}`)
       .send({ type: 'broadcast', event: 'pisze', payload: { nick: mojNick } })
   }
 

@@ -23,6 +23,12 @@ export default function NoweHasloForm() {
 
   useEffect(() => {
     const supabase = supabasePrzegladarka()
+    // Bez konfiguracji nie ma jak przyjąć sesji odzyskiwania — mówimy to od razu, zamiast
+    // zostawiać formularz, który po kliknięciu i tak nic nie zrobi.
+    if (!supabase) {
+      setBlad(t('konto.bladBrakKonfiguracji'))
+      return
+    }
     // Sesja odzyskiwania wjeżdża z linku asynchronicznie — czekamy na nią zdarzeniem,
     // a jednorazowo sprawdzamy też stan bieżący (gdyby zdarzenie już przeszło).
     const { data } = supabase.auth.onAuthStateChange((_zdarzenie, sesja) => {
@@ -44,6 +50,11 @@ export default function NoweHasloForm() {
       return
     }
     const supabase = supabasePrzegladarka()
+    if (!supabase) {
+      setBlad(t('konto.bladBrakKonfiguracji'))
+      setCzekam(false)
+      return
+    }
     const { error } = await supabase.auth.updateUser({ password: haslo })
     setCzekam(false)
     if (error) {

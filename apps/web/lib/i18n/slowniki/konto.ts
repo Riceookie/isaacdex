@@ -215,4 +215,10 @@ export const konto = {
 
   /** Zapasowy nick dla świeżego konta ze Steama, gdy persona się nie pobrała. */
   nickZeSteamZapasowy: { en: 'Player{koncowka}', pl: 'Gracz{koncowka}' },
+
+  /** Widoczne tylko wtedy, gdy deploy nie ma zmiennych Supabase — patrz lib/supabase/przegladarka.ts. */
+  bladBrakKonfiguracji: {
+    en: 'Password changes are unavailable — this deployment has no Supabase configuration.',
+    pl: 'Zmiana hasła jest niedostępna — ten deploy nie ma konfiguracji Supabase.',
+  },
 } satisfies Przestrzen

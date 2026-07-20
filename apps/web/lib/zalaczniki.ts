@@ -17,6 +17,9 @@ export async function wgrajObrazek(plik: File): Promise<string | null> {
   if (!plik.type.startsWith('image/') || plik.size > MAX_OBRAZEK) return null
 
   const supabase = supabasePrzegladarka()
+  // Bez konfiguracji nie ma Storage — funkcja i tak umie oddać `null` („nie wyszło”),
+  // więc wołający (pole pisania) pokaże swój zwykły komunikat o nieudanym załączniku.
+  if (!supabase) return null
   const {
     data: { user },
   } = await supabase.auth.getUser()
