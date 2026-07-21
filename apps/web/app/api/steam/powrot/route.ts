@@ -177,9 +177,12 @@ export async function GET(request: NextRequest) {
       : wroc(origin, 'zajety', false)
   }
 
+  // Nick konta (Gracz) jest tożsamością — synchronizujemy go na Profil także przy PODPIĘCIU
+  // istniejącego profilu, żeby edytor i TopBar nie pokazywały dwóch różnych imion (Profil mógł
+  // wisieć ze starym nickiem ze Steama). Źródło prawdy: Gracz.nick.
   const profil = await prisma.profil.upsert({
     where: { steamId64 },
-    update: {},
+    update: { nick: ja.nick },
     create: { steamId64, nick: ja.nick },
   })
 

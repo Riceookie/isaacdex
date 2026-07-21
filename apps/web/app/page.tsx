@@ -1,8 +1,9 @@
 import Link from 'next/link'
-import { getProfil } from '@/lib/queries'
+import { getProfil, getDashboard } from '@/lib/queries'
 import { getFeed, getLicznikiSpoleczne } from '@/lib/social'
 import { czyZalogowany, mojGracz } from '@/lib/konto'
 import { getOnboarding } from '@/lib/onboarding'
+import { policzOdznaki } from '@/lib/odznaki'
 import { ikonaPostaci } from '@/lib/chars'
 import type { DecorId } from '@/lib/pfpDecor'
 import { PUSTKA } from '@/lib/klimat'
@@ -26,15 +27,28 @@ export default async function Home({
 }) {
   const t = tlumacz()
   const zakres = (await searchParams)?.feed === 'znajomi' ? 'znajomi' : 'global'
-  const [zalogowany, p, feed, liczniki, ja, onboarding] = await Promise.all([
+  const [zalogowany, p, feed, liczniki, ja, onboarding, dash] = await Promise.all([
     czyZalogowany(),
     getProfil(),
     getFeed(zakres),
     getLicznikiSpoleczne(),
     mojGracz(),
     getOnboarding(),
+    getDashboard(),
   ])
   const gosc = !zalogowany
+
+  // Tytuł pod nickiem = PRAWDZIWA odznaka policzona z danych (te same reguły co na profilu),
+  // a nie wpisany na sztywno „Dead God". Bez Steama (`p` == null) nie ma czego liczyć.
+  const odznaki = p
+    ? policzOdznaki({
+        achProcent: p.achProcent,
+        postacie: dash.postacie,
+        obserwujacych: liczniki.obserwujacych,
+        steamPodlaczony: true, // `p` (getProfil) istnieje tylko z podpiętym Steamem
+      })
+    : []
+  const tytul = odznaki[0]
 
   // Feed globalny jest wspólny — pokazujemy go i gościowi. Personalna prawa szyna (profil,
   // postęp, najrzadsze) zależy od `p`: gość dostaje zamiast niej zaproszenie do logowania.
@@ -124,10 +138,19 @@ export default async function Home({
                   />
                 </div>
                 <div className="me-id">
-                  <h3>{p.nick}</h3>
-                  <span className="muted small">
-                    <Sprite name="deadgod" size={16} /> Dead God
-                  </span>
+                  <h3>{ja?.nick ?? p.nick}</h3>
+                  {/* Najwyższy zdobyty tytuł — albo nic, gdy gracz nie ma jeszcze żadnego.
+                      Lepszy brak podpisu niż podpis nieprawdziwy. */}
+                  {tytul && (
+                    <span className="muted small" title={t(tytul.kluczOpisu, tytul.zmienne)}>
+                      {tytul.postac ? (
+                        <img src={ikonaPostaci(tytul.postac)} alt="" width={16} height={16} />
+                      ) : (
+                        tytul.sprite && <Sprite name={tytul.sprite} size={16} />
+                      )}{' '}
+                      {t(tytul.klucz, tytul.zmienne)}
+                    </span>
+                  )}
                 </div>
               </div>
               {/* Skrót do sieci — te same liczby co u Znajomych, żeby Pulpit i Znajomi
@@ -152,7 +175,9 @@ export default async function Home({
               <div className="feed-head">
                 <h3>{t('spolecznosc.postep')}</h3>
               </div>
-              <p className="small muted">Dead God</p>
+              {/* Cel paska = 100% kolekcji, czyli ranga „Dead God" (żargon z gry, po angielsku
+                  w obu językach) — przez klucz słownika, nie wpisany na sztywno. */}
+              <p className="small muted">{t('profil.odznakaDeadGod')}</p>
               <div className="prog-row">
                 <div className="bar">
                   <div className="bar-fill" style={{ width: `${p.achProcent}%` }} />

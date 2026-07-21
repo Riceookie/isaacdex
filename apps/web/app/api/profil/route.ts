@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { prisma } from '@isaacdex/db'
 import { mojGracz } from '@/lib/konto'
 import { MIEJSC_GABLOTY } from '@/lib/gablota'
@@ -62,6 +63,11 @@ export async function POST(req: Request) {
       },
     })
   }
+
+  // Nick i avatar widnieją w TopBarze i Sidebarze (renderowanych w layoucie) — bez unieważnienia
+  // layoutu zostawałyby stare aż do twardego przeładowania (stąd „w edytorze inny nick niż w
+  // prawym górnym rogu"). `router.refresh()` po stronie klienta dokłada odświeżenie widoku.
+  revalidatePath('/', 'layout')
 
   return NextResponse.json({ ok: true })
 }

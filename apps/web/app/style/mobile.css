@@ -221,9 +221,12 @@ html:has(body.bez-scrolla) {
     max-width: 100%;
   }
 
-  /* Karty w siatkach (itemy encyklopedii) miały `minmax(160px, 1fr)` — przy 320 px
-     i paddingu karty zostaje ~248 px, więc dwie kolumny się nie mieszczą. */
-  .item-grid {
+  /* Karty w siatkach (itemy encyklopedii, kalkulator) miały `minmax(160px, 1fr)` — przy 320 px
+     i paddingu karty zostaje ~248 px, więc dwie kolumny się nie mieszczą. Selektor PODWOJONY
+     (`.item-grid.item-grid`): mobile.css jest @importowany na górze globals.css, więc pojedyncza
+     klasa przegrywała kaskadę z późniejszą, bezwarunkową regułą `.item-grid` (globals.css:752)
+     i ten override nigdy nie łapał — telefon dostawał jedną wielką kolumnę zamiast dwóch. */
+  .item-grid.item-grid {
     grid-template-columns: repeat(auto-fill, minmax(min(140px, 100%), 1fr));
   }
 }

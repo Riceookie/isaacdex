@@ -40,8 +40,8 @@ function Awatar({ g, rozmiar, klasa }: { g: GraczKarta; rozmiar: number; klasa: 
  *  - `KartaGracza`  — podgląd profilu (avatar, pasek postępu, statystyki) do „Odkryj graczy"
  *    i wyników szukania.
  *
- * Statystyki (%, godziny, ulubiony item) są PLACEHOLDEREM z lib/klimat — w bazie trzymamy
- * na razie tylko nick/opis/avatar. Docelowo przyjdą ze Steama, tak jak Twoje.
+ * Statystyki są PRAWDZIWE: postęp (`procent`) pochodzi ze Steama (null = Steam niepodpięty,
+ * pokazujemy wtedy „bez Steama"), a liczba obserwujących i wpisów — z bazy.
  */
 
 /** Znaczek relacji: znajomy / obserwuje Cię — czytelny na pierwszy rzut oka. */

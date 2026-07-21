@@ -77,8 +77,10 @@ export default async function ProfilPage() {
     : '—'
 
   const dane: DaneProfilu = {
-    nick: p?.nick ?? ja?.nick ?? t('profil.graczDomyslny'),
-    opis: p?.opis ?? ja?.opis ?? '',
+    // Nick i opis z KONTA (Gracz) jako źródło prawdy — te same, co w TopBarze i feedzie.
+    // Profil.* (Steam) tylko jako awaryjny fallback, nigdy przebijając konto.
+    nick: ja?.nick ?? p?.nick ?? t('profil.graczDomyslny'),
+    opis: ja?.opis ?? p?.opis ?? '',
     ulubionaPostac,
     achProcent: p?.achProcent ?? 0,
     achUnlocked: p?.achUnlocked ?? 0,

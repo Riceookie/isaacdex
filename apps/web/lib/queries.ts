@@ -245,9 +245,11 @@ export async function getProfilSetup() {
       ).map((a) => a.nazwa)
     : []
   return {
-    // Bez Steama nick i opis i tak istnieją — na koncie gracza.
-    nick: profil?.nick ?? ja?.nick ?? '',
-    opis: profil?.opis ?? ja?.opis ?? '',
+    // Nick to tożsamość SPOŁECZNA (feed, czat, URL profilu) — jedno źródło prawdy: Gracz.
+    // Profil.nick bywa starym nickiem ze Steama i nie może przebijać konta, inaczej edytor
+    // pokazywałby inne imię niż TopBar (patrz sync przy podpięciu w api/steam/powrot).
+    nick: ja?.nick ?? profil?.nick ?? '',
+    opis: ja?.opis ?? profil?.opis ?? '',
     ulubionaPostac: profil?.ulubionaPostac ?? '',
     steamId: profil?.steamId64 ?? '',
     zsynchronizowano: profil?.ostatniSync != null,
