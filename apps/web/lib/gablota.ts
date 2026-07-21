@@ -10,4 +10,4 @@
  *
  * Zmiana tej liczby nie wymaga migracji: `Gracz.gablota` to `String[]` bez limitu długości.
  */
-export const MIEJSC_GABLOTY = 5
+export const MIEJSC_GABLOTY = 3
