@@ -137,7 +137,9 @@
   transform: translate(-50%, -62%);
   opacity: 0.14;
   line-height: 0;
-  z-index: 1;
+  /* Ponad companionem (z-index 6), który jako `flex: 1 1 auto` wypełnia środek paska — inaczej
+     jego przezroczyste pudło przechwytywałoby kliknięcie w Keepera. */
+  z-index: 7;
   transition:
     transform 0.18s ease,
     opacity 0.18s ease;

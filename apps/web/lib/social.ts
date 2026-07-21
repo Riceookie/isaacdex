@@ -133,6 +133,10 @@ export type GraczKarta = {
   dekoracja: DecorId
   /** Gablota profilu — nazwy wystawionych itemów. */
   gablota: string[]
+  /** Znalazł Sekretny Pokój → jego profil też pokazuje tytuł „Keeper" (patrz lib/odznaki). */
+  sekretOdkryty: boolean
+  /** Który zdobyty tytuł wskazał pod nickiem (id odznaki). Null = auto (najwyższy). */
+  wybranyTytul: string | null
   /** Podpięty Steam (null = brak) — decyduje, czy profil ma sekcje z gry. */
   profilId: number | null
   dolaczyl: Date
@@ -164,6 +168,8 @@ type GraczZBazy = {
   profilId: number | null
   dolaczyl: Date
   ja: boolean
+  sekretOdkryty: boolean
+  wybranyTytul: string | null
   _count: { obserwowany: number; wpisy: number }
 }
 
@@ -181,6 +187,8 @@ const doKarty = (
   opis: g.opis,
   dekoracja: (g.dekoracja ?? 'none') as DecorId,
   gablota: g.gablota,
+  sekretOdkryty: g.sekretOdkryty,
+  wybranyTytul: g.wybranyTytul,
   profilId: g.profilId,
   dolaczyl: g.dolaczyl,
   ja: jaId != null && g.id === jaId,

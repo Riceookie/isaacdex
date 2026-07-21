@@ -63,6 +63,10 @@ export default async function ProfilGracza({ params }: { params: { nick: string 
 
   const d: DaneProfilu = {
     steamPodlaczony: steam !== null,
+    // Tytuły cudzego profilu też mają być PRAWDZIWE: jego Keeper (z sekretu) i jego wybór, który
+    // tytuł jest pierwszy — inaczej cudzy profil pokazywałby inne odznaki niż widzi ich właściciel.
+    sekretOdkryty: g.sekretOdkryty,
+    wybranyTytul: g.wybranyTytul,
     nick: g.nick,
     kolor: g.kolor,
     opis: g.opis ?? '',
