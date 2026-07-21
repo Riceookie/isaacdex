@@ -185,6 +185,14 @@ model Gracz {
   /// Też przeniesiona z localStorage: inaczej u obcych gablota była zawsze pusta albo zmyślona.
   gablota String[]
 
+  /// Który ZDOBYTY tytuł pokazać pod nickiem (id odznaki z lib/odznaki). Null = auto, czyli
+  /// najwyższy zdobyty. Wybór, którego gracz nie ma już zdobytego, jest po cichu ignorowany.
+  wybranyTytul String?
+
+  /// Czy gracz znalazł Sekretny Pokój — odblokowuje tytuł „Keeper". Sekret z gry: wejście jest
+  /// ukryte, a nagrody nie da się dostać inaczej niż go znajdując.
+  sekretOdkryty Boolean @default(false)
+
   wpisy       Wpis[]
   lajki       Lajk[]
   wiadomosci  Wiadomosc[]

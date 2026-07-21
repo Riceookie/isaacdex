@@ -107,3 +107,61 @@
 .pf-odznaka.zielen {
   --od: var(--q1);
 }
+
+/* ── Picker tytułu pod nickiem + kolekcja wszystkich tytułów (edytor „Kim jestem") ──
+   Zdobyte tytuły są klikalnymi „stemplami" (dziedziczą wygląd z .pf-odznaka), reszta katalogu
+   stoi wyszarzona z zamkiem — jak locki w pickerze dekoracji. */
+.tytul-opis {
+  margin: 0.15rem 0 0.55rem;
+}
+.tytul-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.tytul-pick {
+  font: inherit;
+}
+/* .pf-odznaka wymusza cursor:default — przy klikalnych chipach chcemy wskaźnik. */
+.tytul-pick.pf-odznaka {
+  cursor: pointer;
+}
+/* „Auto" nie jest zdobytym tytułem, więc nie ma wariantu .pf-odznaka — własny, neutralny chip. */
+.tytul-pick.auto {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.1rem 0.5rem;
+  border: 1px dashed color-mix(in srgb, var(--text) 35%, transparent);
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+  color: color-mix(in srgb, var(--text) 62%, transparent);
+  font-family: var(--dsp);
+  font-size: 0.63rem;
+  line-height: 1.6;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.tytul-pick.auto .sprite {
+  image-rendering: pixelated;
+}
+/* Wybrany tytuł (albo Auto) — mocniejsza obwódka w kolorze jego wariantu. */
+.tytul-pick.sel {
+  outline: 2px solid color-mix(in srgb, var(--od, var(--text)) 80%, transparent);
+  outline-offset: 1px;
+  filter: brightness(1.12);
+}
+/* Jeszcze niezdobyty — widać, że istnieje, i jak go zdobyć (data-tip), ale nie da się wybrać. */
+.tytul-pick.locked {
+  cursor: not-allowed;
+  opacity: 0.42;
+  filter: grayscale(0.6);
+}
+.tytul-lock {
+  margin-left: 0.05rem;
+  opacity: 0.85;
+}
+.tytul-brak {
+  margin-top: 0.55rem;
+}

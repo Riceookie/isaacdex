@@ -11,6 +11,7 @@ import { spolecznosc } from './slowniki/spolecznosc'
 import { kolekcja } from './slowniki/kolekcja'
 import { encyklopedia } from './slowniki/encyklopedia'
 import { konto } from './slowniki/konto'
+import { sekret } from './slowniki/sekret'
 
 /**
  * Wszystkie przestrzenie nazw słownika. Każdy obszar apki ma swój plik — dzięki temu
@@ -28,6 +29,7 @@ export const SLOWNIK = {
   kolekcja,
   encyklopedia,
   konto,
+  sekret,
 } satisfies Record<string, Przestrzen>
 
 type Slownik = typeof SLOWNIK

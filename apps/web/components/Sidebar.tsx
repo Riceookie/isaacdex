@@ -67,6 +67,18 @@ export default function Sidebar() {
           <span>IsaacDex</span>
         </Link>
         <SideNav onNawigacja={zamknij} />
+
+        {/* Drugie, jeszcze cichsze wejście do sekretu: rysa w ścianie na samym dole panelu.
+            Bez etykiety, ledwie widoczna — trzeba ją zauważyć, dokładnie jak w grze. */}
+        <Link
+          href="/sekret"
+          className="side-secret"
+          onClick={zamknij}
+          aria-label={t('sekret.wejscieTip')}
+          title={t('sekret.wejscieTip')}
+        >
+          <span className="side-secret-crack" aria-hidden />
+        </Link>
       </aside>
     </>
   )

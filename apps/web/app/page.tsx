@@ -3,7 +3,7 @@ import { getProfil, getDashboard } from '@/lib/queries'
 import { getFeed, getLicznikiSpoleczne } from '@/lib/social'
 import { czyZalogowany, mojGracz } from '@/lib/konto'
 import { getOnboarding } from '@/lib/onboarding'
-import { policzOdznaki } from '@/lib/odznaki'
+import { policzOdznaki, tytulyDoPokazania } from '@/lib/odznaki'
 import { ikonaPostaci } from '@/lib/chars'
 import type { DecorId } from '@/lib/pfpDecor'
 import { PUSTKA } from '@/lib/klimat'
@@ -39,16 +39,22 @@ export default async function Home({
   const gosc = !zalogowany
 
   // Tytuł pod nickiem = PRAWDZIWA odznaka policzona z danych (te same reguły co na profilu),
-  // a nie wpisany na sztywno „Dead God". Bez Steama (`p` == null) nie ma czego liczyć.
-  const odznaki = p
-    ? policzOdznaki({
-        achProcent: p.achProcent,
-        postacie: dash.postacie,
-        obserwujacych: liczniki.obserwujacych,
-        steamPodlaczony: true, // `p` (getProfil) istnieje tylko z podpiętym Steamem
-      })
-    : []
-  const tytul = odznaki[0]
+  // a nie wpisany na sztywno „Dead God". Keeper (z Sekretnego Pokoju) nie zależy od Steama, więc
+  // liczymy odznaki, gdy jest Steam ALBO gdy gracz odkrył sekret — inaczej Keeper nie pokazałby
+  // się na Pulpicie bez podpiętego konta.
+  const sekretOdkryty = ja?.sekretOdkryty ?? false
+  const odznaki =
+    p || sekretOdkryty
+      ? policzOdznaki({
+          achProcent: p?.achProcent ?? 0,
+          postacie: dash.postacie,
+          obserwujacych: liczniki.obserwujacych,
+          steamPodlaczony: !!p,
+          sekretOdkryty,
+        })
+      : []
+  // Ten sam wybór, co pod nickiem na profilu: gracz może wskazać, który zdobyty tytuł jest pierwszy.
+  const tytul = tytulyDoPokazania(odznaki, ja?.wybranyTytul)[0]
 
   // Feed globalny jest wspólny — pokazujemy go i gościowi. Personalna prawa szyna (profil,
   // postęp, najrzadsze) zależy od `p`: gość dostaje zamiast niej zaproszenie do logowania.

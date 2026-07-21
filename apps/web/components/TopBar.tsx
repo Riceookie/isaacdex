@@ -33,6 +33,17 @@ export default function TopBar({
         {tytul}
       </div>
 
+      {/* Zataczone wejście do Sekretnego Pokoju — mały Keeper wystający zza górnej krawędzi,
+          jak stwór wyglądający z sekretu. Prawie niewidoczny, wyłazi dopiero pod kursorem. */}
+      <Link
+        href="/sekret"
+        className="keeper-peek"
+        aria-label={t('sekret.wejscieTip')}
+        title={t('sekret.wejscieTip')}
+      >
+        <Sprite name="keeper" size={22} />
+      </Link>
+
       <CompanionMascot steamConnected={steamConnected} zalogowany={!!nick} nick={nick} />
 
       <div className="util">

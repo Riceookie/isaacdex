@@ -120,6 +120,56 @@ export const profil = {
     en: 'Followers: {liczba}.',
     pl: 'Obserwujących: {liczba}.',
   },
+  // „Keeper" — nie ze Steama ani z liczb, tylko z Sekretnego Pokoju (patrz app/sekret).
+  odznakaKeeper: { en: 'Keeper', pl: 'Keeper' },
+  odznakaKeeperOpis: {
+    en: 'Found the Secret Room. Some things you only get by looking where nobody does.',
+    pl: 'Znalazł Sekretny Pokój. Są rzeczy, które dostaje tylko ten, kto szuka tam, gdzie nikt.',
+  },
+  // Nazwa OGÓLNA „Maina" do katalogu tytułów (zdobyty wariant to „{postac} Main").
+  odznakaMainKatalog: { en: 'Character Main', pl: 'Main postaci' },
+
+  // ── Warunki zdobycia (katalog tytułów w edytorze) — krótkie, BEZ zmiennych ──
+  warunekDeadGod: {
+    en: 'Unlock 100% of Steam achievements.',
+    pl: 'Odblokuj 100% achievementów ze Steama.',
+  },
+  warunekGrinder: {
+    en: 'Reach 80% of Steam achievements.',
+    pl: 'Dobij do 80% achievementów ze Steama.',
+  },
+  warunekCompletionist: {
+    en: 'Full completion marks on half of the characters.',
+    pl: 'Komplet completion marks na połowie postaci.',
+  },
+  warunekMarkHunter: {
+    en: 'Full completion marks on 3 characters.',
+    pl: 'Komplet completion marks na 3 postaciach.',
+  },
+  warunekMain: {
+    en: 'Get clearly ahead on one character (50%+ marks).',
+    pl: 'Wyjdź wyraźnie na prowadzenie jedną postacią (50%+ marek).',
+  },
+  warunekCelebrity: { en: 'Reach 25 followers.', pl: 'Zdobądź 25 obserwujących.' },
+  warunekKnown: { en: 'Reach 5 followers.', pl: 'Zdobądź 5 obserwujących.' },
+  warunekKeeper: { en: 'Find the Secret Room.', pl: 'Znajdź Sekretny Pokój.' },
+
+  // ── Picker tytułu w edytorze („który tytuł pod nickiem") ──
+  tytulSekcja: { en: 'Title under your nick', pl: 'Tytuł pod nickiem' },
+  tytulOpis: {
+    en: 'Pick which earned title shows first. Locked ones show how to earn them.',
+    pl: 'Wybierz, który zdobyty tytuł pokazać jako pierwszy. Zablokowane mówią, jak je zdobyć.',
+  },
+  tytulAuto: { en: 'Auto', pl: 'Auto' },
+  tytulAutoOpis: {
+    en: 'Show the highest title you have — automatically.',
+    pl: 'Pokazuj automatycznie najwyższy zdobyty tytuł.',
+  },
+  tytulBrakZdobytych: {
+    en: 'No titles yet — they show up as you play. Here is what is out there:',
+    pl: 'Jeszcze żadnego tytułu — pojawią się w miarę grania. A oto, co jest do zdobycia:',
+  },
+  tytulZablokowanyAria: { en: 'Locked title: {nazwa}', pl: 'Zablokowany tytuł: {nazwa}' },
 
   // ── Gablota („Top N ulubionych itemów") ──
   /** Liczba z `MIEJSC_GABLOTY`, żeby nagłówek nie kłamał po zmianie liczby pedestałów. */

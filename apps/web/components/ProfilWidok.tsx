@@ -13,7 +13,7 @@ import { jezykSerwera, tlumacz } from '@/lib/i18n/serwer'
 import type { DecorId } from '@/lib/pfpDecor'
 import type { FeedWpis, GraczKarta } from '@/lib/social'
 import { NICK_DLUGI } from '@/lib/nick'
-import { policzOdznaki } from '@/lib/odznaki'
+import { policzOdznaki, tytulyDoPokazania } from '@/lib/odznaki'
 import { akcentPostaci } from '@/lib/tloProfilu'
 
 /** Odblokowany achievement ze Steama — nazwa, ikona i data zdobycia (wszystko prawdziwe). */
@@ -52,6 +52,10 @@ export type DaneProfilu = {
    * sekcje, które bez Steama nie mają z czego powstać (postęp, achievementy, runy).
    */
   steamPodlaczony: boolean
+  /** Znalazł Sekretny Pokój → tytuł „Keeper" wchodzi do puli odznak. */
+  sekretOdkryty?: boolean
+  /** Który zdobyty tytuł pokazać jako pierwszy (id odznaki). Null = auto (najwyższy). */
+  wybranyTytul?: string | null
   /** Gablota cudzego gracza (moja jest edytowalna, więc czyta ją sam komponent). */
   gablota?: (string | null)[]
   /** Katalog itemów do wybieraczki — tylko na własnym profilu. */
@@ -102,7 +106,8 @@ export default function ProfilWidok({
   // „14.03.2021" w polskim formacie.
   const locale = jezykSerwera() === 'pl' ? 'pl-PL' : 'en-GB'
   // Tytuły liczone z tych samych danych, które i tak są na stronie — nic nie dociągamy.
-  const odznaki = policzOdznaki(d)
+  // Wybrany tytuł ląduje na przodzie, reszta wg rangi (patrz lib/odznaki).
+  const odznaki = tytulyDoPokazania(policzOdznaki(d), d.wybranyTytul)
   // Akcent tła. `null` (postać nieznana / „Brak") = karta zostaje domyślna, bez losowego tintu.
   const akcent = akcentPostaci(d.ulubionaPostac)
   return (

@@ -6,8 +6,10 @@ import { ikonaPostaci, wlasnyAvatar } from '@/lib/chars'
 import { wgrajAvatar } from '@/lib/zalaczniki'
 import Sprite from '@/components/Sprite'
 import AvatarUpload from '@/components/AvatarUpload'
+import TytulyPicker from '@/components/TytulyPicker'
 import { useT } from '@/components/JezykProvider'
 import { DECORATIONS, decorOdblokowana, type DecorId } from '@/lib/pfpDecor'
+import type { Odznaka } from '@/lib/odznaki'
 
 type Props = {
   nick: string
@@ -20,6 +22,9 @@ type Props = {
   /** Avatar i ozdoba z BAZY — widzą je inni gracze, więc nie mogą siedzieć w localStorage. */
   avatar: string | null
   dekoracja: DecorId
+  /** Zdobyte tytuły (policzone na serwerze) + który z nich gracz wskazał pod nickiem. */
+  odznaki: Odznaka[]
+  wybranyTytul: string | null
 }
 
 // Losowe imiona w klimacie TBOI.
@@ -55,6 +60,8 @@ export default function KimJestemForm(p: Props) {
    */
   const [foto, setFoto] = useState<string | null>(wlasnyAvatar(p.avatar) ? p.avatar : null)
   const [decor, setDecor] = useState<DecorId>(p.dekoracja)
+  // null = „Auto" (najwyższy zdobyty). Konkretne id = ten tytuł wchodzi pod nick pierwszy.
+  const [tytul, setTytul] = useState<string | null>(p.wybranyTytul)
   const [busy, setBusy] = useState(false)
   const [msg, setMsg] = useState<string | null>(null)
   const odblokSet = new Set(p.odblokowane)
@@ -88,6 +95,7 @@ export default function KimJestemForm(p: Props) {
           // Bez zdjęcia avatarem zostaje NAZWA POSTACI — `avatarGracza` zamieni ją na głowę.
           avatar: avatar ?? ulubiona ?? 'Isaac',
           dekoracja: decor,
+          wybranyTytul: tytul,
         }),
       })
       if (!r.ok) {
@@ -249,6 +257,9 @@ export default function KimJestemForm(p: Props) {
           </div>
         </div>
       </div>
+
+      {/* Tytuł pod nickiem + kolekcja wszystkich tytułów (zdobyte klikalne, reszta wyszarzona). */}
+      <TytulyPicker odznaki={p.odznaki} wybrany={tytul} onWybierz={setTytul} />
 
       {msg && (
         <p className="banner error">

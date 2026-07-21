@@ -31,6 +31,15 @@ export async function POST(req: Request) {
   // `avatar`: nazwa postaci z gry albo adres wgranego zdjęcia; null = wróć do ikony postaci.
   const avatar = b.avatar === null ? null : typeof b.avatar === 'string' ? b.avatar : undefined
   const dekoracja = typeof b.dekoracja === 'string' ? b.dekoracja.slice(0, 32) : undefined
+  // `wybranyTytul`: id zdobytego tytułu pod nickiem albo null = „Auto" (najwyższy). Wyboru NIE
+  // weryfikujemy tu twardo — render (lib/odznaki) i tak cicho ignoruje tytuł, którego gracz nie
+  // ma zdobytego, więc „oszukany" wybór nic nie daje. Ucinamy tylko długość dla bezpieczeństwa.
+  const wybranyTytul =
+    b.wybranyTytul === null
+      ? null
+      : typeof b.wybranyTytul === 'string'
+        ? b.wybranyTytul.slice(0, 64)
+        : undefined
   const gablota = Array.isArray(b.gablota)
     ? b.gablota.filter((x): x is string => typeof x === 'string').slice(0, MIEJSC_GABLOTY)
     : undefined
@@ -49,6 +58,7 @@ export async function POST(req: Request) {
       ...(opis !== undefined ? { opis } : {}),
       ...(avatar !== undefined ? { avatar } : {}),
       ...(dekoracja !== undefined ? { dekoracja } : {}),
+      ...(wybranyTytul !== undefined ? { wybranyTytul } : {}),
       ...(gablota !== undefined ? { gablota } : {}),
     },
   })

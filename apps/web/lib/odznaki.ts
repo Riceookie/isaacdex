@@ -36,6 +36,85 @@ export type Odznaka = {
 /** Ile odznak wchodzi do nagłówka. Więcej rozpycha kolumnę tożsamości i zagłusza nick. */
 export const MAKS_ODZNAK = 3
 
+/** Jeden archetyp tytułu w KATALOGU — do „kolekcji" w edytorze (zdobyte + jeszcze zablokowane). */
+export type TytulKatalogu = {
+  id: string
+  /** Nazwa tytułu (ta sama, co u zdobytej odznaki). */
+  klucz: Klucz
+  /** Krótki, STAŁY warunek „jak zdobyć" (bez zmiennych — inaczej pokazałby gołe „{procent}"). */
+  kluczWarunek: Klucz
+  sprite: SpriteName
+  wariant: Odznaka['wariant']
+}
+
+/**
+ * Pełny katalog tytułów — wszystko, co można zdobyć, w kolejności od najtrudniejszego.
+ * Edytor pokazuje z niego KOLEKCJĘ: zdobyte tytuły są klikalne (można wybrać, który wisi pod
+ * nickiem), a reszta stoi wyszarzona z podpowiedzią, jak ją odblokować — jak zamki w pickerze
+ * dekoracji. Zdobycie liczy `policzOdznaki`; tu jest tylko lista „co w ogóle istnieje".
+ *
+ * „Main" ma w katalogu nazwę OGÓLNĄ (id postaci poznajemy dopiero przy zdobyciu), więc osobny
+ * klucz `odznakaMainKatalog` zamiast szablonu „{postac} Main".
+ */
+export const KATALOG_TYTULOW: TytulKatalogu[] = [
+  {
+    id: 'deadGod',
+    klucz: 'profil.odznakaDeadGod',
+    kluczWarunek: 'profil.warunekDeadGod',
+    sprite: 'deadgod',
+    wariant: 'zloto',
+  },
+  {
+    id: 'keeper',
+    klucz: 'profil.odznakaKeeper',
+    kluczWarunek: 'profil.warunekKeeper',
+    sprite: 'keeper',
+    wariant: 'zloto',
+  },
+  {
+    id: 'celebrity',
+    klucz: 'profil.odznakaCelebrity',
+    kluczWarunek: 'profil.warunekCelebrity',
+    sprite: 'friendfinder',
+    wariant: 'zloto',
+  },
+  {
+    id: 'grinder',
+    klucz: 'profil.odznakaGrinder',
+    kluczWarunek: 'profil.warunekGrinder',
+    sprite: 'stopwatch',
+    wariant: 'fiolet',
+  },
+  {
+    id: 'completionist',
+    klucz: 'profil.odznakaCompletionist',
+    kluczWarunek: 'profil.warunekCompletionist',
+    sprite: 'starmark',
+    wariant: 'zloto',
+  },
+  {
+    id: 'main',
+    klucz: 'profil.odznakaMainKatalog',
+    kluczWarunek: 'profil.warunekMain',
+    sprite: 'chad',
+    wariant: 'blekit',
+  },
+  {
+    id: 'markHunter',
+    klucz: 'profil.odznakaMarkHunter',
+    kluczWarunek: 'profil.warunekMarkHunter',
+    sprite: 'heartmark',
+    wariant: 'zielen',
+  },
+  {
+    id: 'known',
+    klucz: 'profil.odznakaKnown',
+    kluczWarunek: 'profil.warunekKnown',
+    sprite: 'friends',
+    wariant: 'zielen',
+  },
+]
+
 /** Próg „Main": ile punktów procentowych przewagi nad drugą postacią to już wyraźny main. */
 const PRZEWAGA_MAINA = 20
 
@@ -44,6 +123,8 @@ export type DaneOdznak = {
   postacie: { nazwa: string; procent: number }[]
   obserwujacych: number
   steamPodlaczony: boolean
+  /** Znalazł Sekretny Pokój → tytuł „Keeper" (patrz app/sekret). Nie ze Steama — z sekretu. */
+  sekretOdkryty?: boolean
 }
 
 export function policzOdznaki(d: DaneOdznak): Odznaka[] {
@@ -122,6 +203,19 @@ export function policzOdznaki(d: DaneOdznak): Odznaka[] {
     }
   }
 
+  // Sekret: „Keeper". Nie liczy się ze Steama ani z liczb — dostaje go ten, kto znalazł
+  // Sekretny Pokój (app/sekret). Wysoka ranga, bo to easter egg, nie próg do wyklikania.
+  if (d.sekretOdkryty) {
+    lista.push({
+      id: 'keeper',
+      klucz: 'profil.odznakaKeeper',
+      kluczOpisu: 'profil.odznakaKeeperOpis',
+      sprite: 'keeper',
+      wariant: 'zloto',
+      ranga: 90,
+    })
+  }
+
   // Obserwujący są prawdziwi (tabela Obserwacja) i nie mają nic wspólnego ze Steamem —
   // to jedyny tytuł, który dostanie też ktoś bez podpiętego konta.
   if (d.obserwujacych >= 25) {
@@ -146,5 +240,25 @@ export function policzOdznaki(d: DaneOdznak): Odznaka[] {
     })
   }
 
-  return lista.sort((a, b) => b.ranga - a.ranga).slice(0, MAKS_ODZNAK)
+  // WSZYSTKIE zdobyte tytuły, posortowane wg rangi. Cięcie do MAKS_ODZNAK robi dopiero
+  // `tytulyDoPokazania` — picker w edytorze potrzebuje pełnej listy, żeby dało się wybrać
+  // każdy zdobyty tytuł, nie tylko trzy najwyższe.
+  return lista.sort((a, b) => b.ranga - a.ranga)
+}
+
+/**
+ * Ustawia WYBRANY tytuł na pierwszym miejscu (gracz wskazuje go w edytorze), a resztę zostawia
+ * wg rangi. Wybór, którego gracz już nie ma zdobytego, jest po cichu ignorowany — wtedy zostaje
+ * kolejność automatyczna (najwyższy tytuł na przodzie).
+ */
+export function zWybranymTytulem(odznaki: Odznaka[], wybranyId?: string | null): Odznaka[] {
+  if (!wybranyId) return odznaki
+  const i = odznaki.findIndex((o) => o.id === wybranyId)
+  if (i <= 0) return odznaki // nie ma go / już jest pierwszy
+  return [odznaki[i], ...odznaki.slice(0, i), ...odznaki.slice(i + 1)]
+}
+
+/** Tytuły do pokazania pod nickiem: wybrany na przodzie, przycięte do miejsca w nagłówku. */
+export function tytulyDoPokazania(odznaki: Odznaka[], wybranyId?: string | null): Odznaka[] {
+  return zWybranymTytulem(odznaki, wybranyId).slice(0, MAKS_ODZNAK)
 }

@@ -1,0 +1,180 @@
+/* ═══ Sekretny Pokój + jego zataczone wejścia ═══
+   Ekran w klimacie „secret room" z gry: ciemny pokój w blasku monet, Keeper na środku u góry.
+   Wejścia (mały Keeper na topbarze, rysa na dole sidebara) są prawie niewidoczne — trzeba je
+   zauważyć, jak zbombardowaną ścianę. */
+
+.sekret-page {
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem 0;
+}
+.sekret-room {
+  position: relative;
+  width: min(560px, 100%);
+  text-align: center;
+  padding: 2.4rem 1.6rem 1.6rem;
+  border-radius: 6px;
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(40, 32, 20, 0.9), rgba(8, 7, 6, 0.96)), #0a0908;
+  border: 1px solid rgba(0, 0, 0, 0.7);
+  box-shadow:
+    inset 0 0 60px rgba(0, 0, 0, 0.8),
+    0 10px 30px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+/* Odkryty pokój rozświetla się złotem monet. */
+.sekret-room.odkryty {
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(226, 178, 76, 0.16), rgba(10, 9, 8, 0.96)), #0a0908;
+}
+
+.sekret-keeper {
+  display: inline-block;
+  line-height: 0;
+  filter: drop-shadow(0 0 14px rgba(226, 178, 76, 0.35));
+}
+.sekret-keeper .sprite {
+  image-rendering: pixelated;
+}
+.sekret-title {
+  margin: 0.35rem 0 1rem;
+  font-family: var(--dsp);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--q4) 72%, #fff);
+}
+
+.sekret-panel {
+  max-width: 440px;
+  margin: 0 auto;
+}
+.sekret-lore {
+  font-style: italic;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--text) 78%, transparent);
+}
+.sekret-mowi {
+  margin: 1rem 0 0.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.sekret-riddle {
+  margin: 0 0 1rem;
+  padding: 0.6rem 0.9rem;
+  border-left: 2px solid color-mix(in srgb, var(--q4) 60%, transparent);
+  background: rgba(226, 178, 76, 0.06);
+  line-height: 1.55;
+  text-align: left;
+}
+.sekret-form {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.sekret-form .input {
+  max-width: 220px;
+  text-align: center;
+}
+.sekret-zle {
+  margin-top: 0.7rem;
+  color: color-mix(in srgb, #e5544b 82%, #fff);
+}
+/* Zła odpowiedź → pokój drży (jak trafienie w grze). */
+.sekret-zagadka.zle {
+  animation: sekret-shake 0.4s ease;
+}
+@keyframes sekret-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-7px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+}
+
+.sekret-sukces h2 {
+  margin: 0 0 0.5rem;
+  font-family: var(--dsp);
+  letter-spacing: 0.06em;
+}
+.sekret-nagroda {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 1rem 0;
+}
+.sekret-tytul {
+  font-size: 0.72rem;
+}
+.sekret-sukces .btn {
+  margin-top: 0.6rem;
+}
+.sekret-wroc {
+  display: inline-block;
+  margin-top: 1.3rem;
+}
+
+/* ── Wejście 1: Keeper wystający z górnej krawędzi topbara ── */
+.topbar {
+  position: relative;
+}
+.keeper-peek {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -62%);
+  opacity: 0.14;
+  line-height: 0;
+  z-index: 1;
+  transition:
+    transform 0.18s ease,
+    opacity 0.18s ease;
+}
+.keeper-peek .sprite {
+  image-rendering: pixelated;
+}
+.keeper-peek:hover,
+.keeper-peek:focus-visible {
+  opacity: 1;
+  transform: translate(-50%, 6%);
+}
+
+/* ── Wejście 2: rysa w ścianie na samym dole sidebara ── */
+.side-secret {
+  margin-top: auto; /* zjeżdża na dół kolumny */
+  display: block;
+  height: 22px;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+.side-secret:hover,
+.side-secret:focus-visible {
+  opacity: 1;
+}
+.side-secret-crack {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  /* poszarpana „rysa" na ścianie z dwóch cienkich, przełamanych gradientów */
+  background:
+    linear-gradient(
+      105deg,
+      transparent 46%,
+      rgba(0, 0, 0, 0.55) 47%,
+      rgba(0, 0, 0, 0.55) 49%,
+      transparent 50%
+    ),
+    linear-gradient(80deg, transparent 60%, rgba(0, 0, 0, 0.4) 61%, transparent 63%);
+}

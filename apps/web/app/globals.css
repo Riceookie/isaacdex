@@ -2,6 +2,7 @@
    Rozbicie na pliki jest po to, żeby prace nad osobnymi obszarami nie biły się o jeden plik. */
 @import './style/profil-plus.css';
 @import './style/powiadomienia.css';
+@import './style/sekret.css';
 @import './style/mobile.css';
 
 /* ============================================================================

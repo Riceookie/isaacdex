@@ -102,6 +102,8 @@ export default async function ProfilPage() {
       },
     ],
     steamPodlaczony,
+    sekretOdkryty: ja?.sekretOdkryty ?? false,
+    wybranyTytul: ja?.wybranyTytul ?? null,
     avatar: ja?.avatar,
     decor: (ja?.dekoracja ?? 'none') as DecorId,
     gablota: ja?.gablota ?? [],

@@ -2,8 +2,10 @@ import Link from 'next/link'
 import Sprite from '@/components/Sprite'
 import KimJestemForm from '@/components/KimJestemForm'
 import ZalogujStan from '@/components/ZalogujStan'
-import { getProfilSetup } from '@/lib/queries'
+import { getProfilSetup, getProfil, getDashboard } from '@/lib/queries'
+import { getLicznikiSpoleczne } from '@/lib/social'
 import { mojGracz } from '@/lib/konto'
+import { policzOdznaki } from '@/lib/odznaki'
 import { tlumacz } from '@/lib/i18n/serwer'
 import type { Klucz } from '@/lib/i18n/slownik'
 
@@ -21,9 +23,25 @@ export default async function KimJestemPage({
 }: {
   searchParams: { steam?: string }
 }) {
-  const [dane, ja] = await Promise.all([getProfilSetup(), mojGracz()])
+  const [dane, ja, p, dash, liczniki] = await Promise.all([
+    getProfilSetup(),
+    mojGracz(),
+    getProfil(),
+    getDashboard(),
+    getLicznikiSpoleczne(),
+  ])
   const t = tlumacz()
   const komunikat = searchParams.steam ? KOMUNIKAT[searchParams.steam] : undefined
+
+  // Zdobyte tytuły liczone raz na serwerze (te same reguły co na profilu) i podane do pickera —
+  // pełna lista, nieprzycięta do MAKS_ODZNAK, żeby dało się wybrać każdy zdobyty, nie tylko top 3.
+  const odznaki = policzOdznaki({
+    achProcent: p?.achProcent ?? 0,
+    postacie: dash.postacie,
+    obserwujacych: liczniki.obserwujacych,
+    steamPodlaczony: !!p,
+    sekretOdkryty: ja?.sekretOdkryty ?? false,
+  })
 
   return (
     <section className="whoami-page">
@@ -66,7 +84,7 @@ export default async function KimJestemPage({
 
       <div className="note whoami-card">
         {ja ? (
-          <KimJestemForm {...dane} />
+          <KimJestemForm {...dane} odznaki={odznaki} wybranyTytul={ja.wybranyTytul ?? null} />
         ) : (
           <ZalogujStan
             tekst={

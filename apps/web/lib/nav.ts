@@ -33,6 +33,8 @@ export const NAV: NavItem[] = [
 export function tytulSekcji(pathname: string): Klucz {
   // Edycja profilu należy do sekcji „Profil".
   if (pathname.startsWith('/kim-jestem')) return 'wspolne.navProfil'
+  // Sekretny Pokój nie ma nazwy w menu — zakładka pokazuje samo „???".
+  if (pathname.startsWith('/sekret')) return 'sekret.tab'
   // najdłuższy pasujący prefiks (żeby /profil/[postac] też trafiało w „Profil")
   const match = NAV.filter((n) => n.href !== '/' && pathname.startsWith(n.href)).sort(
     (a, b) => b.href.length - a.href.length,

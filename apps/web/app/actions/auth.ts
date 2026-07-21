@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
 import { prisma } from '@isaacdex/db'
 import { supabaseSerwer } from '@/lib/supabase/serwer'
+import { supabaseAdmin } from '@/lib/supabase/admin'
 import { konfiguracjaSupabase } from '@/lib/supabase/konfiguracja'
 import { zalozGracza } from '@/lib/konto'
 import { NICK_MAX, NICK_MIN } from '@/lib/nick'
@@ -161,10 +162,20 @@ export async function wyloguj() {
 }
 
 /**
- * Usunięcie konta: kasujemy gracza (kaskada zabiera obserwacje, wpisy i lajki) i wylogowujemy.
- * Profil Steam (osiągnięcia) zostaje odpięty w bazie, ale nie ginie — gdyby ktoś wrócił przez
- * Steam, OpenID znów przypnie go właścicielowi. Rekordu auth.users nie kasujemy (wymaga
- * service_role); na poziomie apki konto znika, a wylogowanie kończy sesję.
+ * Usunięcie konta — CAŁKOWITE, żeby po nim nie zostało ani śladu i żeby ewentualne kolejne
+ * konto na ten sam e-mail startowało od zera. Kasujemy w trzech warstwach:
+ *
+ *  1. Gracz — a z nim (kaskadą `onDelete: Cascade` w schemacie) obserwacje w obie strony,
+ *     wpisy i ich lajki, wiadomości na czacie i reakcje pod nimi. To cała tożsamość społeczna.
+ *  2. Profil Steam — achievementy i completion marks (kaskada z Profilu). Wcześniej Profil
+ *     ZOSTAWAŁ „na wszelki wypadek", przez co osiągnięcia i marki przeżywały usunięcie konta i
+ *     wracały przy ponownym podpięciu Steama. Spec wymaga czystego startu, więc idą razem z resztą.
+ *  3. Konto auth.users w Supabase — przez klienta service_role. Bez tego e-mail zostawał
+ *     zarejestrowany (rejestracja na ten sam adres = „już istnieje") i sesja mogłaby ożyć.
+ *     Gdy klucza service_role brak, ten krok się pomija — konto i tak znika z apki, a wylogowanie
+ *     kończy bieżącą sesję.
+ *
+ * Kolejność ma znaczenie: Gracz trzyma FK do Profilu, więc najpierw ginie Gracz, potem Profil.
  */
 export async function usunKonto() {
   if (blednaKonfiguracja()) return
@@ -172,9 +183,24 @@ export async function usunKonto() {
   const {
     data: { user },
   } = await supabase.auth.getUser()
+
   if (user) {
-    await prisma.gracz.deleteMany({ where: { userId: user.id } })
+    const gracz = await prisma.gracz.findUnique({
+      where: { userId: user.id },
+      select: { id: true, profilId: true },
+    })
+    if (gracz) {
+      await prisma.gracz.delete({ where: { id: gracz.id } })
+      // Profil dopiero po Graczu — dopóki Gracz istniał, jego profilId blokował usunięcie Profilu.
+      if (gracz.profilId) {
+        await prisma.profil.delete({ where: { id: gracz.profilId } })
+      }
+    }
+    // Konto w Supabase Auth — pełne uprzątnięcie, żeby e-mail znów był wolny. Wymaga service_role.
+    const admin = supabaseAdmin()
+    if (admin) await admin.auth.admin.deleteUser(user.id)
   }
+
   await supabase.auth.signOut()
   revalidatePath('/', 'layout')
   redirect('/')
