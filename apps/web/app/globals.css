@@ -2229,17 +2229,49 @@ a.char-bar:hover {
 :root {
   --page-bg: radial-gradient(ellipse 100% 80% at 50% 32%, #1d1a17 0%, #100e0d 55%, #060505 100%);
   --sidebar-bg: #17140f;
+  /* Dolny koniec gradientu sidebara — zmienna (a nie wpisany #0a0908), żeby jasny motyw
+     mógł ją nadpisać i sidebar naprawdę jaśniał razem z resztą apki. */
+  --sidebar-bg-2: #0a0908;
   --ink: #2a2018;
 }
 [data-theme='dark'] {
   --page-bg: radial-gradient(ellipse 100% 80% at 50% 32%, #161513 0%, #0c0b0a 55%, #050505 100%);
   --sidebar-bg: #100f0d;
+  --sidebar-bg-2: #070605;
 }
 /* Normal (jasny) skin: ten późniejszy :root wyżej redefiniował --page-bg z powrotem
    na ciemny (równa specyficzność, wygrywa kolejnością) — przywróć jasne tło strony,
    żeby obszar treści był spójnie jasny (nie czarny za kartkami). */
 [data-theme='light'] {
   --page-bg: radial-gradient(ellipse 90% 75% at 50% 38%, #efe3ca 0%, #ddccab 52%, #c4ad86 100%);
+  /* Jasny motyw: sidebar też ma jaśnieć — inaczej menu zostawało czarną kolumną przy jasnej
+     treści (zgłoszenie testera). Ciepły pergamin, spójny z resztą jasnego UI. */
+  --sidebar-bg: #e7d9bd;
+  --sidebar-bg-2: #d0bd98;
+}
+
+/* Chrome menu w jasnym motywie: krawędzie, cień i teksty pod jasny pergamin. */
+[data-theme='light'] .sidebar {
+  border-right: 1px solid rgba(60, 45, 25, 0.22);
+  box-shadow: 4px 0 18px rgba(60, 45, 25, 0.16);
+}
+[data-theme='light'] .side-brand {
+  border-bottom-color: rgba(60, 45, 25, 0.18);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+[data-theme='light'] .side-link {
+  color: #5a4d3c;
+}
+[data-theme='light'] .side-link .sprite {
+  filter: grayscale(0.2) brightness(0.82) drop-shadow(0 1px 0 rgba(255, 255, 255, 0.4));
+}
+[data-theme='light'] .side-link:hover {
+  color: #2b2521;
+  background: rgba(60, 45, 25, 0.09);
+}
+[data-theme='light'] .ham {
+  background: linear-gradient(180deg, #efe3ca, #d3c19d);
+  border-color: rgba(60, 45, 25, 0.3);
 }
 
 /* Bez drewnianej ramy pokoju — tablica ma sięgać do krawędzi jak w mockupie. */
@@ -2312,7 +2344,7 @@ body.bez-scrolla {
   width: 236px;
   min-height: 100vh;
   padding: 1.5rem 0.9rem 2rem;
-  background: linear-gradient(180deg, var(--sidebar-bg), #0a0908);
+  background: linear-gradient(180deg, var(--sidebar-bg), var(--sidebar-bg-2));
   border-right: 1px solid rgba(0, 0, 0, 0.6);
   box-shadow: 6px 0 22px rgba(0, 0, 0, 0.55);
   display: flex;

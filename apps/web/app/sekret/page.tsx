@@ -12,12 +12,26 @@ export async function generateMetadata() {
   return { title: tlumacz()('sekret.tab') }
 }
 
+/** Kilka monet unoszących się w blasku — czysta dekoracja (pozycje/animacje w CSS). */
+function Monety() {
+  return (
+    <div className="sekret-monety" aria-hidden>
+      {Array.from({ length: 7 }).map((_, i) => (
+        <img key={i} className={`sekret-moneta m${i}`} src="/tboi/icons/coin.webp" alt="" />
+      ))}
+    </div>
+  )
+}
+
 /**
  * Sekretny Pokój — ekran za „zbombardowaną ścianą". Wchodzi się przez zataczone wejścia
  * (mały Keeper na górnym pasku, rysa na dole sidebara), a nie z menu. Trzy stany:
  *  - gość        → sekretów nie ma komu nadać, zaproszenie do logowania,
  *  - nieodkryty  → zagadka Keepera (sprawdza server action, patrz components/SekretnyPokoj),
  *  - odkryty     → ekran nagrody (tytuł „Keeper"), świeżo (?ok=1) głośniej niż przy powrocie.
+ *
+ * Scena: pełnowymiarowy, siedzący Keeper (jak sklepikarz z gry) w blasku monet, ciemny pokój
+ * z migoczącą poświatą. Odkrycie rozświetla pokój złotem (klasa `odkryty`).
  */
 export default async function SekretPage({
   searchParams,
@@ -32,9 +46,19 @@ export default async function SekretPage({
   return (
     <section className="sekret-page">
       <div className={'sekret-room' + (odkryty ? ' odkryty' : '')}>
-        <div className="sekret-keeper" aria-hidden>
-          <Sprite name="keeper" size={76} />
+        <div className="sekret-poswiata" aria-hidden />
+        <Monety />
+
+        {/* Siedzący sklepikarz — pełna sylwetka z gry, z delikatnym oddechem (CSS). */}
+        <div className="sekret-scena">
+          <img
+            className={'sekret-keeper-full' + (odkryty ? ' patrzy' : '')}
+            src="/tboi/chars-full/keeper.webp"
+            alt="Keeper"
+          />
+          <span className="sekret-cien" aria-hidden />
         </div>
+
         <h1 className="sekret-title">{t('sekret.naglowek')}</h1>
 
         {!ja ? (
