@@ -4747,16 +4747,14 @@ body::before {
 .pedestal.jakosc-4 {
   --q: var(--q4);
 }
-/* Poświata pod itemem + kolorowy cokół — jak światło z pokoju z itemem w grze. */
+/* Poświata pod itemem — jak światło z pokoju z itemem w grze. Bez obwódki (box-shadow)
+   wokół cokołu: przy Q4 wychodziła z niej „złota ramka", która wyglądała jak usterka. */
 .pedestal.pelny[class*='jakosc-'] .pedestal-item {
   background: radial-gradient(
     ellipse 60% 50% at 50% 70%,
     color-mix(in srgb, var(--q) 30%, transparent),
     transparent 70%
   );
-}
-.pedestal.pelny[class*='jakosc-'] .pedestal-cokol {
-  box-shadow: 0 0 10px color-mix(in srgb, var(--q) 45%, transparent);
 }
 .pedestal.pelny[class*='jakosc-'] .pedestal-nazwa {
   color: color-mix(in srgb, var(--q) 75%, var(--text));
