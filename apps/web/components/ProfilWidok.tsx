@@ -54,6 +54,8 @@ export type DaneProfilu = {
   steamPodlaczony: boolean
   /** Znalazł Sekretny Pokój → tytuł „Keeper" wchodzi do puli odznak. */
   sekretOdkryty?: boolean
+  /** TY (właściciel apki) oglądasz WŁASNY profil → tytuł właściciela. Nigdy na cudzym profilu. */
+  wlascicielWlasny?: boolean
   /** Który zdobyty tytuł pokazać jako pierwszy (id odznaki). Null = auto (najwyższy). */
   wybranyTytul?: string | null
   /** Gablota cudzego gracza (moja jest edytowalna, więc czyta ją sam komponent). */

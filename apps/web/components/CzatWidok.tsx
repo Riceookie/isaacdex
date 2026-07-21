@@ -9,6 +9,7 @@ import WybieraczkaReakcji from '@/components/WybieraczkaReakcji'
 import WybieraczkaNaklejek from '@/components/WybieraczkaNaklejek'
 import IkonaCzatu from '@/components/IkonaCzatu'
 import { naklejka } from '@/lib/naklejki'
+import { blurujTekst, useBlur } from '@/lib/blur'
 import { avatarGracza, wlasnyAvatar } from '@/lib/chars'
 import { powiedz } from '@/lib/companionGlos'
 import { supabasePrzegladarka } from '@/lib/supabase/przegladarka'
@@ -105,6 +106,8 @@ export default function CzatWidok({
   startowyKanalDb: string | null
 }) {
   const tl = useT()
+  // „Curse of the Blind": zasłanianie przekleństw (domyślnie wł., przełącznik w Ustawieniach).
+  const blur = useBlur()
   // Gość widzi tylko kanały publiczne (globalny + ogłoszenia); znajomych i DM chowamy.
   const kanaly = useMemo(() => (gosc ? KANALY.filter((k) => k.typ === 'global') : KANALY), [gosc])
   const [kanal, setKanal] = useState(DOMYSLNY_KANAL)
@@ -598,7 +601,7 @@ export default function CzatWidok({
                     <>
                       {w.tekst.map((t, j) => (
                         <p className="cz-linia" key={j}>
-                          {zTokenami(t)}
+                          {zTokenami(blur ? blurujTekst(t) : t)}
                         </p>
                       ))}
                       {w.obraz && (

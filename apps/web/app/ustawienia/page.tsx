@@ -4,6 +4,7 @@ import ThemeToggle from '@/components/ThemeToggle'
 import CompanionPicker from '@/components/CompanionPicker'
 import JezykPicker from '@/components/JezykPicker'
 import UsunKonto from '@/components/UsunKonto'
+import RozmazywanieToggle from '@/components/RozmazywanieToggle'
 import Sprite from '@/components/Sprite'
 import { getProfilSetup } from '@/lib/queries'
 import { czyZalogowany } from '@/lib/konto'
@@ -108,6 +109,16 @@ export default async function UstawieniaPage() {
         </p>
         <div className="settings-row">
           <FloorSwitcher />
+        </div>
+      </div>
+
+      <div className="note">
+        <h2>
+          <Sprite name="cursedeye" size={22} /> {t('ustawienia.blurNaglowek')}
+        </h2>
+        <p className="muted small">{t('ustawienia.blurOpis')}</p>
+        <div className="settings-row">
+          <RozmazywanieToggle />
         </div>
       </div>
 

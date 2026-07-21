@@ -1,5 +1,6 @@
 import type { SpriteName } from '@/components/Sprite'
 import type { Klucz, Zmienne } from '@/lib/i18n/slownik'
+import { jestTainted } from '@/lib/chars'
 
 /**
  * Tytuły pod nickiem — NADAWANE, nie wybierane.
@@ -125,10 +126,30 @@ export type DaneOdznak = {
   steamPodlaczony: boolean
   /** Znalazł Sekretny Pokój → tytuł „Keeper" (patrz app/sekret). Nie ze Steama — z sekretu. */
   sekretOdkryty?: boolean
+  /**
+   * TY jesteś właścicielem apki (Gracz.ja) i oglądasz WŁASNY profil. Odblokowuje tytuł, którego
+   * nikt inny nie ma i nie widzi — nawet na Twoim profilu u siebie. Ustawiaj tylko w kontekstach
+   * „mój profil" (patrz app/profil, app/page, app/kim-jestem), nigdy na profilu cudzym.
+   */
+  wlascicielWlasny?: boolean
 }
 
 export function policzOdznaki(d: DaneOdznak): Odznaka[] {
   const lista: Odznaka[] = []
+
+  // Tytuł WŁAŚCICIELA — nadawany tylko Tobie (Gracz.ja) i tylko na Twoim własnym profilu.
+  // Nikt inny go nie ma ani nie zobaczy (wołający ustawia flagę wyłącznie w „moim" kontekście).
+  // Najwyższa ranga: „1,000,000%" to szczyt z gry, którego nie da się wyklikać ani odziedziczyć.
+  if (d.wlascicielWlasny) {
+    lista.push({
+      id: 'wlasciciel',
+      klucz: 'profil.odznakaWlasciciel',
+      kluczOpisu: 'profil.odznakaWlascicielOpis',
+      sprite: 'platinumgod',
+      wariant: 'zloto',
+      ranga: 200,
+    })
+  }
 
   // Bez Steama `achProcent` i marki to zera Z BRAKU DANYCH, a nie z braku wyników —
   // nadawanie (albo odmawianie) tytułów na ich podstawie byłoby zmyślaniem.
@@ -136,7 +157,13 @@ export function policzOdznaki(d: DaneOdznak): Odznaka[] {
     // Kopia, bo kolejność z zapytań (malejąco po procencie) to szczegół implementacyjny
     // dwóch różnych funkcji w queries.ts — łatwo ją tam kiedyś zgubić.
     const wgPostepu = [...d.postacie].sort((a, b) => b.procent - a.procent)
-    const pelne = wgPostepu.filter((p) => p.procent >= 100).length
+    // Completion marks TAINTED postaci nie są achievementami Steam — Web API ich nie zwraca,
+    // więc siedzą wiecznie na 0% (patrz profil.postacTaintedNota). Gdyby liczyły się do
+    // mianownika „Completionist", ten próg (połowa rosteru) byłby NIEOSIĄGALNY: 17 martwych
+    // wpisów rozdymało roster do 34, a żaden z nich nie mógł dobić do 100%. Liczymy więc tylko
+    // postacie, które W OGÓLE da się zaliczyć ze Steama — bazowe.
+    const bazowe = wgPostepu.filter((p) => !jestTainted(p.nazwa))
+    const pelne = bazowe.filter((p) => p.procent >= 100).length
 
     if (d.achProcent >= 100) {
       lista.push({
@@ -162,9 +189,9 @@ export function policzOdznaki(d: DaneOdznak): Odznaka[] {
     // Completion marks liczone UDZIAŁEM w rosterze, nie sztywną liczbą: postacie siedzą
     // w bazie i przy każdym dodatku jest ich więcej — próg „12 postaci" po cichu
     // robiłby się z czasem coraz łatwiejszy.
-    if (wgPostepu.length > 0) {
-      const zmienneMarek = { liczba: pelne, wszystkie: wgPostepu.length }
-      if (pelne >= Math.ceil(wgPostepu.length / 2)) {
+    if (bazowe.length > 0) {
+      const zmienneMarek = { liczba: pelne, wszystkie: bazowe.length }
+      if (pelne >= Math.ceil(bazowe.length / 2)) {
         lista.push({
           id: 'completionist',
           klucz: 'profil.odznakaCompletionist',

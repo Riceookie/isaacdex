@@ -1,7 +1,18 @@
 import EncLista from '@/components/EncLista'
 import surowe from '@/lib/enc/przeciwnicy.json'
 import type { EncFiltr, EncWpis } from '@/lib/enc/typy'
+import { PIETRA, pietraZOpisu } from '@/lib/enc/pietra'
+import type { Klucz } from '@/lib/i18n/slownik'
 import { tlumacz } from '@/lib/i18n/serwer'
+
+/** Etykieta rozdziału po kluczu (ten sam filtr piętra, co u bossów). */
+const KLUCZ_PIETRA: Record<string, Klucz> = {
+  basement: 'encyklopedia.filtrPietroBasement',
+  caves: 'encyklopedia.filtrPietroCaves',
+  depths: 'encyklopedia.filtrPietroDepths',
+  womb: 'encyklopedia.filtrPietroWomb',
+  koniec: 'encyklopedia.filtrPietroKoniec',
+}
 
 type Przeciwnik = {
   nazwa: string
@@ -20,16 +31,18 @@ const PRZECIWNICY = surowe as Przeciwnik[]
 export default function PrzeciwnicyPage() {
   const t = tlumacz()
 
-  // Id filtrów zostają — to one łączą chip z `grupy` wpisu.
+  // Id filtrów zostają — to one łączą chip z `grupy` wpisu. HP + rozdziały (piętra z opisu).
   const FILTRY: EncFiltr[] = [
     { id: 'slabe', label: t('encyklopedia.filtrHpDo20') },
     { id: 'srednie', label: t('encyklopedia.filtrHp20Do60') },
     { id: 'mocne', label: t('encyklopedia.filtrHpPonad60') },
+    ...PIETRA.map((id) => ({ id, label: t(KLUCZ_PIETRA[id]) })),
   ]
 
   const wpisy: EncWpis[] = PRZECIWNICY.map((p) => {
     const hp = p.hp ?? 0
-    const grupa = hp === 0 ? [] : hp <= 20 ? ['slabe'] : hp <= 60 ? ['srednie'] : ['mocne']
+    const grupaHp = hp === 0 ? [] : hp <= 20 ? ['slabe'] : hp <= 60 ? ['srednie'] : ['mocne']
+    const grupa = [...grupaHp, ...pietraZOpisu(p.opis)]
 
     return {
       id: p.nazwa,

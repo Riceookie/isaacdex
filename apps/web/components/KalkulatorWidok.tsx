@@ -38,11 +38,11 @@ export default function KalkulatorWidok() {
   const suma = useMemo(() => policzStaty(postac, wybrane), [postac, wybrane])
 
   const znalezione = useMemo(() => {
+    // Pokazujemy WSZYSTKIE itemy (kiedyś ucinane do 24 bez wyszukiwania — przez co kalkulator
+    // wyglądał, jakby znał tylko garść przedmiotów). Katalog ma ~160 pozycji, siatka sama się
+    // przewija, więc nie ma po co niczego ucinać; wyszukiwarka tylko zawęża listę.
     const szukane = q.trim().toLowerCase()
-    return ITEMY_STATY.filter((i) => !szukane || i.nazwa.toLowerCase().includes(szukane)).slice(
-      0,
-      szukane ? 60 : 24,
-    )
+    return ITEMY_STATY.filter((i) => !szukane || i.nazwa.toLowerCase().includes(szukane))
   }, [q])
 
   // Maskotka komentuje budowanie buildu — reaguje na dodany item (mina „myślę/ekscytacja").

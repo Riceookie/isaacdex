@@ -103,6 +103,8 @@ export default async function ProfilPage() {
     ],
     steamPodlaczony,
     sekretOdkryty: ja?.sekretOdkryty ?? false,
+    // To MÓJ profil (wlasny) — jeśli jestem właścicielem apki, wchodzi tytuł właściciela.
+    wlascicielWlasny: ja?.ja ?? false,
     wybranyTytul: ja?.wybranyTytul ?? null,
     avatar: ja?.avatar,
     decor: (ja?.dekoracja ?? 'none') as DecorId,

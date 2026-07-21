@@ -1,7 +1,7 @@
 'use client'
 
 import { useTransition } from 'react'
-import Sprite from '@/components/Sprite'
+import Sprite, { type SpriteName } from '@/components/Sprite'
 import { useJezyk, useT } from '@/components/JezykProvider'
 import { ustawJezyk } from '@/app/actions/jezyk'
 import { JEZYKI, NAZWY_JEZYKOW, type Jezyk } from '@/lib/i18n/jezyk'
@@ -11,10 +11,11 @@ import { JEZYKI, NAZWY_JEZYKOW, type Jezyk } from '@/lib/i18n/jezyk'
  * wyglądały spójnie. Ikony z gry zamiast flag: flaga oznacza kraj, nie język (angielski
  * to nie tylko Wielka Brytania), a do tego wypada z pixelartowej konwencji reszty apki.
  *
- * Angielski dostaje The Sun, polski The Moon — te same sprite'y, które w apce oznaczają
- * „jasne / ciemne kartki", więc czytają się jako para wyboru, a nie przypadkowe obrazki.
+ * Ikony to itemy „od słowa": Book of Secrets (tom wiedzy) dla angielskiego i Dad's Note
+ * (odręczna karteczka) dla polskiego. Wcześniej były tu The Sun / The Moon — ale te same
+ * sprite'y oznaczają w apce „jasne / ciemne kartki", więc język mylił się z motywem.
  */
-const IKONY: Record<Jezyk, 'sun' | 'moon'> = { en: 'sun', pl: 'moon' }
+const IKONY: Record<Jezyk, SpriteName> = { en: 'book', pl: 'dadsnote' }
 
 export default function JezykPicker() {
   const jezyk = useJezyk()

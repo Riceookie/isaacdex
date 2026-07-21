@@ -129,6 +129,13 @@ export const profil = {
   // Nazwa OGÓLNA „Maina" do katalogu tytułów (zdobyty wariant to „{postac} Main").
   odznakaMainKatalog: { en: 'Character Main', pl: 'Main postaci' },
 
+  // Tytuł WŁAŚCICIELA — tylko on go ma i tylko on go widzi (patrz lib/odznaki, wlascicielWlasny).
+  odznakaWlasciciel: { en: '1,000,000%', pl: '1 000 000%' },
+  odznakaWlascicielOpis: {
+    en: 'The keeper of this whole basement. Only you hold this — and only you can see it.',
+    pl: 'Zarządca całej tej piwnicy. Tylko Ty go masz — i tylko Ty go widzisz.',
+  },
+
   // ── Warunki zdobycia (katalog tytułów w edytorze) — krótkie, BEZ zmiennych ──
   warunekDeadGod: {
     en: 'Unlock 100% of Steam achievements.',

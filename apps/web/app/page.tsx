@@ -51,6 +51,7 @@ export default async function Home({
           obserwujacych: liczniki.obserwujacych,
           steamPodlaczony: !!p,
           sekretOdkryty,
+          wlascicielWlasny: ja?.ja ?? false,
         })
       : []
   // Ten sam wybór, co pod nickiem na profilu: gracz może wskazać, który zdobyty tytuł jest pierwszy.

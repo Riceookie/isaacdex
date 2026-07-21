@@ -30,6 +30,11 @@ export default async function PrzedmiotyPage() {
     { id: 'q0', label: 'Q0' },
     { id: 'aktywny', label: t('encyklopedia.filtrAktywne') },
     { id: 'pasywny', label: t('encyklopedia.filtrPasywne') },
+    // Pule pokojów — najczęściej pytane „skąd to wpada": anielski i diabelski.
+    { id: 'angel', label: t('encyklopedia.pulaAngel') },
+    { id: 'devil', label: t('encyklopedia.pulaDevil') },
+    { id: 'treasure', label: t('encyklopedia.pulaTreasure') },
+    { id: 'shop', label: t('encyklopedia.pulaShop') },
   ]
 
   const wpisy: EncWpis[] = items.map((i) => {
@@ -51,7 +56,8 @@ export default async function PrzedmiotyPage() {
       klasa: `q${i.jakosc}`,
       // Na karcie: krótki tekst z gry, a gdy go brak — znaczące tagi.
       opis: d?.cytat ?? i.opis ?? opisItemu(i.tagi, typ, t),
-      grupy: [`q${i.jakosc}`, typ],
+      // Grupy = jakość + typ + pule pokojów (pule dokładają filtr „anielski/diabelski/…").
+      grupy: [`q${i.jakosc}`, typ, ...(d?.pule ?? [])],
       waga: i.jakosc,
       szczegoly: {
         cytat: d?.cytat,

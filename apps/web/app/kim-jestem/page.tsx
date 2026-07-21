@@ -41,6 +41,7 @@ export default async function KimJestemPage({
     obserwujacych: liczniki.obserwujacych,
     steamPodlaczony: !!p,
     sekretOdkryty: ja?.sekretOdkryty ?? false,
+    wlascicielWlasny: ja?.ja ?? false,
   })
 
   return (

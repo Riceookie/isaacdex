@@ -235,6 +235,12 @@ export const encyklopedia = {
   filtrHpDo20: { en: 'up to 20 HP', pl: 'do 20 HP' },
   filtrHp20Do60: { en: '20–60 HP', pl: '20–60 HP' },
   filtrHpPonad60: { en: 'over 60 HP', pl: 'powyżej 60 HP' },
+  // Filtry rozdziału (piętra) — wspólne dla bossów i przeciwników, liczone z opisu (lib/enc/pietra).
+  filtrPietroBasement: { en: 'Basement', pl: 'Piwnica' },
+  filtrPietroCaves: { en: 'Caves', pl: 'Jaskinie' },
+  filtrPietroDepths: { en: 'Depths', pl: 'Głębiny' },
+  filtrPietroWomb: { en: 'Womb', pl: 'Łono' },
+  filtrPietroKoniec: { en: 'Endgame', pl: 'Finał' },
   detalPodpisSpriteZGry: { en: 'In-game sprite', pl: 'Sprite z gry' },
   // Podpis na karcie bossa/przeciwnika: „150 HP · 2 obrażeń".
   opisHpObrazenia: { en: '{hp} HP · {dmg} damage', pl: '{hp} HP · {dmg} obrażeń' },

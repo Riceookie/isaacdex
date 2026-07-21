@@ -53,6 +53,16 @@ export const ustawienia = {
   },
   jezykGrupa: { en: 'Interface language', pl: 'Język interfejsu' },
 
+  // ── Czat: „Curse of the Blind" (zasłanianie przekleństw) ──
+  blurNaglowek: { en: 'Curse of the Blind', pl: 'Curse of the Blind' },
+  blurOpis: {
+    en: 'Blur curse words and crude language in chat with “???”. On by default — turn it off for a raw basement.',
+    pl: 'Zasłaniaj przekleństwa i wulgaryzmy na czacie znakami „???”. Domyślnie włączone — wyłącz, jeśli wolisz surową piwnicę.',
+  },
+  blurGrupa: { en: 'Word blurring', pl: 'Zasłanianie słów' },
+  blurWlaczone: { en: 'Blurred', pl: 'Zasłaniaj' },
+  blurWylaczone: { en: 'Raw', pl: 'Bez cenzury' },
+
   // ── Konto ──
   kontoNaglowek: { en: 'Account', pl: 'Konto' },
   kontoOpis: {
