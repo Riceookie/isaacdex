@@ -98,6 +98,25 @@ export const czat = {
   zalacznikAlt: { en: 'Attachment', pl: 'Załącznik' },
   dodajReakcje: { en: 'Add a reaction', pl: 'Dodaj reakcję' },
   usunWiadomosc: { en: 'Delete message', pl: 'Usuń wiadomość' },
+  odpowiedz: { en: 'Reply', pl: 'Odpowiedz' },
+  edytujWiadomosc: { en: 'Edit message', pl: 'Edytuj wiadomość' },
+  zapiszEdycje: { en: 'Save edit', pl: 'Zapisz zmianę' },
+  edytowano: { en: '(edited)', pl: '(edytowano)' },
+  odpowiadaszNa: { en: 'Replying to {nick}', pl: 'Odpowiadasz {nick}' },
+  anulujOdpowiedz: { en: 'Cancel reply', pl: 'Anuluj odpowiedź' },
+  rozciagnij: {
+    en: 'Drag to resize the chat (double-click to reset)',
+    pl: 'Pociągnij, aby zmienić wysokość czatu (dwuklik = reset)',
+  },
+  // Potwierdzenie skasowania (dla wszystkich).
+  usunPytanie: {
+    en: 'Delete this message for everyone?',
+    pl: 'Usunąć tę wiadomość dla wszystkich?',
+  },
+  usunTak: { en: 'Delete', pl: 'Usuń' },
+  usunNie: { en: 'Keep', pl: 'Zostaw' },
+  // Błąd z akcji edycji/kasowania cudzej wiadomości.
+  bladNieTwoja: { en: 'That is not your message.', pl: 'To nie Twoja wiadomość.' },
 
   // ── „X pisze…" ──
   lacznikI: { en: 'and', pl: 'i' },

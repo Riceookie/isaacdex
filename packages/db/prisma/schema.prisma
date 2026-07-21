@@ -266,6 +266,16 @@ model Wiadomosc {
   /// Załącznik obrazkowy (Supabase Storage). Null = sama treść.
   obrazekUrl String?
 
+  /// Czy autor edytował wiadomość po wysłaniu — pokazujemy dyskretne „(edytowano)".
+  edytowana Boolean @default(false)
+
+  /// Odpowiedź na inną wiadomość (jak cytat na Discordzie). Null = zwykła wiadomość.
+  /// `SetNull`, a nie kaskada: skasowanie oryginału nie ma zabierać odpowiedzi — zostaje ona,
+  /// tylko traci cytat (UI pokaże „wiadomość usunięta").
+  odpowiedzNa   Wiadomosc?  @relation("odpowiedzi", fields: [odpowiedzNaId], references: [id], onDelete: SetNull)
+  odpowiedzNaId Int?
+  odpowiedzi    Wiadomosc[] @relation("odpowiedzi")
+
   utworzono DateTime @default(now())
 
   reakcje ReakcjaWiadomosci[]

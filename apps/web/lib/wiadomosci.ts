@@ -39,8 +39,10 @@ const doWiad = (
     tresc: string
     obrazekUrl: string | null
     utworzono: Date
+    edytowana: boolean
     autor: { nick: string }
     reakcje: { ikona: string; graczId: number }[]
+    odpowiedzNa: { tresc: string; obrazekUrl: string | null; autor: { nick: string } } | null
   },
   jaId?: number,
 ): Wiad => {
@@ -60,6 +62,15 @@ const doWiad = (
     // Enter w polu daje wielolinijkową wiadomość; w bazie to jeden tekst, w UI — akapity.
     tekst: w.tresc ? w.tresc.split('\n') : [],
     obraz: w.obrazekUrl ?? undefined,
+    edytowana: w.edytowana,
+    // Cytat odpowiedzi: krótki podgląd oryginału (albo obrazek → znacznik). Gdy oryginał
+    // skasowano, `odpowiedzNa` jest null (FK SetNull) — cytat znika, sama odpowiedź zostaje.
+    odpowiedz: w.odpowiedzNa
+      ? {
+          autor: w.odpowiedzNa.autor.nick,
+          tekst: w.odpowiedzNa.tresc || (w.odpowiedzNa.obrazekUrl ? '🖼' : ''),
+        }
+      : null,
     reakcje: [...licznik.entries()].map(([ikona, ile]) => ({
       ikona,
       ile,
@@ -84,8 +95,12 @@ export async function getWiadomosci(slug: string): Promise<StanKanalu> {
       tresc: true,
       obrazekUrl: true,
       utworzono: true,
+      edytowana: true,
       autor: { select: { nick: true } },
       reakcje: { select: { ikona: true, graczId: true } },
+      odpowiedzNa: {
+        select: { tresc: true, obrazekUrl: true, autor: { select: { nick: true } } },
+      },
     },
   })
 

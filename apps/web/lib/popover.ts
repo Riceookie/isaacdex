@@ -29,8 +29,10 @@ export function usePozycjaPopovera(
     if (!kotwica || !ref.current) return
     const k = kotwica.getBoundingClientRect()
     const p = ref.current.getBoundingClientRect()
-    const margines = 6
-    const luz = 8
+    const margines = 8
+    // Więcej luzu od krawędzi okna, żeby wysoka wybieraczka (naklejki) nie kleiła się do brzegu
+    // i nie sprawiała wrażenia ucinanej — siada wyraźnie wyżej nad polem pisania.
+    const luz = 14
     const nadKotwica = k.top - p.height - margines
     const chciany = nadKotwica >= luz ? nadKotwica : k.bottom + margines
     // Docisk do okna: najpierw sufit dolnej krawędzi, potem górnej — kolejność ma znaczenie,

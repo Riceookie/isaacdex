@@ -62,6 +62,13 @@ export type Wiad = {
   reakcje?: { ikona: string; ile: number; moja: boolean }[]
   /** Załącznik obrazkowy. */
   obraz?: string
+  /** Autor edytował ją po wysłaniu → dyskretne „(edytowano)". */
+  edytowana?: boolean
+  /**
+   * Cytat wiadomości, na którą to jest odpowiedź (jak na Discordzie). `null` = zwykła wiadomość.
+   * `usunieta` = oryginał skasowano (odpowiedź została, cytat pokazujemy jako „usunięta").
+   */
+  odpowiedz?: { autor: string; tekst: string; usunieta?: boolean } | null
 }
 
 /**

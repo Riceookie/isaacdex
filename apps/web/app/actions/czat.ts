@@ -19,6 +19,7 @@ export async function wyslijWiadomosc(
   slug: string,
   tresc: string,
   obrazekUrl?: string | null,
+  odpowiedzNaId?: number | null,
 ): Promise<{ ok: true } | { ok: false; powod: string }> {
   const t = tlumacz()
   const ja = await mojGracz()
@@ -30,10 +31,82 @@ export async function wyslijWiadomosc(
   const kanal = await kanalDlaSlugu(slug)
   if (!kanal) return { ok: false, powod: t('czat.bladBrakKanalu') }
 
+  // Odpowiadać można tylko na wiadomość Z TEGO SAMEGO kanału — inaczej dałoby się przez ID
+  // wkleić cytat z cudzej rozmowy. Nieznane/obce ID po cichu ignorujemy (zwykła wiadomość).
+  let odpowiedz: number | null = null
+  if (odpowiedzNaId != null) {
+    const cel = await prisma.wiadomosc.findUnique({
+      where: { id: odpowiedzNaId },
+      select: { kanal: true },
+    })
+    if (cel?.kanal === kanal) odpowiedz = odpowiedzNaId
+  }
+
   await prisma.wiadomosc.create({
-    data: { kanal, autorId: ja.id, tresc: czysta, obrazekUrl: obrazekUrl ?? null },
+    data: {
+      kanal,
+      autorId: ja.id,
+      tresc: czysta,
+      obrazekUrl: obrazekUrl ?? null,
+      odpowiedzNaId: odpowiedz,
+    },
   })
 
+  return { ok: true }
+}
+
+/**
+ * Kasowanie wiadomości — DLA WSZYSTKICH (Prisma usuwa wiersz, Realtime rozniesie DELETE).
+ * Wcześniej „×" tylko chował wiadomość lokalnie: znikała u Ciebie, a u innych zostawała.
+ *
+ * Skasować może AUTOR albo właściciel apki (`ja` — moderacja własnej piwnicy). Reakcje pod
+ * wiadomością i ewentualne odpowiedzi na nią zdejmuje baza: reakcje kaskadą, a odpowiedzi
+ * tracą tylko cytat (FK `odpowiedzNaId` = SetNull), więc nie znikają razem z oryginałem.
+ */
+export async function usunWiadomosc(
+  wiadomoscId: number,
+): Promise<{ ok: true } | { ok: false; powod: string }> {
+  const t = tlumacz()
+  const ja = await mojGracz()
+  if (!ja) return { ok: false, powod: t('czat.bladZalogujByPisac') }
+
+  const wiad = await prisma.wiadomosc.findUnique({
+    where: { id: wiadomoscId },
+    select: { autorId: true },
+  })
+  if (!wiad) return { ok: false, powod: t('czat.bladBrakWiadomosci') }
+  if (wiad.autorId !== ja.id && !ja.ja) return { ok: false, powod: t('czat.bladNieTwoja') }
+
+  await prisma.wiadomosc.delete({ where: { id: wiadomoscId } })
+  return { ok: true }
+}
+
+/**
+ * Edycja własnej wiadomości. Tylko AUTOR i tylko treść (obrazka się nie podmienia). Ustawia
+ * `edytowana`, żeby UI mógł dopisać „(edytowano)" — jak na Discordzie.
+ */
+export async function edytujWiadomosc(
+  wiadomoscId: number,
+  tresc: string,
+): Promise<{ ok: true } | { ok: false; powod: string }> {
+  const t = tlumacz()
+  const ja = await mojGracz()
+  if (!ja) return { ok: false, powod: t('czat.bladZalogujByPisac') }
+
+  const czysta = tresc.trim().slice(0, MAX_DLUGOSC)
+  if (!czysta) return { ok: false, powod: t('czat.bladPustaWiadomosc') }
+
+  const wiad = await prisma.wiadomosc.findUnique({
+    where: { id: wiadomoscId },
+    select: { autorId: true },
+  })
+  if (!wiad) return { ok: false, powod: t('czat.bladBrakWiadomosci') }
+  if (wiad.autorId !== ja.id) return { ok: false, powod: t('czat.bladNieTwoja') }
+
+  await prisma.wiadomosc.update({
+    where: { id: wiadomoscId },
+    data: { tresc: czysta, edytowana: true },
+  })
   return { ok: true }
 }
 

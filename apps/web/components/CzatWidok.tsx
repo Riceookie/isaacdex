@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import Sprite, { NAZWY_SPRITEOW } from '@/components/Sprite'
 import DecorMark from '@/components/DecorMark'
 import LinkGracza from '@/components/LinkGracza'
@@ -14,7 +15,12 @@ import { avatarGracza, wlasnyAvatar } from '@/lib/chars'
 import { powiedz } from '@/lib/companionGlos'
 import { supabasePrzegladarka } from '@/lib/supabase/przegladarka'
 import { MAX_OBRAZEK, wgrajObrazek } from '@/lib/zalaczniki'
-import { przelaczReakcje, wyslijWiadomosc } from '@/app/actions/czat'
+import {
+  edytujWiadomosc,
+  przelaczReakcje,
+  usunWiadomosc,
+  wyslijWiadomosc,
+} from '@/app/actions/czat'
 import {
   dmSlug,
   DOMYSLNY_KANAL,
@@ -117,8 +123,12 @@ export default function CzatWidok({
   const [blad, setBlad] = useState<string | null>(null)
   const [wysylanie, setWysylanie] = useState(false)
   const [tekst, setTekst] = useState('')
-  // Usunięte wiadomości: zostaje po nich ślad („Wiadomość usunięta"), jak na Discordzie.
-  const [usuniete, setUsuniete] = useState<string[]>([])
+  // Wiadomość, na którą odpowiadam (cytat nad polem). Null = zwykła wiadomość.
+  const [odpowiedzNa, setOdpowiedzNa] = useState<Wiad | null>(null)
+  // Edycja własnej wiadomości: id + roboczy tekst. Null = nic nie edytuję.
+  const [edycja, setEdycja] = useState<{ id: string; tekst: string } | null>(null)
+  // Wiadomość czekająca na potwierdzenie skasowania („Na pewno?"). Null = brak.
+  const [doUsuniecia, setDoUsuniecia] = useState<Wiad | null>(null)
   // Załącznik czekający na wysłanie: podgląd (blob:) + plik, który poleci do Storage.
   const [zalacznik, setZalacznik] = useState<{ podglad: string; plik: File } | null>(null)
   const [picker, setPicker] = useState<string | null>(null)
@@ -142,6 +152,32 @@ export default function CzatWidok({
   const msgs = useRef<HTMLDivElement>(null)
   const plik = useRef<HTMLInputElement>(null)
   const pole = useRef<HTMLInputElement>(null)
+  const czRef = useRef<HTMLDivElement>(null)
+
+  /**
+   * Regulowana wysokość czatu — cała ramka (kanały + rozmowa + lista obecnych) rozciąga się
+   * uchwytem u dołu. Pamiętamy ją w przeglądarce (preferencja widoku, nie dane konta).
+   */
+  const [wysokosc, setWysokosc] = useState<number | null>(null)
+  const chwyt = useRef<{ y: number; h: number } | null>(null)
+  useEffect(() => {
+    const z = Number(localStorage.getItem('idx_czat_wys'))
+    if (z >= 360) setWysokosc(z)
+  }, [])
+  const startResize = (e: React.PointerEvent) => {
+    const h = czRef.current?.getBoundingClientRect().height ?? 600
+    chwyt.current = { y: e.clientY, h }
+    ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+  }
+  const naResize = (e: React.PointerEvent) => {
+    if (!chwyt.current) return
+    setWysokosc(Math.max(360, Math.round(chwyt.current.h + (e.clientY - chwyt.current.y))))
+  }
+  const koniecResize = () => {
+    if (!chwyt.current) return
+    chwyt.current = null
+    if (wysokosc) localStorage.setItem('idx_czat_wys', String(wysokosc))
+  }
 
   useEffect(() => {
     setObecniOtwarci(localStorage.getItem('idx_czat_obecni') === '1')
@@ -216,6 +252,28 @@ export default function CzatWidok({
           table: 'Wiadomosc',
           filter: `kanal=eq.${kanalDb}`,
         },
+        () => {
+          odswiez(kanal)
+        },
+      )
+      // Edycja: UPDATE niesie nowy wiersz z kanałem, więc filtr działa jak przy INSERT.
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'isaacdex',
+          table: 'Wiadomosc',
+          filter: `kanal=eq.${kanalDb}`,
+        },
+        () => {
+          odswiez(kanal)
+        },
+      )
+      // Kasowanie: DELETE niesie tylko klucz główny (bez kanału), więc filtr po kanale by go
+      // zgubił — słuchamy BEZ filtra i po prostu dociągamy kanał (skasowanie jest rzadkie).
+      .on(
+        'postgres_changes',
+        { event: 'DELETE', schema: 'isaacdex', table: 'Wiadomosc' },
         () => {
           odswiez(kanal)
         },
@@ -336,13 +394,14 @@ export default function CzatWidok({
         }
       }
 
-      const wynik = await wyslijWiadomosc(kanal, t, obrazekUrl)
+      const wynik = await wyslijWiadomosc(kanal, t, obrazekUrl, odpowiedzNa ? Number(odpowiedzNa.id) : null)
       if (!wynik.ok) {
         setBlad(wynik.powod)
         return
       }
 
       setTekst('')
+      setOdpowiedzNa(null)
       if (zalacznik) URL.revokeObjectURL(zalacznik.podglad)
       setZalacznik(null)
       await odswiez(kanal)
@@ -385,7 +444,47 @@ export default function CzatWidok({
     wczytajObraz(obraz.getAsFile())
   }
 
-  const usun = (id: string) => setUsuniete((u) => [...u, id])
+  // Odpowiedz na wiadomość: ustaw cytat nad polem i przenieś kursor do pisania.
+  const odpowiedz = (w: Wiad) => {
+    setEdycja(null)
+    setOdpowiedzNa(w)
+    pole.current?.focus()
+  }
+
+  // Kasowanie DLA WSZYSTKICH — najpierw potwierdzenie („Na pewno?"), potem server action.
+  const potwierdzUsun = async () => {
+    if (!doUsuniecia) return
+    const cel = doUsuniecia
+    setDoUsuniecia(null)
+    const wynik = await usunWiadomosc(Number(cel.id))
+    if (!wynik.ok) {
+      setBlad(wynik.powod)
+      return
+    }
+    await odswiez(kanal)
+  }
+
+  // Edycja własnej wiadomości: wejście w tryb edycji (wypełnia pole treścią) i zapis.
+  const zacznijEdycje = (w: Wiad) => {
+    setOdpowiedzNa(null)
+    setEdycja({ id: w.id, tekst: w.tekst.join('\n') })
+  }
+  const zapiszEdycje = async () => {
+    if (!edycja) return
+    const nowa = edycja.tekst.trim()
+    if (!nowa) {
+      setEdycja(null)
+      return
+    }
+    const cel = edycja
+    setEdycja(null)
+    const wynik = await edytujWiadomosc(Number(cel.id), nowa)
+    if (!wynik.ok) {
+      setBlad(wynik.powod)
+      return
+    }
+    await odswiez(kanal)
+  }
 
   /**
    * Reakcja leci do bazy i wraca odświeżeniem listy — tak samo jak wiadomość. Bez
@@ -412,11 +511,13 @@ export default function CzatWidok({
 
   return (
     <div
+      ref={czRef}
       className={
         'cz' +
         (obecniOtwarci ? ' z-obecnymi' : '') +
         (mobilnaRozmowa ? ' mob-rozmowa' : ' mob-kanaly')
       }
+      style={wysokosc ? { height: wysokosc } : undefined}
     >
       {/* ── KANAŁY + PRYWATNE ── */}
       <aside className="cz-mapa">
@@ -563,13 +664,10 @@ export default function CzatWidok({
             const g = wgNicku.get(w.autor)
             const wlasny = wlasnyAvatar(g?.avatar)
             const moja = w.autor === mojNick
-            const skasowana = usuniete.includes(w.id)
+            const wEdycji = edycja?.id === w.id
 
             return (
-              <article
-                key={w.id}
-                className={'cz-msg' + (moja ? ' moja' : '') + (skasowana ? ' skasowana' : '')}
-              >
+              <article key={w.id} className={'cz-msg' + (moja ? ' moja' : '')}>
                 <LinkGracza nick={w.autor} ja={moja} brak={!g} className="cz-ava-link">
                   <span className="cz-ava-box">
                     <img
@@ -595,13 +693,53 @@ export default function CzatWidok({
                     <span className="cz-czas muted small">{w.czas}</span>
                   </div>
 
-                  {skasowana ? (
-                    <p className="cz-linia cz-skasowana">{tl('czat.wiadomoscUsunieta')}</p>
+                  {/* Cytat odpowiedzi — na kogo/co ta wiadomość odpowiada (jak na Discordzie). */}
+                  {w.odpowiedz && (
+                    <div className="cz-cytat">
+                      <span className="cz-cytat-autor">{w.odpowiedz.autor}</span>
+                      <span className="cz-cytat-tekst">
+                        {zTokenami(blur ? blurujTekst(w.odpowiedz.tekst) : w.odpowiedz.tekst)}
+                      </span>
+                    </div>
+                  )}
+
+                  {wEdycji ? (
+                    <form
+                      className="cz-edycja"
+                      onSubmit={(e) => {
+                        e.preventDefault()
+                        zapiszEdycje()
+                      }}
+                    >
+                      <input
+                        className="cz-pole"
+                        value={edycja.tekst}
+                        onChange={(e) => setEdycja({ id: w.id, tekst: e.target.value })}
+                        autoFocus
+                        maxLength={MAX_DLUGOSC}
+                        onKeyDown={(e) => e.key === 'Escape' && setEdycja(null)}
+                        aria-label={tl('czat.edytujWiadomosc')}
+                      />
+                      <button className="cz-akcja" type="submit" aria-label={tl('czat.zapiszEdycje')}>
+                        <Sprite name="wyslij" size={16} />
+                      </button>
+                      <button
+                        className="cz-akcja"
+                        type="button"
+                        onClick={() => setEdycja(null)}
+                        aria-label={tl('wspolne.anuluj')}
+                      >
+                        ×
+                      </button>
+                    </form>
                   ) : (
                     <>
                       {w.tekst.map((t, j) => (
                         <p className="cz-linia" key={j}>
                           {zTokenami(blur ? blurujTekst(t) : t)}
+                          {w.edytowana && j === w.tekst.length - 1 && (
+                            <span className="cz-edytowano muted small"> {tl('czat.edytowano')}</span>
+                          )}
                         </p>
                       ))}
                       {w.obraz && (
@@ -610,8 +748,7 @@ export default function CzatWidok({
                     </>
                   )}
 
-                  {/* Skasowana wiadomość nie ma czego zbierać — ani reakcji, ani akcji. */}
-                  {!skasowana && (w.reakcje?.length ?? 0) > 0 && (
+                  {(w.reakcje?.length ?? 0) > 0 && (
                     <div className="cz-reakcje">
                       {w.reakcje!.map((r) => (
                         <button
@@ -627,8 +764,8 @@ export default function CzatWidok({
                     </div>
                   )}
 
-                  {/* Akcje wiadomości: „+" (reakcje) i kasowanie własnych. Prawy dolny róg. */}
-                  {!skasowana && !gosc && (
+                  {/* Akcje wiadomości: reakcja, odpowiedź, a dla własnych edycja i kasowanie. */}
+                  {!wEdycji && !gosc && (
                     <div className="cz-msg-akcje">
                       <button
                         className="cz-akcja cz-plus"
@@ -641,14 +778,32 @@ export default function CzatWidok({
                       >
                         +
                       </button>
+                      <button
+                        className="cz-akcja cz-odpowiedz"
+                        onClick={() => odpowiedz(w)}
+                        aria-label={tl('czat.odpowiedz')}
+                        title={tl('czat.odpowiedz')}
+                      >
+                        ↩
+                      </button>
                       {moja && (
-                        <button
-                          className="cz-akcja cz-usun"
-                          onClick={() => usun(w.id)}
-                          aria-label={tl('czat.usunWiadomosc')}
-                        >
-                          ×
-                        </button>
+                        <>
+                          <button
+                            className="cz-akcja cz-edytuj"
+                            onClick={() => zacznijEdycje(w)}
+                            aria-label={tl('czat.edytujWiadomosc')}
+                            title={tl('czat.edytujWiadomosc')}
+                          >
+                            <Sprite name="pencil" size={14} />
+                          </button>
+                          <button
+                            className="cz-akcja cz-usun"
+                            onClick={() => setDoUsuniecia(w)}
+                            aria-label={tl('czat.usunWiadomosc')}
+                          >
+                            ×
+                          </button>
+                        </>
                       )}
                       {picker === w.id && (
                         <WybieraczkaReakcji
@@ -706,6 +861,30 @@ export default function CzatWidok({
               wyslij()
             }}
           >
+            {/* Cytat: na kogo odpowiadam. Widać to nad polem i da się cofnąć (×). */}
+            {odpowiedzNa && (
+              <div className="cz-odp-pasek">
+                <span className="cz-odp-info">
+                  <span className="cz-odp-strzalka" aria-hidden>
+                    ↩
+                  </span>
+                  <b>{tl('czat.odpowiadaszNa', { nick: odpowiedzNa.autor })}</b>
+                  <span className="cz-odp-tekst">
+                    {(blur ? blurujTekst(odpowiedzNa.tekst.join(' ')) : odpowiedzNa.tekst.join(' '))
+                      .slice(0, 80) || '🖼'}
+                  </span>
+                </span>
+                <button
+                  type="button"
+                  className="cz-odp-x"
+                  onClick={() => setOdpowiedzNa(null)}
+                  aria-label={tl('czat.anulujOdpowiedz')}
+                >
+                  ×
+                </button>
+              </div>
+            )}
+
             {/* Podgląd załącznika nad polem — widać, co poleci, i da się zdjąć. */}
             {zalacznik && (
               <div className="cz-zalacznik">
@@ -849,6 +1028,54 @@ export default function CzatWidok({
           })}
         </ul>
       </aside>
+
+      {/* Uchwyt na dole — pociągnij, żeby rozciągnąć albo zwinąć całą ramkę czatu. */}
+      <div
+        className="cz-uchwyt"
+        role="separator"
+        aria-orientation="horizontal"
+        aria-label={tl('czat.rozciagnij')}
+        title={tl('czat.rozciagnij')}
+        onPointerDown={startResize}
+        onPointerMove={naResize}
+        onPointerUp={koniecResize}
+        onDoubleClick={() => {
+          setWysokosc(null)
+          localStorage.removeItem('idx_czat_wys')
+        }}
+      >
+        <span className="cz-uchwyt-belka" aria-hidden />
+      </div>
+
+      {/* Kasowanie DLA WSZYSTKICH wymaga potwierdzenia — w klimacie kartki „Na pewno?". */}
+      {doUsuniecia &&
+        createPortal(
+          <div className="modal-bg" onClick={() => setDoUsuniecia(null)}>
+            <div
+              className="modal paper cz-usun-modal"
+              role="dialog"
+              aria-modal="true"
+              aria-label={tl('czat.usunPytanie')}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="cz-usun-pyt">
+                <Sprite name="skull" size={18} /> {tl('czat.usunPytanie')}
+              </p>
+              <p className="cz-usun-podglad muted small">
+                „{(blur ? blurujTekst(doUsuniecia.tekst.join(' ')) : doUsuniecia.tekst.join(' ')).slice(0, 90) || '🖼'}"
+              </p>
+              <div className="cz-usun-przyciski">
+                <button className="btn" type="button" onClick={() => setDoUsuniecia(null)}>
+                  {tl('czat.usunNie')}
+                </button>
+                <button className="btn danger" type="button" onClick={potwierdzUsun}>
+                  {tl('czat.usunTak')}
+                </button>
+              </div>
+            </div>
+          </div>,
+          document.body,
+        )}
     </div>
   )
 }

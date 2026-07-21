@@ -9594,3 +9594,152 @@ body::after {
   text-align: center;
   line-height: 1.5;
 }
+
+/* ═══ Czat: odpowiedzi, edycja, kasowanie dla wszystkich, regulowana wysokość ═══ */
+
+/* Cytat odpowiedzi w wiadomości — na kogo/co ona odpowiada (jak na Discordzie). */
+.cz-cytat {
+  display: flex;
+  gap: 0.4rem;
+  align-items: baseline;
+  margin: 0 0 0.25rem;
+  padding: 0.15rem 0.5rem;
+  border-left: 2px solid color-mix(in srgb, var(--accent) 60%, transparent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  border-radius: 3px;
+  font-size: 0.78rem;
+  min-width: 0;
+}
+.cz-cytat-autor {
+  color: var(--accent);
+  font-weight: 600;
+  flex: none;
+}
+.cz-cytat-tekst {
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cz-edytowano {
+  font-size: 0.68rem;
+  opacity: 0.65;
+}
+
+/* Inline edycja własnej wiadomości. */
+.cz-edycja {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+  margin-top: 0.15rem;
+}
+.cz-edycja .cz-pole {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Pasek „Odpowiadasz …" nad polem pisania. */
+.cz-odp-pasek {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.6rem;
+  margin-bottom: 0.35rem;
+  border-left: 2px solid var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+.cz-odp-info {
+  display: flex;
+  gap: 0.4rem;
+  align-items: baseline;
+  min-width: 0;
+  flex: 1;
+}
+.cz-odp-strzalka {
+  color: var(--accent);
+}
+.cz-odp-tekst {
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cz-odp-x {
+  flex: none;
+  border: none;
+  background: none;
+  color: var(--muted);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.cz-odp-x:hover {
+  color: var(--text);
+}
+
+/* Uchwyt do rozciągania — absolutnie na dolnej krawędzi ramki, poza siatką kolumn. */
+.cz-uchwyt {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: ns-resize;
+  touch-action: none;
+  z-index: 5;
+}
+.cz-uchwyt-belka {
+  width: 64px;
+  height: 4px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--border) 80%, transparent);
+  transition: background 0.15s ease;
+}
+.cz-uchwyt:hover .cz-uchwyt-belka,
+.cz-uchwyt:active .cz-uchwyt-belka {
+  background: var(--accent);
+}
+
+/* Potwierdzenie skasowania (portal .modal/.paper już stylowane globalnie). */
+.cz-usun-modal {
+  max-width: 340px;
+  text-align: center;
+  display: grid;
+  gap: 0.6rem;
+  padding: 1.2rem;
+}
+.cz-usun-pyt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-family: var(--dsp);
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+.cz-usun-podglad {
+  font-style: italic;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cz-usun-przyciski {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+}
+
+/* #4 — wybieraczka naklejek nie może wychodzić poza ekran: dociskamy jej wysokość do okna,
+   a siatka sama się przewija. Wcześniej ~330 px popovera na niższym oknie ucinało dolne rzędy. */
+.cz-picker.cz-naklejki {
+  max-height: min(88vh, 420px);
+  overflow: hidden;
+}
+.cz-naklejki-siatka {
+  max-height: min(244px, 38vh);
+}
