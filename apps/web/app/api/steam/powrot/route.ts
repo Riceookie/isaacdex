@@ -3,6 +3,7 @@ import { createHmac } from 'node:crypto'
 import { prisma } from '@isaacdex/db'
 import { mojGracz, zalozGracza } from '@/lib/konto'
 import { supabaseSerwer } from '@/lib/supabase/serwer'
+import { zalogujNaKonto } from '@/lib/supabase/admin'
 import { logowanieDziala } from '@/lib/supabase/konfiguracja'
 import { tlumacz } from '@/lib/i18n/serwer'
 
@@ -13,8 +14,10 @@ import { tlumacz } from '@/lib/i18n/serwer'
  *
  * Dwa tryby, zależnie od tego, czy ktoś jest już zalogowany:
  *  - ZALOGOWANY  → podpięcie Steama do istniejącego konta (link).
- *  - GOŚĆ        → „Zaloguj się przez Steam": zakładamy/logujemy konto Supabase wyliczone
- *                  deterministycznie ze SteamID (bez maila i hasła), potem podpinamy profil.
+ *  - GOŚĆ        → „Zaloguj się przez Steam": jeśli tym SteamID KTOŚ już się loguje (konto
+ *                  syntetyczne albo realne z podpiętym Steamem) — wchodzimy NA TO konto;
+ *                  dopiero gdy nikt — zakładamy nowe konto wyliczone deterministycznie ze
+ *                  SteamID i podpinamy profil.
  */
 
 const STEAM_OPENID = 'https://steamcommunity.com/openid/login'
@@ -97,6 +100,30 @@ async function zalogujGosciaPrzezSteam(steamId64: string) {
 }
 
 /**
+ * Gość wraca ze Steama, którym KTOŚ JUŻ się loguje (istnieje gracz z kontem podpięty do tego
+ * SteamID). Wchodzimy NA TO konto zamiast zakładać drugie — o to właśnie chodzi w „Zaloguj
+ * się przez Steam". Dwie drogi, bo konto bywa dwojakie:
+ *  - SYNTETYCZNE (założone wcześniej przez Steam): znamy jego hasło (liczone ze SteamID),
+ *    więc logujemy tanio i bez klucza administracyjnego — tak jak dotąd,
+ *  - REALNE (e-mail/hasło z ręcznie podpiętym Steamem): hasła nie znamy, więc dopiero tu
+ *    sięgamy po service_role i wchodzimy jednorazowym linkiem (patrz lib/supabase/admin).
+ * Zwraca true, gdy sesja właściciela została ustawiona.
+ */
+async function zalogujNaKontoWlasciciela(steamId64: string, userId: string): Promise<boolean> {
+  if (!logowanieDziala()) return false
+  const supabase = await supabaseSerwer()
+  const { email, haslo } = danesteamowe(steamId64)
+  const proba = await supabase.auth.signInWithPassword({ email, password: haslo })
+  if (proba.data.user?.id === userId) return true // to było konto syntetyczne — gotowe
+
+  // Albo konta syntetycznego nie ma (Steam podpięty do konta e-mail), albo zalogowaliśmy się
+  // NIE do tego konta — w obu razach sprzątamy tę sesję i wchodzimy właściwym kontem przez
+  // link administracyjny. Bez signOut nieudany admin zostawiłby w ciasteczkach złą sesję.
+  if (proba.data.user) await supabase.auth.signOut()
+  return zalogujNaKonto(userId) // konto realne — wejście linkiem administracyjnym
+}
+
+/**
  * Dokąd wrócić po Steamie — a to zależy od tego, PO CO tu przyszedłeś.
  *
  *  - LOGOWANIE przez Steam (byłeś gościem): to jest wejście do apki, więc lądujesz na
@@ -120,6 +147,19 @@ export async function GET(request: NextRequest) {
   // Gość → „Zaloguj się przez Steam". Błąd weryfikacji odsyłamy na stronę logowania.
   if (!ja) {
     if (!steamId64) return NextResponse.redirect(new URL('/logowanie?blad=steam', origin))
+
+    // Najpierw SZUKAMY konta z tym SteamID (find), a dopiero gdy żadne nie istnieje —
+    // ZAKŁADAMY nowe (create). Wcześniej krok „find" patrzył tylko na syntetyczny mail konta
+    // steamowego, więc Steam podpięty do konta e-mail/hasłem był niewidoczny i za każdym
+    // logowaniem powstawało drugie, syntetyczne konto zamiast wejścia na istniejące.
+    const wlasciciel = await prisma.gracz.findFirst({
+      where: { profil: { steamId64 }, userId: { not: null } },
+    })
+    if (wlasciciel?.userId) {
+      const ok = await zalogujNaKontoWlasciciela(steamId64, wlasciciel.userId)
+      return NextResponse.redirect(new URL(ok ? '/' : '/logowanie?blad=steam', origin))
+    }
+
     ja = await zalogujGosciaPrzezSteam(steamId64)
     if (!ja) return NextResponse.redirect(new URL('/logowanie?blad=steam', origin))
   }
