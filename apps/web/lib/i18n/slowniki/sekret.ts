@@ -95,6 +95,49 @@ export const sekret = {
     pl: '(dotknij monety na szali, by ją zabrać)',
   },
 
+  // ── Mini-gra 3: Uderz Kreta (Whac-a-Mole) ──
+  gra3Tytul: { en: 'Whac-a-Mole', pl: 'Uderz Kreta' },
+  gra3Opis: {
+    en: 'Whack the moles as they pop out — before time runs out.',
+    pl: 'Uderzaj krety, gdy wyskakują — zanim skończy się czas.',
+  },
+  gra3Licznik: { en: 'Whacked', pl: 'Ubite' },
+  gra3Czas: { en: 'Time', pl: 'Czas' },
+  gra3Zawal: { en: 'Too slow! Again.', pl: 'Za wolno! Jeszcze raz.' },
+  gra3Win: { en: 'Every last one, squashed.', pl: 'Co do jednego — rozgniecione.' },
+
+  // ── Mini-gra 4: Ruletka Pigułek (Pill Roulette) ──
+  gra4Tytul: { en: 'Pill Roulette', pl: 'Ruletka Pigułek' },
+  gra4Opis: {
+    en: 'Swallow a pill. Get three good ones in a row.',
+    pl: 'Połknij pigułkę. Trafić trzy dobre z rzędu.',
+  },
+  gra4Dobra: { en: 'A good one!', pl: 'Dobra!' },
+  gra4Zla: { en: 'Bad trip — streak reset.', pl: 'Zły odlot — seria zerowana.' },
+  gra4Win: { en: 'Three good pills. Steady stomach.', pl: 'Trzy dobre. Mocny żołądek.' },
+
+  // ── Mini-gra 5: Unik przed Fetusem (Fetus Dodge) ──
+  gra5Tytul: { en: 'Fetus Dodge', pl: 'Unik przed Fetusem' },
+  gra5Opis: {
+    en: 'Switch lanes to dodge the homing missiles.',
+    pl: 'Zmieniaj pas i uciekaj przed naprowadzanymi rakietami.',
+  },
+  gra5Licznik: { en: 'Dodged', pl: 'Uniki' },
+  gra5Oberwane: { en: 'Hit! Shake it off.', pl: 'Oberwane! Otrząśnij się.' },
+  gra5Reset: { en: 'Down you go — start again.', pl: 'Padłeś — od nowa.' },
+  gra5Win: { en: 'You outran the fetus.', pl: 'Uciekłeś fetusowi.' },
+
+  // ── Mini-gra 6: Ładowanie Baterii (Battery Charge) ──
+  gra6Tytul: { en: 'Battery Charge', pl: 'Ładowanie Baterii' },
+  gra6Opis: {
+    en: 'Tap fast to charge the battery before the dark takes the room.',
+    pl: 'Stukaj szybko i naładuj baterię, zanim ciemność pochłonie pokój.',
+  },
+  gra6Stukaj: { en: 'TAP', pl: 'STUKAJ' },
+  gra6Ciemnosc: { en: 'The dark is winning — tap!', pl: 'Ciemność wygrywa — stukaj!' },
+  gra6Zgaslo: { en: 'It went dark. Again.', pl: 'Zgasło. Jeszcze raz.' },
+  gra6Win: { en: 'Fully charged. The room holds.', pl: 'Naładowana. Pokój trzyma się światła.' },
+
   // Domknięcie rytuału — chwila przed nagrodą.
   finalNaglowek: { en: 'The three seals align.', pl: 'Trzy pieczęcie stają w jednym rzędzie.' },
   finalOpis: {

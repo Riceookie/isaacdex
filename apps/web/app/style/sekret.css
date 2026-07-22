@@ -1148,10 +1148,399 @@
   z-index: 50;
   filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.6));
 }
+/* Czerwony status „pudło/reset" (wspólny dla mini-gier). */
+.mg-status-zle {
+  color: color-mix(in srgb, #e5544b 82%, #fff);
+}
+
+/* ── Mini-gra 3: Uderz Kreta ── */
+.mg-krety-pasek {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 0.5rem;
+  color: var(--sk-muted);
+}
+.mg-krety-pasek.mg-zawal {
+  color: color-mix(in srgb, #e5544b 82%, #fff);
+  animation: sekret-shake 0.4s ease;
+}
+.mg-krety-czas {
+  font-variant-numeric: tabular-nums;
+}
+.mg-krety-siatka {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  max-width: 300px;
+  margin: 0 auto;
+}
+.mg-dziura {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  overflow: hidden;
+}
+.mg-dziura-tlo {
+  position: absolute;
+  inset: auto 8% 4% 8%;
+  width: 84%;
+  height: auto;
+  image-rendering: pixelated;
+  z-index: 2;
+  opacity: 0.92;
+  filter: drop-shadow(0 0 6px rgba(226, 178, 76, 0.22));
+  pointer-events: none;
+}
+.mg-kret {
+  position: absolute;
+  left: 50%;
+  bottom: 10%;
+  width: 54%;
+  transform: translate(-50%, 120%);
+  image-rendering: pixelated;
+  z-index: 1;
+  transition: transform 0.12s ease-out;
+  pointer-events: none;
+}
+.mg-dziura.kret .mg-kret {
+  transform: translate(-50%, 4%);
+}
+.mg-dziura.ubity .mg-kret {
+  transform: translate(-50%, 40%) scale(0.6);
+  opacity: 0;
+  transition:
+    transform 0.22s ease-in,
+    opacity 0.22s ease-in;
+}
+.mg-splat {
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(206, 42, 42, 0.72), transparent 65%);
+  opacity: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.mg-dziura.ubity .mg-splat {
+  animation: mg-splat 0.32s ease-out;
+}
+@keyframes mg-splat {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.4);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.3);
+  }
+}
+
+/* ── Mini-gra 4: Ruletka Pigułek ── */
+.mg-pigulki.mg-trzask {
+  animation: sekret-shake 0.4s ease;
+}
+.mg-seria {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0.2rem 0 0.9rem;
+}
+.mg-seria-pip {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--q4) 45%, transparent);
+  background: rgba(226, 178, 76, 0.05);
+  transition:
+    background 0.3s,
+    box-shadow 0.3s;
+}
+.mg-seria-pip.pelny {
+  background: color-mix(in srgb, var(--q4) 82%, #fff);
+  box-shadow: 0 0 8px rgba(226, 178, 76, 0.6);
+}
+.mg-pigulki-rzad {
+  display: flex;
+  justify-content: center;
+  gap: 1.6rem;
+  margin-bottom: 0.3rem;
+}
+.mg-pigula {
+  position: relative;
+  padding: 0.6rem 0.5rem 0.4rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+.mg-pigula:hover:not(:disabled) {
+  transform: translateY(-3px) scale(1.05);
+}
+.mg-pigula.przygasla {
+  opacity: 0.32;
+}
+.mg-pigula-cialo {
+  display: flex;
+  width: 66px;
+  height: 30px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  box-shadow:
+    inset 0 2px 3px rgba(255, 255, 255, 0.4),
+    inset 0 -3px 5px rgba(0, 0, 0, 0.4),
+    0 3px 6px rgba(0, 0, 0, 0.5);
+  transition: box-shadow 0.3s;
+}
+.mg-pigula-pol {
+  flex: 1;
+}
+.mg-pigula.dobra .mg-pigula-cialo {
+  box-shadow: 0 0 18px 3px rgba(111, 184, 79, 0.85);
+}
+.mg-pigula.zla .mg-pigula-cialo {
+  box-shadow: 0 0 18px 3px rgba(229, 84, 75, 0.85);
+}
+.mg-pigula.dobra {
+  animation: mg-pill-good 0.5s ease;
+}
+.mg-pigula.zla {
+  animation: sekret-shake 0.4s ease;
+}
+@keyframes mg-pill-good {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.mg-pigula-znak {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.1rem;
+  line-height: 1;
+}
+.mg-pigula.dobra .mg-pigula-znak {
+  color: #8fdc6a;
+  text-shadow: 0 0 8px rgba(111, 184, 79, 0.9);
+}
+.mg-pigula.zla .mg-pigula-znak {
+  color: #ff7a70;
+  text-shadow: 0 0 8px rgba(229, 84, 75, 0.9);
+}
+
+/* ── Mini-gra 5: Unik przed Fetusem ── */
+.mg-fetus-pasek {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 0.5rem;
+  color: var(--sk-muted);
+}
+.mg-fetus-serca {
+  display: inline-flex;
+  gap: 3px;
+}
+.mg-serce {
+  width: 16px;
+  height: 16px;
+  image-rendering: pixelated;
+}
+.mg-serce.puste {
+  filter: grayscale(1) brightness(0.5);
+  opacity: 0.5;
+}
+.mg-fetus-scena {
+  cursor: pointer;
+}
+.mg-fetus-scena.mg-oberwane {
+  animation: sekret-shake 0.3s ease;
+}
+.mg-pas {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  padding: 0;
+  border: none;
+  border-left: 1px solid rgba(226, 178, 76, 0.08);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.mg-pas.grozi {
+  background: linear-gradient(180deg, rgba(229, 84, 75, 0.18), rgba(229, 84, 75, 0.02));
+}
+.mg-rakieta {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  margin-left: -10px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 5px rgba(229, 84, 75, 0.7));
+  transition: left 0.08s linear;
+  pointer-events: none;
+}
+.mg-rakieta.zablok {
+  filter: drop-shadow(0 0 8px rgba(229, 84, 75, 1));
+}
+.mg-isaac {
+  position: absolute;
+  bottom: 4px;
+  width: 34px;
+  height: auto;
+  margin-left: -17px;
+  image-rendering: pixelated;
+  transition: left 0.1s ease;
+  pointer-events: none;
+  filter: drop-shadow(0 0 6px rgba(226, 178, 76, 0.35));
+}
+.mg-fetus-scena.mg-oberwane .mg-isaac {
+  filter: drop-shadow(0 0 9px rgba(229, 84, 75, 1));
+}
+.mg-fetus-sterowanie {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+.mg-strzalka.btn {
+  padding: 0.3rem 1.15rem;
+  font-size: 1rem;
+}
+
+/* ── Mini-gra 6: Ładowanie Baterii ── */
+.mg-bateria-scena {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  border: 1px solid color-mix(in srgb, var(--q4) 25%, transparent);
+  background: radial-gradient(120% 90% at 50% 30%, rgba(226, 178, 76, 0.1), rgba(0, 0, 0, 0.45));
+  cursor: pointer;
+  overflow: hidden;
+  user-select: none;
+  touch-action: manipulation;
+}
+.mg-bateria-mrok {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  pointer-events: none;
+  transition: opacity 0.12s linear;
+}
+.mg-bateria-scena.mg-niski {
+  animation: mg-alarm 1s ease-in-out infinite;
+}
+@keyframes mg-alarm {
+  0%,
+  100% {
+    box-shadow: inset 0 0 0 rgba(229, 84, 75, 0);
+  }
+  50% {
+    box-shadow: inset 0 0 26px rgba(229, 84, 75, 0.5);
+  }
+}
+.mg-akku {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.mg-akku-koncowka {
+  width: 16px;
+  height: 5px;
+  border-radius: 2px 2px 0 0;
+  background: color-mix(in srgb, var(--q4) 60%, #000);
+}
+.mg-akku-obudowa {
+  position: relative;
+  width: 44px;
+  height: 92px;
+  border: 2px solid color-mix(in srgb, var(--q4) 65%, #fff);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+.mg-akku-wypelnienie {
+  width: 100%;
+  transition:
+    height 0.1s linear,
+    background 0.3s;
+}
+.mg-akku-wypelnienie.pelny {
+  background: linear-gradient(180deg, #8fe36a, #5fb84f);
+}
+.mg-akku-wypelnienie.sredni {
+  background: linear-gradient(180deg, #e0d23c, #e0b23c);
+}
+.mg-akku-wypelnienie.pusty {
+  background: linear-gradient(180deg, #e5744b, #d94f4f);
+}
+.mg-akku-blysk {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  animation: mg-blysk 0.18s ease-out;
+}
+@keyframes mg-blysk {
+  0% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.mg-bateria-pct {
+  position: relative;
+  z-index: 1;
+  font-family: var(--dsp);
+  font-size: 1.1rem;
+  color: var(--sk-ink);
+}
+.mg-bateria-tap {
+  position: relative;
+  z-index: 1;
+  font-family: var(--dsp);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--sk-muted);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mg,
   .mg-win,
-  .mg-licznik {
+  .mg-licznik,
+  .mg-krety-pasek.mg-zawal,
+  .mg-dziura.ubity .mg-splat,
+  .mg-pigulki.mg-trzask,
+  .mg-pigula.dobra,
+  .mg-pigula.zla,
+  .mg-fetus-scena.mg-oberwane,
+  .mg-bateria-scena.mg-niski,
+  .mg-akku-blysk {
     animation: none;
   }
 }

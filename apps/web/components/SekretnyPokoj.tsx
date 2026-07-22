@@ -5,8 +5,11 @@ import { useRouter } from 'next/navigation'
 import Sprite from '@/components/Sprite'
 import { useT } from '@/components/JezykProvider'
 import { sprawdzKrok } from '@/app/actions/sekret'
-import KoszenieMonet from '@/components/minigry/KoszenieMonet'
 import WagaChciwosci from '@/components/minigry/WagaChciwosci'
+import UderzKreta from '@/components/minigry/UderzKreta'
+import RuletkaPigulek from '@/components/minigry/RuletkaPigulek'
+import UnikFetus from '@/components/minigry/UnikFetus'
+import LadowanieBaterii from '@/components/minigry/LadowanieBaterii'
 
 /**
  * Wyzwanie Sekretnego Pokoju — rytuał z PIĘCIU kroków:
@@ -19,21 +22,25 @@ import WagaChciwosci from '@/components/minigry/WagaChciwosci'
  *
  * Wymaga JS (to ukryte easter-egg za zbombardowaną ścianą, nie ścieżka krytyczna).
  */
-type Krok =
-  | { typ: 'zagadka'; idx: 0 | 1 | 2 }
-  | { typ: 'gra'; gra: 1 | 2 }
+type GraId = 'waga' | 'krety' | 'pigulki' | 'fetus' | 'bateria'
+type Krok = { typ: 'zagadka'; idx: 0 | 1 | 2 } | { typ: 'gra'; gra: GraId }
 
+// Rytuał: 3 zagadki tekstowe (idx 0/1/2) przeplecione 5 mini-grami; kończy się na zagadce 2,
+// bo to ona (server-side) nadaje nagrodę.
 const SEKWENCJA: Krok[] = [
   { typ: 'zagadka', idx: 0 },
-  { typ: 'gra', gra: 1 },
+  { typ: 'gra', gra: 'waga' },
+  { typ: 'gra', gra: 'krety' },
   { typ: 'zagadka', idx: 1 },
-  { typ: 'gra', gra: 2 },
+  { typ: 'gra', gra: 'pigulki' },
+  { typ: 'gra', gra: 'fetus' },
+  { typ: 'gra', gra: 'bateria' },
   { typ: 'zagadka', idx: 2 },
 ]
 
 type Faza = 'pyt' | 'sprawdzanie' | 'zle' | 'otwarta' | 'final'
 
-/** Mały wektorowy glif wagi do węzła mini-gry 2 na pasku postępu. */
+/** Mały wektorowy glif wagi do węzła „Waga Chciwości" na pasku postępu. */
 function GlifWagi() {
   return (
     <svg viewBox="0 0 24 24" className="sekret-krok-glif" aria-hidden>
@@ -43,6 +50,18 @@ function GlifWagi() {
       </g>
     </svg>
   )
+}
+
+/** Ikona węzła mini-gry na pasku postępu — tematyczny sprite/glif per gra. */
+function IkonaGry({ gra }: { gra: GraId }) {
+  if (gra === 'waga') return <GlifWagi />
+  const src: Record<Exclude<GraId, 'waga'>, string> = {
+    krety: 'przeciwnicy/mole.png',
+    pigulki: 'items/collectibles/momsbottleofpills.png',
+    fetus: 'items/collectibles/epicfetus.png',
+    bateria: 'icons/battery.webp',
+  }
+  return <img className="sekret-krok-ikona" src={`/tboi/${src[gra]}`} alt="" />
 }
 
 export default function SekretnyPokoj() {
@@ -146,12 +165,7 @@ export default function SekretnyPokoj() {
               (i === pozycja && faza === 'otwarta' ? ' zapala-sie' : '')
             }
           >
-            {s.typ === 'gra' &&
-              (s.gra === 1 ? (
-                <img className="sekret-krok-ikona" src="/tboi/icons/coin.webp" alt="" />
-              ) : (
-                <GlifWagi />
-              ))}
+            {s.typ === 'gra' && <IkonaGry gra={s.gra} />}
           </span>
         ))}
       </div>
@@ -193,10 +207,16 @@ export default function SekretnyPokoj() {
             </p>
           )}
         </>
-      ) : krok.gra === 1 ? (
-        <KoszenieMonet key="gra1" onWin={naDalej} />
+      ) : krok.gra === 'waga' ? (
+        <WagaChciwosci key="waga" onWin={naDalej} />
+      ) : krok.gra === 'krety' ? (
+        <UderzKreta key="krety" onWin={naDalej} />
+      ) : krok.gra === 'pigulki' ? (
+        <RuletkaPigulek key="pigulki" onWin={naDalej} />
+      ) : krok.gra === 'fetus' ? (
+        <UnikFetus key="fetus" onWin={naDalej} />
       ) : (
-        <WagaChciwosci key="gra2" onWin={naDalej} />
+        <LadowanieBaterii key="bateria" onWin={naDalej} />
       )}
     </div>
   )
