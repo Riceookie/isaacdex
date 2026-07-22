@@ -5,6 +5,7 @@ import CompanionPicker from '@/components/CompanionPicker'
 import JezykPicker from '@/components/JezykPicker'
 import UsunKonto from '@/components/UsunKonto'
 import RozmazywanieToggle from '@/components/RozmazywanieToggle'
+import IkonaKlatwy from '@/components/IkonaKlatwy'
 import Sprite from '@/components/Sprite'
 import { getProfilSetup } from '@/lib/queries'
 import { czyZalogowany } from '@/lib/konto'
@@ -114,7 +115,7 @@ export default async function UstawieniaPage() {
 
       <div className="note">
         <h2>
-          <Sprite name="cursedeye" size={22} /> {t('ustawienia.blurNaglowek')}
+          <IkonaKlatwy size={22} /> {t('ustawienia.blurNaglowek')}
         </h2>
         <p className="muted small">{t('ustawienia.blurOpis')}</p>
         <div className="settings-row">

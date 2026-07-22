@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react'
  * „Curse of the Blind" dla czatu — zasłanianie przekleństw znakami zapytania.
  *
  * To nie jest twarda moderacja (której się nie da zrobić listą słów), tylko kurtuazyjny filtr
- * jak klątwa z gry: brzydkie słowo zamienia się w „???", więc nikt nie dostaje ścianą wulgaryzmów
- * w twarz. Domyślnie WŁĄCZONY; kto woli surową piwnicę, wyłącza go w Ustawieniach.
+ * jak klątwa z gry: każda litera brzydkiego słowa zamienia się w „?" (więc długość zostaje),
+ * więc nikt nie dostaje ścianą wulgaryzmów w twarz. Domyślnie WŁĄCZONY; kto woli surową
+ * piwnicę, wyłącza go w Ustawieniach.
  *
  * Dopasowujemy RDZENIE z dowolną końcówką (polski odmienia przekleństwa na sto sposobów), więc
  * `jeb\w*` łapie „jebać", „jebany", „zajebiste". Świadomie pomijamy krótkie słowa łatwe o
@@ -57,10 +58,14 @@ const RDZENIE = [
 // względu na wielkość liter. Budowany raz (koszt kompilacji regexu nie idzie na każdą wiadomość).
 const WZORZEC = new RegExp(`\\b(?:${RDZENIE.join('|')})\\p{L}*`, 'giu')
 
-/** Zamienia przekleństwa na „???". Pusty/zwykły tekst wraca bez zmian. */
+/**
+ * Zasłania przekleństwa: każdy znak słowa zamienia się w „?", więc długość zostaje
+ * („fuck" → „????", „kurwa" → „?????") i widać, ile liter zjadła klątwa. Pusty/zwykły
+ * tekst wraca bez zmian.
+ */
 export function blurujTekst(tekst: string): string {
   if (!tekst) return tekst
-  return tekst.replace(WZORZEC, '???')
+  return tekst.replace(WZORZEC, (m) => '?'.repeat(m.length))
 }
 
 // ── Ustawienie (localStorage) — czy blur jest włączony ──────────────────────────────

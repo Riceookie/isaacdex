@@ -11,11 +11,11 @@ import { JEZYKI, NAZWY_JEZYKOW, type Jezyk } from '@/lib/i18n/jezyk'
  * wyglądały spójnie. Ikony z gry zamiast flag: flaga oznacza kraj, nie język (angielski
  * to nie tylko Wielka Brytania), a do tego wypada z pixelartowej konwencji reszty apki.
  *
- * Ikony to itemy „od słowa": Book of Secrets (tom wiedzy) dla angielskiego i Dad's Note
- * (odręczna karteczka) dla polskiego. Wcześniej były tu The Sun / The Moon — ale te same
- * sprite'y oznaczają w apce „jasne / ciemne kartki", więc język mylił się z motywem.
+ * Ikona to Dad's Note (odręczna karteczka „od słowa") dla obu języków. Wcześniej były tu
+ * The Sun / The Moon — ale te same sprite'y oznaczają w apce „jasne / ciemne kartki", więc
+ * język mylił się z motywem.
  */
-const IKONY: Record<Jezyk, SpriteName> = { en: 'book', pl: 'dadsnote' }
+const IKONY: Record<Jezyk, SpriteName> = { en: 'dadsnote', pl: 'dadsnote' }
 
 export default function JezykPicker() {
   const jezyk = useJezyk()

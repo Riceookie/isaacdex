@@ -56,12 +56,12 @@ export const ustawienia = {
   // ── Czat: „Curse of the Blind" (zasłanianie przekleństw) ──
   blurNaglowek: { en: 'Curse of the Blind', pl: 'Curse of the Blind' },
   blurOpis: {
-    en: 'Blur curse words and crude language in chat with “???”. On by default — turn it off for a raw basement.',
-    pl: 'Zasłaniaj przekleństwa i wulgaryzmy na czacie znakami „???”. Domyślnie włączone — wyłącz, jeśli wolisz surową piwnicę.',
+    en: 'Blur curse words and crude language in chat — every letter turns into “?”. On by default — turn it off for a raw basement.',
+    pl: 'Zasłaniaj przekleństwa i wulgaryzmy na czacie — każda litera zamienia się w „?”. Domyślnie włączone — wyłącz, jeśli wolisz surową piwnicę.',
   },
   blurGrupa: { en: 'Word blurring', pl: 'Zasłanianie słów' },
   blurWlaczone: { en: 'Blurred', pl: 'Zasłaniaj' },
-  blurWylaczone: { en: 'Raw', pl: 'Bez cenzury' },
+  blurWylaczone: { en: 'Unblurred', pl: 'Bez cenzury' },
 
   // ── Konto ──
   kontoNaglowek: { en: 'Account', pl: 'Konto' },
