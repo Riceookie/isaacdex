@@ -14,36 +14,48 @@ export async function generateMetadata() {
   return { title: tlumacz()('sekret.tab') }
 }
 
-/** Kilka monet unoszących się w blasku — czysta dekoracja (pozycje/animacje w CSS). */
-function Monety() {
-  return (
-    <div className="sekret-monety" aria-hidden>
-      {Array.from({ length: 7 }).map((_, i) => (
-        <img key={i} className={`sekret-moneta m${i}`} src="/tboi/icons/coin.webp" alt="" />
-      ))}
-    </div>
-  )
-}
-
 /** Drobinki kurzu unoszące się w świetle — miękka atmosfera piwnicy (pozycje/animacje w CSS). */
 function Kurz() {
   return (
     <div className="sekret-kurz" aria-hidden>
-      {Array.from({ length: 12 }).map((_, i) => (
+      {Array.from({ length: 14 }).map((_, i) => (
         <i key={i} className={`sekret-pylek k${i}`} />
       ))}
     </div>
   )
 }
 
-/** Mały stos monet na kontuarze (kilka nakładających się sprite'ów pickupów). */
-function StosMonet({ typy }: { typy: string[] }) {
+/** Iskry — drobne złote punkty wzbijające się z mroku (nie monety: bardziej „energia" niż kasa). */
+function Iskry() {
   return (
-    <span className="sekret-stos" aria-hidden>
-      {typy.map((t, i) => (
-        <img key={i} className={`sekret-stos-m s${i}`} src={`/tboi/pickupy/${t}.png`} alt="" />
+    <div className="sekret-iskry" aria-hidden>
+      {Array.from({ length: 9 }).map((_, i) => (
+        <i key={i} className={`sekret-iskra i${i}`} />
       ))}
-    </span>
+    </div>
+  )
+}
+
+/**
+ * Krąg run wokół postaci — arkaniczna pieczęć: dwa okręgi, pierścień „ticków" i osiem run
+ * Algiz obróconych w mandalę. Jedna runa w `<defs>`, powielona `<use>`. Kolory/obrót/blask w CSS
+ * (`stroke: currentColor` dziedziczy do klonów), a `.odkryty` rozpala krąg na złoto.
+ */
+function KragRun() {
+  return (
+    <div className="sekret-krag" aria-hidden>
+      <svg viewBox="0 0 200 200">
+        <defs>
+          <path id="sk-runa" d="M100 52 L100 30 M100 37 L92 29 M100 37 L108 29" />
+        </defs>
+        <circle cx="100" cy="100" r="90" className="sk-obwod" />
+        <circle cx="100" cy="100" r="76" className="sk-ticki" />
+        <circle cx="100" cy="100" r="46" className="sk-obwod" />
+        {Array.from({ length: 8 }).map((_, i) => (
+          <use key={i} href="#sk-runa" transform={`rotate(${i * 45} 100 100)`} />
+        ))}
+      </svg>
+    </div>
   )
 }
 
@@ -51,19 +63,15 @@ function StosMonet({ typy }: { typy: string[] }) {
  * Sekretny Pokój — ekran za „zbombardowaną ścianą". Wchodzi się przez zataczone wejścia
  * (mały Keeper na górnym pasku, rysa na dole sidebara), a nie z menu. Trzy stany:
  *  - gość        → sekretów nie ma komu nadać, zaproszenie do logowania,
- *  - nieodkryty  → zagadka Keepera (sprawdza server action, patrz components/SekretnyPokoj),
+ *  - nieodkryty  → wyzwanie TRZECH PIECZĘCI (patrz components/SekretnyPokoj; sprawdza serwer),
  *  - odkryty     → ekran nagrody (tytuł „Keeper"), świeżo (?ok=1) z dżinglem „secret found".
  *
- * Scena: Shopkeeper (przeszkoda-sklepikarz z Shopa, nie grywalny Keeper) stoi za kontuarem
- * w blasku monet — stosy bilonu na ladzie, sekretny towar na cokole, drobinki kurzu w świetle
- * i mamrotanie zza lady. Ciemny pokój z migoczącą poświatą i winietą; odkrycie rozświetla go
- * złotem (klasa `odkryty`), a Shopkeeper podnosi wzrok.
+ * Scena: NIE ma już sklepu. Shopkeeper (przeszkoda-sklepikarz z Shopa, nie grywalny Keeper)
+ * wisi w ciemności, otoczony powoli obracającym się kręgiem run, z aurą pod spodem; z mroku
+ * wzbijają się iskry i kurz, a z ciemności dochodzi szept. Odkrycie rozpala krąg i pokój na
+ * złoto (klasa `odkryty`), a Shopkeeper „podnosi wzrok".
  */
-export default async function SekretPage({
-  searchParams,
-}: {
-  searchParams: { ok?: string; blad?: string }
-}) {
+export default async function SekretPage({ searchParams }: { searchParams: { ok?: string } }) {
   const t = tlumacz()
   const ja = await mojGracz()
   const swiezo = searchParams.ok === '1'
@@ -78,13 +86,14 @@ export default async function SekretPage({
       <div className={'sekret-room' + (odkryty ? ' odkryty' : '')}>
         <div className="sekret-poswiata" aria-hidden />
         <div className="sekret-vignette" aria-hidden />
-        <Monety />
+        <Iskry />
         <Kurz />
 
-        {/* Wystawa sklepu: Shopkeeper (przeszkoda-sklepikarz, nie grywalny Keeper) za kontuarem,
-            stosy monet i sekretny towar na cokole. Kontuar zasłania mu nogi — stoi „za ladą". */}
+        {/* Scena: Shopkeeper wiszący w mroku w kręgu run (nie za kontuarem). */}
         <div className="sekret-scena">
-          <div className="sekret-wystawa">
+          <KragRun />
+          <span className="sekret-aura" aria-hidden />
+          <div className="sekret-shopkeeper-wrap">
             <img
               className={'sekret-shopkeeper' + (odkryty ? ' patrzy' : '')}
               src="/tboi/sekret/shopkeeper.png"
@@ -92,22 +101,6 @@ export default async function SekretPage({
               width={28}
               height={34}
             />
-
-            {/* Sekretny towar — nierozpoznawalny przedmiot na cokole z metką „??¢". */}
-            <div className="sekret-oferta" aria-hidden title={t('sekret.ofertaTip')}>
-              <span className="sekret-item">
-                <span className="sekret-item-glow" />
-                <span className="sekret-item-znak">?</span>
-              </span>
-              <img className="sekret-cokol" src="/tboi/ui/pedestal.png" alt="" />
-              <span className="sekret-cena">{t('sekret.cena')}</span>
-            </div>
-
-            {/* Kontuar (rysowany w CSS) — na nim stosy monet, za nim Shopkeeper. */}
-            <div className="sekret-lada" aria-hidden>
-              <StosMonet typy={['penny', 'nickel', 'penny']} />
-              <StosMonet typy={['golden-penny', 'penny']} />
-            </div>
           </div>
         </div>
 
@@ -126,12 +119,13 @@ export default async function SekretPage({
           </div>
         ) : odkryty ? (
           <div className="sekret-panel sekret-sukces">
+            {swiezo && <span className="sekret-sukces-aureola" aria-hidden />}
             <h2>{t(swiezo ? 'sekret.sukcesNaglowek' : 'sekret.powrotNaglowek')}</h2>
             <p className="sekret-lore">{t(swiezo ? 'sekret.sukcesOpis' : 'sekret.powrotOpis')}</p>
 
             <div className="sekret-nagroda">
               <span className="small muted">{t('sekret.nagroda')}</span>
-              <span className="pf-odznaka zloto sekret-tytul">
+              <span className={'pf-odznaka zloto sekret-tytul' + (swiezo ? ' sekret-tytul-in' : '')}>
                 <Sprite name="keeper" size={14} />
                 <span>{t('sekret.nagrodaTytul')}</span>
               </span>
@@ -143,10 +137,10 @@ export default async function SekretPage({
             </Link>
           </div>
         ) : (
-          <SekretnyPokoj blad={searchParams.blad === '1'} />
+          <SekretnyPokoj />
         )}
 
-        {/* Mamrotanie zza kontuaru — trzy szepty przewijają się w tle, jeden po drugim. */}
+        {/* Mamrotanie z ciemności — trzy szepty przewijają się w tle, jeden po drugim. */}
         <div className="sekret-szepty" aria-hidden>
           <span className="sekret-szept sz0">{t('sekret.szept1')}</span>
           <span className="sekret-szept sz1">{t('sekret.szept2')}</span>
