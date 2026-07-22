@@ -63,7 +63,7 @@ function KragRun() {
  * Sekretny Pokój — ekran za „zbombardowaną ścianą". Wchodzi się przez zataczone wejścia
  * (mały Keeper na górnym pasku, rysa na dole sidebara), a nie z menu. Trzy stany:
  *  - gość        → sekretów nie ma komu nadać, zaproszenie do logowania,
- *  - nieodkryty  → wyzwanie TRZECH PIECZĘCI (patrz components/SekretnyPokoj; sprawdza serwer),
+ *  - nieodkryty  → rytuał: 3 zagadki + 2 mini-gry (patrz components/SekretnyPokoj; serwer sprawdza zagadki),
  *  - odkryty     → ekran nagrody (tytuł „Keeper"), świeżo (?ok=1) z dżinglem „secret found".
  *
  * Scena: NIE ma już sklepu. Shopkeeper (przeszkoda-sklepikarz z Shopa, nie grywalny Keeper)

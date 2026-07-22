@@ -5,81 +5,105 @@ import { useRouter } from 'next/navigation'
 import Sprite from '@/components/Sprite'
 import { useT } from '@/components/JezykProvider'
 import { sprawdzKrok } from '@/app/actions/sekret'
+import KoszenieMonet from '@/components/minigry/KoszenieMonet'
+import WagaChciwosci from '@/components/minigry/WagaChciwosci'
 
 /**
- * Wyzwanie Sekretnego Pokoju: TRZY PIECZĘCIE. Każda to zagadka; poprawna odpowiedź rozbija
- * pieczęć (rozbłysk + zapłon runy na pasku postępu) i odsłania następną. Trzecia domyka rytuał
- * — leci finałowy rozbłysk, a potem przechodzimy na ekran nagrody (`/sekret?ok=1`), gdzie
- * Shopkeeper „podnosi wzrok", gra dżingiel i wpada tytuł „Keeper".
+ * Wyzwanie Sekretnego Pokoju — rytuał z PIĘCIU kroków:
+ *   zagadka 1 → mini-gra „Łapanie Monet" → zagadka 2 → mini-gra „Waga Chciwości" → zagadka 3.
+ * Ten komponent jest orkiestratorem: prowadzi przez sekwencję, trzyma pasek postępu i animacje
+ * przejść. Zagadki tekstowe sprawdza WYŁĄCZNIE server action `sprawdzKrok` (odpowiedzi nie ma
+ * w bundlu). Mini-gry to bramki po stronie klienta — wołają `onWin`, gdy się skończą. Ostatnia
+ * zagadka domyka rytuał: leci pełnoekranowy rozbłysk, a potem przejście na ekran nagrody
+ * (`/sekret?ok=1`), gdzie Shopkeeper „podnosi wzrok", gra dżingiel i wpada tytuł „Keeper".
  *
- * Odpowiedzi sprawdza WYŁĄCZNIE server action `sprawdzKrok` — w kliencie ich nie ma, więc
- * sekret zostaje sekretem. Klient trzyma tylko numer kroku i fazę animacji. Wymaga JS (to
- * ukryte easter-egg za zbombardowaną ścianą, nie ścieżka krytyczna) — bez JS pole nic nie robi.
+ * Wymaga JS (to ukryte easter-egg za zbombardowaną ścianą, nie ścieżka krytyczna).
  */
+type Krok =
+  | { typ: 'zagadka'; idx: 0 | 1 | 2 }
+  | { typ: 'gra'; gra: 1 | 2 }
+
+const SEKWENCJA: Krok[] = [
+  { typ: 'zagadka', idx: 0 },
+  { typ: 'gra', gra: 1 },
+  { typ: 'zagadka', idx: 1 },
+  { typ: 'gra', gra: 2 },
+  { typ: 'zagadka', idx: 2 },
+]
+
 type Faza = 'pyt' | 'sprawdzanie' | 'zle' | 'otwarta' | 'final'
 
-const ILE_PIECZECI = 3
+/** Mały wektorowy glif wagi do węzła mini-gry 2 na pasku postępu. */
+function GlifWagi() {
+  return (
+    <svg viewBox="0 0 24 24" className="sekret-krok-glif" aria-hidden>
+      <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+        <path d="M12 4v15M6 19h12M5 8h14" />
+        <path d="M5 8l-2.5 5h5zM19 8l-2.5 5h5z" strokeLinejoin="round" />
+      </g>
+    </svg>
+  )
+}
 
 export default function SekretnyPokoj() {
   const t = useT()
   const router = useRouter()
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const [krok, setKrok] = useState(0) // 0..2 — która pieczęć jest teraz
-  const [rozbite, setRozbite] = useState(0) // ile już pękło (do paska run)
+  const [pozycja, setPozycja] = useState(0) // 0..4 — który krok sekwencji
   const [faza, setFaza] = useState<Faza>('pyt')
 
+  const krok = SEKWENCJA[pozycja]
   const zajete = faza === 'sprawdzanie' || faza === 'otwarta' || faza === 'final'
+
+  // Mini-gra skończona → następny krok (zwykle zagadka), pole startuje puste i z autofocusem.
+  function naDalej() {
+    setPozycja((p) => p + 1)
+    setFaza('pyt')
+  }
 
   async function nasluchaj(e: React.FormEvent) {
     e.preventDefault()
-    if (zajete) return
+    if (zajete || krok.typ !== 'zagadka') return
     const val = inputRef.current?.value.trim() ?? ''
     if (!val) return
 
     setFaza('sprawdzanie')
     let res: { ok: boolean; koniec?: boolean }
     try {
-      res = await sprawdzKrok(krok, val)
+      res = await sprawdzKrok(krok.idx, val)
     } catch {
       res = { ok: false }
     }
 
     if (!res.ok) {
-      // Zła odpowiedź → panel drży, wraca podpowiedź; pole zostaje, żeby dało się poprawić.
       setFaza('zle')
       inputRef.current?.focus()
       inputRef.current?.select()
       return
     }
-
     if (res.koniec) {
-      // Ostatnia pieczęć: zapal ostatnią runę, odpal finałowy rozbłysk, potem ekran nagrody.
-      setRozbite(ILE_PIECZECI)
       setFaza('final')
       window.setTimeout(() => router.push('/sekret?ok=1'), 2600)
       return
     }
-
-    // Pieczęć pękła: zapal runę, pokaż rozbłysk, po chwili odsłoń następną zagadkę.
-    setRozbite(krok + 1)
+    // Zagadka pękła: rozbłysk, po chwili odsłoń następny krok.
     setFaza('otwarta')
     window.setTimeout(() => {
-      setKrok((k) => k + 1)
+      setPozycja((p) => p + 1)
       if (inputRef.current) inputRef.current.value = ''
       setFaza('pyt')
-      inputRef.current?.focus()
-    }, 1150)
+    }, 1000)
   }
 
-  // Finał: krótki rytuał zamiast formularza (przejdziemy na ekran nagrody).
+  // Finał: krótki rytuał zamiast panelu (przejdziemy na ekran nagrody).
   if (faza === 'final') {
     return (
       <div className="sekret-panel sekret-final" role="status">
         <span className="sekret-final-blysk" aria-hidden />
-        <div className="sekret-pieczecie sekret-pieczecie-final" aria-hidden>
-          {Array.from({ length: ILE_PIECZECI }).map((_, i) => (
-            <span key={i} className="sekret-pieczec zapalona" />
+        <div className="sekret-kroki sekret-kroki-final" aria-hidden>
+          {SEKWENCJA.map((_, i) => (
+            <span key={i} className="sekret-krok-pkt zapalona" />
           ))}
         </div>
         <h2 className="sekret-final-naglowek">{t('sekret.finalNaglowek')}</h2>
@@ -88,70 +112,91 @@ export default function SekretnyPokoj() {
     )
   }
 
-  const etapy = ['sekret.pieczec1', 'sekret.pieczec2', 'sekret.pieczec3'] as const
   const zagadki = ['sekret.zagadka1', 'sekret.zagadka2', 'sekret.zagadka3'] as const
   const bledy = ['sekret.blad1', 'sekret.blad2', 'sekret.blad3'] as const
+  const jestGra = krok.typ === 'gra'
 
   return (
-    <div className={'sekret-panel sekret-zagadka' + (faza === 'zle' ? ' zle' : '')}>
-      <p className="sekret-lore">{t('sekret.lore')}</p>
+    <div
+      className={
+        'sekret-panel ' +
+        (jestGra ? 'sekret-panel-gra' : 'sekret-zagadka') +
+        (faza === 'zle' ? ' zle' : '')
+      }
+    >
+      {pozycja === 0 && <p className="sekret-lore">{t('sekret.lore')}</p>}
 
       <p className="sekret-mowi small muted">{t('sekret.wyzwanieNaglowek')}</p>
+      {pozycja === 0 && <p className="sekret-podtytul small muted">{t('sekret.wyzwaniePodtytul')}</p>}
 
-      {/* Pasek pieczęci: trzy runy, zapalają się w miarę rozbijania. */}
+      {/* Pasek postępu: 3 runy (zagadki) + 2 węzły mini-gier (moneta, waga). */}
       <div
-        className="sekret-pieczecie"
+        className="sekret-kroki"
         role="img"
-        aria-label={`${t('sekret.postepAria')}: ${rozbite} / ${ILE_PIECZECI}`}
+        aria-label={`${t('sekret.postepAria')}: ${pozycja} / ${SEKWENCJA.length}`}
       >
-        {Array.from({ length: ILE_PIECZECI }).map((_, i) => (
+        {SEKWENCJA.map((s, i) => (
           <span
             key={i}
             className={
-              'sekret-pieczec' +
-              (i < rozbite ? ' zapalona' : '') +
-              (i === krok && faza !== 'otwarta' ? ' aktywna' : '') +
-              (i === krok && faza === 'otwarta' ? ' zapala-sie' : '')
+              'sekret-krok-pkt ' +
+              (s.typ === 'gra' ? 'gra' : 'runa') +
+              (i < pozycja ? ' zapalona' : '') +
+              (i === pozycja && faza !== 'otwarta' ? ' aktywna' : '') +
+              (i === pozycja && faza === 'otwarta' ? ' zapala-sie' : '')
             }
-          />
+          >
+            {s.typ === 'gra' &&
+              (s.gra === 1 ? (
+                <img className="sekret-krok-ikona" src="/tboi/icons/coin.webp" alt="" />
+              ) : (
+                <GlifWagi />
+              ))}
+          </span>
         ))}
       </div>
 
-      {/* Zagadka bieżącej pieczęci — crossfade przy zmianie kroku (key wymusza remount). */}
-      <p className="sekret-etap small muted">{t(etapy[krok])}</p>
-      <blockquote key={krok} className="sekret-riddle sekret-riddle-in">
-        „{t(zagadki[krok])}"
-      </blockquote>
+      {krok.typ === 'zagadka' ? (
+        <>
+          <blockquote key={pozycja} className="sekret-riddle sekret-riddle-in">
+            „{t(zagadki[krok.idx])}"
+          </blockquote>
 
-      <form onSubmit={nasluchaj} className="sekret-form">
-        <span className="sekret-form-podpis small muted">{t('sekret.polePodpis')}</span>
-        <div className="sekret-form-rzad">
-          <input
-            ref={inputRef}
-            name="odpowiedz"
-            className="input sekret-szept-pole"
-            placeholder={t('sekret.polePlaceholder')}
-            autoFocus
-            autoComplete="off"
-            maxLength={40}
-            required
-            disabled={zajete}
-          />
-          <button className="btn sekret-szept-btn" type="submit" disabled={zajete}>
-            <Sprite name="shopkeeper" size={16} /> {t('sekret.przycisk')}
-          </button>
-        </div>
-      </form>
+          <form onSubmit={nasluchaj} className="sekret-form">
+            <span className="sekret-form-podpis small muted">{t('sekret.polePodpis')}</span>
+            <div className="sekret-form-rzad">
+              <input
+                ref={inputRef}
+                name="odpowiedz"
+                className="input sekret-szept-pole"
+                placeholder={t('sekret.polePlaceholder')}
+                autoFocus
+                autoComplete="off"
+                maxLength={40}
+                required
+                disabled={zajete}
+              />
+              <button className="btn sekret-szept-btn" type="submit" disabled={zajete}>
+                <Sprite name="shopkeeper" size={16} /> {t('sekret.przycisk')}
+              </button>
+            </div>
+          </form>
 
-      {faza === 'zle' && (
-        <p className="sekret-zle small" role="status">
-          {t(bledy[krok])}
-        </p>
-      )}
-      {faza === 'otwarta' && (
-        <p className="sekret-otwarta small" role="status">
-          {t('sekret.krokOtwarty')}
-        </p>
+          {faza === 'zle' && (
+            <p className="sekret-zle small" role="status">
+              {t(bledy[krok.idx])}
+            </p>
+          )}
+          {faza === 'otwarta' && (
+            <p className="sekret-otwarta small" role="status">
+              {t('sekret.krokOtwarty')}
+            </p>
+          )}
+        </>
+      ) : krok.gra === 1 ? (
+        <KoszenieMonet key="gra1" onWin={naDalej} />
+      ) : (
+        <WagaChciwosci key="gra2" onWin={naDalej} />
       )}
     </div>
   )

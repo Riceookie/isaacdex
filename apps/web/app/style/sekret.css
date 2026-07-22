@@ -9,7 +9,14 @@
   padding: 1.5rem 0;
 }
 .sekret-room {
+  /* Pokój jest ZAWSZE ciemny (jak secret room z gry), niezależnie od motywu apki. Dlatego
+     tekst używa własnej, jasnej palety (`--sk-*`), a nie `--text`/`--muted` (które w light
+     mode są ciemne → byłyby nieczytelne na czarnym tle). Złoto `--q4` jest wspólne dla obu. */
+  --sk-ink: #e7ddc8;
+  --sk-muted: #a99f8a;
+  --sk-gold: var(--q4, #e2b24c);
   position: relative;
+  color: var(--sk-ink);
   width: min(560px, 100%);
   text-align: center;
   padding: 2.4rem 1.6rem 1.6rem;
@@ -434,10 +441,24 @@
   max-width: 440px;
   margin: 0 auto;
 }
+/* Panel z mini-grą jest nieco szerszy — sceny gier potrzebują miejsca. */
+.sekret-panel-gra {
+  max-width: 480px;
+  margin: 0 auto;
+}
+/* Wyciszony tekst w pokoju bierze jasną paletę pokoju (nie globalny `--muted`), żeby był
+   czytelny na ciemnym tle także w light mode. Wysoka swoistość bije globalne `.small.muted`. */
+.sekret-room .muted,
+.sekret-room .small.muted {
+  color: var(--sk-muted);
+}
 .sekret-lore {
   font-style: italic;
   line-height: 1.6;
-  color: color-mix(in srgb, var(--text) 78%, transparent);
+  color: color-mix(in srgb, var(--sk-ink) 82%, transparent);
+}
+.sekret-podtytul {
+  margin: 0.15rem 0 0.2rem;
 }
 .sekret-mowi {
   margin: 1rem 0 0.3rem;
@@ -468,81 +489,107 @@
     filter: blur(0);
   }
 }
-.sekret-etap {
-  margin: 0 0 0.3rem;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  font-size: 0.62rem;
-}
-
-/* Pasek trzech pieczęci-run: rombowe znaki, które zapalają się w miarę rozwiązywania. */
-.sekret-pieczecie {
+/* Pasek postępu rytuału: 5 węzłów — 3 runy (zagadki) + 2 kółka z ikoną (mini-gry: moneta,
+   waga). Zapalają się w miarę przechodzenia; bieżący pulsuje, świeżo rozbity błyska. */
+.sekret-kroki {
   display: flex;
   justify-content: center;
-  gap: 0.9rem;
-  margin: 0.9rem 0;
+  align-items: center;
+  gap: 0.85rem;
+  margin: 0.9rem 0 1rem;
 }
-.sekret-pieczec {
-  width: 12px;
-  height: 12px;
-  transform: rotate(45deg);
+.sekret-krok-pkt {
+  position: relative;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
   border: 1px solid color-mix(in srgb, var(--q4) 40%, transparent);
   background: rgba(226, 178, 76, 0.05);
-  border-radius: 2px;
+  color: color-mix(in srgb, var(--q4) 55%, transparent);
+  display: grid;
+  place-items: center;
   transition:
     background 0.3s ease,
     box-shadow 0.3s ease,
-    border-color 0.3s ease;
+    border-color 0.3s ease,
+    color 0.3s ease;
 }
-/* Bieżąca pieczęć — cicho pulsuje, czeka na odpowiedź. */
-.sekret-pieczec.aktywna {
-  border-color: color-mix(in srgb, var(--q4) 70%, transparent);
-  animation: sekret-pieczec-czuwa 2s ease-in-out infinite;
+/* Węzeł mini-gry — trochę większe kółko, mieści ikonę (moneta / waga). */
+.sekret-krok-pkt.gra {
+  width: 22px;
+  height: 22px;
 }
-@keyframes sekret-pieczec-czuwa {
+.sekret-krok-ikona {
+  width: 13px;
+  height: 13px;
+  image-rendering: pixelated;
+  opacity: 0.7;
+}
+.sekret-krok-glif {
+  width: 15px;
+  height: 15px;
+  opacity: 0.8;
+}
+/* Bieżący węzeł — cicho pulsuje, czeka. */
+.sekret-krok-pkt.aktywna {
+  border-color: color-mix(in srgb, var(--q4) 75%, transparent);
+  color: color-mix(in srgb, var(--q4) 85%, #fff);
+  animation: sekret-pkt-czuwa 2s ease-in-out infinite;
+}
+.sekret-krok-pkt.aktywna .sekret-krok-ikona,
+.sekret-krok-pkt.aktywna .sekret-krok-glif {
+  opacity: 1;
+}
+@keyframes sekret-pkt-czuwa {
   0%,
   100% {
     box-shadow: 0 0 0 rgba(226, 178, 76, 0);
   }
   50% {
-    box-shadow: 0 0 8px rgba(226, 178, 76, 0.4);
+    box-shadow: 0 0 9px rgba(226, 178, 76, 0.45);
   }
 }
-/* Zapalona (rozbita) pieczęć — pełne złoto z poświatą. */
-.sekret-pieczec.zapalona {
-  background: color-mix(in srgb, var(--q4) 85%, #fff);
+/* Zaliczony węzeł — pełne złoto z poświatą, ikona ciemnieje dla kontrastu. */
+.sekret-krok-pkt.zapalona {
+  background: color-mix(in srgb, var(--q4) 80%, #fff);
   border-color: color-mix(in srgb, var(--q4) 90%, #fff);
+  color: #1a140c;
   box-shadow: 0 0 10px rgba(226, 178, 76, 0.7);
 }
-/* Chwila zapłonu — rozbłysk w momencie rozbicia. */
-.sekret-pieczec.zapala-sie {
+.sekret-krok-pkt.zapalona .sekret-krok-ikona,
+.sekret-krok-pkt.zapalona .sekret-krok-glif {
+  opacity: 1;
+}
+/* Chwila zapłonu — rozbłysk w momencie zaliczenia kroku. */
+.sekret-krok-pkt.zapala-sie {
   background: #fff;
   border-color: #fff;
-  animation: sekret-pieczec-zaplon 1s ease-out;
+  color: #1a140c;
+  animation: sekret-pkt-zaplon 1s ease-out;
 }
-@keyframes sekret-pieczec-zaplon {
+@keyframes sekret-pkt-zaplon {
   0% {
     box-shadow: 0 0 0 rgba(255, 255, 255, 0);
-    transform: rotate(45deg) scale(1);
+    transform: scale(1);
   }
   35% {
     box-shadow: 0 0 22px 6px rgba(255, 240, 200, 0.95);
-    transform: rotate(45deg) scale(1.5);
+    transform: scale(1.5);
   }
   100% {
     box-shadow: 0 0 10px rgba(226, 178, 76, 0.7);
-    transform: rotate(45deg) scale(1);
+    transform: scale(1);
   }
 }
 
-/* Potwierdzenie rozbicia pojedynczej pieczęci. */
+/* Potwierdzenie zaliczenia kroku. */
 .sekret-otwarta {
   margin-top: 0.7rem;
   color: color-mix(in srgb, var(--q4) 78%, #fff);
   animation: sekret-riddle-in 0.4s ease-out both;
 }
 
-/* ── Finał: rytuał domknięcia trzech pieczęci (przed przejściem na ekran nagrody) ── */
+/* ── Finał: rytuał domknięcia (przed przejściem na ekran nagrody) ── */
 .sekret-final {
   position: relative;
   animation: sekret-riddle-in 0.5s ease-out both;
@@ -554,8 +601,8 @@
   color: color-mix(in srgb, var(--q4) 80%, #fff);
   text-shadow: 0 0 12px rgba(226, 178, 76, 0.6);
 }
-.sekret-pieczecie-final .sekret-pieczec {
-  animation: sekret-pieczec-czuwa 1.1s ease-in-out infinite;
+.sekret-kroki-final .sekret-krok-pkt {
+  animation: sekret-pkt-czuwa 1.1s ease-in-out infinite;
 }
 /* Pełnoekranowy rozbłysk w chwili domknięcia — biel gaśnie w złoto. */
 .sekret-final-blysk {
@@ -797,6 +844,316 @@
 .sekret-wroc {
   display: inline-block;
   margin-top: 1.3rem;
+}
+
+/* ═══ Mini-gry (wewnątrz panelu, dziedziczą jasną paletę pokoju `--sk-*`) ═══ */
+.mg {
+  margin-top: 0.4rem;
+  animation: sekret-riddle-in 0.5s ease-out both;
+}
+.mg-opis {
+  margin: 0 0 0.6rem;
+  color: var(--sk-muted);
+}
+
+/* ── Mini-gra 1: Łapanie Monet ── */
+.mg-scena {
+  position: relative;
+  width: 100%;
+  border-radius: 5px;
+  background:
+    radial-gradient(120% 70% at 50% 0%, rgba(226, 178, 76, 0.08), transparent 70%),
+    rgba(0, 0, 0, 0.4);
+  border: 1px solid color-mix(in srgb, var(--q4) 22%, transparent);
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  touch-action: none; /* przesuwanie łapacza palcem nie ma scrollować strony */
+  cursor: none;
+}
+.mg-scena:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--q4) 70%, transparent);
+  outline-offset: 2px;
+}
+.mg-moneta {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  margin-left: -9px; /* left = środek monety */
+  image-rendering: pixelated;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
+  pointer-events: none;
+}
+.mg-lapacz {
+  position: absolute;
+  bottom: 4px;
+  width: 40px;
+  height: auto;
+  margin-left: -20px; /* left = środek łapacza */
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 8px rgba(226, 178, 76, 0.45));
+  pointer-events: none;
+  transition: left 0.04s linear;
+}
+/* Stos złapanych monet w rogu — rośnie z każdym łapnięciem. */
+.mg-stos {
+  position: absolute;
+  left: 8px;
+  bottom: 6px;
+  width: 16px;
+  height: 60px;
+  pointer-events: none;
+}
+.mg-stos-m {
+  position: absolute;
+  left: 0;
+  width: 14px;
+  height: 5px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--q4) 82%, #fff);
+  box-shadow: 0 0 4px rgba(226, 178, 76, 0.6);
+}
+.mg-licznik {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-family: var(--dsp);
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  color: var(--sk-ink);
+  background: rgba(0, 0, 0, 0.45);
+  padding: 2px 6px;
+  border-radius: 3px;
+  animation: mg-licznik-pop 0.18s ease;
+  pointer-events: none;
+}
+@keyframes mg-licznik-pop {
+  0% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.mg-win {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--dsp);
+  letter-spacing: 0.06em;
+  color: color-mix(in srgb, var(--q4) 82%, #fff);
+  text-shadow: 0 0 12px rgba(226, 178, 76, 0.7);
+  background: radial-gradient(circle at 50% 50%, rgba(226, 178, 76, 0.2), transparent 65%);
+  animation: sekret-riddle-in 0.4s ease-out both;
+}
+.mg-scena.mg-wygrana {
+  border-color: color-mix(in srgb, var(--q4) 60%, transparent);
+  box-shadow:
+    inset 0 0 30px rgba(0, 0, 0, 0.6),
+    0 0 18px rgba(226, 178, 76, 0.4);
+}
+
+/* ── Mini-gra 2: Waga Chciwości ── */
+.mg-waga-scena {
+  position: relative;
+  height: 168px;
+  margin: 0.3rem 0 0.2rem;
+}
+/* Słupek wagi (pionowa oś) + podstawa. */
+.mg-waga-slup {
+  position: absolute;
+  left: 50%;
+  top: 14px;
+  width: 4px;
+  height: 120px;
+  margin-left: -2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--q4) 55%, #000), #2a2118);
+}
+.mg-waga-slup::after {
+  content: '';
+  position: absolute;
+  left: -20px;
+  bottom: -4px;
+  width: 44px;
+  height: 6px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--q4) 45%, #000);
+}
+/* Belka — przechyla się zależnie od różnicy (rotate zadaje JS). */
+.mg-belka {
+  position: absolute;
+  left: 50%;
+  top: 18px;
+  width: 78%;
+  height: 5px;
+  margin-left: -39%;
+  border-radius: 3px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--q4) 75%, #fff), var(--q4));
+  box-shadow: 0 0 8px rgba(226, 178, 76, 0.4);
+  transform-origin: 50% 50%;
+  transition: transform 0.35s cubic-bezier(0.3, 0.9, 0.4, 1);
+}
+.mg-cieciwa {
+  position: absolute;
+  top: 3px;
+  width: 1px;
+  height: 22px;
+  background: color-mix(in srgb, var(--q4) 50%, transparent);
+}
+.mg-cieciwa.lewa {
+  left: 4%;
+}
+.mg-cieciwa.prawa {
+  right: 4%;
+}
+/* Szale — talerz + metka; JS przesuwa je w pionie (translateY) wg przechyłu. */
+.mg-szala {
+  position: absolute;
+  top: 44px;
+  width: 108px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: transform 0.35s cubic-bezier(0.3, 0.9, 0.4, 1);
+}
+.mg-szala.lewa {
+  left: 6%;
+}
+.mg-szala.prawa {
+  right: 6%;
+}
+.mg-szala-talerz {
+  position: relative;
+  width: 96px;
+  height: 46px;
+  border-radius: 0 0 48px 48px / 0 0 30px 30px;
+  background: linear-gradient(180deg, rgba(226, 178, 76, 0.16), rgba(0, 0, 0, 0.4));
+  border: 1px solid color-mix(in srgb, var(--q4) 40%, transparent);
+  border-top-width: 2px;
+  box-shadow: inset 0 -6px 10px rgba(0, 0, 0, 0.5);
+}
+.mg-drop.mg-szala-talerz {
+  overflow: hidden;
+}
+.mg-szala.mg-drop-akt .mg-szala-talerz {
+  border-color: color-mix(in srgb, var(--q4) 80%, #fff);
+  box-shadow:
+    inset 0 -6px 10px rgba(0, 0, 0, 0.5),
+    0 0 12px rgba(226, 178, 76, 0.5);
+}
+.mg-towar {
+  position: absolute;
+  left: 50%;
+  top: 4px;
+  width: 26px;
+  height: auto;
+  transform: translateX(-50%);
+  image-rendering: pixelated;
+}
+.mg-moneta-pol {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  image-rendering: pixelated;
+  cursor: pointer;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.6));
+}
+.mg-metka {
+  font-family: var(--dsp);
+  font-size: 0.64rem;
+  letter-spacing: 0.03em;
+  color: var(--sk-ink);
+  background: rgba(0, 0, 0, 0.4);
+  padding: 1px 6px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.mg-status {
+  margin: 0.2rem 0 0.5rem;
+  min-height: 1.1em;
+  color: var(--sk-muted);
+}
+.mg-status-win {
+  color: color-mix(in srgb, var(--q4) 82%, #fff);
+  text-shadow: 0 0 10px rgba(226, 178, 76, 0.6);
+}
+/* Taca monet do przeciągania. */
+.mg-taca {
+  display: flex;
+  justify-content: center;
+  gap: 0.7rem;
+}
+.mg-chip {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 6px;
+  border: 1px solid color-mix(in srgb, var(--q4) 35%, transparent);
+  background: rgba(226, 178, 76, 0.08);
+  cursor: grab;
+  touch-action: none;
+  transition:
+    transform 0.1s ease,
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+.mg-chip:hover:not(:disabled) {
+  background: rgba(226, 178, 76, 0.16);
+  border-color: color-mix(in srgb, var(--q4) 65%, transparent);
+  transform: translateY(-1px);
+}
+.mg-chip:active:not(:disabled) {
+  cursor: grabbing;
+}
+.mg-chip:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.mg-chip img {
+  width: 22px;
+  height: 22px;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+.mg-chip-liczba {
+  position: absolute;
+  right: -4px;
+  bottom: -5px;
+  font-family: var(--dsp);
+  font-size: 0.56rem;
+  color: #1a140c;
+  background: color-mix(in srgb, var(--q4) 82%, #fff);
+  border-radius: 8px;
+  padding: 0 4px;
+  line-height: 1.4;
+}
+.mg-cofnij {
+  margin: 0.5rem 0 0;
+  color: var(--sk-muted);
+  opacity: 0.7;
+}
+/* Podgląd monety lecącej za wskaźnikiem podczas przeciągania. */
+.mg-drag-podglad {
+  position: fixed;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  image-rendering: pixelated;
+  pointer-events: none;
+  z-index: 50;
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.6));
+}
+@media (prefers-reduced-motion: reduce) {
+  .mg,
+  .mg-win,
+  .mg-licznik {
+    animation: none;
+  }
 }
 
 /* ── Wejście 1: Keeper wystający z górnej krawędzi topbara ── */

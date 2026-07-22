@@ -2,12 +2,13 @@ import type { Przestrzen } from '../typy'
 
 /**
  * Sekretny Pokój — ukryty ekran w klimacie „secret room" z gry (te za zbombardowaną ścianą).
- * Wejście jest zataczone (mały Keeper na górnym pasku, rysa na dole sidebara). W środku NIE ma
- * już sklepu — jest ciemny, arkaniczny pokój, w którym w mroku wisi Shopkeeper (przeszkoda-
- * sklepikarz z Shopa, nie grywalny Keeper), otoczony kręgiem run. Sekret otwiera się na TRZY
- * PIECZĘCIE: trzy zagadki, które krok po kroku odsłaniają, czym jest ta postać (moneta →
- * sklep → prawdziwe imię „Keeper"). Rozwiązanie ostatniej nadaje tytuł „Keeper". Nazwy własne
- * (Keeper, Shopkeeper, Secret Room) zostają po angielsku — to żargon z gry — reszta tłumaczona.
+ * Wejście jest zataczone (mały Keeper na górnym pasku, rysa na dole sidebara). W środku jest
+ * ciemny, arkaniczny pokój, w którym w mroku wisi Shopkeeper (przeszkoda-sklepikarz z Shopa,
+ * nie grywalny Keeper), otoczony kręgiem run. Sekret otwiera rytuał z PIĘCIU kroków:
+ *   zagadka 1 → mini-gra „Łapanie Monet" → zagadka 2 → mini-gra „Waga Chciwości" → zagadka 3.
+ * Trzy zagadki tekstowe (monety → chciwość → Keeper) sprawdza serwer; rozwiązanie ostatniej
+ * nadaje tytuł „Keeper". Nazwy własne (Keeper, Shopkeeper, Greed, Secret Room) zostają po
+ * angielsku — to żargon z gry — reszta jest tłumaczona.
  */
 export const sekret = {
   tab: { en: '???', pl: '???' },
@@ -20,7 +21,7 @@ export const sekret = {
     pl: 'Dziura w ścianie — wejdź do środka',
   },
 
-  // Lore — szept w ciemności, zanim padną pieczęcie.
+  // Lore — szept w ciemności, zanim zacznie się rytuał.
   lore: {
     en: 'The wall gives way to a room that should not fit here. A pale figure hangs in the coin-cold dark, ringed by marks that burn without fire. It has been counting since before you were born — and it knows you came.',
     pl: 'Ściana ustępuje, odsłaniając pokój, który nie powinien się tu zmieścić. Blada postać wisi w zimnym jak monety mroku, otoczona znakami, które płoną bez ognia. Liczy od czasów sprzed twoich narodzin — i wie, że przyszedłeś.',
@@ -31,51 +32,71 @@ export const sekret = {
   szept2: { en: '…the wall remembers…', pl: '…ściana pamięta…' },
   szept3: { en: '…you were not the first…', pl: '…nie byłeś pierwszy…' },
 
-  // ── Wyzwanie: trzy pieczęcie ──
-  wyzwanieNaglowek: { en: 'Three seals guard the name.', pl: 'Trzy pieczęcie strzegą imienia.' },
+  // ── Rytuał: trzy zagadki, dwie próby ──
+  wyzwanieNaglowek: { en: 'Three seals, two trials.', pl: 'Trzy pieczęcie, dwie próby.' },
   wyzwaniePodtytul: {
-    en: 'Answer each to break the next.',
-    pl: 'Odpowiedz na każdą, by pękła następna.',
+    en: 'Answer, catch and weigh your way to the name.',
+    pl: 'Odpowiadaj, łap i waż, aż dojdziesz do imienia.',
   },
-  pieczec1: { en: 'First Seal', pl: 'Pierwsza Pieczęć' },
-  pieczec2: { en: 'Second Seal', pl: 'Druga Pieczęć' },
-  pieczec3: { en: 'Third Seal', pl: 'Trzecia Pieczęć' },
 
   zagadka1: {
-    en: 'Counted a thousand times, spent not once. Copper runs in my veins; gold sits where a heart should be. Name the thing I am made of.',
-    pl: 'Liczony tysiąc razy, wydany ani razu. Miedź płynie w moich żyłach, złoto tkwi tam, gdzie serce. Nazwij to, z czego jestem.',
+    en: 'When the shopkeeper bleeds, this is what falls — copper for pennies, never for free. Catch it before the floor drinks it. Name what rains down.',
+    pl: 'Gdy sklepikarz krwawi, to właśnie spada — miedź za grosze i nigdy za darmo. Złap to, zanim wypije je podłoga. Nazwij to, co pada z góry.',
   },
   zagadka2: {
-    en: 'I stand in a locked room the desperate pay to enter. Bomb my wall and I turn against you. Name the place I keep.',
-    pl: 'Stoję w zamkniętym pokoju, do którego zdesperowani płacą za wstęp. Zbombarduj mój mur, a obrócę się przeciw tobie. Nazwij miejsce, którego strzegę.',
+    en: 'A machine in the deep weighs your want against your worth and swallows the greedy whole. Name the sin it runs on.',
+    pl: 'Maszyna w głębi waży twoje żądze przeciw twojej kieszeni i połyka chciwych w całości. Nazwij grzech, na którym chodzi.',
   },
   zagadka3: {
-    en: 'Strip the shopkeeper away and something older answers. It wears a crown of pennies and never sleeps. Whisper its true name.',
-    pl: 'Zdejmij sklepikarza, a odpowie coś starszego. Nosi koronę z groszy i nigdy nie śpi. Wyszepcz jego prawdziwe imię.',
+    en: 'Coin-blooded, shop-bound, older than the counter it hides behind. When the wall falls, it wakes. Whisper its name.',
+    pl: 'Krew z monet, przykuty do sklepu, starszy niż kontuar, za którym się chowa. Gdy pada ściana — budzi się. Wyszepcz jego imię.',
   },
 
-  // Podpowiedzi po złej odpowiedzi (per pieczęć) — kierują, nie zdradzają.
+  // Podpowiedzi po złej odpowiedzi (per zagadka) — kierują, nie zdradzają.
   blad1: {
     en: 'The mark holds. Think of what fills both its veins and its ledger.',
     pl: 'Znak trzyma. Pomyśl o tym, co wypełnia i jego żyły, i jego rachunki.',
   },
   blad2: {
-    en: 'The mark holds. Where does it wait for the ones who need it most?',
-    pl: 'Znak trzyma. Gdzie czeka na tych, którzy potrzebują go najbardziej?',
+    en: 'The mark holds. It is the sin of wanting more than you can pay for.',
+    pl: 'Znak trzyma. To grzech pragnienia więcej, niż stać cię zapłacić.',
   },
   blad3: {
     en: 'The mark holds. When the wall falls, the shopkeeper is gone — and this stands in its place.',
     pl: 'Znak trzyma. Gdy pada ściana, sklepikarza już nie ma — a to staje na jego miejscu.',
   },
 
-  // Po rozbiciu pojedynczej pieczęci.
+  // Po rozbiciu pojedynczego kroku.
   krokOtwarty: { en: 'The seal flares and breaks.', pl: 'Pieczęć rozbłyska i pęka.' },
 
-  // Domknięcie wszystkich trzech — chwila przed nagrodą.
-  finalNaglowek: {
-    en: 'The three seals align.',
-    pl: 'Trzy pieczęcie stają w jednym rzędzie.',
+  // ── Mini-gra 1: Łapanie Monet ──
+  gra1Tytul: { en: 'Coin Catching', pl: 'Łapanie Monet' },
+  gra1Opis: {
+    en: 'Slide the shopkeeper to catch the falling coins.',
+    pl: 'Przesuwaj sklepikarza i łap spadające monety.',
   },
+  gra1Cel: { en: 'Caught', pl: 'Złapane' },
+  gra1Win: { en: 'The coins are yours.', pl: 'Monety są twoje.' },
+
+  // ── Mini-gra 2: Waga Chciwości ──
+  gra2Tytul: { en: "Greed's Scale", pl: 'Waga Chciwości' },
+  gra2Opis: {
+    en: 'Drag coins onto the pan until they balance the price.',
+    pl: 'Przeciągaj monety na szalę, aż zrównoważą cenę.',
+  },
+  gra2Cena: { en: 'Price', pl: 'Cena' },
+  gra2Twoje: { en: 'Paid', pl: 'Wpłacone' },
+  gra2Malo: { en: 'Too light — add more.', pl: 'Za lekko — dołóż.' },
+  gra2Duzo: { en: 'Too greedy — take some back.', pl: 'Za chciwie — zabierz trochę.' },
+  gra2Rowno: { en: 'Balanced.', pl: 'Równo.' },
+  gra2Win: { en: 'The scale rests. Greed is satisfied.', pl: 'Waga spoczywa. Chciwość nasycona.' },
+  gra2Cofnij: {
+    en: '(tap a coin on the pan to take it back)',
+    pl: '(dotknij monety na szali, by ją zabrać)',
+  },
+
+  // Domknięcie rytuału — chwila przed nagrodą.
+  finalNaglowek: { en: 'The three seals align.', pl: 'Trzy pieczęcie stają w jednym rzędzie.' },
   finalOpis: {
     en: 'The dark peels back. Something wakes.',
     pl: 'Ciemność się cofa. Coś się budzi.',
@@ -85,8 +106,8 @@ export const sekret = {
   przycisk: { en: 'Whisper', pl: 'Wyszepcz' },
   // Podpis nad polem — żeby szept czuł się jak gest, nie jak zwykły formularz.
   polePodpis: { en: 'Speak into the dark', pl: 'Powiedz to w ciemność' },
-  // Etykieta paska pieczęci dla czytników ekranu.
-  postepAria: { en: 'Seals broken', pl: 'Rozbite pieczęcie' },
+  // Etykieta paska postępu dla czytników ekranu.
+  postepAria: { en: 'Ritual progress', pl: 'Postęp rytuału' },
 
   // Po zdobyciu (świeżo, ?ok=1).
   sukcesNaglowek: { en: 'It looks up.', pl: 'Podnosi wzrok.' },
