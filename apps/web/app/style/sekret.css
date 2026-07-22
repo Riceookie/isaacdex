@@ -305,16 +305,23 @@
 }
 
 /* ── Wejście 2: rysa w ścianie na samym dole sidebara ──
-   Wyraźniejsza niż na początku (testerzy jej nie znajdowali): widoczna szczelina z ciepłym
-   światełkiem sączącym się ze środka i leniwym pulsem, żeby dało się ją zauważyć — ale nadal
-   bez podpisu, jak sekret w grze. */
+   Trzeba ją najpierw ROZBIĆ (SekretneWejscie.tsx): klik pęka rysę w dziurę, sypie pył
+   i kamienie, leci dżingiel; dopiero klik w dziurę wchodzi do sekretu.
+   To teraz <button>, więc kasujemy domyślny wygląd przycisku. */
 .side-secret {
   margin-top: auto; /* zjeżdża na dół kolumny */
+  position: relative; /* kotwica dla spadającego pyłu */
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 30px;
-  opacity: 0.85;
+  height: 34px;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  opacity: 0.9;
+  overflow: visible; /* okruchy sypią się poza obrys przycisku */
   transition:
     opacity 0.2s ease,
     transform 0.15s ease;
@@ -324,38 +331,113 @@
   opacity: 1;
   transform: scale(1.06);
 }
+
+/* Rysa: jagged pęknięcie (inline SVG w komponencie) w kolorze PRZECIWNYM do motywu, żeby
+   odcinało się od ściany. Kolor stroke bierze `--crack-fill`, przełączany z motywem niżej.
+   Ciepła poświata (blask Sekretnego Pokoju zza ściany) pulsuje niezależnie od koloru rysy. */
 .side-secret-crack {
+  --crack-fill: #efe3ca; /* dark mode → jasna rysa */
   display: block;
-  width: 60%;
-  height: 22px;
-  border-radius: 2px;
-  /* Szczelina: ciemna rysa z ciepłym światłem w środku (blask Sekretnego Pokoju zza ściany). */
-  background:
-    linear-gradient(90deg, transparent 44%, rgba(226, 178, 76, 0.55) 50%, transparent 56%),
-    linear-gradient(
-      100deg,
-      transparent 40%,
-      rgba(0, 0, 0, 0.8) 47%,
-      rgba(0, 0, 0, 0.8) 53%,
-      transparent 60%
-    );
-  box-shadow: 0 0 10px rgba(226, 178, 76, 0.3);
+  width: 62%;
+  height: 20px;
+  filter: drop-shadow(0 0 4px rgba(226, 178, 76, 0.35));
   animation: side-secret-puls 3s ease-in-out infinite;
 }
+.side-secret-crack svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* Kolor pęknięcia — CSS (nie atrybut SVG), więc var() działa i przełącza się z motywem. */
+  stroke: var(--crack-fill);
+}
+/* Light mode → ciemna rysa (przeciwna do jasnego tła strony). */
+[data-theme='light'] .side-secret-crack {
+  --crack-fill: #131110;
+}
 .side-secret:hover .side-secret-crack {
-  box-shadow: 0 0 14px rgba(226, 178, 76, 0.6);
+  filter: drop-shadow(0 0 7px rgba(226, 178, 76, 0.7));
 }
 @keyframes side-secret-puls {
   0%,
   100% {
-    box-shadow: 0 0 8px rgba(226, 178, 76, 0.22);
+    filter: drop-shadow(0 0 3px rgba(226, 178, 76, 0.25));
   }
   50% {
-    box-shadow: 0 0 13px rgba(226, 178, 76, 0.5);
+    filter: drop-shadow(0 0 6px rgba(226, 178, 76, 0.55));
   }
 }
+
+/* Dziura w ścianie po rozbiciu — sprite z gry, ostre piksele, wskakuje z lekkim „bum". */
+.side-secret-hole {
+  display: block;
+  width: 44px;
+  height: 37px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 8px rgba(226, 178, 76, 0.5));
+  animation: side-secret-hole-in 0.32s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+.side-secret.rozbite {
+  opacity: 1;
+}
+@keyframes side-secret-hole-in {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Pył i kamienie sypiące się z rozbitej ściany — każdy okruch leci raz w dół z rozrzutem. */
+.side-secret-pyl {
+  position: absolute;
+  top: 40%;
+  left: 0;
+  width: 100%;
+  height: 0;
+  pointer-events: none;
+}
+.side-secret-pyl .okruch {
+  position: absolute;
+  top: 0;
+  width: var(--sz);
+  height: var(--sz);
+  border-radius: 50%;
+  background: #c8b79a; /* drobny jasny pył */
+  animation: side-secret-spad 0.9s ease-in var(--dl) forwards;
+}
+.side-secret-pyl .okruch.kamien {
+  border-radius: 1px; /* kamyk — kanciasty, ciemniejszy */
+  background: #6d6157;
+  box-shadow: inset -1px -1px 0 rgba(0, 0, 0, 0.35);
+}
+@keyframes side-secret-spad {
+  0% {
+    transform: translate(0, -3px) rotate(0);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), 30px) rotate(var(--rot));
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .side-secret-crack {
+  .side-secret-crack,
+  .side-secret-hole {
     animation: none;
+  }
+  /* Bez sypiącego pyłu przy zredukowanym ruchu — dziura po prostu się pojawia. */
+  .side-secret-pyl {
+    display: none;
   }
 }

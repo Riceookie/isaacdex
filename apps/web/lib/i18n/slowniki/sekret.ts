@@ -12,6 +12,10 @@ export const sekret = {
 
   // Wejście przez małego Keepera na pasku / rysę w sidebarze.
   wejscieTip: { en: 'There is a crack in the wall…', pl: 'W ścianie jest rysa…' },
+  wejscieOtwarte: {
+    en: 'A hole in the wall — step through',
+    pl: 'Dziura w ścianie — wejdź do środka',
+  },
 
   // Lore — szept w ciemności, zanim padnie zagadka.
   lore: {

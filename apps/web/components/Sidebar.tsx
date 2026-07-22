@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Sprite from '@/components/Sprite'
 import SideNav from '@/components/SideNav'
+import SekretneWejscie from '@/components/SekretneWejscie'
 import { useT } from '@/components/JezykProvider'
 
 /**
@@ -69,16 +70,9 @@ export default function Sidebar() {
         <SideNav onNawigacja={zamknij} />
 
         {/* Drugie, jeszcze cichsze wejście do sekretu: rysa w ścianie na samym dole panelu.
-            Bez etykiety, ledwie widoczna — trzeba ją zauważyć, dokładnie jak w grze. */}
-        <Link
-          href="/sekret"
-          className="side-secret"
-          onClick={zamknij}
-          aria-label={t('sekret.wejscieTip')}
-          title={t('sekret.wejscieTip')}
-        >
-          <span className="side-secret-crack" aria-hidden />
-        </Link>
+            Bez etykiety, ledwie widoczna — trzeba ją zauważyć, dokładnie jak w grze. Klik
+            ją ROZBIJA (dziura + pył + dżingiel); dopiero klik w dziurę wchodzi do sekretu. */}
+        <SekretneWejscie onWejdz={zamknij} />
       </aside>
     </>
   )
