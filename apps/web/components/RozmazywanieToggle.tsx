@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import Sprite from '@/components/Sprite'
-import IkonaKlatwy from '@/components/IkonaKlatwy'
 import { useT } from '@/components/JezykProvider'
 import { czytajBlur, ustawBlur } from '@/lib/blur'
 
@@ -29,7 +28,7 @@ export default function RozmazywanieToggle() {
         onClick={() => wybierz(true)}
         aria-pressed={on}
       >
-        <IkonaKlatwy size={26} /> {t('ustawienia.blurWlaczone')}
+        <Sprite name="curseblind" size={26} /> {t('ustawienia.blurWlaczone')}
       </button>
       <button
         className={'theme-opt' + (!on ? ' on' : '')}

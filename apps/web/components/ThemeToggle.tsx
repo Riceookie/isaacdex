@@ -43,9 +43,9 @@ export default function ThemeToggle() {
         onClick={() => wybierz('tainted')}
         aria-pressed={cards === 'tainted'}
       >
-        {/* Dogma (splugawiona, mroczna) zamiast zwykłego księżyca — „Curse of Darkness"
-            dla ciemnego (tainted) skinu, spójnie z klimatem gry. */}
-        <Sprite name="dogma" size={26} /> {t('ustawienia.kartkiTainted')}
+        {/* Curse of Darkness dla ciemnego (tainted) skinu — mroczna klątwa pasuje do
+            „ciemnych stron", spójnie z klimatem gry. */}
+        <Sprite name="cursedarkness" size={26} /> {t('ustawienia.kartkiTainted')}
       </button>
     </div>
   )

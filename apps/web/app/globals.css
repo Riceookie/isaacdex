@@ -9775,18 +9775,3 @@ body::after {
 .cz-naklejki-siatka {
   max-height: min(244px, 38vh);
 }
-
-/* Ikona „Curse of the Blind" (zasłanianie słów) jest motyw-zależna: jasny (normalny) skin
-   pokazuje Curse of the Blind, ciemny (tainted) — Curse of Darkness, bo to „mroczna" odsłona
-   apki. Renderujemy oba sprite'y i chowamy jeden CSS-em po `data-cards`, więc ikona działa
-   też w komponencie serwerowym (bez czytania localStorage). Reguły stoją NIŻEJ niż `.sprite`
-   (display:inline-block), więc przy równej specyficzności wygrywają kolejnością. */
-.klatwa-ciemna {
-  display: none;
-}
-[data-cards='tainted'] .klatwa-jasna {
-  display: none;
-}
-[data-cards='tainted'] .klatwa-ciemna {
-  display: inline-block;
-}
