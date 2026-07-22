@@ -8,21 +8,22 @@ import { useT } from '@/components/JezykProvider'
 /**
  * Ukryte wejście do Sekretnego Pokoju — rysa w ścianie na dole sidebara.
  *
- * Jak w grze: najpierw trzeba ją ROZBIĆ. Pierwsze kliknięcie NIE przenosi na stronę —
- * rysa pęka w dziurę w ścianie, sypie się pył i kamienie, a z głośnika leci dżingiel
- * „secret room" (holy!). Dopiero kliknięcie w DZIURĘ otwiera Sekretny Pokój. Dzięki temu
- * odkrycie jest małym zdarzeniem, a nie zwykłym linkiem.
+ * Jak w grze: najpierw trzeba ją ROZBIĆ. Pierwsze kliknięcie NIE przenosi na stronę — rysa
+ * pęka w dziurę, ściana wybucha chmurą pyłu i kamieni, a z głośnika leci ROZBICIE ŚCIANY
+ * (rock crumble) plus dżingiel „secret room found". Dopiero kliknięcie w DZIURĘ otwiera
+ * Sekretny Pokój. Dzięki temu odkrycie jest małym zdarzeniem, a nie zwykłym linkiem.
  *
  * Kolor rysy jest przeciwny do motywu (jasny na ciemnym, ciemny na jasnym), żeby dało się
  * ją w ogóle zauważyć — CSS przełącza `--crack-fill` po `data-theme` (patrz sekret.css).
  */
 
-// Ile okruchów sypie się z dziury i jak daleko lecą — losujemy raz, przy rozbiciu.
-const ILE_OKRUCHOW = 12
+// Ile okruchów wybucha z dziury. Więcej = gęstszy wybuch; każdy leci własnym łukiem.
+const ILE_OKRUCHOW = 30
 
 type Okruch = {
-  left: number
-  dx: number
+  left: number // start w okolicy dziury
+  bx: number // wektor wybuchu w bok (px)
+  by: number // szczyt łuku w pionie (ujemny = w górę)
   delay: number
   size: number
   rot: number
@@ -30,14 +31,21 @@ type Okruch = {
 }
 
 function wylosujOkruchy(): Okruch[] {
-  return Array.from({ length: ILE_OKRUCHOW }, () => ({
-    left: 20 + Math.random() * 60, // startuje w okolicy dziury (środek szczeliny)
-    dx: (Math.random() - 0.5) * 44, // rozrzut na boki
-    delay: Math.random() * 0.18,
-    size: 2 + Math.round(Math.random() * 4),
-    rot: (Math.random() - 0.5) * 320,
-    kamien: Math.random() > 0.45, // część to kamyki (większe, ciemniejsze), część drobny pył
-  }))
+  return Array.from({ length: ILE_OKRUCHOW }, () => {
+    // Kierunek wybuchu z okolicy środka: pełny okrąg, ale z przewagą na boki i w górę
+    // (potem grawitacja i tak ściąga wszystko w dół — patrz keyframe side-secret-spad).
+    const kat = Math.random() * Math.PI * 2
+    const zasieg = 10 + Math.random() * 34
+    return {
+      left: 38 + Math.random() * 24,
+      bx: Math.cos(kat) * zasieg,
+      by: Math.sin(kat) * zasieg * 0.7 - 6, // lekko podbite w górę
+      delay: Math.random() * 0.12,
+      size: 2 + Math.round(Math.random() * 5),
+      rot: (Math.random() - 0.5) * 420,
+      kamien: Math.random() > 0.4, // część to kamyki (większe/ciemne), reszta drobny pył
+    }
+  })
 }
 
 export default function SekretneWejscie({ onWejdz }: { onWejdz?: () => void }) {
@@ -45,22 +53,25 @@ export default function SekretneWejscie({ onWejdz }: { onWejdz?: () => void }) {
   const router = useRouter()
   const [rozbite, setRozbite] = useState(false)
   const [okruchy, setOkruchy] = useState<Okruch[]>([])
-  const audio = useRef<HTMLAudioElement | null>(null)
 
-  const rozbij = () => {
-    setRozbite(true)
-    setOkruchy(wylosujOkruchy())
-    // Dżingiel „secret room found" (ten sam co w grze przy odkryciu pokoju). Klik to gest
-    // użytkownika, więc autoplay przejdzie; gdyby przeglądarka odmówiła — po cichu odpuszczamy.
+  // Dwa dźwięki naraz: rozbicie ściany (rock crumble) + dżingiel „secret room found".
+  // Klik to gest użytkownika, więc autoplay przejdzie; gdyby przeglądarka odmówiła —
+  // po cichu odpuszczamy (sekret nie może się wywalić przez brak dźwięku).
+  const zagraj = (src: string, glosnosc: number) => {
     try {
-      const a = audio.current ?? new Audio('/tboi/sfx/secret-found.ogg')
-      audio.current = a
-      a.volume = 0.55
-      a.currentTime = 0
+      const a = new Audio(src)
+      a.volume = glosnosc
       void a.play().catch(() => {})
     } catch {
       /* brak Audio (SSR/edge) — trudno, lecimy dalej bez dźwięku */
     }
+  }
+
+  const rozbij = () => {
+    setRozbite(true)
+    setOkruchy(wylosujOkruchy())
+    zagraj('/tboi/sfx/wall-break.wav', 0.6) // ściana pęka
+    zagraj('/tboi/sfx/secret-found.ogg', 0.5) // …i sekret znaleziony
   }
 
   const wejdz = () => {
@@ -104,9 +115,12 @@ export default function SekretneWejscie({ onWejdz }: { onWejdz?: () => void }) {
         </span>
       )}
 
-      {/* Pył i kamienie sypią się raz, przy rozbiciu — pozycje i rozrzut wylosowane. */}
+      {/* Wybuch przy rozbiciu: fala uderzeniowa + chmura pyłu + lecące kamienie. Odpala
+          się raz — wszystkie pozycje i wektory wylosowane w `wylosujOkruchy`. */}
       {rozbite && okruchy.length > 0 && (
-        <span className="side-secret-pyl" aria-hidden>
+        <span className="side-secret-wybuch" aria-hidden>
+          <span className="side-secret-fala" />
+          <span className="side-secret-chmura" />
           {okruchy.map((o, i) => (
             <i
               key={i}
@@ -114,7 +128,8 @@ export default function SekretneWejscie({ onWejdz }: { onWejdz?: () => void }) {
               style={
                 {
                   left: `${o.left}%`,
-                  '--dx': `${o.dx}px`,
+                  '--bx': `${o.bx}px`,
+                  '--by': `${o.by}px`,
                   '--dl': `${o.delay}s`,
                   '--sz': `${o.size}px`,
                   '--rot': `${o.rot}deg`,

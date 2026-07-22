@@ -399,39 +399,99 @@
   }
 }
 
-/* Pył i kamienie sypiące się z rozbitej ściany — każdy okruch leci raz w dół z rozrzutem. */
-.side-secret-pyl {
+/* Wybuch rozbitej ściany: fala + chmura pyłu + kamienie. Kotwiczony na środku dziury. */
+.side-secret-wybuch {
   position: absolute;
-  top: 40%;
-  left: 0;
-  width: 100%;
+  top: 50%;
+  left: 50%;
+  width: 0;
   height: 0;
   pointer-events: none;
 }
-.side-secret-pyl .okruch {
+
+/* Fala uderzeniowa — krąg, który raz rozszerza się i gaśnie w chwili rozbicia. */
+.side-secret-fala {
   position: absolute;
   top: 0;
+  left: 0;
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  border: 2px solid rgba(226, 178, 76, 0.85);
+  border-radius: 50%;
+  opacity: 0;
+  animation: side-secret-fala 0.5s ease-out forwards;
+}
+@keyframes side-secret-fala {
+  0% {
+    transform: scale(0.2);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+/* Chmura pyłu — miękki brązowy obłok buchający z dziury i rozwiewający się. */
+.side-secret-chmura {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 30px;
+  margin: -15px 0 0 -20px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(150, 130, 100, 0.55), rgba(150, 130, 100, 0) 70%);
+  opacity: 0;
+  animation: side-secret-chmura 0.75s ease-out forwards;
+}
+@keyframes side-secret-chmura {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.7) translateY(6px);
+    opacity: 0;
+  }
+}
+
+/* Kamienie/pył — każdy wybucha w bok (łuk), potem grawitacja ściąga go w dół. */
+.side-secret-wybuch .okruch {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: var(--sz);
   height: var(--sz);
   border-radius: 50%;
   background: #c8b79a; /* drobny jasny pył */
-  animation: side-secret-spad 0.9s ease-in var(--dl) forwards;
+  animation: side-secret-spad 1s cubic-bezier(0.25, 0.6, 0.4, 1) var(--dl) forwards;
 }
-.side-secret-pyl .okruch.kamien {
+.side-secret-wybuch .okruch.kamien {
   border-radius: 1px; /* kamyk — kanciasty, ciemniejszy */
   background: #6d6157;
-  box-shadow: inset -1px -1px 0 rgba(0, 0, 0, 0.35);
+  box-shadow: inset -1px -1px 0 rgba(0, 0, 0, 0.4);
 }
 @keyframes side-secret-spad {
   0% {
-    transform: translate(0, -3px) rotate(0);
+    transform: translate(0, 0) rotate(0);
     opacity: 0;
   }
-  12% {
+  10% {
     opacity: 1;
   }
+  /* Szczyt łuku — okruch wystrzelony w bok i lekko w górę. */
+  40% {
+    transform: translate(calc(var(--bx) * 0.7), var(--by)) rotate(calc(var(--rot) * 0.5));
+    opacity: 1;
+  }
+  /* …a potem spada pod dziurę i gaśnie. */
   100% {
-    transform: translate(var(--dx), 30px) rotate(var(--rot));
+    transform: translate(var(--bx), calc(var(--by) + 40px)) rotate(var(--rot));
     opacity: 0;
   }
 }
@@ -441,8 +501,8 @@
   .side-secret-hole {
     animation: none;
   }
-  /* Bez sypiącego pyłu przy zredukowanym ruchu — dziura po prostu się pojawia. */
-  .side-secret-pyl {
+  /* Bez wybuchu przy zredukowanym ruchu — dziura po prostu się pojawia. */
+  .side-secret-wybuch {
     display: none;
   }
 }
