@@ -18,18 +18,21 @@ export default function SekretnyPokoj({ blad }: { blad: boolean }) {
       <blockquote className="sekret-riddle">„{t('sekret.zagadka')}"</blockquote>
 
       <form action={sprawdzSekret} className="sekret-form">
-        <input
-          name="odpowiedz"
-          className="input"
-          placeholder={t('sekret.polePlaceholder')}
-          autoFocus
-          autoComplete="off"
-          maxLength={40}
-          required
-        />
-        <button className="btn" type="submit">
-          <Sprite name="keeper" size={16} /> {t('sekret.przycisk')}
-        </button>
+        <span className="sekret-form-podpis small muted">{t('sekret.polePodpis')}</span>
+        <div className="sekret-form-rzad">
+          <input
+            name="odpowiedz"
+            className="input sekret-szept-pole"
+            placeholder={t('sekret.polePlaceholder')}
+            autoFocus
+            autoComplete="off"
+            maxLength={40}
+            required
+          />
+          <button className="btn sekret-szept-btn" type="submit">
+            <Sprite name="shopkeeper" size={16} /> {t('sekret.przycisk')}
+          </button>
+        </div>
       </form>
 
       {blad && (

@@ -53,54 +53,321 @@
   }
 }
 
-/* Scena: pełnowymiarowy, siedzący Keeper (jak sklepikarz z gry) z delikatnym „oddechem". */
+/* Winieta — ciężki mrok przy krawędziach pokoju, lekko „migający" jak świeca. */
+.sekret-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 40px 8px rgba(0, 0, 0, 0.7),
+    inset 0 0 120px 30px rgba(0, 0, 0, 0.55);
+  animation: sekret-flicker 5.5s ease-in-out infinite;
+}
+@keyframes sekret-flicker {
+  0%,
+  100% {
+    opacity: 0.9;
+  }
+  32% {
+    opacity: 1;
+  }
+  36% {
+    opacity: 0.82;
+  }
+  60% {
+    opacity: 0.96;
+  }
+  63% {
+    opacity: 0.86;
+  }
+}
+
+/* Drobinki kurzu unoszące się w świetle — powolny dryf w bok i w górę, ledwie widoczne. */
+.sekret-kurz {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.sekret-pylek {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: rgba(226, 210, 170, 0.5);
+  opacity: 0;
+  animation: sekret-dryf 11s linear infinite;
+}
+@keyframes sekret-dryf {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.5;
+  }
+  85% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translate(14px, -150px);
+    opacity: 0;
+  }
+}
+.sekret-pylek.k0 {
+  left: 8%;
+  bottom: 12%;
+  animation-delay: 0s;
+}
+.sekret-pylek.k1 {
+  left: 18%;
+  bottom: 4%;
+  animation-delay: 2.4s;
+}
+.sekret-pylek.k2 {
+  left: 27%;
+  bottom: 20%;
+  animation-delay: 5.1s;
+  width: 3px;
+  height: 3px;
+}
+.sekret-pylek.k3 {
+  left: 36%;
+  bottom: 8%;
+  animation-delay: 1.2s;
+}
+.sekret-pylek.k4 {
+  left: 45%;
+  bottom: 16%;
+  animation-delay: 7.3s;
+}
+.sekret-pylek.k5 {
+  left: 54%;
+  bottom: 6%;
+  animation-delay: 3.7s;
+}
+.sekret-pylek.k6 {
+  left: 62%;
+  bottom: 18%;
+  animation-delay: 9.0s;
+  width: 3px;
+  height: 3px;
+}
+.sekret-pylek.k7 {
+  left: 71%;
+  bottom: 10%;
+  animation-delay: 0.8s;
+}
+.sekret-pylek.k8 {
+  left: 79%;
+  bottom: 22%;
+  animation-delay: 6.0s;
+}
+.sekret-pylek.k9 {
+  left: 87%;
+  bottom: 5%;
+  animation-delay: 4.3s;
+}
+.sekret-pylek.k10 {
+  left: 92%;
+  bottom: 15%;
+  animation-delay: 8.2s;
+}
+.sekret-pylek.k11 {
+  left: 14%;
+  bottom: 24%;
+  animation-delay: 10.1s;
+}
+
+/* Scena: wystawa sklepu — Shopkeeper za kontuarem, stosy monet na ladzie, sekretny towar
+   na cokole. Wszystko kotwiczone w `.sekret-wystawa` (relative), kontuar na dole. */
 .sekret-scena {
   position: relative;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
   margin-top: 0.5rem;
 }
-.sekret-keeper-full {
-  width: clamp(120px, 34%, 168px);
+.sekret-wystawa {
+  position: relative;
+  width: min(360px, 92%);
+  height: 160px;
+}
+
+/* Shopkeeper (przeszkoda-sklepikarz) — mały sprite z gry, mocno powiększony, ostre piksele.
+   Stoi wyśrodkowany, nogami ZA kontuarem (bottom pod górną krawędzią lady). „Oddycha". */
+.sekret-shopkeeper {
+  position: absolute;
+  left: 50%;
+  bottom: 30px;
+  width: 76px;
   height: auto;
-  image-rendering: pixelated;
-  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 16px rgba(226, 178, 76, 0.28));
+  transform: translateX(-50%);
   transform-origin: bottom center;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 14px rgba(226, 178, 76, 0.28));
   animation: sekret-oddech 3.6s ease-in-out infinite;
+  z-index: 1;
 }
 /* Po odkryciu „podnosi wzrok" — krótkie drgnięcie w górę i mocniejsza aureola. */
-.sekret-keeper-full.patrzy {
+.sekret-shopkeeper.patrzy {
   animation:
     sekret-oddech 3.6s ease-in-out infinite,
     sekret-patrzy 0.6s ease-out;
-  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 22px rgba(226, 178, 76, 0.55));
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 22px rgba(226, 178, 76, 0.6));
 }
 @keyframes sekret-oddech {
   0%,
   100% {
-    transform: translateY(0) scaleY(1);
+    transform: translateX(-50%) translateY(0) scaleY(1);
   }
   50% {
-    transform: translateY(-2px) scaleY(1.015);
+    transform: translateX(-50%) translateY(-2px) scaleY(1.02);
   }
 }
 @keyframes sekret-patrzy {
   0% {
-    transform: translateY(10px) scale(0.96);
+    transform: translateX(-50%) translateY(10px) scale(0.96);
     opacity: 0.4;
   }
   100% {
-    transform: translateY(0) scale(1);
+    transform: translateX(-50%) translateY(0) scale(1);
     opacity: 1;
   }
 }
-.sekret-cien {
-  width: 88px;
-  height: 12px;
-  margin-top: -6px;
+
+/* Kontuar — drewniana lada przez całą szerokość wystawy, PRZED nogami Shopkeepera. */
+.sekret-lada {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 42px;
+  border-radius: 3px 3px 2px 2px;
+  background:
+    linear-gradient(180deg, #4a3a26 0 6px, #33271a 6px 100%);
+  border-top: 1px solid rgba(226, 178, 76, 0.35);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 226, 170, 0.12),
+    inset 0 -8px 14px rgba(0, 0, 0, 0.55),
+    0 4px 10px rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+.sekret-room.odkryty .sekret-lada {
+  border-top-color: rgba(226, 178, 76, 0.6);
+}
+
+/* Stosy bilonu na górnej krawędzi lady — kilka nakładających się pickupów. */
+.sekret-stos {
+  position: absolute;
+  bottom: 30px;
+  width: 22px;
+  height: 16px;
+}
+.sekret-stos:nth-of-type(1) {
+  left: 7%;
+}
+.sekret-stos:nth-of-type(2) {
+  left: 22%;
+}
+.sekret-stos-m {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.6));
+}
+.sekret-stos-m.s0 {
+  left: 0;
+  bottom: 0;
+}
+.sekret-stos-m.s1 {
+  left: 5px;
+  bottom: 5px;
+}
+.sekret-stos-m.s2 {
+  left: 1px;
+  bottom: 10px;
+}
+
+/* Sekretny towar na cokole (prawa strona lady): nierozpoznawalny przedmiot pod „?" z metką. */
+.sekret-oferta {
+  position: absolute;
+  right: 7%;
+  bottom: 40px;
+  width: 40px;
+  height: 52px;
+  z-index: 3;
+}
+.sekret-cokol {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 30px;
+  height: auto;
+  transform: translateX(-50%);
+  image-rendering: pixelated;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6));
+}
+.sekret-item {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  width: 26px;
+  height: 26px;
+  transform: translateX(-50%);
+  animation: sekret-lewit 3s ease-in-out infinite;
+}
+.sekret-item-glow {
+  position: absolute;
+  inset: -6px;
   border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.65), transparent 70%);
+  background: radial-gradient(circle, rgba(226, 178, 76, 0.5), transparent 68%);
+  animation: sekret-item-puls 2.4s ease-in-out infinite;
+}
+.sekret-item-znak {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--dsp);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--q4) 78%, #fff);
+  text-shadow: 0 0 8px rgba(226, 178, 76, 0.7);
+}
+@keyframes sekret-lewit {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-4px);
+  }
+}
+@keyframes sekret-item-puls {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+/* Metka z ceną „??¢" wisząca przy cokole. */
+.sekret-cena {
+  position: absolute;
+  right: -6px;
+  bottom: 4px;
+  padding: 1px 5px;
+  font-family: var(--dsp);
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  color: #1a140c;
+  background: color-mix(in srgb, var(--q4) 82%, #fff);
+  border-radius: 2px;
+  transform: rotate(-8deg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 /* Unoszące się monety — czysta dekoracja, pozycje/opóźnienia na sztywno (bez losowości). */
@@ -168,13 +435,30 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .sekret-poswiata,
-  .sekret-keeper-full,
-  .sekret-keeper-full.patrzy,
-  .sekret-moneta {
+  .sekret-vignette,
+  .sekret-shopkeeper,
+  .sekret-shopkeeper.patrzy,
+  .sekret-moneta,
+  .sekret-pylek,
+  .sekret-item,
+  .sekret-item-glow,
+  .sekret-szept-btn,
+  .sekret-szept {
     animation: none;
   }
   .sekret-moneta {
     opacity: 0.5;
+  }
+  .sekret-pylek {
+    opacity: 0.35;
+  }
+  /* Bez cyklu — pokaż tylko pierwszy szept, żeby nie migotały wszystkie naraz. */
+  .sekret-szept.sz1,
+  .sekret-szept.sz2 {
+    display: none;
+  }
+  .sekret-szept.sz0 {
+    opacity: 0.24;
   }
 }
 
@@ -217,15 +501,125 @@
   line-height: 1.55;
   text-align: left;
 }
+/* „Szept w ciemność" — pole i przycisk mają być bardziej rytuałem niż formularzem. */
 .sekret-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+.sekret-form-podpis {
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.62rem;
+  opacity: 0.6;
+}
+.sekret-form-rzad {
   display: flex;
   gap: 0.5rem;
   justify-content: center;
   flex-wrap: wrap;
 }
-.sekret-form .input {
+/* Pole na szept — ciemne, prawie niewidoczne, tylko cienka złota linia u dołu, która budzi
+   się przy fokusie. Tekst wpisywany kursywą, jakby wypowiadany półgłosem. */
+.sekret-form .sekret-szept-pole {
   max-width: 220px;
   text-align: center;
+  font-style: italic;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--q4) 60%, #fff);
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid transparent;
+  border-bottom-color: rgba(226, 178, 76, 0.35);
+  border-radius: 3px;
+  caret-color: var(--q4);
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.6);
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.sekret-form .sekret-szept-pole::placeholder {
+  color: color-mix(in srgb, var(--q4) 34%, transparent);
+  font-style: italic;
+}
+.sekret-form .sekret-szept-pole:focus {
+  outline: none;
+  border-color: rgba(226, 178, 76, 0.55);
+  box-shadow:
+    inset 0 0 12px rgba(0, 0, 0, 0.6),
+    0 0 12px rgba(226, 178, 76, 0.35);
+}
+/* Przycisk „Whisper" — widmowy, złota obwódka pulsuje jak blask spod ściany. */
+.sekret-form .sekret-szept-btn {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.72rem;
+  color: color-mix(in srgb, var(--q4) 72%, #fff);
+  background: rgba(226, 178, 76, 0.08);
+  border: 1px solid rgba(226, 178, 76, 0.4);
+  animation: sekret-szept-puls 3.2s ease-in-out infinite;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.12s ease;
+}
+.sekret-form .sekret-szept-btn:hover {
+  background: rgba(226, 178, 76, 0.16);
+  border-color: rgba(226, 178, 76, 0.7);
+  transform: translateY(-1px);
+}
+@keyframes sekret-szept-puls {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(226, 178, 76, 0);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(226, 178, 76, 0.35);
+  }
+}
+
+/* Ambientowe mamrotanie zza kontuaru — trzy szepty przewijają się jeden po drugim w dolnym
+   lewym rogu (dark negative space), żeby nie wchodziły pod wyśrodkowany panel ani przycisk. */
+.sekret-szepty {
+  position: absolute;
+  left: 1.1rem;
+  bottom: 1rem;
+  pointer-events: none;
+  z-index: 0;
+  width: 60%;
+  max-width: 15rem;
+  height: 1.1rem;
+}
+.sekret-szept {
+  position: absolute;
+  left: 0;
+  text-align: left;
+  font-style: italic;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  color: color-mix(in srgb, var(--q4) 55%, transparent);
+  opacity: 0;
+  animation: sekret-mamrot 15s ease-in-out infinite;
+}
+.sekret-szept.sz0 {
+  animation-delay: 0s;
+}
+.sekret-szept.sz1 {
+  animation-delay: 5s;
+}
+.sekret-szept.sz2 {
+  animation-delay: 10s;
+}
+@keyframes sekret-mamrot {
+  0%,
+  22%,
+  100% {
+    opacity: 0;
+  }
+  6%,
+  16% {
+    opacity: 0.28;
+  }
 }
 .sekret-zle {
   margin-top: 0.7rem;

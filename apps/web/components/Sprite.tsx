@@ -37,7 +37,8 @@ const SPRITES = {
   kidsdrawing: 'items/trinkets/kidsdrawing.png', // Kid's Drawing — Statystyki
   friendfinder: 'items/collectibles/friendfinder.png', // Friend Finder — Znajomi
   superfan: 'items/collectibles/smbsuperfan.png', // SMB Super Fan — Ustawienia
-  keeper: 'przeciwnicy/keeper.png', // Keeper — Sekretny Pokój / tytuł „Keeper"
+  keeper: 'przeciwnicy/keeper.png', // Keeper — tytuł „Keeper" (prawdziwa forma spod kontuaru)
+  shopkeeper: 'sekret/shopkeeper.png', // Shopkeeper — przeszkoda-sklepikarz z Shopa (Sekretny Pokój)
   platinumgod: 'achievements/1000000percent.png', // 1,000,000% — tytuł właściciela (tylko on)
   cursedeye: 'items/collectibles/cursedeye.png', // Cursed Eye — „Curse of the Blind" / zasłanianie słów
   curseblind: 'ui/curse-blind.png', // Curse of the Blind — zasłanianie słów (jasny skin)
