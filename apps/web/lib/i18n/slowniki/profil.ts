@@ -308,8 +308,8 @@ export const profil = {
    * klucze i sklejana w JSX rozjechałaby się przy innym szyku zdania w drugim języku.
    */
   postacTaintedNota: {
-    en: "This is a <b>tainted</b> character. Its completion marks aren't individual Steam achievements, but once you unlock its <b>Soul</b> (the Soul Stone earned for finishing the game with it), we fill the whole board automatically. Until then it stays empty.",
-    pl: 'To postać <b>splugawiona (Tainted)</b>. Jej completion marks nie są osobnymi achievementami Steam, ale gdy odblokujesz jej <b>Duszę</b> (Soul Stone za ukończenie nią gry), uzupełniamy całą tablicę automatycznie. Do tego czasu pozostaje pusta.',
+    en: "This is a <b>tainted</b> character. Its completion marks aren't individual Steam achievements, but we work them out from the <b>item unlocks</b> you earn for beating bosses as this character — so the board fills in automatically, just like the base characters. Nothing unlocked here yet.",
+    pl: 'To postać <b>splugawiona (Tainted)</b>. Jej completion marks nie są osobnymi achievementami Steam, ale wyliczamy je z <b>odblokowań itemów</b> za pokonywanie bossów tą postacią — więc tablica uzupełnia się automatycznie, jak u postaci bazowych. Na razie nic tu nie odblokowano.',
   },
 
   // ── Błędy z /api/profil ──

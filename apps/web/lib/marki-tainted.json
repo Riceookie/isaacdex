@@ -1,0 +1,410 @@
+{
+  "Mom's Lock": {
+    "tainted": "Tainted Isaac",
+    "bosze": ["MOMS_HEART", "ISAAC", "BLUE_BABY", "SATAN", "LAMB"]
+  },
+  "Soul of Isaac": {
+    "tainted": "Tainted Isaac",
+    "bosze": ["HUSH", "BOSS_RUSH"]
+  },
+  "Mega Chest": {
+    "tainted": "Tainted Isaac",
+    "bosze": ["MEGA_SATAN"]
+  },
+  "Spindown Dice": {
+    "tainted": "Tainted Isaac",
+    "bosze": ["DELIRIUM"]
+  },
+  "Dice Bag": {
+    "tainted": "Tainted Isaac",
+    "bosze": ["MOTHER"]
+  },
+  "Glitched Crown": {
+    "tainted": "Tainted Isaac",
+    "bosze": ["BEAST"]
+  },
+  "Holy Crown": {
+    "tainted": "Tainted Magdalene",
+    "bosze": ["MOMS_HEART", "ISAAC", "BLUE_BABY", "SATAN", "LAMB"]
+  },
+  "Soul of Magdalene": {
+    "tainted": "Tainted Magdalene",
+    "bosze": ["HUSH", "BOSS_RUSH"]
+  },
+  "Queen of Hearts": {
+    "tainted": "Tainted Magdalene",
+    "bosze": ["MEGA_SATAN"]
+  },
+  "Hypercoagulation": {
+    "tainted": "Tainted Magdalene",
+    "bosze": ["DELIRIUM"]
+  },
+  "Mother's Kiss": {
+    "tainted": "Tainted Magdalene",
+    "bosze": ["MOTHER"]
+  },
+  "Belly Jelly": {
+    "tainted": "Tainted Magdalene",
+    "bosze": ["BEAST"]
+  },
+  "Gilded Key": {
+    "tainted": "Tainted Cain",
+    "bosze": ["MOMS_HEART", "ISAAC", "BLUE_BABY", "SATAN", "LAMB"]
+  },
+  "Soul of Cain": {
+    "tainted": "Tainted Cain",
+    "bosze": ["HUSH", "BOSS_RUSH"]
+  },
+  "Gold Pill": {
+    "tainted": "Tainted Cain",
+    "bosze": ["MEGA_SATAN"]
+  },
+  "Bag of Crafting": {
+    "tainted": "Tainted Cain",
+    "bosze": ["DELIRIUM"]
+  },
+  "Lucky Sack": {
+    "tainted": "Tainted Cain",
+    "bosze": ["MOTHER"]
+  },
+  "Blue Key": {
+    "tainted": "Tainted Cain",
+    "bosze": ["BEAST"]
+  },
+  "Your Soul": {
+    "tainted": "Tainted Judas",
+    "bosze": ["MOMS_HEART", "ISAAC", "BLUE_BABY", "SATAN", "LAMB"]
+  },
+  "Soul of Judas": {
+    "tainted": "Tainted Judas",
+    "bosze": ["HUSH", "BOSS_RUSH"]
+  },
+  "Black Sack": {
+    "tainted": "Tainted Judas",
+    "bosze": ["MEGA_SATAN"]
+  },
+  "Dark Arts": {
+    "tainted": "Tainted Judas",
+    "bosze": ["DELIRIUM"]
+  },
+  "Number Magnet": {
+    "tainted": "Tainted Judas",
+    "bosze": ["MOTHER"]
+  },
+  "Sanguine Bond": {
+    "tainted": "Tainted Judas",
+    "bosze": ["BEAST"]
+  },
+  "Dingle Berry": {
+    "tainted": "Tainted ???",
+    "bosze": ["MOMS_HEART", "ISAAC", "BLUE_BABY", "SATAN", "LAMB"]
+  },
+  "Soul of ???": {
+    "tainted": "Tainted ???",
+    "bosze": ["HUSH", "BOSS_RUSH"]
+  },
+  "Charming Poop": {
+    "tainted": "Tainted ???",
+    "bosze": ["MEGA_SATAN"]
+  },
+  "IBS": {
+    "tainted": "Tainted ???",
+    "bosze": ["DELIRIUM"]
+  },
+  "Ring Cap": {
+    "tainted": "Tainted ???",
+    "bosze": ["MOTHER"]
+  },
+  "The Swarm": {
+    "tainted": "Tainted ???",
+    "bosze": ["BEAST"]
+  },
+  "Strange Key": {
+    "tainted": "Tainted Eve",
+    "bosze": ["MOMS_HEART", "ISAAC", "BLUE_BABY", "SATAN", "LAMB"]
+  },
+  "Soul of Eve": {
+    "tainted": "Tainted Eve",
+    "bosze": ["HUSH", "BOSS_RUSH"]
+  },
+  "Horse Pill": {
+    "tainted": "Tainted Eve",
+    "bosze": ["MEGA_SATAN"]
+  },
+  "Sumptorium": {
+    "tainted": "Tainted Eve",
+    "bosze": ["DELIRIUM"]
+  },
+  "Lil Clot": {
+    "tainted": "Tainted Eve",
+    "bosze": ["MOTHER"]
+  },
+  "Heartbreak": {
+    "tainted": "Tainted Eve",
+    "bosze": ["BEAST"]
+  },
+  "Temporary Tattoo": {
+    "tainted": "Tainted Samson",
+    "bosze": ["MOMS_HEART", "ISAAC", "BLUE_BABY", "SATAN", "LAMB"]
+  },
+  "Soul of Samson": {
+    "tainted": "Tainted Samson",
+    "bosze": ["HUSH", "BOSS_RUSH"]
+  },
+  "Crane Game": {
+    "tainted": "Tainted Samson",
+    "bosze": ["MEGA_SATAN"]
+  },
+  "Berserk!": {
+    "tainted": "Tainted Samson",
+    "bosze": ["DELIRIUM"]
+  },
+  "Swallowed M80": {
+    "tainted": "Tainted Samson",
+    "bosze": ["MOTHER"]
+  },
+  "Larynx": {
+    "tainted": "Tainted Samson",
+    "bosze": ["BEAST"]
+  },
+  "Wicked Crown": {
+    "tainted": "Tainted Azazel",
+    "bosze": ["MOMS_HEART", "ISAAC", "BLUE_BABY", "SATAN", "LAMB"]
+  },
+  "Soul of Azazel": {
+    "tainted": "Tainted Azazel",
+    "bosze": ["HUSH", "BOSS_RUSH"]
+  },
+  "Hell Game": {
+    "tainted": "Tainted Azazel",
+    "bosze": ["MEGA_SATAN"]
+  },
+  "Hemoptysis": {
+    "tainted": "Tainted Azazel",
+    "bosze": ["DELIRIUM"]
+  },
+  "Azazel's Stump": {
+    "tainted": "Tainted Azazel",
+    "bosze": ["MOTHER"]
+  },
+  "Azazel's Rage": {
+    "tainted": "Tainted Azazel",
+    "bosze": ["BEAST"]
+  },
+  "Torn Pocket": {
+    "tainted": "Tainted Lazarus",
+    "bosze": ["MOMS_HEART", "ISAAC", "BLUE_BABY", "SATAN", "LAMB"]
+  },
+  "Soul of Lazarus": {
+    "tainted": "Tainted Lazarus",
+    "bosze": ["HUSH", "BOSS_RUSH"]
+  },
+  "Wooden Chest": {
+    "tainted": "Tainted Lazarus",
+    "bosze": ["MEGA_SATAN"]
+  },
+  "Flip": {
+    "tainted": "Tainted Lazarus",
+    "bosze": ["DELIRIUM"]
+  },
+  "Torn Card": {
+    "tainted": "Tainted Lazarus",
+    "bosze": ["MOTHER"]
+  },
+  "Salvation": {
+    "tainted": "Tainted Lazarus",
+    "bosze": ["BEAST"]
+  },
+  "Nuh Uh!": {
+    "tainted": "Tainted Eden",
+    "bosze": ["MOMS_HEART", "ISAAC", "BLUE_BABY", "SATAN", "LAMB"]
+  },
+  "Soul of Eden": {
+    "tainted": "Tainted Eden",
+    "bosze": ["HUSH", "BOSS_RUSH"]
+  },
+  "Wild Card": {
+    "tainted": "Tainted Eden",
+    "bosze": ["MEGA_SATAN"]
+  },
+  "Corrupted Data": {
+    "tainted": "Tainted Eden",
+    "bosze": ["DELIRIUM"]
+  },
+  "Modeling Clay": {
+    "tainted": "Tainted Eden",
+    "bosze": ["MOTHER"]
+  },
+  "TMTRAINER": {
+    "tainted": "Tainted Eden",
+    "bosze": ["BEAST"]
+  },
+  "Kid's Drawing": {
+    "tainted": "Tainted The Lost",
+    "bosze": ["MOMS_HEART", "ISAAC", "BLUE_BABY", "SATAN", "LAMB"]
+  },
+  "Soul of the Lost": {
+    "tainted": "Tainted The Lost",
+    "bosze": ["HUSH", "BOSS_RUSH"]
+  },
+  "Haunted Chest": {
+    "tainted": "Tainted The Lost",
+    "bosze": ["MEGA_SATAN"]
+  },
+  "Ghost Bombs": {
+    "tainted": "Tainted The Lost",
+    "bosze": ["DELIRIUM"]
+  },
+  "Crystal Key": {
+    "tainted": "Tainted The Lost",
+    "bosze": ["MOTHER"]
+  },
+  "Sacred Orb": {
+    "tainted": "Tainted The Lost",
+    "bosze": ["BEAST"]
+  },
+  "The Twins": {
+    "tainted": "Tainted Lilith",
+    "bosze": ["MOMS_HEART", "ISAAC", "BLUE_BABY", "SATAN", "LAMB"]
+  },
+  "Soul of Lilith": {
+    "tainted": "Tainted Lilith",
+    "bosze": ["HUSH", "BOSS_RUSH"]
+  },
+  "Fool's Gold": {
+    "tainted": "Tainted Lilith",
+    "bosze": ["MEGA_SATAN"]
+  },
+  "Gello": {
+    "tainted": "Tainted Lilith",
+    "bosze": ["DELIRIUM"]
+  },
+  "Adoption Papers": {
+    "tainted": "Tainted Lilith",
+    "bosze": ["MOTHER"]
+  },
+  "Twisted Pair": {
+    "tainted": "Tainted Lilith",
+    "bosze": ["BEAST"]
+  },
+  "Keeper's Bargain": {
+    "tainted": "Tainted Keeper",
+    "bosze": ["MOMS_HEART", "ISAAC", "BLUE_BABY", "SATAN", "LAMB"]
+  },
+  "Soul of the Keeper": {
+    "tainted": "Tainted Keeper",
+    "bosze": ["HUSH", "BOSS_RUSH"]
+  },
+  "Golden Penny": {
+    "tainted": "Tainted Keeper",
+    "bosze": ["MEGA_SATAN"]
+  },
+  "Keeper's Kin": {
+    "tainted": "Tainted Keeper",
+    "bosze": ["DELIRIUM"]
+  },
+  "Cursed Penny": {
+    "tainted": "Tainted Keeper",
+    "bosze": ["MOTHER"]
+  },
+  "Strawman": {
+    "tainted": "Tainted Keeper",
+    "bosze": ["BEAST"]
+  },
+  "Cricket Leg": {
+    "tainted": "Tainted Apollyon",
+    "bosze": ["MOMS_HEART", "ISAAC", "BLUE_BABY", "SATAN", "LAMB"]
+  },
+  "Soul of Apollyon": {
+    "tainted": "Tainted Apollyon",
+    "bosze": ["HUSH", "BOSS_RUSH"]
+  },
+  "Rotten Beggar": {
+    "tainted": "Tainted Apollyon",
+    "bosze": ["MEGA_SATAN"]
+  },
+  "Abyss": {
+    "tainted": "Tainted Apollyon",
+    "bosze": ["DELIRIUM"]
+  },
+  "Apollyon's Best Friend": {
+    "tainted": "Tainted Apollyon",
+    "bosze": ["MOTHER"]
+  },
+  "Echo Chamber": {
+    "tainted": "Tainted Apollyon",
+    "bosze": ["BEAST"]
+  },
+  "Polished Bone": {
+    "tainted": "Tainted The Forgotten",
+    "bosze": ["MOMS_HEART", "ISAAC", "BLUE_BABY", "SATAN", "LAMB"]
+  },
+  "Soul of the Forgotten": {
+    "tainted": "Tainted The Forgotten",
+    "bosze": ["HUSH", "BOSS_RUSH"]
+  },
+  "Golden Battery": {
+    "tainted": "Tainted The Forgotten",
+    "bosze": ["MEGA_SATAN"]
+  },
+  "Decap Attack": {
+    "tainted": "Tainted The Forgotten",
+    "bosze": ["DELIRIUM"]
+  },
+  "Hollow Heart": {
+    "tainted": "Tainted The Forgotten",
+    "bosze": ["MOTHER"]
+  },
+  "Isaac's Tomb": {
+    "tainted": "Tainted The Forgotten",
+    "bosze": ["BEAST"]
+  },
+  "Expansion Pack": {
+    "tainted": "Tainted Bethany",
+    "bosze": ["MOMS_HEART", "ISAAC", "BLUE_BABY", "SATAN", "LAMB"]
+  },
+  "Soul of Bethany": {
+    "tainted": "Tainted Bethany",
+    "bosze": ["HUSH", "BOSS_RUSH"]
+  },
+  "Confessional": {
+    "tainted": "Tainted Bethany",
+    "bosze": ["MEGA_SATAN"]
+  },
+  "Lemegeton": {
+    "tainted": "Tainted Bethany",
+    "bosze": ["DELIRIUM"]
+  },
+  "Beth's Essence": {
+    "tainted": "Tainted Bethany",
+    "bosze": ["MOTHER"]
+  },
+  "Vengeful Spirit": {
+    "tainted": "Tainted Bethany",
+    "bosze": ["BEAST"]
+  },
+  "RC Remote": {
+    "tainted": "Tainted Jacob & Esau",
+    "bosze": ["MOMS_HEART", "ISAAC", "BLUE_BABY", "SATAN", "LAMB"]
+  },
+  "Soul of Jacob and Esau": {
+    "tainted": "Tainted Jacob & Esau",
+    "bosze": ["HUSH", "BOSS_RUSH"]
+  },
+  "Golden Trinket": {
+    "tainted": "Tainted Jacob & Esau",
+    "bosze": ["MEGA_SATAN"]
+  },
+  "Anima Sola": {
+    "tainted": "Tainted Jacob & Esau",
+    "bosze": ["DELIRIUM"]
+  },
+  "Found Soul": {
+    "tainted": "Tainted Jacob & Esau",
+    "bosze": ["MOTHER"]
+  },
+  "Esau Jr.": {
+    "tainted": "Tainted Jacob & Esau",
+    "bosze": ["BEAST"]
+  }
+}

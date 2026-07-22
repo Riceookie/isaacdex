@@ -159,12 +159,12 @@ export const kolekcja = {
   // ── Statystyki: postacie Tainted bez danych ze Steam ──
   bezDanychSteam: { en: 'no Steam data', pl: 'bez danych Steam' },
   bezDanychTytul: {
-    en: "Tainted marks appear once you unlock the character's Soul",
-    pl: 'Marki Tainted pojawią się, gdy odblokujesz Duszę postaci',
+    en: "Tainted marks fill in as you unlock this character's boss items",
+    pl: 'Marki Tainted uzupełniają się, gdy odblokowujesz itemy za bossy tej postaci',
   },
   bezDanychPrzypis: {
-    en: "<b>Tainted</b> characters have no per-mark Steam achievements, so they show “no Steam data” until you unlock a character's <b>Soul</b> — then its board fills in automatically and counts here.",
-    pl: 'Postacie <b>splugawione (Tainted)</b> nie mają osobnych achievementów per marka, więc pokazują „bez danych Steam”, dopóki nie odblokujesz <b>Duszy</b> danej postaci — wtedy jej tablica uzupełnia się automatycznie i liczy się tutaj.',
+    en: '<b>Tainted</b> characters have no per-mark Steam achievements, so they show “no Steam data” until you start unlocking their <b>boss item</b> rewards — then their board fills in automatically and counts here, just like the base characters.',
+    pl: 'Postacie <b>splugawione (Tainted)</b> nie mają osobnych achievementów per marka, więc pokazują „bez danych Steam”, dopóki nie zaczniesz odblokowywać ich <b>itemów za bossy</b> — wtedy tablica uzupełnia się automatycznie i liczy się tutaj, jak u postaci bazowych.',
   },
 
   // ── Kalkulator ──

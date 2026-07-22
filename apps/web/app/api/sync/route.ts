@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma, BossKoncowy, TrybGry, TypWpisu } from '@isaacdex/db'
 import mapaMarek from '@/lib/marki-mapa.json'
+import mapaMarekTainted from '@/lib/marki-tainted.json'
 import { mojGracz } from '@/lib/konto'
 import { tlumacz } from '@/lib/i18n/serwer'
 
@@ -8,39 +9,6 @@ export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 const APPID = '250900' // The Binding of Isaac: Rebirth
-
-/**
- * Skażone (Tainted) postaci — auto-marki mimo braku per-marka achievementów.
- *
- * PROBLEM: u zwykłych postaci każda marka = osobny achievement Steam, więc łatwo je policzyć.
- * U Skażonych całą planszę marek reprezentuje w Repentance JEDEN achievement — „Soul of X"
- * (odblokowanie Soul Stone danej Skażonej postaci; jest ich dokładnie 17, po jednej na Skażoną).
- * Steam Web API nie zwraca marek Skażonych osobno, więc dotąd ich plansze były puste.
- *
- * ROZWIĄZANIE (wg życzenia): posiadanie „Soul of X" traktujemy jak ukończenie tej Skażonej
- * postaci → zaliczamy jej CAŁĄ planszę marek (wszyscy bossowie, HARD), żeby marki pokazywały
- * się automatycznie, jak u zwykłych postaci. Klucz = wyświetlana nazwa achievementu, wartość =
- * `Postac.nazwa` Skażonej postaci. (Nazwy potwierdzone ze schematu Steam i z tabeli Postac.)
- */
-const DUSZE_TAINTED: Record<string, string> = {
-  'Soul of Isaac': 'Tainted Isaac',
-  'Soul of Magdalene': 'Tainted Magdalene',
-  'Soul of Cain': 'Tainted Cain',
-  'Soul of Judas': 'Tainted Judas',
-  'Soul of ???': 'Tainted ???',
-  'Soul of Eve': 'Tainted Eve',
-  'Soul of Samson': 'Tainted Samson',
-  'Soul of Azazel': 'Tainted Azazel',
-  'Soul of Lazarus': 'Tainted Lazarus',
-  'Soul of Eden': 'Tainted Eden',
-  'Soul of the Lost': 'Tainted The Lost',
-  'Soul of Lilith': 'Tainted Lilith',
-  'Soul of the Keeper': 'Tainted Keeper',
-  'Soul of Apollyon': 'Tainted Apollyon',
-  'Soul of the Forgotten': 'Tainted The Forgotten',
-  'Soul of Bethany': 'Tainted Bethany',
-  'Soul of Jacob and Esau': 'Tainted Jacob & Esau',
-}
 
 type SchemaAch = { name: string; displayName: string; description?: string; icon?: string }
 type PlayerAch = { apiname: string; achieved: number; unlocktime: number }
@@ -147,18 +115,23 @@ export async function POST() {
     })
   }
 
-  // Skażone postaci: „Soul of X" → cała plansza marek tej Skażonej postaci (wszyscy bossowie,
-  // HARD). Jeden achievement stoi za kompletem marek, których Web API nie zwraca osobno.
-  const wszyscyBossowie = Object.values(BossKoncowy)
-  for (const [achName, taintedNazwa] of Object.entries(DUSZE_TAINTED)) {
+  // AUTO-MARKI SKAŻONYCH (Tainted): u nich Web API nie zwraca marek jako osobnych achievementów,
+  // ale KAŻDA Skażona postać ma 6 achievementów-itemów za pokonanie konkretnych bossów właśnie
+  // NIĄ (np. Tainted Isaac: „Glitched Crown" = pokonaj The Beast → marka BEAST; „Mom's Lock" =
+  // Isaac+???+Satan+Lamb → te 4 marki + Mom's Heart, bo bez It Lives się tam nie dojdzie;
+  // „Soul of X" = Hush+Boss Rush). Posiadanie itemu = pokonany boss = zaliczona marka — dokładnie
+  // jak u zwykłych postaci. Mapa (item → { tainted, bosze[] }) w lib/marki-tainted.json; nazwy
+  // itemów i bossów zweryfikowane 1:1 ze schematem Steam i enumem BossKoncowy.
+  const mapaTainted = mapaMarekTainted as Record<string, { tainted: string; bosze: string[] }>
+  for (const [achName, mv] of Object.entries(mapaTainted)) {
     if (!unlockedNames.has(norm(achName))) continue
-    const pid = idByName.get(taintedNazwa)
+    const pid = idByName.get(mv.tainted)
     if (pid == null) continue
-    for (const boss of wszyscyBossowie) {
+    for (const boss of mv.bosze) {
       markRows.push({
         profilId: profil.id,
         postacId: pid,
-        boss,
+        boss: boss as BossKoncowy,
         tryb: TrybGry.HARD,
         zaliczone: true,
         data: new Date(),
