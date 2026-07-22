@@ -37,17 +37,23 @@ export default function WagaChciwosci({ onWin }: { onWin: () => void }) {
   const ruszony = useRef(false)
   const nid = useRef(0)
   const szalaRef = useRef<HTMLDivElement>(null)
+  // onWin przez ref, a `wygrana` NIE jest zależnością efektu — inaczej `setWygrana(true)`
+  // przemontowywałby efekt i czyścił dopiero co ustawiony timeout, więc `onWin` nigdy nie padał
+  // i gra „zawieszała się" po zbalansowaniu wagi. Ref-guard pilnuje jednokrotnego odpalenia.
+  const onWinRef = useRef(onWin)
+  onWinRef.current = onWin
+  const wygranaRef = useRef(false)
 
   const suma = polozone.reduce((s, p) => s + p.value, 0)
   const roznica = suma - cena // <0 za mało, >0 za dużo, 0 równo
 
   useEffect(() => {
-    if (!wygrana && suma > 0 && roznica === 0) {
-      setWygrana(true)
-      const id = window.setTimeout(onWin, 1000)
-      return () => window.clearTimeout(id)
-    }
-  }, [roznica, suma, wygrana, onWin])
+    if (wygranaRef.current || suma === 0 || roznica !== 0) return
+    wygranaRef.current = true
+    setWygrana(true)
+    const id = window.setTimeout(() => onWinRef.current(), 1000)
+    return () => window.clearTimeout(id)
+  }, [suma, roznica])
 
   function doloz(d: Denom) {
     if (wygrana || taca[d.key] <= 0) return
