@@ -4,7 +4,7 @@ import { useEffect, useReducer, useRef, useState } from 'react'
 import { useT } from '@/components/JezykProvider'
 
 /**
- * Mini-gra 3 — „Uderz Kreta" (Whac-a-Mole). Z dziur (secret-hole) wyskakują krety (mole
+ * Mini-gra 3 — „Uderz Kreta" (Whac-a-Mole). Z dziur (pitfall) wyskakują krety (mole
  * z gry); klikasz/tapiesz, żeby je ubić, zanim schowają się z powrotem. Ubij CEL sztuk, zanim
  * skończy się CZAS — inaczej licznik i zegar wracają do startu (miękki reset, bez frustracji).
  *
@@ -110,7 +110,7 @@ export default function UderzKreta({ onWin }: { onWin: () => void }) {
             aria-label="mole"
             disabled={wygrana}
           >
-            <img className="mg-dziura-tlo" src="/tboi/ui/secret-hole.png" alt="" draggable={false} />
+            <img className="mg-dziura-tlo" src="/tboi/przeciwnicy/pitfall.png" alt="" draggable={false} />
             <img className="mg-kret" src="/tboi/przeciwnicy/mole.png" alt="" draggable={false} />
             <span className="mg-splat" aria-hidden />
           </button>

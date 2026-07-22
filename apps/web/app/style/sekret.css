@@ -19,20 +19,61 @@
   color: var(--sk-ink);
   width: min(560px, 100%);
   text-align: center;
-  padding: 2.4rem 1.6rem 1.6rem;
-  border-radius: 6px;
+  padding: 2.6rem 1.6rem 1.7rem;
+  border-radius: 7px;
+  /* Ściany z kamienia (grunge-tile, ostre piksele) mocno przyciemnione, ciepłe światło u góry
+     i ciemniejsza „podłoga" u dołu — warstwy dają głębię zamiast płaskiego tła. */
   background:
-    radial-gradient(115% 80% at 50% 34%, rgba(26, 21, 15, 0.8), rgba(5, 5, 6, 0.99) 78%), #050506;
-  border: 1px solid rgba(0, 0, 0, 0.8);
+    radial-gradient(80% 52% at 50% 18%, rgba(226, 178, 76, 0.1), transparent 62%),
+    linear-gradient(
+      180deg,
+      rgba(9, 8, 10, 0.78) 0%,
+      rgba(5, 4, 6, 0.9) 58%,
+      rgba(2, 2, 3, 0.96) 100%
+    ),
+    url('/tboi/ui/wall-grunge-dark.png');
+  background-repeat: no-repeat, no-repeat, repeat;
+  background-size:
+    100% 100%,
+    100% 100%,
+    300px 260px;
+  border: 2px solid #140f0a;
   box-shadow:
-    inset 0 0 70px rgba(0, 0, 0, 0.9),
-    0 10px 34px rgba(0, 0, 0, 0.6);
+    inset 0 0 0 1px rgba(226, 178, 76, 0.06),
+    inset 0 2px 0 rgba(226, 178, 76, 0.05),
+    inset 0 0 95px 14px rgba(0, 0, 0, 0.92),
+    0 18px 48px rgba(0, 0, 0, 0.72);
   overflow: hidden;
+}
+/* Miękki cień „podłogi" u dołu — kamienna posadzka tonie w mroku (głębia bez ostrej linii). */
+.sekret-room::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 30%;
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.5));
 }
 /* Odkryty pokój rozpala się złotem — z ciemności wychodzi ciepłe światło zza postaci. */
 .sekret-room.odkryty {
   background:
-    radial-gradient(115% 80% at 50% 34%, rgba(226, 178, 76, 0.2), rgba(6, 6, 7, 0.98) 78%), #050506;
+    radial-gradient(80% 55% at 50% 20%, rgba(226, 178, 76, 0.26), transparent 62%),
+    linear-gradient(
+      180deg,
+      rgba(30, 22, 10, 0.62) 0%,
+      rgba(6, 5, 6, 0.86) 58%,
+      rgba(2, 2, 3, 0.95) 100%
+    ),
+    url('/tboi/ui/wall-grunge-dark.png');
+  background-repeat: no-repeat, no-repeat, repeat;
+  background-size:
+    100% 100%,
+    100% 100%,
+    300px 260px;
+  border-color: #2a1f10;
 }
 
 /* Nikła poświata za postacią — domyślnie ledwie tli się w mroku (tajemnica), po odkryciu rośnie. */
@@ -87,6 +128,57 @@
   }
   63% {
     opacity: 0.86;
+  }
+}
+
+/* Runy wyryte w kamiennych ścianach (rogi) — ledwie się tlą, po odkryciu rozpalają się mocniej. */
+.sekret-runy {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.sekret-runa-scienna {
+  position: absolute;
+  width: 15px;
+  height: 20px;
+  fill: none;
+  stroke: rgba(226, 178, 76, 0.16);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 3px rgba(226, 178, 76, 0.18));
+  animation: sekret-runa-tli 6.5s ease-in-out infinite;
+}
+.sekret-runa-scienna.r0 {
+  top: 16px;
+  left: 16px;
+}
+.sekret-runa-scienna.r1 {
+  top: 16px;
+  right: 16px;
+  animation-delay: 1.6s;
+}
+.sekret-runa-scienna.r2 {
+  bottom: 64px;
+  left: 18px;
+  animation-delay: 3.2s;
+}
+.sekret-runa-scienna.r3 {
+  bottom: 64px;
+  right: 18px;
+  animation-delay: 4.8s;
+}
+.sekret-room.odkryty .sekret-runa-scienna {
+  stroke: rgba(226, 178, 76, 0.34);
+}
+@keyframes sekret-runa-tli {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
   }
 }
 
@@ -191,7 +283,7 @@
    wyśrodkowane, postać w osobnym wrapperze (bob nie kłóci się z centrowaniem). */
 .sekret-scena {
   position: relative;
-  height: 210px;
+  height: 236px;
   margin-top: 0.5rem;
 }
 .sekret-krag,
@@ -246,8 +338,8 @@
 
 /* Aura pod postacią — miękka poświata, „oddycha" wraz z nim; jaśnieje po odkryciu. */
 .sekret-aura {
-  width: 150px;
-  height: 150px;
+  width: 172px;
+  height: 172px;
   transform: translate(-50%, -46%);
   border-radius: 50%;
   background: radial-gradient(circle, rgba(226, 178, 76, 0.22), transparent 66%);
@@ -273,33 +365,60 @@
    Wisi w środku kręgu (nie za kontuarem). Wrapper centruje, sam sprite tylko unosi się w górę
    i w dół (bob), więc animacja nie kłóci się z translate(-50%,-50%). */
 .sekret-shopkeeper-wrap {
-  transform: translate(-50%, -54%);
+  transform: translate(-50%, -52%);
   z-index: 1;
   line-height: 0;
 }
+/* Miękki cień pod lewitującą postacią — kurczy się, gdy się wznosi (sprzedaje unoszenie). */
+.sekret-shopkeeper-wrap::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -18px;
+  width: 84px;
+  height: 15px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.6), transparent 70%);
+  animation: sekret-cien-lewit 5.2s ease-in-out infinite;
+  pointer-events: none;
+}
+/* Fokus sceny: większy Shopkeeper (~+34%), miękkie unoszenie z lekkim kołysaniem i aureolą. */
 .sekret-shopkeeper {
-  width: 76px;
+  width: 102px;
   height: auto;
   image-rendering: pixelated;
-  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.75))
-    drop-shadow(0 0 14px rgba(226, 178, 76, 0.25));
-  animation: sekret-unos 4.4s ease-in-out infinite;
+  transform-origin: center bottom;
+  filter: drop-shadow(0 9px 12px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 20px rgba(226, 178, 76, 0.3));
+  animation: sekret-unos 5.2s ease-in-out infinite;
+}
+.sekret-room.odkryty .sekret-shopkeeper {
+  filter: drop-shadow(0 9px 12px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 28px rgba(226, 178, 76, 0.6));
 }
 /* Po odkryciu „podnosi wzrok" — wpływa z dołu i dostaje mocniejszą aureolę. */
 .sekret-shopkeeper.patrzy {
   animation:
-    sekret-unos 4.4s ease-in-out infinite,
+    sekret-unos 5.2s ease-in-out infinite,
     sekret-patrzy 0.7s ease-out;
-  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.75))
-    drop-shadow(0 0 24px rgba(226, 178, 76, 0.7));
+  filter: drop-shadow(0 9px 12px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 30px rgba(226, 178, 76, 0.8));
 }
 @keyframes sekret-unos {
   0%,
   100% {
-    transform: translateY(0) scale(1);
+    transform: translateY(0) rotate(-1.2deg) scale(1);
   }
   50% {
-    transform: translateY(-6px) scale(1.015);
+    transform: translateY(-9px) rotate(1.2deg) scale(1.02);
+  }
+}
+@keyframes sekret-cien-lewit {
+  0%,
+  100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateX(-50%) scale(0.78);
+    opacity: 0.4;
   }
 }
 @keyframes sekret-patrzy {
@@ -398,6 +517,8 @@
   .sekret-shopkeeper.patrzy,
   .sekret-iskra,
   .sekret-pylek,
+  .sekret-runa-scienna,
+  .sekret-shopkeeper-wrap::after,
   .sekret-szept-btn,
   .sekret-szept,
   .sekret-final-blysk,
@@ -454,24 +575,63 @@
 }
 .sekret-lore {
   font-style: italic;
-  line-height: 1.6;
+  line-height: 1.72;
+  margin: 0 0 0.5rem;
   color: color-mix(in srgb, var(--sk-ink) 82%, transparent);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
 }
 .sekret-podtytul {
   margin: 0.15rem 0 0.2rem;
 }
 .sekret-mowi {
-  margin: 1rem 0 0.3rem;
+  margin: 1.15rem 0 0.45rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.16em;
+  font-size: 0.66rem;
 }
+/* Zagadka na „starożytnej kamiennej tabliczce" — kamienna faktura, wyryte cienie, złote okucia
+   w narożnikach i lepsza typografia (większy interlinia, delikatny cień tekstu). */
 .sekret-riddle {
-  margin: 0 0 1rem;
-  padding: 0.6rem 0.9rem;
-  border-left: 2px solid color-mix(in srgb, var(--q4) 60%, transparent);
-  background: rgba(226, 178, 76, 0.06);
-  line-height: 1.55;
+  position: relative;
+  margin: 0.3rem 0 1.15rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid rgba(226, 178, 76, 0.26);
+  border-radius: 4px;
+  background:
+    linear-gradient(rgba(28, 22, 14, 0.62), rgba(12, 10, 7, 0.74)),
+    url('/tboi/ui/wall-grunge-dark.png');
+  background-size:
+    auto,
+    220px auto;
+  box-shadow:
+    inset 0 0 26px rgba(0, 0, 0, 0.72),
+    inset 0 1px 0 rgba(226, 178, 76, 0.12),
+    0 5px 14px rgba(0, 0, 0, 0.55);
+  line-height: 1.72;
+  font-size: 1.02rem;
+  letter-spacing: 0.01em;
+  color: color-mix(in srgb, var(--sk-ink) 96%, #fff);
   text-align: left;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+/* Złote ćwieki w przeciwległych narożnikach tabliczki (subtelne okucia). */
+.sekret-riddle::before,
+.sekret-riddle::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(226, 178, 76, 0.75), rgba(226, 178, 76, 0.1) 70%);
+  box-shadow: 0 0 5px rgba(226, 178, 76, 0.4);
+}
+.sekret-riddle::before {
+  top: 6px;
+  left: 6px;
+}
+.sekret-riddle::after {
+  bottom: 6px;
+  right: 6px;
 }
 /* Nowa zagadka wpływa miękko (key na kroku wymusza remount → animacja gra od nowa). */
 .sekret-riddle-in {
@@ -848,24 +1008,34 @@
 
 /* ═══ Mini-gry (wewnątrz panelu, dziedziczą jasną paletę pokoju `--sk-*`) ═══ */
 .mg {
-  margin-top: 0.4rem;
+  margin-top: 0.5rem;
   animation: sekret-riddle-in 0.5s ease-out both;
 }
 .mg-opis {
-  margin: 0 0 0.6rem;
+  margin: 0 0 0.7rem;
   color: var(--sk-muted);
+  letter-spacing: 0.02em;
 }
 
-/* ── Mini-gra 1: Łapanie Monet ── */
+/* Wspólna „kamienna" scena mini-gier — ciemna faktura kamienia, wyryty cień, złota nitka. */
 .mg-scena {
   position: relative;
   width: 100%;
-  border-radius: 5px;
+  border-radius: 6px;
   background:
-    radial-gradient(120% 70% at 50% 0%, rgba(226, 178, 76, 0.08), transparent 70%),
-    rgba(0, 0, 0, 0.4);
-  border: 1px solid color-mix(in srgb, var(--q4) 22%, transparent);
-  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.6);
+    radial-gradient(120% 70% at 50% 0%, rgba(226, 178, 76, 0.1), transparent 68%),
+    linear-gradient(rgba(6, 5, 7, 0.55), rgba(2, 2, 3, 0.74)),
+    url('/tboi/ui/wall-grunge-dark.png');
+  background-repeat: no-repeat, no-repeat, repeat;
+  background-size:
+    auto,
+    auto,
+    220px auto;
+  border: 1px solid color-mix(in srgb, var(--q4) 28%, transparent);
+  box-shadow:
+    inset 0 0 0 1px rgba(226, 178, 76, 0.05),
+    inset 0 0 36px rgba(0, 0, 0, 0.74),
+    0 4px 12px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   touch-action: none; /* przesuwanie łapacza palcem nie ma scrollować strony */
   cursor: none;
@@ -937,14 +1107,31 @@
 .mg-win {
   position: absolute;
   inset: 0;
+  z-index: 5;
   display: grid;
   place-items: center;
+  padding: 0 1rem;
+  text-align: center;
   font-family: var(--dsp);
   letter-spacing: 0.06em;
   color: color-mix(in srgb, var(--q4) 82%, #fff);
-  text-shadow: 0 0 12px rgba(226, 178, 76, 0.7);
-  background: radial-gradient(circle at 50% 50%, rgba(226, 178, 76, 0.2), transparent 65%);
-  animation: sekret-riddle-in 0.4s ease-out both;
+  text-shadow: 0 0 14px rgba(226, 178, 76, 0.8);
+  background:
+    radial-gradient(circle at 50% 50%, rgba(226, 178, 76, 0.26), transparent 62%),
+    rgba(4, 3, 2, 0.35);
+  animation: mg-win-in 0.5s cubic-bezier(0.2, 1.3, 0.4, 1) both;
+}
+@keyframes mg-win-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.86);
+    text-shadow: 0 0 30px rgba(255, 240, 200, 1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    text-shadow: 0 0 14px rgba(226, 178, 76, 0.8);
+  }
 }
 .mg-scena.mg-wygrana {
   border-color: color-mix(in srgb, var(--q4) 60%, transparent);
@@ -984,15 +1171,35 @@
 .mg-belka {
   position: absolute;
   left: 50%;
-  top: 18px;
+  top: 17px;
   width: 78%;
-  height: 5px;
+  height: 6px;
   margin-left: -39%;
   border-radius: 3px;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--q4) 75%, #fff), var(--q4));
-  box-shadow: 0 0 8px rgba(226, 178, 76, 0.4);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--q4) 90%, #fff),
+    var(--q4) 55%,
+    color-mix(in srgb, var(--q4) 60%, #000)
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 240, 200, 0.6),
+    0 0 9px rgba(226, 178, 76, 0.45);
   transform-origin: 50% 50%;
   transition: transform 0.35s cubic-bezier(0.3, 0.9, 0.4, 1);
+}
+/* Sworzeń na środku belki — złoty „klejnot" osi wagi. */
+.mg-belka::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #fff2cf, var(--q4) 60%, #6b5320);
+  box-shadow: 0 0 8px rgba(226, 178, 76, 0.7);
 }
 .mg-cieciwa {
   position: absolute;
@@ -1029,10 +1236,14 @@
   width: 96px;
   height: 46px;
   border-radius: 0 0 48px 48px / 0 0 30px 30px;
-  background: linear-gradient(180deg, rgba(226, 178, 76, 0.16), rgba(0, 0, 0, 0.4));
-  border: 1px solid color-mix(in srgb, var(--q4) 40%, transparent);
-  border-top-width: 2px;
-  box-shadow: inset 0 -6px 10px rgba(0, 0, 0, 0.5);
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(226, 178, 76, 0.28), transparent 60%),
+    linear-gradient(180deg, rgba(226, 178, 76, 0.14), rgba(0, 0, 0, 0.45));
+  border: 1px solid color-mix(in srgb, var(--q4) 45%, transparent);
+  border-top: 2px solid color-mix(in srgb, var(--q4) 70%, #fff);
+  box-shadow:
+    inset 0 2px 3px rgba(255, 235, 190, 0.25),
+    inset 0 -7px 11px rgba(0, 0, 0, 0.55);
 }
 .mg-drop.mg-szala-talerz {
   overflow: hidden;
@@ -1089,35 +1300,49 @@
   position: relative;
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   padding: 0;
-  border-radius: 6px;
-  border: 1px solid color-mix(in srgb, var(--q4) 35%, transparent);
-  background: rgba(226, 178, 76, 0.08);
+  border-radius: 7px;
+  border: 1px solid color-mix(in srgb, var(--q4) 45%, transparent);
+  background:
+    linear-gradient(180deg, rgba(226, 178, 76, 0.2), rgba(226, 178, 76, 0.05)),
+    rgba(0, 0, 0, 0.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 235, 190, 0.25),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.4),
+    0 2px 5px rgba(0, 0, 0, 0.45);
   cursor: grab;
   touch-action: none;
   transition:
     transform 0.1s ease,
-    background 0.15s ease,
-    border-color 0.15s ease;
+    box-shadow 0.15s ease,
+    border-color 0.15s ease,
+    filter 0.15s ease;
 }
 .mg-chip:hover:not(:disabled) {
-  background: rgba(226, 178, 76, 0.16);
-  border-color: color-mix(in srgb, var(--q4) 65%, transparent);
-  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--q4) 75%, transparent);
+  transform: translateY(-2px);
+  filter: brightness(1.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 235, 190, 0.3),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.4),
+    0 4px 10px rgba(0, 0, 0, 0.5),
+    0 0 12px rgba(226, 178, 76, 0.4);
 }
 .mg-chip:active:not(:disabled) {
   cursor: grabbing;
+  transform: translateY(0);
 }
 .mg-chip:disabled {
-  opacity: 0.35;
+  opacity: 0.32;
   cursor: default;
 }
 .mg-chip img {
   width: 22px;
   height: 22px;
   image-rendering: pixelated;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.5));
   pointer-events: none;
 }
 .mg-chip-liczba {
@@ -1171,9 +1396,22 @@
   position: relative;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
-  max-width: 300px;
+  gap: 0.55rem;
+  max-width: 306px;
   margin: 0 auto;
+  padding: 0.6rem;
+  border-radius: 6px;
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(226, 178, 76, 0.08), transparent 68%),
+    linear-gradient(rgba(6, 5, 7, 0.5), rgba(2, 2, 3, 0.7)),
+    url('/tboi/ui/wall-grunge-dark.png');
+  background-repeat: no-repeat, no-repeat, repeat;
+  background-size:
+    auto,
+    auto,
+    220px auto;
+  border: 1px solid color-mix(in srgb, var(--q4) 26%, transparent);
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.72);
 }
 .mg-dziura {
   position: relative;
@@ -1184,30 +1422,52 @@
   cursor: pointer;
   overflow: hidden;
 }
+/* Ciemna aura pod dziurą — arkaniczny blask, mocniejszy gdy kret jest na wierzchu. */
+.mg-dziura::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 14%;
+  width: 66%;
+  height: 26%;
+  transform: translate(-50%, 30%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(226, 178, 76, 0.35), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+.mg-dziura.kret::before {
+  opacity: 1;
+}
 .mg-dziura-tlo {
   position: absolute;
-  inset: auto 8% 4% 8%;
-  width: 84%;
+  inset: auto 5% 8% 5%;
+  width: 90%;
   height: auto;
   image-rendering: pixelated;
   z-index: 2;
-  opacity: 0.92;
-  filter: drop-shadow(0 0 6px rgba(226, 178, 76, 0.22));
+  opacity: 0.96;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6));
   pointer-events: none;
 }
 .mg-kret {
   position: absolute;
   left: 50%;
-  bottom: 10%;
-  width: 54%;
-  transform: translate(-50%, 120%);
+  bottom: 12%;
+  width: 52%;
+  transform: translate(-50%, 130%);
   image-rendering: pixelated;
   z-index: 1;
-  transition: transform 0.12s ease-out;
+  transition:
+    transform 0.12s ease-out,
+    filter 0.12s;
   pointer-events: none;
 }
 .mg-dziura.kret .mg-kret {
-  transform: translate(-50%, 4%);
+  transform: translate(-50%, 2%);
+  filter: drop-shadow(0 0 7px rgba(226, 178, 76, 0.5));
 }
 .mg-dziura.ubity .mg-kret {
   transform: translate(-50%, 40%) scale(0.6);
@@ -1288,17 +1548,32 @@
   opacity: 0.32;
 }
 .mg-pigula-cialo {
+  position: relative;
   display: flex;
-  width: 66px;
-  height: 30px;
+  width: 68px;
+  height: 32px;
   border-radius: 16px;
   overflow: hidden;
-  border: 2px solid rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(0, 0, 0, 0.55);
   box-shadow:
     inset 0 2px 3px rgba(255, 255, 255, 0.4),
-    inset 0 -3px 5px rgba(0, 0, 0, 0.4),
-    0 3px 6px rgba(0, 0, 0, 0.5);
+    inset 0 -3px 5px rgba(0, 0, 0, 0.45),
+    0 3px 7px rgba(0, 0, 0, 0.55);
   transition: box-shadow 0.3s;
+}
+/* Połysk kapsułki — pasek światła po górnej połowie (efekt „lśniącej pigułki"). */
+.mg-pigula-cialo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.1) 40%,
+    transparent 54%
+  );
+  pointer-events: none;
 }
 .mg-pigula-pol {
   flex: 1;
@@ -1382,15 +1657,26 @@
   transition: background 0.15s ease;
 }
 .mg-pas.grozi {
-  background: linear-gradient(180deg, rgba(229, 84, 75, 0.18), rgba(229, 84, 75, 0.02));
+  background: linear-gradient(180deg, rgba(229, 84, 75, 0.22), rgba(229, 84, 75, 0.02) 70%);
+  box-shadow: inset 0 3px 10px rgba(229, 84, 75, 0.3);
+  animation: mg-grozi 0.6s ease-in-out infinite;
+}
+@keyframes mg-grozi {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 .mg-rakieta {
   position: absolute;
-  width: 20px;
-  height: 20px;
-  margin-left: -10px;
+  width: 21px;
+  height: 21px;
+  margin-left: -10.5px;
   image-rendering: pixelated;
-  filter: drop-shadow(0 0 5px rgba(229, 84, 75, 0.7));
+  filter: drop-shadow(0 -6px 6px rgba(229, 84, 75, 0.5)) drop-shadow(0 0 5px rgba(229, 84, 75, 0.8));
   transition: left 0.08s linear;
   pointer-events: none;
 }
@@ -1418,8 +1704,21 @@
   margin-top: 0.5rem;
 }
 .mg-strzalka.btn {
-  padding: 0.3rem 1.15rem;
-  font-size: 1rem;
+  padding: 0.32rem 1.25rem;
+  font-size: 1.05rem;
+  color: color-mix(in srgb, var(--q4) 82%, #fff);
+  background: linear-gradient(180deg, rgba(226, 178, 76, 0.2), rgba(226, 178, 76, 0.06));
+  border: 1px solid rgba(226, 178, 76, 0.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 235, 190, 0.25),
+    0 3px 0 #17110d;
+}
+.mg-strzalka.btn:hover {
+  filter: brightness(1.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 235, 190, 0.3),
+    0 3px 0 #17110d,
+    0 0 12px rgba(226, 178, 76, 0.4);
 }
 
 /* ── Mini-gra 6: Ładowanie Baterii ── */
@@ -1474,20 +1773,49 @@
 }
 .mg-akku-obudowa {
   position: relative;
-  width: 44px;
-  height: 92px;
+  width: 46px;
+  height: 94px;
   border: 2px solid color-mix(in srgb, var(--q4) 65%, #fff);
-  border-radius: 4px;
-  background: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.55);
+  box-shadow:
+    inset 0 0 8px rgba(0, 0, 0, 0.7),
+    0 0 10px rgba(226, 178, 76, 0.25);
   overflow: hidden;
   display: flex;
   align-items: flex-end;
 }
+/* Szklany refleks na obudowie ogniwa (pasek światła po lewej). */
+.mg-akku-obudowa::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 6px;
+  width: 8px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.05));
+  pointer-events: none;
+  z-index: 2;
+}
 .mg-akku-wypelnienie {
+  position: relative;
   width: 100%;
   transition:
     height 0.1s linear,
     background 0.3s;
+}
+/* Delikatne prążki „naładowania" na wypełnieniu. */
+.mg-akku-wypelnienie::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.14) 0 2px,
+    transparent 2px 7px
+  );
+  pointer-events: none;
 }
 .mg-akku-wypelnienie.pelny {
   background: linear-gradient(180deg, #8fe36a, #5fb84f);
@@ -1540,6 +1868,7 @@
   .mg-pigula.zla,
   .mg-fetus-scena.mg-oberwane,
   .mg-bateria-scena.mg-niski,
+  .mg-pas.grozi,
   .mg-akku-blysk {
     animation: none;
   }

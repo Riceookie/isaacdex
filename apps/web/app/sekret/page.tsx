@@ -59,6 +59,25 @@ function KragRun() {
   )
 }
 
+/** Faint glowing runy wyryte w kamiennych ścianach (rogi pokoju) — czysta dekoracja. */
+function RunyScienne() {
+  const runy = [
+    'M4 2 L4 22 M4 12 L15 2 M4 12 L15 22', // Algiz
+    'M4 2 L4 22 M4 4 L15 11 M4 14 L14 8', // Kaunan-ish
+    'M3 2 L14 2 L4 12 L14 12 L4 22 L15 22', // zygzak
+    'M4 2 L4 22 M14 2 L14 22 M4 12 L14 12', // Hagalaz
+  ]
+  return (
+    <div className="sekret-runy" aria-hidden>
+      {runy.map((d, i) => (
+        <svg key={i} className={`sekret-runa-scienna r${i}`} viewBox="0 0 18 24">
+          <path d={d} />
+        </svg>
+      ))}
+    </div>
+  )
+}
+
 /**
  * Sekretny Pokój — ekran za „zbombardowaną ścianą". Wchodzi się przez zataczone wejścia
  * (mały Keeper na górnym pasku, rysa na dole sidebara), a nie z menu. Trzy stany:
@@ -85,6 +104,7 @@ export default async function SekretPage({ searchParams }: { searchParams: { ok?
       {swiezo && ja && <SekretSukcesDzwiek />}
       <div className={'sekret-room' + (odkryty ? ' odkryty' : '')}>
         <div className="sekret-poswiata" aria-hidden />
+        <RunyScienne />
         <div className="sekret-vignette" aria-hidden />
         <Iskry />
         <Kurz />
