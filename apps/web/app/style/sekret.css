@@ -310,12 +310,15 @@
    To teraz <button>, więc kasujemy domyślny wygląd przycisku. */
 .side-secret {
   margin-top: auto; /* zjeżdża na dół kolumny */
+  align-self: center; /* wąski przycisk wyśrodkowany w kolumnie sidebara */
   position: relative; /* kotwica dla spadającego pyłu */
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 34px;
-  width: 100%;
+  /* Przycisk ~rozmiaru dziury (44×37), żeby klikalny obszar odpowiadał temu, co widać —
+     a nie całej szerokości sidebara. */
+  width: 48px;
+  height: 40px;
   padding: 0;
   border: none;
   background: none;

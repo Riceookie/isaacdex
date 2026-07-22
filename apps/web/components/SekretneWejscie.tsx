@@ -50,10 +50,10 @@ export default function SekretneWejscie({ onWejdz }: { onWejdz?: () => void }) {
   const rozbij = () => {
     setRozbite(true)
     setOkruchy(wylosujOkruchy())
-    // Dżingiel „secret room" (holy!). Klik to gest użytkownika, więc autoplay przejdzie;
-    // gdyby przeglądarka i tak odmówiła, po cichu odpuszczamy — sekret nie może się wywalić.
+    // Dżingiel „secret room found" (ten sam co w grze przy odkryciu pokoju). Klik to gest
+    // użytkownika, więc autoplay przejdzie; gdyby przeglądarka odmówiła — po cichu odpuszczamy.
     try {
-      const a = audio.current ?? new Audio('/tboi/sfx/secret-jingle.wav')
+      const a = audio.current ?? new Audio('/tboi/sfx/secret-found.ogg')
       audio.current = a
       a.volume = 0.55
       a.currentTime = 0

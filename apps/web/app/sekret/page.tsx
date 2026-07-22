@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Sprite from '@/components/Sprite'
 import ZalogujStan from '@/components/ZalogujStan'
 import SekretnyPokoj from '@/components/SekretnyPokoj'
+import SekretMuzyka from '@/components/SekretMuzyka'
 import { mojGracz } from '@/lib/konto'
 import { tlumacz } from '@/lib/i18n/serwer'
 
@@ -45,6 +46,8 @@ export default async function SekretPage({
 
   return (
     <section className="sekret-page">
+      {/* Motyw Sekretnego Pokoju leci, dopóki tu jesteś (cichnie przy wyjściu). */}
+      <SekretMuzyka />
       <div className={'sekret-room' + (odkryty ? ' odkryty' : '')}>
         <div className="sekret-poswiata" aria-hidden />
         <Monety />
