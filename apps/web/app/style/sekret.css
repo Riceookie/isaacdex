@@ -338,8 +338,10 @@
 .side-secret-crack {
   --crack-fill: #efe3ca; /* dark mode → jasna rysa */
   display: block;
-  width: 62%;
-  height: 20px;
+  /* Węższa niż dziura (~44px), żeby pęknięcie było naprawdę „ledwie zauważalne" — dopiero
+     rozbite rozrasta się w szerszą dziurę. */
+  width: 34px;
+  height: 18px;
   filter: drop-shadow(0 0 4px rgba(226, 178, 76, 0.35));
   animation: side-secret-puls 3s ease-in-out infinite;
 }
