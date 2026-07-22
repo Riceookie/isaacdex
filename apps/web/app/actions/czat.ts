@@ -56,12 +56,14 @@ export async function wyslijWiadomosc(
 }
 
 /**
- * Kasowanie wiadomości — DLA WSZYSTKICH (Prisma usuwa wiersz, Realtime rozniesie DELETE).
+ * Kasowanie wiadomości — DLA WSZYSTKICH, ale MIĘKKO: zostawiamy nagrobek „X usunął
+ * wiadomość" (jak na Discordzie), zamiast usuwać wiersz. Realtime rozniesie UPDATE.
  * Wcześniej „×" tylko chował wiadomość lokalnie: znikała u Ciebie, a u innych zostawała.
  *
- * Skasować może AUTOR albo właściciel apki (`ja` — moderacja własnej piwnicy). Reakcje pod
- * wiadomością i ewentualne odpowiedzi na nią zdejmuje baza: reakcje kaskadą, a odpowiedzi
- * tracą tylko cytat (FK `odpowiedzNaId` = SetNull), więc nie znikają razem z oryginałem.
+ * Skasować może AUTOR albo właściciel apki (`ja` — moderacja własnej piwnicy). Treść,
+ * obrazek i reakcje CZYŚCIMY (nic nie przecieka), a `usunietaPrzezId` mówi, kto skasował
+ * — UI pokaże „Ty" temu, kto to zrobił, a nick pozostałym. Odpowiedzi na tę wiadomość
+ * zostają: ich cytat sam zamienia się w „wiadomość usunięta" (bo oryginał ma `usunieta`).
  */
 export async function usunWiadomosc(
   wiadomoscId: number,
@@ -72,12 +74,25 @@ export async function usunWiadomosc(
 
   const wiad = await prisma.wiadomosc.findUnique({
     where: { id: wiadomoscId },
-    select: { autorId: true },
+    select: { autorId: true, usunieta: true },
   })
   if (!wiad) return { ok: false, powod: t('czat.bladBrakWiadomosci') }
   if (wiad.autorId !== ja.id && !ja.ja) return { ok: false, powod: t('czat.bladNieTwoja') }
+  if (wiad.usunieta) return { ok: true } // już nagrobek — nic do roboty
 
-  await prisma.wiadomosc.delete({ where: { id: wiadomoscId } })
+  // Reakcje kasujemy osobno (nie kaskadą FK), bo wiersz wiadomości zostaje jako nagrobek.
+  await prisma.$transaction([
+    prisma.reakcjaWiadomosci.deleteMany({ where: { wiadomoscId } }),
+    prisma.wiadomosc.update({
+      where: { id: wiadomoscId },
+      data: {
+        usunieta: true,
+        usunietaPrzezId: ja.id,
+        tresc: '',
+        obrazekUrl: null,
+      },
+    }),
+  ])
   return { ok: true }
 }
 

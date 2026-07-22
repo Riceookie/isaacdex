@@ -8529,6 +8529,11 @@ body::after {
    Zdejmujemy go ujemnym marginesem, zamiast zgadywać wysokość „na oko". */
 .cz-strona {
   margin-bottom: -4rem;
+  /* Zapas do przewinięcia POD czatem. Uchwyt regulacji wysokości siedzi na dolnej krawędzi
+     ramki, a ta domyślnie sięga dna ekranu — nie było go gdzie ciągnąć w dół (kursor nie
+     wyjedzie poza okno). Ten margines robi miejsce: przewijasz stronę, uchwyt wjeżdża wyżej,
+     a pod nim jest wolna przestrzeń, w którą da się rozciągnąć czat. */
+  padding-bottom: 60vh;
 }
 .cz {
   display: grid;
@@ -8643,6 +8648,7 @@ body::after {
      w dwa rzędy — stąd inne wartości niż na desktopie. */
   .cz-strona {
     margin-bottom: -3rem;
+    padding-bottom: 55vh;
   }
   .cz {
     grid-template-columns: 1fr;
@@ -9001,6 +9007,18 @@ body::after {
   display: flex;
   align-items: flex-start;
   gap: 0.6rem;
+}
+/* Nagrobek skasowanej wiadomości — jedna dyskretna, wyszarzona linijka (jak na Discordzie). */
+.cz-msg.cz-usunieta {
+  align-items: center;
+  padding: 0.05rem 0;
+}
+.cz-usunieta-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-style: italic;
+  opacity: 0.7;
 }
 .cz-ava-box {
   position: relative;

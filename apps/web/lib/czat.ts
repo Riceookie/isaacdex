@@ -69,6 +69,12 @@ export type Wiad = {
    * `usunieta` = oryginał skasowano (odpowiedź została, cytat pokazujemy jako „usunięta").
    */
   odpowiedz?: { autor: string; tekst: string; usunieta?: boolean } | null
+  /** Nagrobek: wiadomość skasowano „dla wszystkich" — treści już nie ma, pokazujemy kto usunął. */
+  usunieta?: boolean
+  /** Nick osoby, która skasowała (dla pozostałych: „X usunął wiadomość"). */
+  usunietaPrzez?: string
+  /** Czy to JA skasowałem — wtedy „Ty usunąłeś wiadomość" zamiast nicku. */
+  usunietaPrzezMnie?: boolean
 }
 
 /**

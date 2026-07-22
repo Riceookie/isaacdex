@@ -196,6 +196,7 @@ model Gracz {
   wpisy       Wpis[]
   lajki       Lajk[]
   wiadomosci  Wiadomosc[]
+  usuniete    Wiadomosc[]         @relation("usuniete")
   reakcje     ReakcjaWiadomosci[]
   obserwuje   Obserwacja[]        @relation("obserwujacy")
   obserwowany Obserwacja[]        @relation("obserwowany")
@@ -268,6 +269,14 @@ model Wiadomosc {
 
   /// Czy autor edytował wiadomość po wysłaniu — pokazujemy dyskretne „(edytowano)".
   edytowana Boolean @default(false)
+
+  /// Miękkie kasowanie „dla wszystkich": zostaje nagrobek „X usunął wiadomość", a treść
+  /// i obrazek czyścimy przy kasowaniu (nic nie przecieka). Twardego DELETE już nie robimy.
+  usunieta Boolean @default(false)
+
+  /// Kto skasował (autor albo właściciel apki). SetNull: jeśli konto zniknie, nagrobek zostaje.
+  usunietaPrzez   Gracz? @relation("usuniete", fields: [usunietaPrzezId], references: [id], onDelete: SetNull)
+  usunietaPrzezId Int?
 
   /// Odpowiedź na inną wiadomość (jak cytat na Discordzie). Null = zwykła wiadomość.
   /// `SetNull`, a nie kaskada: skasowanie oryginału nie ma zabierać odpowiedzi — zostaje ona,

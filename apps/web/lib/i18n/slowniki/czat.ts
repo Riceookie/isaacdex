@@ -95,6 +95,15 @@ export const czat = {
   },
   ty: { en: 'You', pl: 'Ty' },
   wiadomoscUsunieta: { en: 'Message deleted', pl: 'Wiadomość usunięta' },
+  // Nagrobek po skasowaniu: „Ty" temu, kto skasował; nick pozostałym. PL neutralnie płciowo.
+  usunietaPrzezCiebie: {
+    en: 'You deleted a message',
+    pl: 'Wiadomość usunięta przez Ciebie',
+  },
+  usunietaPrzezKogos: {
+    en: '{nick} deleted a message',
+    pl: 'Wiadomość usunięta przez {nick}',
+  },
   zalacznikAlt: { en: 'Attachment', pl: 'Załącznik' },
   dodajReakcje: { en: 'Add a reaction', pl: 'Dodaj reakcję' },
   usunWiadomosc: { en: 'Delete message', pl: 'Usuń wiadomość' },

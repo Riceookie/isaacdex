@@ -40,9 +40,17 @@ const doWiad = (
     obrazekUrl: string | null
     utworzono: Date
     edytowana: boolean
+    usunieta: boolean
+    usunietaPrzezId: number | null
+    usunietaPrzez: { nick: string } | null
     autor: { nick: string }
     reakcje: { ikona: string; graczId: number }[]
-    odpowiedzNa: { tresc: string; obrazekUrl: string | null; autor: { nick: string } } | null
+    odpowiedzNa: {
+      tresc: string
+      obrazekUrl: string | null
+      usunieta: boolean
+      autor: { nick: string }
+    } | null
   },
   jaId?: number,
 ): Wiad => {
@@ -55,6 +63,19 @@ const doWiad = (
     if (jaId != null && r.graczId === jaId) moje.add(r.ikona)
   }
 
+  // Nagrobek: treści, obrazka i reakcji już nie pokazujemy — tylko kto i kiedy usunął.
+  if (w.usunieta) {
+    return {
+      id: String(w.id),
+      autor: w.autor.nick,
+      czas: godzina(w.utworzono),
+      tekst: [],
+      usunieta: true,
+      usunietaPrzez: w.usunietaPrzez?.nick,
+      usunietaPrzezMnie: jaId != null && w.usunietaPrzezId === jaId,
+    }
+  }
+
   return {
     id: String(w.id),
     autor: w.autor.nick,
@@ -64,11 +85,12 @@ const doWiad = (
     obraz: w.obrazekUrl ?? undefined,
     edytowana: w.edytowana,
     // Cytat odpowiedzi: krótki podgląd oryginału (albo obrazek → znacznik). Gdy oryginał
-    // skasowano, `odpowiedzNa` jest null (FK SetNull) — cytat znika, sama odpowiedź zostaje.
+    // skasowano, jego treść jest pusta i `usunieta=true` — cytat pokazujemy jako „usunięta".
     odpowiedz: w.odpowiedzNa
       ? {
           autor: w.odpowiedzNa.autor.nick,
           tekst: w.odpowiedzNa.tresc || (w.odpowiedzNa.obrazekUrl ? '🖼' : ''),
+          usunieta: w.odpowiedzNa.usunieta,
         }
       : null,
     reakcje: [...licznik.entries()].map(([ikona, ile]) => ({
@@ -96,10 +118,18 @@ export async function getWiadomosci(slug: string): Promise<StanKanalu> {
       obrazekUrl: true,
       utworzono: true,
       edytowana: true,
+      usunieta: true,
+      usunietaPrzezId: true,
+      usunietaPrzez: { select: { nick: true } },
       autor: { select: { nick: true } },
       reakcje: { select: { ikona: true, graczId: true } },
       odpowiedzNa: {
-        select: { tresc: true, obrazekUrl: true, autor: { select: { nick: true } } },
+        select: {
+          tresc: true,
+          obrazekUrl: true,
+          usunieta: true,
+          autor: { select: { nick: true } },
+        },
       },
     },
   })

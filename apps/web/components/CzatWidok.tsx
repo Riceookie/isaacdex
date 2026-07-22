@@ -271,13 +271,9 @@ export default function CzatWidok({
       )
       // Kasowanie: DELETE niesie tylko klucz główny (bez kanału), więc filtr po kanale by go
       // zgubił — słuchamy BEZ filtra i po prostu dociągamy kanał (skasowanie jest rzadkie).
-      .on(
-        'postgres_changes',
-        { event: 'DELETE', schema: 'isaacdex', table: 'Wiadomosc' },
-        () => {
-          odswiez(kanal)
-        },
-      )
+      .on('postgres_changes', { event: 'DELETE', schema: 'isaacdex', table: 'Wiadomosc' }, () => {
+        odswiez(kanal)
+      })
       // Reakcje też mają pojawiać się od razu. Bez filtra po kanale — reakcja go nie zna,
       // a wierszy jest na tyle mało, że dociągnięcie listy jest tańsze niż kolejne złączenie.
       .on(
@@ -394,7 +390,12 @@ export default function CzatWidok({
         }
       }
 
-      const wynik = await wyslijWiadomosc(kanal, t, obrazekUrl, odpowiedzNa ? Number(odpowiedzNa.id) : null)
+      const wynik = await wyslijWiadomosc(
+        kanal,
+        t,
+        obrazekUrl,
+        odpowiedzNa ? Number(odpowiedzNa.id) : null,
+      )
       if (!wynik.ok) {
         setBlad(wynik.powod)
         return
@@ -661,6 +662,21 @@ export default function CzatWidok({
             </p>
           )}
           {lista.map((w) => {
+            // Nagrobek: skasowana wiadomość to jedna dyskretna linijka bez treści, avatara,
+            // reakcji ani akcji — „Ty usunąłeś" temu, kto skasował; nick wszystkim innym.
+            if (w.usunieta) {
+              return (
+                <article key={w.id} className="cz-msg cz-usunieta">
+                  <p className="cz-usunieta-info muted small">
+                    <Sprite name="skull" size={15} />
+                    {w.usunietaPrzezMnie
+                      ? tl('czat.usunietaPrzezCiebie')
+                      : tl('czat.usunietaPrzezKogos', { nick: w.usunietaPrzez ?? w.autor })}
+                  </p>
+                </article>
+              )
+            }
+
             const g = wgNicku.get(w.autor)
             const wlasny = wlasnyAvatar(g?.avatar)
             const moja = w.autor === mojNick
@@ -720,7 +736,11 @@ export default function CzatWidok({
                         onKeyDown={(e) => e.key === 'Escape' && setEdycja(null)}
                         aria-label={tl('czat.edytujWiadomosc')}
                       />
-                      <button className="cz-akcja" type="submit" aria-label={tl('czat.zapiszEdycje')}>
+                      <button
+                        className="cz-akcja"
+                        type="submit"
+                        aria-label={tl('czat.zapiszEdycje')}
+                      >
                         <Sprite name="wyslij" size={16} />
                       </button>
                       <button
@@ -738,7 +758,10 @@ export default function CzatWidok({
                         <p className="cz-linia" key={j}>
                           {zTokenami(blur ? blurujTekst(t) : t)}
                           {w.edytowana && j === w.tekst.length - 1 && (
-                            <span className="cz-edytowano muted small"> {tl('czat.edytowano')}</span>
+                            <span className="cz-edytowano muted small">
+                              {' '}
+                              {tl('czat.edytowano')}
+                            </span>
                           )}
                         </p>
                       ))}
@@ -870,8 +893,10 @@ export default function CzatWidok({
                   </span>
                   <b>{tl('czat.odpowiadaszNa', { nick: odpowiedzNa.autor })}</b>
                   <span className="cz-odp-tekst">
-                    {(blur ? blurujTekst(odpowiedzNa.tekst.join(' ')) : odpowiedzNa.tekst.join(' '))
-                      .slice(0, 80) || '🖼'}
+                    {(blur
+                      ? blurujTekst(odpowiedzNa.tekst.join(' '))
+                      : odpowiedzNa.tekst.join(' ')
+                    ).slice(0, 80) || '🖼'}
                   </span>
                 </span>
                 <button
@@ -1062,7 +1087,12 @@ export default function CzatWidok({
                 <Sprite name="skull" size={18} /> {tl('czat.usunPytanie')}
               </p>
               <p className="cz-usun-podglad muted small">
-                „{(blur ? blurujTekst(doUsuniecia.tekst.join(' ')) : doUsuniecia.tekst.join(' ')).slice(0, 90) || '🖼'}"
+                „
+                {(blur
+                  ? blurujTekst(doUsuniecia.tekst.join(' '))
+                  : doUsuniecia.tekst.join(' ')
+                ).slice(0, 90) || '🖼'}
+                "
               </p>
               <div className="cz-usun-przyciski">
                 <button className="btn" type="button" onClick={() => setDoUsuniecia(null)}>
